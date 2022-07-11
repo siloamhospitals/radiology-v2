@@ -67,57 +67,58 @@ export class PageRadiologyScheduleComponent implements OnInit {
     }
 
     // Define Vars
-    const lblStatus = ['Scheduled', 'Arrived', 'Process', 'Completed', 'note']
+    const lblStatus = ['scheduled', 'arrived', 'process', 'completed', 'note']
     const spanType = [null, 'full']
-    const baseData = (this.scheduleList || [])
+    let baseData = (this.scheduleList || [])
+    console.log('default basedata', baseData)
     let data = [
       {
         fromTime: '01:00',
-        toTime: '02:00',
-        patient: 'Patient A',
+        toTime: '01:59',
+        patient: 'Patient 1',
         dob: '01-01-1990',
-        localMrNo: '00000',
+        localMrNo: '00001',
         examination: 'tes1.',
         note: 'tes1.',
         status: lblStatus[0],
       },
       {
         fromTime: '03:00',
-        toTime: '03:30',
-        patient: 'Patient A',
+        toTime: '03:29',
+        patient: 'Patient 2',
         dob: '01-01-1990',
-        localMrNo: '00000',
+        localMrNo: '00010',
         examination: 'tes1.',
         note: 'tes1.',
         status: lblStatus[1],
       },
       {
         fromTime: '05:00',
-        toTime: '07:00',
-        patient: 'Patient A',
+        toTime: '06:59',
+        patient: 'Patient 3',
         dob: '01-01-1990',
-        localMrNo: '00000',
+        localMrNo: '00020',
         examination: 'tes1.',
         note: 'tes1.',
         status: lblStatus[2],
       },
-      // {
-      //   fromTime: '07:00',
-      //   toTime: '07:40',
-      //   patient: 'Patient A',
-      //   dob: '01-01-1990',
-      //   localMrNo: '00000',
-      //   examination: 'tes1.',
-      //   note: 'tes1.',
-      //   status: lblStatus[3],
-      // },
-      // {
-      //   fromTime: '08:00',
-      //   toTime: '10:10',
-      //   note: 'Checking for maintenence purpose.',
-      //   spanType: spanType[1],
-      //   status: lblStatus[4],
-      // }
+      {
+        fromTime: '13:00',
+        toTime: '14:40',
+        patient: 'Patient 4',
+        dob: '01-01-1990',
+        localMrNo: '00030',
+        examination: 'tes1.',
+        note: 'tes1.',
+        status: lblStatus[3],
+      },
+      {
+        fromTime: '08:00',
+        toTime: '10:10',
+        note: 'Checking for maintenence purpose.',
+        spanType: spanType[1],
+        status: lblStatus[4],
+      }
     ]
     data = data.map((x: any) => {
       x.isCanCreate = false
@@ -126,33 +127,49 @@ export class PageRadiologyScheduleComponent implements OnInit {
     })
 
     // Assign data to list from att from and to
-    const squashData  = baseData.map((x: any) => {
-      x.row = data.findIndex((y: any) => {
+    const squashData  = data.map((x: any) => {
+      x.rowmerge = []
+      x.rows = baseData.filter((y: any, yi: number) => {
         const rangeCond = 
-          (hourToDate(x.timeSlotFrom) <= hourToDate(y.fromTime) && hourToDate(y.fromTime) <= hourToDate(x.timeSlotTo))
-          || (hourToDate(x.timeSlotFrom) <= hourToDate(y.toTime) && hourToDate(y.toTime) <= hourToDate(x.timeSlotTo))
-        console.log('dateRangeFrom', rangeCond,
-        // x.timeSlotFrom, '>=', y.fromTime, '<=', x.timeSlotTo,
-        y.fromTime, '>=', x.timeSlotFrom, '&&', y.fromTime, '<=', x.timeSlotTo,
-        '||', y.toTime, '>=', x.timeSlotFrom, '&&', y.toTime, '<=', x.timeSlotTo,
-        // hourToDate(x.timeSlotFrom), '>=', y.fromTime, '<=', hourToDate(x.timeSlotTo),
-        )
+          Math.min(hourToDate(x.fromTime).getTime(), hourToDate(x.toTime).getTime()) <= Math.max(hourToDate(y.timeSlotFrom).getTime(), hourToDate(y.timeSlotTo).getTime())
+          && Math.max(hourToDate(x.fromTime).getTime(), hourToDate(x.toTime).getTime()) >= Math.min(hourToDate(y.timeSlotFrom).getTime(), hourToDate(y.timeSlotTo).getTime())
+        // console.log('dateRangeFrom', rangeCond,
+        // // x.timeSlotFrom, '>=', y.fromTime, '<=', x.timeSlotTo,
+        // y.fromTime, '>=', x.timeSlotFrom, '&&', y.fromTime, '<=', x.timeSlotTo,
+        // '||', y.toTime, '>=', x.timeSlotFrom, '&&', y.toTime, '<=', x.timeSlotTo,
+        // // hourToDate(x.timeSlotFrom), '>=', y.fromTime, '<=', hourToDate(x.timeSlotTo),
+        // )
         if (rangeCond) {
+          x.rowmerge.push(yi)
           // console.log('ONLIST', x.timeSlotFrom, '>=', y.fromTime, '<=', x.timeSlotTo,)
           return true
         }
         return false
       })
-      if (x.row >= 0) {
-        x = {...x, ...data[x.row]}
-      }
+      x.rowspan = (x.rows || []).length
       return x
     })
 
-    console.log('nmix', squashData.filter(x => x.row >= 0))
-    // console.log({squashData, data})
+    // map to baseData
+    squashData.forEach((item) => {
+      if (item.rowmerge.length > 0) {
+        item.rowmerge.forEach((y: any, yi: number) => {
+          if (yi === 0) {
+            baseData[y] = {...baseData[y], ...item}
+          } else {
+            baseData[y] = {...baseData[y], ...item, ...{isSpan: true}}
+            // console.log(baseData[y])
+            // baseData.splice(y, 1)
+          }
+        })
+      }
+    })
 
-    this.scheduleList = squashData
+    // console.log('nmix', squashData.filter(x => x.row >= 0))
+    console.log('appdata', squashData.length, squashData)
+    console.log('baseData', baseData.length, baseData)
+
+    this.scheduleList = baseData
   }
 
   openCreateApp () {

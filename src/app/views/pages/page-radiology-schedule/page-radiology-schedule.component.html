@@ -48,17 +48,63 @@
             <ng-container *ngIf="!(scheduleList && scheduleList.length)">
               <tr><td colspan="100%" class="text-center p-3">No data from this section</td></tr>
             </ng-container>
+            <!-- testing purpose -->
+            <!-- <tr>
+              <td>-11</td>
+              <td>00:00 - 00:29</td>
+              <td>Patient Test</td>
+              <td>32-13-1990</td>
+              <td>00001X</td>
+              <td>Examination</td>
+              <td>Note</td>
+              <td>Status</td>
+            </tr>
+            <tr>
+              <td>-11</td>
+              <td>00:00 - 00:29</td>
+              <td rowspan="2">Patient Test</td>
+              <td rowspan="2">32-13-1990</td>
+              <td rowspan="2">00001X</td>
+              <td rowspan="2">Examination</td>
+              <td rowspan="2">Note</td>
+              <td rowspan="2">Status</td>
+            </tr>
+            <tr>
+              <td>-11</td>
+              <td>00:00 - 00:29</td>
+            </tr>
+            <tr>
+              <td>-11</td>
+              <td>00:00 - 00:29</td>
+              <td>Patient Test</td>
+              <td>32-13-1990</td>
+              <td>00001X</td>
+              <td>Examination</td>
+              <td>Note</td>
+              <td>Status</td>
+            </tr> -->
+            <!-- end testing purpose -->
             <tr *ngFor="let item of scheduleList; let i=index">
               <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle;" class="text-right">{{(item.rowIndex).toString().padStart(2, '0')}}</td>
               <!-- <td>{{item.timeSlot}}</td> -->
               <td>{{item.timeSlotFrom}} - {{item.timeSlotTo}}</td>
-              <ng-container *ngIf="!item.isCanCreate">
-                <td>{{item.patient}}</td>
-                <td>{{item.dob}}</td>
-                <td>{{item.localMrNo}}</td>
-                <td>{{item.examination}}</td>
-                <td>{{item.note}}</td>
-                <td><span class="badge badge-secondary px-3 py-2" style="border-radius: 50px;">{{item.status}}</span></td>
+              <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'">
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.patient}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.dob}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.localMrNo}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.examination}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.note}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">
+                  <span *ngIf="item.status === 'scheduled'" class="table-status status-scheduled">Scheduled</span>
+                  <span *ngIf="item.status === 'arrived'" class="table-status status-arrived">Arrived</span>
+                  <span *ngIf="item.status === 'process'" class="table-status status-process">Process</span>
+                  <span *ngIf="item.status === 'completed'" class="table-status status-completed">Completed</span>
+                </td>
+              </ng-container>
+              <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status === 'note'">
+                <td [attr.rowspan]="item.rowspan || 1" colspan="7" class="table-td table-td-{{item.status}}">{{item.note}}</td>
+              </ng-container>
+              <ng-container *ngIf="!item.isCanCreate && item.isSpan">
               </ng-container>
               <ng-container *ngIf="item.isCanCreate">
                 <td (click)="openCreateApp()" style="cursor: pointer;"><span class="text-success">Available</span></td>
