@@ -32,23 +32,27 @@
 
       <!-- Content -->
       <section class="p-3">
-        <table class="table table-bordered mt-3">
-          <thead>
+        <table class="table table-bordered mt-3 table-list-radiology">
+          <thead class="border-0">
             <tr style="background-color: #F8F9FA;">
-              <td colspan="2" class="py-3">Appointment</td>
-              <td class="py-3">Patient</td>
-              <td class="py-3">DoB</td>
-              <td class="py-3">Local MR No</td>
-              <td class="py-3">Examination</td>
-              <td class="py-3">Note</td>
-              <td class="py-3">Status</td>
+              <td colspan="2" class="py-3 border-0">Appointment</td>
+              <td class="py-3 border-0">Patient</td>
+              <td class="py-3 border-0">DoB</td>
+              <td class="py-3 border-0">Local MR No</td>
+              <td class="py-3 border-0">Examination</td>
+              <td class="py-3 border-0">Note</td>
+              <td class="py-3 border-0">Status</td>
             </tr>
           </thead>
           <tbody>
+            <ng-container *ngIf="!(scheduleList && scheduleList.length)">
+              <tr><td colspan="100%" class="text-center p-3">No data from this section</td></tr>
+            </ng-container>
             <tr *ngFor="let item of scheduleList; let i=index">
-              <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle;" class="text-right">{{i}}</td>
-              <td>{{item.timeSlot}}</td>
-              <ng-container *ngIf="item.isCanCreate">
+              <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle;" class="text-right">{{(item.rowIndex).toString().padStart(2, '0')}}</td>
+              <!-- <td>{{item.timeSlot}}</td> -->
+              <td>{{item.timeSlotFrom}} - {{item.timeSlotTo}}</td>
+              <ng-container *ngIf="!item.isCanCreate">
                 <td>{{item.patient}}</td>
                 <td>{{item.dob}}</td>
                 <td>{{item.localMrNo}}</td>
@@ -56,7 +60,7 @@
                 <td>{{item.note}}</td>
                 <td><span class="badge badge-secondary px-3 py-2" style="border-radius: 50px;">{{item.status}}</span></td>
               </ng-container>
-              <ng-container *ngIf="!item.isCanCreate">
+              <ng-container *ngIf="item.isCanCreate">
                 <td (click)="openCreateApp()" style="cursor: pointer;"><span class="text-success">Available</span></td>
                 <td></td>
                 <td></td>
