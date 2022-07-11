@@ -12,3 +12,7 @@
     justify-content: left;
   }
   
+.box {
+    box-shadow: 0px 2px 4px #ccc;
+    border-radius: 8px;
+}

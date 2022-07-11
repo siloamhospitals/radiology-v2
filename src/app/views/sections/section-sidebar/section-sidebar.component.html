@@ -1,23 +1,47 @@
-<div id="divHiddenTwo unprintable" class="fo_minimizer" data-toggle="collapse" data-target=".fo_minimized">
-  <div class="unprintable">
-    <img class="icon_minimizer" src="{{assetPath}}icons/ic_Minimize@2x.png">
-    <img class="icon_maximizer" src="{{assetPath}}icons/ic_Maximize@2x.png">
-  </div>
-  <span class="header-3 collapse show width fo_minimized">
-    <div class="fo_minimized_text unprintable">MINIMIZE</div>
-  </span>
-</div>
-<div class="container-button shadow-4 unprintable">
-  <a class="side_button shadow-4" aria-expanded="false" href="/swab-list" target="_parent"
-    [routerLink]="['/swab-list']" [routerLinkActive]="['active']">
+<div class="mt-4" ></div>
+<div class="container-button unprintable">
+  <a class="side_button side_button_first" aria-expanded="false" href="#">
     <div>
-      <img class="icon" src="{{assetPath}}icons/ic_AppointmentList_Black.png">
-      <img class="icon" src="{{assetPath}}icons/ic_AppointmentList_White.png">
+      <img class="icon" src="../../../../assets/icons/ic_radioactive.png" />
     </div>
+    <div class="header-3 collapse show width fo_minimized" >
+      <div class="fo_minimized_text">MenuName</div>
+    </div>
+  </a>
+</div>
+
+<div class="container-button unprintable">
+  <a class="side_button" aria-expanded="false" href="/schedule" target="_parent"
+    [routerLink]="['/schedule']" [routerLinkActive]="['active']">
+   
     <div class="header-3 collapse show width fo_minimized" popoverTitle="Swab List"
       ngbPopover="Melihat daftar antrian pasien swab dan pengisian hasil swab"
       triggers="mouseenter:mouseleave" placement="right" container="body">
-      <div class="fo_minimized_text">Swab List</div>
+      <div class="fo_minimized_text">Radiology Schedule</div>
+    </div>
+  </a>
+</div>
+
+<div class="container-button unprintable">
+  <a class="side_button " aria-expanded="false" href="/swab-list" target="_parent"
+    [routerLink]="['/swab-list-1']" [routerLinkActive]="['active']">
+    
+    <div class="header-3 collapse show width fo_minimized" popoverTitle="Swab List"
+      ngbPopover="Melihat daftar antrian pasien swab dan pengisian hasil swab"
+      triggers="mouseenter:mouseleave" placement="right" container="body">
+      <div class="fo_minimized_text">Worklist</div>
+    </div>
+  </a>
+</div>
+
+<div class="container-button unprintable">
+  <a class="side_button side_button_last " aria-expanded="false" href="/swab-list" target="_parent"
+    [routerLink]="['/swab-list-1']" [routerLinkActive]="['active']">
+    
+    <div class="header-3 collapse show width fo_minimized" popoverTitle="Swab List"
+      ngbPopover="Melihat daftar antrian pasien swab dan pengisian hasil swab"
+      triggers="mouseenter:mouseleave" placement="right" container="body">
+      <div class="fo_minimized_text">Queue Mnagement</div>
     </div>
   </a>
 </div>

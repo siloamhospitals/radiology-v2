@@ -13,6 +13,11 @@ const routes: Routes = [
     loadChildren: './views/pages/page-swab-list/page-swab-list.module#PageSwabListModule',
   },
   {
+    path: 'schedule',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./views/pages/page-radiology-schedule/page-radiology-schedule.module').then(m => m.PageRadiologyScheduleModule)
+  },
+  {
     path: 'home',
     canActivate: [AuthGuard],
     loadChildren: './views/pages/page-home/page-home.module#PageHomeModule'
@@ -21,7 +26,7 @@ const routes: Routes = [
     path: '',
     canActivate: [AuthGuard],
     loadChildren: './views/pages/page-home/page-home.module#PageHomeModule'
-  },
+  },  
   {
     path: '**',
     redirectTo: ''
