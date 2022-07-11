@@ -29,6 +29,54 @@
           </select>
         </div>
       </div>
+
+      <!-- Content -->
+      <section class="p-3">
+        <table class="table mt-3">
+          <thead>
+            <tr style="background-color: #F8F9FA;">
+              <td colspan="2" class="py-3">Appointment</td>
+              <td class="py-3">Patient</td>
+              <td class="py-3">DoB</td>
+              <td class="py-3">Local MR No</td>
+              <td class="py-3">Examination</td>
+              <td class="py-3">Note</td>
+              <td class="py-3">Status</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="2">00</td>
+              <td>00:00-00:30</td>
+              <td>Patient A</td>
+              <td>01-01-1990</td>
+              <td>MR00001</td>
+              <td>-</td>
+              <td>ini adalah catatan</td>
+              <td><span class="badge badge-info">Info</span></td>
+            </tr>
+            <tr>
+              <td>00:00-00:30</td>
+              <td>Patient A</td>
+              <td>01-01-1990</td>
+              <td>MR00001</td>
+              <td>-</td>
+              <td>ini adalah catatan</td>
+              <td><span class="badge badge-info">Info</span></td>
+            </tr>
+            <tr *ngFor="let item of scheduleList; let i=index">
+              <td *ngIf="i%2==0" rowspan="2">{{i}}</td>
+              <td>{{item.timeSlot}}</td>
+              <td>{{item.patient}}</td>
+              <td>{{item.dob}}</td>
+              <td>{{item.localMrNo}}</td>
+              <td>{{item.examination}}</td>
+              <td>{{item.note}}</td>
+              <td><span class="badge badge-secondary px-3 py-2" style="border-radius: 50px;">{{item.status}}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </div>
   </div>
 </div>
