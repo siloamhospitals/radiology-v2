@@ -15,7 +15,7 @@ const routes: Routes = [
   {
     path: 'schedule',
     canActivate: [AuthGuard],
-    loadChildren: () => import('./views/pages/page-radiology-schedule/page-radiology-schedule.module').then(m => m.PageRadiologyScheduleModule)
+    loadChildren: './views/pages/page-radiology-schedule/page-radiology-schedule.module#PageRadiologyScheduleModule'
   },
   {
     path: 'home',

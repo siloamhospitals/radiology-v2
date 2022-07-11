@@ -8,7 +8,7 @@
       <h3 class="p-3 border-bottom">
         Radiology Schedule
       </h3>
-      <div class="px-3 py-2 d-flex aling-items-center justify-content-between">
+      <div class="px-3 py-2 d-flex aling-items-center justify-content-between border-bottom">
         <div>
           <button class="btn">
             <span class="fa fa-angle-left font-weight-bold"></span>
@@ -27,8 +27,19 @@
           <select class="form-control px-2 mx-2">
             <option>Day</option>
           </select>
+          <input class="form-control" type="text" value="May 2022" />
         </div>
+
       </div>
+      <div class="p-3 border-bottom" >
+        <button *ngFor="let room of rooms" type="button" class="btn btn-secondary bg-light text-muted mb-2 rounded-8 room px-3 py-2">
+          {{ room }}
+        </button>
+      </div>
+      <div class="p-3 border-bottom" >
+        asdsadsa
+      </div>
+      asdsa
     </div>
   </div>
 </div>
