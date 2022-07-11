@@ -29,6 +29,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
         examination: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fermentum risus, in odio id quis sed aliquet.',
         note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fermentum risus, in odio id quis sed aliquet.',
         status: 'status',
+        isCanCreate: i > 20
       }
       model.examination = model.examination.slice(0, 30)
       model.note = model.note.slice(0, 30)
@@ -44,6 +45,10 @@ export class PageRadiologyScheduleComponent implements OnInit {
       acc.push(item[1])
       return acc
     }, [])
+  }
+
+  openCreateApp () {
+    console.log('modal is open')
   }
 
 }
