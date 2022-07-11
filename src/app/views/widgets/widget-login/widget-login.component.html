@@ -1,0 +1,35 @@
+
+<div class="row login-wrapper">
+  <div class="col-md-6 login-left">
+    <img class="login-icon" src="{{assetPath}}icons/ic_loginART.png" />
+  </div>
+
+  <div class="col-md-6 login-right">
+    
+    <div class="alert-login" *ngFor="let alert of alerts">
+      <ngb-alert *ngIf="alert" type="{{cssAlertType(alert)}}" (close)="removeAlert(alert)">{{ alert.message }}
+      </ngb-alert>
+    </div>
+    <div class="form-login">
+      <form (ngSubmit)="login()">
+        <label>Username</label>
+        <input id="username" class="input-login" [ngClass]="{'error-input': !validation.username}" type="text" id="textbox-username" placeholder="Username" name="username" [(ngModel)]="model.username" #username="ngModel" required />
+        <div style="height: 14px;"></div>
+        <label>Password</label>
+        <input id="password" class="input-login" [ngClass]="{'error-input': !validation.password}" type="password" id="textbox-password" placeholder="Password" name="password" [(ngModel)]="model.password" #password="ngModel" required />
+
+        <div *ngIf="loading" class="loading-gif">
+          <img src="{{assetPath}}icons/loading-login.gif" />
+        </div>
+        
+        <div class="button-wrapper">
+          <button [disabled]="loading" class="btn-login" type="submit">Login</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="orbit">
+  <img src="{{assetPath}}icons/orbit-image.png" />
+</div>

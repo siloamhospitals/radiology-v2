@@ -1,0 +1,149 @@
+
+.row.login-wrapper {
+  margin: 0px;
+}
+
+.login-wrapper {
+  height: 100vh;
+}
+
+/* Left Side */
+.orbit {
+  position: absolute;
+  top: 320px;
+  left: -250px; 
+}
+
+.login-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFFFFF;
+}
+
+.login-icon {
+  width: 300px;
+}
+
+/* Right Side */
+.login-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1A2269;
+}
+
+.alert-login {
+  position: absolute;
+  top: 50px;
+}
+
+.form-login {
+  width: 70%;
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  padding: 40px;
+  -webkit-box-shadow: 0px 10px 10px 10px rgba(0,0,0,0.16);
+  -moz-box-shadow: 0px 10px 10px 10px rgba(0,0,0,0.16);
+  box-shadow: 0px 10px 10px 10px rgba(0,0,0,0.16);
+}
+
+.form-login label {
+  display: block;
+  text-align: center;
+  color: #1A2269;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.form-login .input-login {
+  padding: 12px 12px;
+  width: 100%;
+  border: 2px solid #575FCF;
+  border-radius: 5px;
+  color: #222F3EDE;
+  font-size: 13px;
+  margin-bottom: 10px;
+  outline: none;
+}
+
+.form-login .input-login.error-input {
+  border: 2px solid #f2acb2;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #222F3EDE;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #222F3EDE;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #222F3EDE;
+}
+
+.form-login .forgot-password {
+  color: #1A2269;
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  text-decoration: underline;
+  margin-bottom: 30px;
+}
+
+.form-login .loading-gif {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.form-login .loading-gif img {
+  width: 80px;
+}
+
+.form-login .button-wrapper {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-login .btn-login {
+  background-color: #6AB04C;
+  display: block;
+  width: 50%;
+  padding: 10px;
+  color: #FFFFFF;
+  border: 1px solid #6AB04C;
+  border-radius: 5px;
+}
+
+.form-login .btn-login:hover {
+  background-color: #6dc771;
+}
+
+.form-login .btn-login:active {
+  background-color: #6dc771;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+@media only screen and (max-width: 767px) {
+  .orbit {
+    display: none;
+  }
+
+  .alert-login {
+    top: 35px;
+  }
+}
+
+@media only screen and (max-width: 960px) {
+
+  .form-login {
+    width: 80%;
+  }
+}

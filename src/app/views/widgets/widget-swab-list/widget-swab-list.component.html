@@ -1,0 +1,428 @@
+<div class="fo_container_input_date">
+  <label class="foot-note" for="doctor_name">Admission Date</label>
+
+  
+  <div *ngFor="let alert of alerts">
+    <ngb-alert *ngIf="alert" type="{{cssAlertType(alert)}}" (close)="removeAlert(alert)">{{ alert.message }}</ngb-alert>
+  </div>
+
+  <div class="row">
+      <div class="col-6">
+        <div style="display: inline;">    
+          <my-date-range-picker name="mydaterange" [options]="myDateRangePickerOptions"  [(ngModel)]="dateAdmission"
+          (dateRangeChanged)="onDateChangeRange($event)" (dateSelected)="setMaxRangeOfDate($event)">
+          </my-date-range-picker>
+        </div>
+      </div>
+      <div class="col-6" style="text-align: right;">
+        <div id="summary-swab-total" class="summary-swab-wrap bg-white">
+          Total test : <strong>{{ summarySwab.total }}</strong>
+        </div>
+        <div id="summary-swab-done" class="summary-swab-wrap bg-green">
+          Done : <strong>{{ summarySwab.done }}</strong>
+        </div>
+        <div id="summary-swab-undone" class="summary-swab-wrap bg-red">
+          Not Done : <strong>{{ summarySwab.undone }}</strong>
+        </div>
+      </div>
+  </div>
+  
+</div>
+
+<div class="row" style="margin-top: -5px; margin-bottom: 15px;">
+  <div class="col-6">
+      <button type="button" class="btn btn-success" (click)="openconfirmation(clinicalPathologistModal)">
+        Clinical Pathologist
+      </button>
+  </div>
+  <div class="col-6" style="text-align: right;">
+    <button type="button" class="btn btn-primary" (click)="exportData()">
+      Export
+    </button>
+  </div>
+</div>
+
+<div class="fo_container_list shadow-4">
+  <table class="table table-bordered" id="appointment-list-table">
+    <thead class="fo_color_blue foot-note">
+      <th style="min-width: 14em">
+        Patient Name
+      </th>
+      <th style="white-space: nowrap; text-align: center; min-width: 10em">Date of Birth</th>
+      <th style="min-width: 10em">Local MR</th>
+      <th>Phone No.</th>
+      <th style="min-width: 10em">ID Number</th>
+      <th width="100px">Admission Date</th>
+      <!-- <th>Time Slot</th> -->
+      <th style="min-width: 14em">Test Type</th>
+      <th>Test Result</th>
+      <th width="90px" style="text-align: center">Action</th>
+      <th style="min-width: 18em; text-align: center">Status</th>
+      <!-- <th style="min-width: 9em">Modified By</th>
+      <th style="min-width: 9em">Notes</th> -->
+    </thead>
+
+    <tbody>
+      <tr class="fo_header_grey filter-row">
+        <td>
+          <div class="inner-addon right-addon">
+            <i class="glyphicon fa fa-search"></i>
+            <input type="text" class="form-control" placeholder="Search name" [(ngModel)]="model.name" id="search-name"
+              (change)="searchAppointment(true)" />
+          </div>
+        </td>
+        <td>
+          <div class="inner-addon right-addon">
+            <i class="glyphicon fa fa-search"></i>
+            <input [textMask]="{mask: maskBirth}" type="text" placeholder="Search dob" class="form-control" id="search-birth-date"
+              [(ngModel)]="model.birth" (change)="searchAppointment(true)" placeholder="dd-mm-yyyy" />
+          </div>
+        </td>
+        <td>
+          <div class="inner-addon right-addon">
+            <i class="glyphicon fa fa-search"></i>
+            <input type="text" class="form-control" placeholder="Search MR" [(ngModel)]="model.mr" id="search-mr"
+              [textMask]="{mask: maskNumber}" (change)="searchAppointment(true)" />
+          </div>
+        </td>
+        <td></td>
+        <td>
+          <div class="inner-addon right-addon">
+            <i class="glyphicon fa fa-search"></i>
+            <input type="text" class="form-control" placeholder="Search Identity Number" [(ngModel)]="model.identityNumber"
+            [textMask]="{mask: maskIdentity, guide: false}" id="search-identity-number" (change)="searchAppointment(true)" />
+          </div>
+        </td>
+        <td>          
+          <div class="inner-addon right-addon">
+            <i class="glyphicon fa fa-search"></i>
+            <input [textMask]="{mask: maskBirth}" type="text" placeholder="Search Admission Date" class="form-control" id="search-admission-date"
+              [(ngModel)]="model.admissionDate" (change)="searchAppointment(true)" placeholder="dd-mm-yyyy" />
+          </div>
+        </td>
+        <!-- <td></td> -->
+        <td>
+          <div class="ng-autocomplete" class="angular-autocomplete">
+            <ng-autocomplete placeHolder="cagetory name..." [(ngModel)]="model.category" [data]="categoryList"
+              searchKeyword="name" (selected)='searchAppointment(true)' (inputCleared)='searchAppointment(true)' id="search-category"
+              [itemTemplate]="itemTemplateCategory" [notFoundTemplate]="notFoundTemplate">
+            </ng-autocomplete>
+
+            <ng-template #itemTemplateCategory let-item>
+              <a [innerHTML]="item.name"></a>
+            </ng-template>
+
+            <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+            </ng-template>
+          </div>          
+        </td>
+        <td>
+          <div class="inner-addon right-addon">
+            <select id="search-checkup-result" class="form-control" (change)="searchAppointment(true)" [(ngModel)]="model.checkupResult"
+                name="dropDownCheckupResult">
+                <option [ngValue]=undefined [selected]="model.checkupResult === undefined">ALL</option>
+                <option value="true">Positive</option>
+                <option value="false">Negative</option>
+                <option value="null">No result</option>
+              </select>
+          </div>          
+        </td>
+        <td></td>
+        <td></td>
+        <!-- <td>
+          <div class="inner-addon right-addon">
+            <i class="glyphicon fa fa-search"></i>
+            <input type="text" class="form-control" placeholder="Min 3 characters" [(ngModel)]="model.modifiedName"
+            (change)="model.modifiedName.length >= 3 || model.modifiedName.length === 0? searchAppointment(true): ''" />
+          </div>
+        </td>
+        <td></td> -->
+      </tr>
+
+      <tr *ngFor="let itr of appList" [ngClass]="{
+        'row-green' : itr.checkup_result !== null
+        }">
+        <td style="text-transform: uppercase">
+          <span class="table-two-row-text">
+            {{itr.contact_name}}
+          </span>
+          <span class="table-two-row-subtext">{{itr.registration_email}}</span>
+        </td>
+        <td style="text-align: center; white-space: nowrap; width: 1%">{{itr.custome_birth_date}}</td>
+        <td style="width: 1%;">{{itr.medical_record_number}}</td>
+        <td style="text-align: center">{{itr.phone_number}}</td>
+        <td style="text-align: center">{{itr.identity_number}}</td>
+        <td style="text-align: center; white-space: nowrap;">{{itr.custome_admission_date}}</td>
+        <!-- <td style="text-align: center; white-space: nowrap;">{{itr.custome_from_time}} - {{itr.custome_to_time}}</td> -->
+        <td style="text-align: center; width: fit-content;">{{ itr.checkup_name }}</td>
+        <td style="text-align: center; width: fit-content;">
+
+            <span *ngIf="itr.custome_checkup_result_status_temporary === '' && itr.checkup_result === false">Negative</span>
+            <span *ngIf="itr.custome_checkup_result_status_temporary === '' && itr.checkup_result === true">Positive</span>
+            <span *ngIf="itr.custome_checkup_result_status_temporary === '' && itr.checkup_result === null">-</span>
+
+            <span *ngIf="itr.custome_checkup_result_status_temporary !== ''">{{ itr.custome_checkup_result_status_temporary }}</span>
+        </td>
+        <td style="text-align: center; width: fit-content; vertical-align: middle;">
+          <div class="cell-img-nav d-flex justify-content-center">
+
+              <div *ngIf="itr.speciment_received_date === null" class="action-icon btn-speciment-received" (click)="specimentReceived(itr)">
+                <img src="{{assetPath}}icons/ic_speciment_received.png">
+              </div>
+            
+              <div class="action-icon btn-add-checkup-result" *ngIf="itr.speciment_received_date !== null && (user.role_name === 'Supervisor' || itr.checkup_result === null)" (click)="openChekupResultModal(itr, addSwabResult)">
+                <img src="{{assetPath}}icons/ic_notes.png">
+              </div>
+              <div class="action-icon btn-resend-checkup-result" *ngIf="itr.speciment_received_date !== null && itr.checkup_result !== null" (click)="openChekupResultModal(itr, resendSwabResult)">
+                <img src="{{assetPath}}icons/ic_email.png">
+              </div>
+              <div class="action-icon btn-print-checkup-result" *ngIf="itr.speciment_received_date !== null && itr.checkup_result !== null" (click)="print(itr)">
+                <img src="{{assetPath}}icons/ic_print_swab.png">
+              </div>
+          </div>
+        </td>
+        <td style="text-align: center; vertical-align: middle;">
+          <div class="status-undo" *ngIf="appListLoading[itr.appointment_id] === 'Undo'" (click)="cancelCheckupResult(itr)">
+            <img src="{{assetPath}}icons/ic_Cross.png" />
+            Undo
+          </div>
+          <div class="status-process" *ngIf="appListLoading[itr.appointment_id] === 'Process'">
+            <img src="{{assetPath}}icons/loading-add-swab.gif" />
+            Submitting ...
+          </div>
+          <div class="status-failed" *ngIf="appListLoading[itr.appointment_id] === 'Failed'">
+            Failed to save swab result. Please refresh the page and try again. 
+          </div>
+          <div *ngIf="(appListLoading[itr.appointment_id] === 'Success' || itr.checkup_result !== null)">
+            <span class="table-two-row-text">Sent ({{itr.checkup_result_created_name}})</span>
+            <span class="table-two-row-subtext">{{itr.custome_checkup_result_created_date}}</span>
+          </div>
+        </td>
+        <!-- <td>
+          <a ngbPopover="{{itr.modified_name}}" popoverTitle=""
+            triggers="mouseenter:mouseleave">{{itr.modified_name && itr.modified_name.length > 10 ? itr.modified_name.substr(0,10)+"..." : itr.modified_name}}</a>
+        </td>
+        <td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 7em">
+          <a ngbPopover="{{itr.appointment_note}}" popoverTitle=""
+            triggers="mouseenter:mouseleave">{{itr.appointment_note && itr.appointment_note.length > 10 ? itr.appointment_note.substr(0,10)+"..." : itr.appointment_note}}</a>
+        </td> -->
+      </tr>
+      <tr>
+        <td *ngIf="showNotFoundMsg" colspan="13" style="text-align: center;">Data pasien tidak ditemukan</td>
+        <td *ngIf="showWaitMsg" colspan="13" style="text-align: center;">
+          <ngb-progressbar value="1000">Loading...</ngb-progressbar>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="pagination">
+  
+  <button *ngIf="isCanPrevPage" (click)="prevPage()" class="btn ms_btn_blue">
+    <img src="{{assetPath}}icons/ic_ArrowRight_White.png"> Prev
+  </button>
+  <span style="width:10px">&nbsp;</span>
+  <button *ngIf="isCanNextPage" (click)="nextPage()" class="btn ms_btn_blue">
+    Next <img src="{{assetPath}}icons/ic_ArrowLeft_White.png">
+  </button>
+
+</div>
+
+<section class="full-width" id="group-list-appointment">
+  <ng-template #addSwabResult let-c="close" let-d="dismiss">  
+    <div id="modal-add-swab-result">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          Test Result
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body modal-result">
+          <div class="row">
+            <div class="col-5">
+              <div class="foto-ktp">
+                <a *ngIf="selectedSwab.custome_identity_image_url" href="{{selectedSwab.custome_identity_image_url}}" target="_blank">
+                  <img src="{{selectedSwab.custome_identity_image_url}}" />
+                </a>
+
+                <a *ngIf="!selectedSwab.custome_identity_image_url" href="{{assetPath}}icons/identity-card.png" target="_blank">
+                  <img src="{{assetPath}}icons/identity-card.png" />
+                </a>
+              </div>
+            </div>
+            <div class="col-7" style="padding-left: 0px;">
+              <div class="patient-data">
+                <span class="title">Name</span>
+                <span class="content">: {{ selectedSwab.contact_name }}</span>
+              </div>        
+              <div class="patient-data">
+                <span class="title">MR No.</span>
+                <span class="content">: {{ selectedSwab.medical_record_number }}</span>
+              </div>        
+              <div class="patient-data">
+                <span class="title">D.O.B</span>
+                <span class="content">: {{ selectedSwab.custome_birth_date }}</span>
+              </div>        
+              <div class="patient-data">
+                <span class="title">Phone No</span>
+                <span class="content">: {{ selectedSwab.phone_number }}</span>
+              </div>        
+              <div class="patient-data">
+                <span class="title">Email</span>
+                <span class="content">: {{ selectedSwab.registration_email }}</span>
+              </div>            
+              <div class="patient-data">
+                <span class="title">ID Number</span>
+                <span class="content">: {{ selectedSwab.identity_number }}</span>
+              </div>            
+            </div>
+          </div>
+          <div class="row" style="margin-top: 10px;">
+            <div class="col-6" style="text-align: left;">
+              <h5>Test Result : </h5>
+              <div class="radio-result">
+                <input type="radio" [(ngModel)]="checkupResult" id="radioCheckupResultPositive" value="true" class="radioCheckupResult" (change)="onChangeCheckupResult($event)">
+                <label style="color: #FF0000DE;" for="radioCheckupResultPositive">Positive</label>
+              </div>
+              <div class="radio-result">
+                <input type="radio" [(ngModel)]="checkupResult" id="radioCheckupResultNegative" value="false" class="radioCheckupResult" (change)="onChangeCheckupResult($event)">
+                <label style="color: #222F3EDE;" for="radioCheckupResultNegative">Negative</label>
+              </div>
+              
+            </div>
+            <div class="col-6" style="text-align: right;">
+              <button type="button" class="btn fo_btn_green btn-modal" (click)="openConfirmationModal(confirmSwabResult)" style="margin-top: 10px;">Sent Email</button>
+            </div>
+          </div>    
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #resendSwabResult let-c="close" let-d="dismiss">
+    <div id="modal-resend-swab-result">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ selectedSwab.contact_name }} - {{ selectedSwab.custome_birth_date }}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body modal-resend">
+        <p class="resend-email">Resend Email ?</p>
+        <div class="fo_confirmation_button d-flex justify-content-center">
+          <div class="" style="width: 100%">
+            <button type="button" class="btn fo_btn_green btn-modal" (click)="resendCheckupResult()">Sent Email</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #confirmSwabResult let-c="close" let-d="dismiss" >
+    <div id="modal-confirm-swab-result">
+      <div class="modal-header">
+        <h4 class="modal-title">Test Result</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')" [disabled]="loading">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body modal-result">
+          <p style="text-align: left;">Please make sure the data below is correct.</p>
+          <div class="row">
+            <div class="col-5">
+              <div class="foto-ktp">
+                <a *ngIf="selectedSwab.custome_identity_image_url" href="{{selectedSwab.custome_identity_image_url}}" target="_blank">
+                  <img src="{{selectedSwab.custome_identity_image_url}}" />
+                </a>
+
+                <a *ngIf="!selectedSwab.custome_identity_image_url" href="{{assetPath}}icons/identity-card.png" target="_blank">
+                  <img src="{{assetPath}}icons/identity-card.png" />
+                </a>
+              </div>
+            </div>
+            <div class="col-7" style="padding-left: 0px;">
+              <div class="patient-data">
+                <span class="title">Name</span>
+                <span class="content">: {{ selectedSwab.contact_name }}</span>
+              </div>        
+              <div class="patient-data">
+                <span class="title">MR No.</span>
+                <span class="content">: {{ selectedSwab.medical_record_number }}</span>
+              </div>        
+              <div class="patient-data">
+                <span class="title">D.O.B</span>
+                <span class="content">: {{ selectedSwab.custome_birth_date }}</span>
+              </div>        
+              <div class="patient-data">
+                <span class="title">Phone No</span>
+                <span class="content">: {{ selectedSwab.phone_number }}</span>
+              </div>        
+              <div class="patient-data">
+                <span class="title">Email</span>
+                <span class="content">: {{ selectedSwab.registration_email }}</span>
+              </div>            
+              <div class="patient-data">
+                <span class="title">ID Number</span>
+                <span class="content">: {{ selectedSwab.identity_number }}</span>
+              </div>               
+              <div class="patient-data">
+                <span class="title">Hasil Test </span>
+                <span class="content" style="font-weight: bold;" [ngClass]="{'text-red': checkupResult == 'true'}">
+                  <span style="color: #212529;">:</span> 
+                  {{ checkupResult == 'true' ? 'Positive' : 'Negative' }}
+                </span>
+              </div>            
+            </div>
+          </div>
+          <div class="row" style="margin-top: 10px;">        
+            <div class="col-12" style="text-align: right;">
+              <img *ngIf="loading" src="{{assetPath}}icons/loading-add-swab.gif" style="margin-right: 5px; width: 30px;" />
+              <button type="button" class="btn fo_btn_green btn-modal" (click)="delayCheckupResult()" [disabled]="loading">Sent Email</button>
+            </div>  
+          </div>    
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #clinicalPathologistModal let-c="close" let-d="dismiss" >
+    <div id="modal-clinical-pathologist">
+      <div class="modal-header">
+        <h4 class="modal-title">Select Clinical Pathologist</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')" [disabled]="loading">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body modal-result">
+
+          <div style="text-align: right; margin-bottom: 20px;">
+            <button class="btn btn-info" (click)="pathologistHospitalButton('Add')">Add</button>
+          </div>
+          
+          <div *ngFor="let itr of pathologistHospitalList; let i = index; trackBy:trackByIdx" style="margin-bottom: 20px;" class="row">
+            
+            <div class="col-md-1">
+              <button type="button" class="btn btn-secondary" (click)="pathologistHospitalButton('Delete', i)">
+                <img src="{{assetPath}}icons/delete.png" style="width: 15px;" />
+              </button>
+            </div>            
+            <div class="col-md-11">
+              <input class="form-control" ngui-auto-complete auto-select-first-item="true"
+              placeholder="Pick Doctor" [list-formatter]="'name'" [display-property-name]="'name'"
+              max-num-list="10" [match-formatted]="true" 
+              min-chars="3" [source]="doctorList" name="clinical_pathologist_{{i}}" [(ngModel)]="pathologistHospitalList[i]" />
+            </div>
+          </div>
+      
+          <div class="row" style="margin-top: 10px;">        
+            <div class="col-12" style="text-align: right;">
+              <button type="button" class="btn btn-success" (click)="savePathologistHospital()">Save</button>
+            </div>  
+          </div>    
+      </div>
+    </div>
+  </ng-template>
+
+</section>
