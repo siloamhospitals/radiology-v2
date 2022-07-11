@@ -81,26 +81,26 @@ export class PageRadiologyScheduleComponent implements OnInit {
         note: 'tes1.',
         status: lblStatus[0],
       },
-      // {
-      //   fromTime: '03:00',
-      //   toTime: '03:30',
-      //   patient: 'Patient A',
-      //   dob: '01-01-1990',
-      //   localMrNo: '00000',
-      //   examination: 'tes1.',
-      //   note: 'tes1.',
-      //   status: lblStatus[1],
-      // },
-      // {
-      //   fromTime: '05:00',
-      //   toTime: '07:00',
-      //   patient: 'Patient A',
-      //   dob: '01-01-1990',
-      //   localMrNo: '00000',
-      //   examination: 'tes1.',
-      //   note: 'tes1.',
-      //   status: lblStatus[2],
-      // },
+      {
+        fromTime: '03:00',
+        toTime: '03:30',
+        patient: 'Patient A',
+        dob: '01-01-1990',
+        localMrNo: '00000',
+        examination: 'tes1.',
+        note: 'tes1.',
+        status: lblStatus[1],
+      },
+      {
+        fromTime: '05:00',
+        toTime: '07:00',
+        patient: 'Patient A',
+        dob: '01-01-1990',
+        localMrNo: '00000',
+        examination: 'tes1.',
+        note: 'tes1.',
+        status: lblStatus[2],
+      },
       // {
       //   fromTime: '07:00',
       //   toTime: '07:40',
@@ -122,21 +122,19 @@ export class PageRadiologyScheduleComponent implements OnInit {
     data = data.map((x: any) => {
       x.isCanCreate = false
       x.spanType = x.spanType ? x.spanType : spanType[0]
-      x.fromDate = hourToDate(x.fromTime)
-      x.toDate = hourToDate(x.toTime)
       return x
     })
 
     // Assign data to list from att from and to
     const squashData  = baseData.map((x: any) => {
-      x.row = data.filter((y: any) => {
+      x.row = data.findIndex((y: any) => {
         const rangeCond = 
-          (y.fromDate >= hourToDate(x.timeSlotFrom)
-            && y.fromDate <= hourToDate(x.timeSlotTo)
-          )
+          (hourToDate(x.timeSlotFrom) <= hourToDate(y.fromTime) && hourToDate(y.fromTime) <= hourToDate(x.timeSlotTo))
+          || (hourToDate(x.timeSlotFrom) <= hourToDate(y.toTime) && hourToDate(y.toTime) <= hourToDate(x.timeSlotTo))
         console.log('dateRangeFrom', rangeCond,
         // x.timeSlotFrom, '>=', y.fromTime, '<=', x.timeSlotTo,
         y.fromTime, '>=', x.timeSlotFrom, '&&', y.fromTime, '<=', x.timeSlotTo,
+        '||', y.toTime, '>=', x.timeSlotFrom, '&&', y.toTime, '<=', x.timeSlotTo,
         // hourToDate(x.timeSlotFrom), '>=', y.fromTime, '<=', hourToDate(x.timeSlotTo),
         )
         if (rangeCond) {
@@ -145,16 +143,16 @@ export class PageRadiologyScheduleComponent implements OnInit {
         }
         return false
       })
-      // if (x.row >= 0) {
-      //   x = {...x, ...data[x.row]}
-      // }
+      if (x.row >= 0) {
+        x = {...x, ...data[x.row]}
+      }
       return x
     })
 
-    console.log('nmix', squashData.filter(x => x.row.length > 0))
+    console.log('nmix', squashData.filter(x => x.row >= 0))
     // console.log({squashData, data})
 
-    // this.scheduleList = squashData
+    this.scheduleList = squashData
   }
 
   openCreateApp () {
