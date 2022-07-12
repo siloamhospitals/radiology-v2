@@ -3,6 +3,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
 import { ModalCreateAdmissionComponent } from '../../widgets/modal-create-admission/modal-create-admission.component';
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
+import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
+
 // import * as moment from 'moment';
 
 @Component({
@@ -34,7 +36,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   ngOnInit() {
     this.scheduleListGenerate()
     this.scheduleListSquash()
-
+    //this.scheduleList()
     // console.log('list', this.scheduleList)
   }
 
@@ -188,7 +190,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     console.log('appdata', squashData.length, squashData)
     console.log('baseData', baseData.length, baseData)
 
-    this.scheduleList = baseData
+    // this.scheduleList = baseData
   }
 
   open (modalId: any) {
@@ -214,6 +216,13 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   detailSchedule() {
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+
+  showHistoryModal() {
+    const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_history', backdrop: 'static', keyboard: false })
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })

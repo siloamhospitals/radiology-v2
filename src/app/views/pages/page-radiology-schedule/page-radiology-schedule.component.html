@@ -7,7 +7,7 @@
     <div class="box bg-white">
       <div class="header-radiology-schedule" >
         <h3 class="p-3 border-bottom">
-          Radiology Schedule
+          Radiology Schedule         
         </h3>
         <div class="px-3 py-2 d-flex aling-items-center justify-content-between border-bottom">
           <div>
@@ -21,21 +21,14 @@
           </div>
           <div class="d-flex">
             <button class="btn btn-light font-weight-bold text-muted d-flex mx-2">
-              <img src="../../../../assets/icons/ic_today.png" />
+              <img src="../../../../assets/icons/ic_today.png" alt="ic_today" />
               <span class="ml-2">Today</span>
             </button>
             <div style="width: 2px; background: #ccc;"></div>
-            <select class="form-control px-2 mx-2">
+            <select class="form-control px-2 mx-2" style="width: 94px;" >
               <option>Day</option>
             </select>
-            <input type="text" ngxDaterangepickerMd
-            [locale]="{ format: 'MMMM YYYY' }"
-            [(ngModel)]="selected"
-            [singleDatePicker]="true"
-            [autoApply]="true"
-            [showDropdowns]="true"
-            opens="left"
-            class="form-control"/>
+            <app-date-picker [selected]="selected" ></app-date-picker>
           </div>
 
         </div>
@@ -57,16 +50,12 @@
                 title="Find local MR" />
               <span class="fa fa-search position-absolute"></span>
             </div>
-            <div class="col-md-3 pr-0 d-flex flex-column border-right">
+            <div class="col-md-2 pr-0 d-flex flex-column border-right pb-2">
               <small>Time Range</small>
-              <div class="d-flex aling-items-center">
-                <select class="form-control border-0">
-                  <option>00:00</option>
-                </select>
-                <b>-</b>
-                <select class="form-control border-0">
-                  <option>23:00</option>
-                </select>
+              <div class="d-flex align-items-center">
+                <app-time-picker ></app-time-picker>
+                <b class="mx-2" >-</b>
+                <app-time-picker placeholder="23:00" ></app-time-picker>
               </div>
             </div>
           </div>
@@ -538,7 +527,7 @@
             </div>
           </div>
           <div class="d-flex flex-row justify-content-end">
-            <button class="btn btn-primary">Cetak Tiket</button>
+            <button class="btn btn-primary" (click)="showHistoryModal()">Cetak Tiket</button>
           </div>
         </ng-container>
 

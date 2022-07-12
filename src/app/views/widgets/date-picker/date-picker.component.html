@@ -1,0 +1,11 @@
+<div class="position-relative" [style.width]="width" >
+  <img src="../../../../assets/icons/ic_datepicker.png" class="position-absolute icon-datepicker" alt="datepicker" />
+  <input type="text" ngxDaterangepickerMd 
+  [locale]="{ format: 'MMMM YYYY' }"
+  [(ngModel)]="selected" 
+  [singleDatePicker]="true" 
+  [autoApply]="true" 
+  [showDropdowns]="true"
+  opens="left"
+  class="form-control pl-4 text-center"/>
+</div>

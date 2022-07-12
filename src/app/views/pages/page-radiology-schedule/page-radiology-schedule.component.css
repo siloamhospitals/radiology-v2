@@ -46,6 +46,7 @@
     color: #ccc;
     font-size: 14px;
 }
+
 .table-list-radiology { border: 0; }
 .table-list-radiology td:first-of-type { border-left: 0; }
 .table-list-radiology td:last-of-type { border-right: 0; }

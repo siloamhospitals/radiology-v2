@@ -7,8 +7,11 @@ import { SectionHeaderModule } from '../../sections/section-header/section-heade
 import { SectionSidebarModule } from '../../sections/section-sidebar/section-sidebar.module';
 import { SectionFooterModule } from '../../sections/section-footer/section-footer.module';
 import { PageRadiologyScheduleRoutingModule } from './page-radiology-schedule-routing.module';
-import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { FormsModule } from '@angular/forms';
+import { DatepickerModule } from '../../widgets/date-picker/date-picker.module';
+import { TimepickerModule } from '../../widgets/time-picker/time-picker.module'
+// import { ModalHistoryComponentModule } from '../../widgets/modal-history/modal-history.module';
+// import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
 import { ModalCreateAdmissionComponent } from '../../widgets/modal-create-admission/modal-create-admission.component';
 import { ModalCreateAdmissionModule } from '../../widgets/modal-create-admission/modal-create-admission.module';
@@ -18,13 +21,15 @@ import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedul
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
   imports: [
+    // ModalHistoryComponentModule,
     CommonModule,
     PageRadiologyScheduleRoutingModule,
     SectionHeaderModule,
     SectionSidebarModule,
     SectionFooterModule,
-    NgxDaterangepickerMd.forRoot(),
     FormsModule,
+    DatepickerModule,
+    TimepickerModule,
     ModalCancelAppointmentModule,
     ModalCreateAdmissionModule,
     ModalDetailScheduleModule
@@ -38,4 +43,4 @@ import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedul
     ModalDetailScheduleComponent
   ],
 })
-export class PageRadiologyScheduleModule { }
+export class PageRadiologyScheduleModule {}
