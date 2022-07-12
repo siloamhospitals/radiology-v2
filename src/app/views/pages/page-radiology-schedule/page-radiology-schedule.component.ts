@@ -177,14 +177,14 @@ export class PageRadiologyScheduleComponent implements OnInit {
     console.log('appdata', squashData.length, squashData)
     console.log('baseData', baseData.length, baseData)
 
-    this.scheduleList = baseData
+    // this.scheduleList = baseData
   }
 
-  open (modalId: any) {
-    const m = this.modalService.open(modalId, { windowClass: 'fo_modal_confirmation', backdrop: 'static', keyboard: false })
-    m.result.then((result: any) => {
-      console.log('modal is closed', {result})
-    }) 
-  }
+  // open (modalId: any) {
+  //   // const m = this.modalService.open(modalId, { windowClass: 'fo_modal_confirmation', backdrop: 'static', keyboard: false })
+  //   // m.result.then((result: any) => {
+  //   //   console.log('modal is closed', {result})
+  //   // }) 
+  // }
 
 }
