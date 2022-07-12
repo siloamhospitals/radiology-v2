@@ -36,10 +36,31 @@
           {{ room }}
         </button>
       </div>
-      <div class="p-3 border-bottom" >
-        asdsadsa
+      <div class="px-3 border-bottom" >
+        <div class="row" >
+          <div class="col-md-3 position-relative pr-0" >
+            <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari nama pasien" title="Find patients" />
+            <span class="fa fa-search position-absolute" ></span>
+          </div>
+          <div class="col-md-3 position-relative pr-0" >
+            <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari Local MR" title="Find local MR" />
+            <span class="fa fa-search position-absolute" ></span>
+          </div>
+          <div class="col-md-3 position-relative pr-0 d-flex flex-column" >
+            <small>Time Range</small>
+            <div class="d-flex aling-items-center">
+              <select class="form-control border-0" >
+                <option>00:00</option>
+              </select>
+              <b>-</b>
+              <select class="form-control border-0">
+                <option>23:00</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
-      asdsa
+      
     </div>
   </div>
 </div>
