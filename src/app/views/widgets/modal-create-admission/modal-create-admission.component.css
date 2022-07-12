@@ -4,3 +4,34 @@
   line-height: 20px;
   letter-spacing: 0.00016em;
 }
+
+.admission-status {
+  background: #C8CBFA;
+  border-radius: 3.125rem;
+  width: 6em;
+  height: 2em;
+  line-height: 1.5em;
+  text-align: center;
+}
+
+.admission-status > p {
+  font-size: 1rem;
+  color: #575FCF;
+}
+
+.id-type {
+  width: 40%;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba(34, 47, 62, 0.38);
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: rgba(34, 47, 62, 0.38);
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: rgba(34, 47, 62, 0.38);
+}
