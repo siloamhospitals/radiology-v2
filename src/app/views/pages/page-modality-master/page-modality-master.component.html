@@ -3,7 +3,142 @@
   <div class="fo_menu_container">
       <app-section-sidebar></app-section-sidebar>
   </div>
-  <div class="fo_content_container mt-4">
-    <p>PageView</p>
+  <div class="fo_content_container mt-4 d-block" >
+    <div class="box bg-white">
+      <div class="header-radiology-schedule" >
+        <div class="row border-bottom">
+          <div class="col-md-3">
+            <h3 class="p-3 ">
+              Modality Master
+            </h3>
+          </div>
+          <div class="col-md-3 right">
+            <h3 class="p-3">
+              Modality Master
+            </h3>
+          </div>
+        </div>
+        <div class="px-3 border-bottom">
+          <div class="row" >
+            <div class="col-md-3 position-relative pr-0 border-right">
+              <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Find Modality"
+                title="Find patients" />
+              <span class="fa fa-search position-absolute"></span>
+            </div>
+            <div class="col-md-2 position-relative pr-0 border-right" >
+                <ul class="list-group" (mouseover)="clickedComponentList=true" >
+                  <li class="list-group-item"   style="border: 0px !important;">
+                    <input class="form-control pt-3 input-filter pr-4" type="text" value="{{checkedList}}" placeholder="Schedule Type"
+                title="Find patients" />
+                  </li>
+                </ul>
+                <ul class="list-group" *ngIf="clickedComponentList" style="position: absolute;" >
+                  <li class="list-group-item" *ngFor="let item of checklist" >
+                    <input (mouseout)="clickedComponentList=false" type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
+                      (change)="isAllSelected()" />
+                    {{item.value}}
+                  </li>
+                </ul>
+            </div>
+            <div class="col-md-2 position-relative pr-0 border-right" >
+              <ul class="list-group" (mouseover)="clickedComponentList=true" >
+                <li class="list-group-item"   style="border: 0px !important;">
+                  <input class="form-control pt-3 input-filter pr-4" type="text" value="{{checkedList}}" placeholder="Schedule Type"
+              title="Find patients" />
+                </li>
+              </ul>
+              <ul class="list-group" *ngIf="clickedComponentList" style="position: absolute;" >
+                <li class="list-group-item" *ngFor="let item of checklist" >
+                  <input (mouseout)="clickedComponentList=false" type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
+                    (change)="isAllSelected()" />
+                  {{item.value}}
+                </li>
+              </ul>
+          </div>
+            <div class="col-md-2 position-relative pr-0 border-right" >
+              <ul class="list-group" (mouseover)="clickedComponentList=true" >
+                <li class="list-group-item"   style="border: 0px !important;">
+                  <input class="form-control pt-3 input-filter pr-4" type="text" value="{{checkedList}}" placeholder="Schedule Type"
+              title="Find patients" />
+                </li>
+              </ul>
+              <ul class="list-group" *ngIf="clickedComponentList" style="position: absolute;" >
+                <li class="list-group-item" *ngFor="let item of checklist" >
+                  <input (mouseout)="clickedComponentList=false" type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
+                    (change)="isAllSelected()" />
+                  {{item.value}}
+                </li>
+              </ul>
+          </div>
+            
+          </div>
+          <table class="table table-borderless table-striped" id="appointment-list-table">
+            <thead class="fo_color_blue foot-note">
+              <th style="min-width: 14em">
+                Modality Name
+              </th>
+              <th>Schdule Type</th>
+              <th width="100px">Floor</th>
+              <th width="100px">Room</th>
+              <th width="100px">Dur (min)</th>
+              <th width="100px">Status</th>
+              <th width="100px">Action</th>
+              
+            </thead>
+        
+            <tbody>
+              <tr>
+                <td>
+                  CT Scan Room
+                </td>
+                <td>
+                  Fixed Appointment
+                </td>
+                <td>
+                 1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  <a href="#">Detail</a>
+                </td>
+
+              </tr>
+              <tr>
+                <td>
+                  CT Scan Room
+                </td>
+                <td>
+                  Fixed Appointment
+                </td>
+                <td>
+                 1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  <a href="#">Detail</a>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
