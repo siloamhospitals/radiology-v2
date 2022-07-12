@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbAlertModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ModalChangePasswordComponent } from './modal-change-password.component';
+import { ModalHistoryComponent } from './modal-history.component';
 
 @NgModule({
   declarations: [
-    ModalChangePasswordComponent
+    ModalHistoryComponent
   ],
   imports: [
     CommonModule,
@@ -16,7 +16,7 @@ import { ModalChangePasswordComponent } from './modal-change-password.component'
     NgbAlertModule,
     NgbModalModule,
   ], exports: [
-    ModalChangePasswordComponent
+    ModalHistoryComponent
   ]
 })
-export class ModalChangePasswordModule { }
+export class ModalHistoryComponentModule { }

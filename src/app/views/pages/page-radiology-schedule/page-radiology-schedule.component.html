@@ -449,8 +449,11 @@
 
         <!-- Appointment Action Modal -->
         <!-- Appointment Action Modal: Cancel -->
+
+
         <ng-container>
           <!-- Cancel Check in -->
+          <button class="btn btn-outline-primary mb-2 me-2" (click)="cancelAppointment()">cancel appointment test</button>
           <div>
             <div class="mb-3">Anda akan membatalkan Appointment ini?</div>
             <div class="mb-3">
@@ -522,7 +525,7 @@
             </div>
           </div>
           <div class="d-flex flex-row justify-content-end">
-            <button class="btn btn-primary">Cetak Tiket</button>
+            <button class="btn btn-primary" (click)="open(ModalHistoryComponent)">Cetak Tiket</button>
           </div>
         </ng-container>
 
