@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-page-radiology-schedule',
@@ -8,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 export class PageRadiologyScheduleComponent implements OnInit {
 
   public scheduleList: any[]
-  protected indexNumber: number = 0;
+  protected indexNumber: number = 0
 
-  constructor() { }
+  public createAppointmentTabId: number = 1
+
+  constructor(
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.scheduleListGenerate()
@@ -172,8 +177,11 @@ export class PageRadiologyScheduleComponent implements OnInit {
     this.scheduleList = baseData
   }
 
-  openCreateApp () {
-    console.log('modal is open')
+  open (modalId: any) {
+    const m = this.modalService.open(modalId, { windowClass: 'fo_modal_confirmation', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    }) 
   }
 
 }

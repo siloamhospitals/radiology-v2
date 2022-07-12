@@ -107,7 +107,7 @@
               <ng-container *ngIf="!item.isCanCreate && item.isSpan">
               </ng-container>
               <ng-container *ngIf="item.isCanCreate">
-                <td (click)="openCreateApp()" style="cursor: pointer;"><span class="text-success">Available</span></td>
+                <td (click)="open(createAppointmentModal)" style="cursor: pointer;"><span class="text-success">Available</span></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -120,6 +120,131 @@
       </section>
 
       <!-- Modal Section -->
+      <ng-template #createAppointmentModal let-modal>
+        <div>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">New Appointment</h4>
+            <button type="button" class="btn btn-clear btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Search Patient Modal -->
+            <ng-container>
+              <div>
+                <div class="mb-3 d-flex flex-row justify-content-between">
+                  <div class="pl-0">
+                    <label for="">DOB</label>
+                    <div>
+                      <input type="text" class="form-control" placeholder="DD-MM-YYYY" />
+                    </div>
+                  </div>
+                  <div class="pl-3">
+                    <label for="">Nama</label>
+                    <div>
+                      <input type="text" class="form-control" placeholder="Cari Nama" />
+                    </div>
+                  </div>
+                  <div class="pl-3">
+                    <label for="">Local MR</label>
+                    <div>
+                      <input type="text" class="form-control" placeholder="Cari Local MR" />
+                    </div>
+                  </div>
+                  <div class="pl-3">
+                    <label for="">ID Number</label>
+                    <div>
+                      <input type="text" class="form-control" placeholder="NIK" />
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <table class="table table-stripped table-secondary">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Patient</th>
+                        <th>DOB</th>
+                        <th>Local MR No</th>
+                        <th>ID Number</th>
+                        <th>Phone No</th>
+                        <th>Alamat</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <td><input type="radio" name="" id=""></td>
+                      <td>Patient</td>
+                      <td>DOB</td>
+                      <td>Local MR No</td>
+                      <td>ID Number</td>
+                      <td>Phone No</td>
+                      <td>Alamat</td>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="mb-3">
+                  <div class="mb-3">
+                    <h4>CT Scan - Room 1</h4>
+                  </div>
+                  <div class="d-flex flex-row justify-content-start">
+                    <div class="pl-0 w-50">
+                      <label for="">Date and Time</label>
+                      <div>
+                        <input type="text" class="form-control" placeholder="" />
+                      </div>
+                    </div>
+                    <div class="pl-3 w-25">
+                      <label for="">Examination <sup class="text-required">*</sup></label>
+                      <div>
+                        <input type="text" class="form-control" placeholder="Select Examination" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="mb-0">
+                    <label for="">Note</label>
+                    <div>
+                      <textarea rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div class="modal-footer">
+            <div class="d-flex flex-row justify-content-end">
+              <button (click)="modal.dismiss('Cross click')" class="btn btn-secondary">Reset</button>
+              <button (click)="modal.close('Save click')" class="btn btn-success ml-2">Create Appointment</button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <!-- Create / Update Appointment Modal -->
       <ng-container>
         <div class="formclass">
@@ -261,88 +386,6 @@
               <label for="">Alamat</label>
               <div>
                 <textarea readonly rows="3" class="form-control" placeholder="Alamat Pasien"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-container>
-      <!-- Search Patient Modal -->
-      <ng-container>
-        <div>
-          <div class="mb-3 d-flex flex-row justify-content-between">
-            <div class="pl-0">
-              <label for="">DOB</label>
-              <div>
-                <input type="text" class="form-control" placeholder="DD-MM-YYYY" />
-              </div>
-            </div>
-            <div class="pl-3">
-              <label for="">Nama</label>
-              <div>
-                <input type="text" class="form-control" placeholder="Cari Nama" />
-              </div>
-            </div>
-            <div class="pl-3">
-              <label for="">Local MR</label>
-              <div>
-                <input type="text" class="form-control" placeholder="Cari Local MR" />
-              </div>
-            </div>
-            <div class="pl-3">
-              <label for="">ID Number</label>
-              <div>
-                <input type="text" class="form-control" placeholder="NIK" />
-              </div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <table class="table table-stripped">
-              <thead>
-                <tr>
-                  <td></td>
-                  <td>Patient</td>
-                  <td>DOB</td>
-                  <td>Local MR No</td>
-                  <td>ID Number</td>
-                  <td>Phone No</td>
-                  <td>Alamat</td>
-                </tr>
-              </thead>
-              <tbody>
-                <td><input type="radio" name="" id=""></td>
-                <td>Patient</td>
-                <td>DOB</td>
-                <td>Local MR No</td>
-                <td>ID Number</td>
-                <td>Phone No</td>
-                <td>Alamat</td>
-              </tbody>
-            </table>
-          </div>
-          <div class="mb-3">
-            <div class="mb-3">
-              <h4>CT Scan - Room 1</h4>
-            </div>
-            <div class="d-flex flex-row justify-content-start">
-              <div class="pl-0 w-50">
-                <label for="">Date and Time</label>
-                <div>
-                  <input type="text" class="form-control" placeholder="" />
-                </div>
-              </div>
-              <div class="pl-3 w-25">
-                <label for="">Examination <sup class="text-required">*</sup></label>
-                <div>
-                  <input type="text" class="form-control" placeholder="Select Examination" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <div class="mb-0">
-              <label for="">Note</label>
-              <div>
-                <textarea rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
               </div>
             </div>
           </div>
