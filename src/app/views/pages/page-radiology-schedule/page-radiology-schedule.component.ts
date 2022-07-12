@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
 // import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment'
 
 @Component({
   selector: 'app-page-radiology-schedule',
@@ -9,11 +10,15 @@ import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appo
   styleUrls: ['./page-radiology-schedule.component.css']
 })
 export class PageRadiologyScheduleComponent implements OnInit {
-  public scheduleList: any;
-
   constructor(
     private modalService: NgbModal,
   ) { }
+
+  public scheduleList: any[]
+  protected indexNumber: number = 0
+
+  public createAppointmentTabId: number = 1
+
 
   rooms: string[] = [
     "CT Scan - Room 1",
