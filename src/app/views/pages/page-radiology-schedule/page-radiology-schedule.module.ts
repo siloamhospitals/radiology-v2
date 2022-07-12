@@ -36,9 +36,6 @@ import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appo
     ModalCancelAppointmentComponent
   ],
 })
-<<<<<<< HEAD
-export class PageRadiologyScheduleModule { }
-=======
 export class PageRadiologyScheduleModule { 
 
   showHistoryModal() {
@@ -48,4 +45,3 @@ export class PageRadiologyScheduleModule {
     // })
   }
 }
->>>>>>> 329193ba2db7ac3e3441a712b604f37c8c94e25f
