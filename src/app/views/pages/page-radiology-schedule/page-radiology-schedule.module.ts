@@ -9,7 +9,7 @@ import { SectionFooterModule } from '../../sections/section-footer/section-foote
 import { PageRadiologyScheduleRoutingModule } from './page-radiology-schedule-routing.module';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { FormsModule } from '@angular/forms';
-import { ModalChangePasswordComponent } from '../../widgets/modal-change-password/modal-change-password.component';
+import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -27,7 +27,7 @@ import { ModalChangePasswordComponent } from '../../widgets/modal-change-passwor
     PageRadiologyScheduleComponent
   ],
   entryComponents: [
-    ModalChangePasswordComponent
+    ModalCancelAppointmentComponent
   ],
 })
 export class PageRadiologyScheduleModule { }
