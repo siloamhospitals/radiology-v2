@@ -10,6 +10,10 @@
   margin: 0px 2.5px;
 }
 
+option {
+  height : 100px !important;
+}
+
 .print-btn {
   background: #4D9B35;
   color: white;
