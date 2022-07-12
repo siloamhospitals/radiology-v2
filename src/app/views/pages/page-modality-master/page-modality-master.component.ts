@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modality.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-page-modality-master',
@@ -13,7 +15,7 @@ export class PageModalityMasterComponent implements OnInit {
   checkedList:any;
   clickedComponentList: boolean;
 
-  constructor() { 
+  constructor( private modalService: NgbModal) { 
     this.clickedComponentList = false;
     this.masterSelected = false;
       this.checklist = [
@@ -56,6 +58,13 @@ export class PageModalityMasterComponent implements OnInit {
 
   showListType(){
     
+  }
+
+  showModalityModal() {
+    const m = this.modalService.open(ModalModalityComponent, { windowClass: 'modal_modality', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
   }
 
   ngOnInit() {
