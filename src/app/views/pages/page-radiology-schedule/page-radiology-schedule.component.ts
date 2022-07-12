@@ -208,7 +208,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   createAdmission() {
-    const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission', backdrop: 'static', keyboard: false })
+    const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission', backdrop: 'static', keyboard: false, size: "lg" })
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })

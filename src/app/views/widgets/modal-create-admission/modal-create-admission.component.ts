@@ -9,6 +9,22 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 export class ModalCreateAdmissionComponent implements OnInit {
 
+  public examinationsList: any = [{
+    value: '01',
+    description: 'CT HEAD NON CONTRAST'
+  },{
+    value: '02',
+    description: 'LOREM IPSUM'
+  }]
+
+  public patientTypesList: any = [{
+    value: '01',
+    description: 'Private'
+  },{
+    value: '02',
+    description: 'Public'
+  }]
+
   constructor(
     private activeModal: NgbActiveModal,
   ) { }
@@ -18,5 +34,9 @@ export class ModalCreateAdmissionComponent implements OnInit {
 
   close() {
     this.activeModal.close();
+  }
+
+  changeExamination(e: any) {
+    console.log(e.target.value);
   }
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalCreateAdmissionComponent } from './modal-create-admission.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DatepickerModule } from '../date-picker/date-picker.module';
 
 @NgModule({
   declarations: [
@@ -11,9 +12,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    DatepickerModule
   ],
   exports: [
-    ModalCreateAdmissionComponent
+    ModalCreateAdmissionComponent,
   ]
 })
 export class ModalCreateAdmissionModule { }
