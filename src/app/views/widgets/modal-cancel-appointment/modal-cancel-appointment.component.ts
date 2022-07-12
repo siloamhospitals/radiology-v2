@@ -1,3 +1,4 @@
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModalCancelAppointmentComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private activeModal: NgbActiveModal,
+  ) { }
 
   ngOnInit() {
   }
 
+  close() {
+    this.activeModal.close();
+  }
 }

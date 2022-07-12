@@ -1,3 +1,4 @@
+import { ModalCancelAppointmentModule } from './../../widgets/modal-cancel-appointment/modal-cancel-appointment.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageRadiologyScheduleComponent } from './page-radiology-schedule.component';
@@ -8,6 +9,7 @@ import { SectionFooterModule } from '../../sections/section-footer/section-foote
 import { PageRadiologyScheduleRoutingModule } from './page-radiology-schedule-routing.module';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { FormsModule } from '@angular/forms';
+import { ModalChangePasswordComponent } from '../../widgets/modal-change-password/modal-change-password.component';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -18,10 +20,14 @@ import { FormsModule } from '@angular/forms';
     SectionSidebarModule,
     SectionFooterModule,
     NgxDaterangepickerMd.forRoot(),
-    FormsModule
+    FormsModule,
+    ModalCancelAppointmentModule
   ],
   exports: [
     PageRadiologyScheduleComponent
-  ]
+  ],
+  entryComponents: [
+    ModalChangePasswordComponent
+  ],
 })
 export class PageRadiologyScheduleModule { }

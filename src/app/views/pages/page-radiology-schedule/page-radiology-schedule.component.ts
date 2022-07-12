@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
 // import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as moment from 'moment'
+
 @Component({
   selector: 'app-page-radiology-schedule',
   templateUrl: './page-radiology-schedule.component.html',
@@ -8,9 +10,11 @@ import * as moment from 'moment'
 })
 export class PageRadiologyScheduleComponent implements OnInit {
   public scheduleList: any;
-  public modalService: any;
 
-  constructor() { }
+  constructor(
+    private modalService: NgbModal,
+  ) { }
+
   rooms: string[] = [
     "CT Scan - Room 1",
     "CT Scan - Room 2",
@@ -20,7 +24,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
     "USG - 3D & 4D - Room 5",
     "CT CARDIAC - Room 1",
   ]
-  selected = moment()
 
   ngOnInit() {
     this.scheduleListGenerate()
@@ -187,6 +190,10 @@ export class PageRadiologyScheduleComponent implements OnInit {
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
+  }
+
+  cancelAppointment() {
+    this.modalService.open(ModalCancelAppointmentComponent, { size: 'lg' });
   }
 
 }
