@@ -6,7 +6,8 @@ import { SectionHeaderModule } from '../../sections/section-header/section-heade
 import { SectionSidebarModule } from '../../sections/section-sidebar/section-sidebar.module';
 import { SectionFooterModule } from '../../sections/section-footer/section-footer.module';
 import { PageRadiologyScheduleRoutingModule } from './page-radiology-schedule-routing.module';
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -16,7 +17,8 @@ import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
     SectionHeaderModule,
     SectionSidebarModule,
     SectionFooterModule,
-    NgbDatepickerModule
+    NgxDaterangepickerMd.forRoot(),
+    FormsModule
   ],
   exports: [
     PageRadiologyScheduleComponent

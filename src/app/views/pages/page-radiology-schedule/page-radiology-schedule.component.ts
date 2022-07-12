@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import * as moment from 'moment'
 @Component({
   selector: 'app-page-radiology-schedule',
   templateUrl: './page-radiology-schedule.component.html',
@@ -18,6 +18,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     "USG - 3D & 4D - Room 5",
     "CT CARDIAC - Room 1",
   ]
+  selected = moment()
 
   ngOnInit() {
     this.scheduleListGenerate()
