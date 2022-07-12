@@ -21,7 +21,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   protected indexNumber: number = 0
 
   public createAppointmentTabId: number = 1
-
+  public selected: any;
 
   rooms: string[] = [
     "CT Scan - Room 1",
