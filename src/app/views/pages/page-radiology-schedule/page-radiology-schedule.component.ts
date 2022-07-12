@@ -7,6 +7,8 @@ import * as moment from 'moment'
   styleUrls: ['./page-radiology-schedule.component.css']
 })
 export class PageRadiologyScheduleComponent implements OnInit {
+  public scheduleList: any;
+  public modalService: any;
 
   constructor() { }
   rooms: string[] = [
@@ -138,7 +140,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     const squashData  = data.map((x: any) => {
       x.rowmerge = []
       x.rows = baseData.filter((y: any, yi: number) => {
-        const rangeCond = 
+        const rangeCond =
           Math.min(hourToDate(x.fromTime).getTime(), hourToDate(x.toTime).getTime()) <= Math.max(hourToDate(y.timeSlotFrom).getTime(), hourToDate(y.timeSlotTo).getTime())
           && Math.max(hourToDate(x.fromTime).getTime(), hourToDate(x.toTime).getTime()) >= Math.min(hourToDate(y.timeSlotFrom).getTime(), hourToDate(y.timeSlotTo).getTime())
         // console.log('dateRangeFrom', rangeCond,
@@ -184,7 +186,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     const m = this.modalService.open(modalId, { windowClass: 'fo_modal_confirmation', backdrop: 'static', keyboard: false })
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
-    }) 
+    })
   }
 
 }
