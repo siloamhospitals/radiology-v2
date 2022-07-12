@@ -26,9 +26,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   public createAppointmentTabId: number = 1
   public selected: any;
-  
 
-  constructor() { }
   rooms: string[] = [
     "CT Scan - Room 1",
     "CT Scan - Room 2",
@@ -38,12 +36,11 @@ export class PageRadiologyScheduleComponent implements OnInit {
     "USG - 3D & 4D - Room 5",
     "CT CARDIAC - Room 1",
   ]
-  selected = moment()
 
   ngOnInit() {
     this.scheduleListGenerate()
     this.scheduleListSquash()
-
+    //this.scheduleList()
     // console.log('list', this.scheduleList)
   }
 
@@ -158,7 +155,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     const squashData  = data.map((x: any) => {
       x.rowmerge = []
       x.rows = baseData.filter((y: any, yi: number) => {
-        const rangeCond = 
+        const rangeCond =
           Math.min(hourToDate(x.fromTime).getTime(), hourToDate(x.toTime).getTime()) <= Math.max(hourToDate(y.timeSlotFrom).getTime(), hourToDate(y.timeSlotTo).getTime())
           && Math.max(hourToDate(x.fromTime).getTime(), hourToDate(x.toTime).getTime()) >= Math.min(hourToDate(y.timeSlotFrom).getTime(), hourToDate(y.timeSlotTo).getTime())
         // console.log('dateRangeFrom', rangeCond,
@@ -197,14 +194,41 @@ export class PageRadiologyScheduleComponent implements OnInit {
     console.log('appdata', squashData.length, squashData)
     console.log('baseData', baseData.length, baseData)
 
-    this.scheduleList = baseData
+    // this.scheduleList = baseData
   }
 
   open (modalId: any) {
     const m = this.modalService.open(modalId, { windowClass: 'fo_modal_confirmation', size: 'lg' })
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
-    }) 
+    })
   }
 
+  cancelAppointment() {
+    const m = this.modalService.open(ModalCancelAppointmentComponent, { windowClass: 'modal_cancel_appointment', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+
+  createAdmission() {
+    const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission', backdrop: 'static', keyboard: false, size: "lg" })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+
+  detailSchedule() {
+    const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+
+  showHistoryModal() {
+    const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_history', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
 }

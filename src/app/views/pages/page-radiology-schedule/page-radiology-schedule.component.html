@@ -9,8 +9,8 @@
         <h3 class="p-3 border-bottom">
           Radiology Schedule
         </h3>
-        <div class="px-3 py-2 d-flex aling-items-center justify-content-between border-bottom">
-          <div>
+        <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+          <div class="d-flex align-items-center">
             <button class="btn">
               <span class="fa fa-angle-left font-weight-bold"></span>
             </button>
@@ -19,23 +19,16 @@
             </button>
             <span>06 May, 2022</span>
           </div>
-          <div class="d-flex">
+          <div class="d-flex align-items-center">
             <button class="btn btn-light font-weight-bold text-muted d-flex mx-2">
-              <img src="../../../../assets/icons/ic_today.png" />
+              <img src="../../../../assets/icons/ic_today.png" alt="ic_today" />
               <span class="ml-2">Today</span>
             </button>
             <div style="width: 2px; background: #ccc;"></div>
-            <select class="form-control px-2 mx-2">
+            <select class="form-control px-2 mx-2" style="width: 94px;" >
               <option>Day</option>
             </select>
-            <input type="text" ngxDaterangepickerMd 
-            [locale]="{ format: 'MMMM YYYY' }"
-            [(ngModel)]="selected" 
-            [singleDatePicker]="true" 
-            [autoApply]="true" 
-            [showDropdowns]="true"
-            opens="left"
-            class="form-control"/>
+            <app-date-picker [selected]="selected" ></app-date-picker>
           </div>
 
         </div>
@@ -48,7 +41,7 @@
         <div class="px-3 border-bottom">
           <div class="row">
             <div class="col-md-3 position-relative pr-0 border-right">
-              <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari nama pasien"
+              <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari Nama Pasien"
                 title="Find patients" />
               <span class="fa fa-search position-absolute"></span>
             </div>
@@ -57,16 +50,12 @@
                 title="Find local MR" />
               <span class="fa fa-search position-absolute"></span>
             </div>
-            <div class="col-md-3 pr-0 d-flex flex-column border-right">
+            <div class="col-md-2 pr-0 d-flex flex-column border-right pb-2">
               <small>Time Range</small>
-              <div class="d-flex aling-items-center">
-                <select class="form-control border-0">
-                  <option>00:00</option>
-                </select>
+              <div class="d-flex align-items-center">
+                <app-time-picker placeholder="23:00" ></app-time-picker>
                 <b>-</b>
-                <select class="form-control border-0">
-                  <option>23:00</option>
-                </select>
+                <app-time-picker placeholder="23:00" ></app-time-picker>
               </div>
             </div>
           </div>
@@ -423,6 +412,7 @@
       <section class="p-5">
         <!-- Create / Update Appointment Modal -->
         <ng-container>
+          <button class="btn btn-outline-primary mb-2 me-2" (click)="detailSchedule()">create admission test</button>
           <div class="formclass">
             <div class="mb-3">
               <h4>CT Scan - Room 1</h4>
@@ -495,6 +485,7 @@
         </ng-container>
         <!-- View Appointment Modal -->
         <ng-container>
+          <button class="btn btn-outline-primary mb-2 me-2" (click)="createAdmission()">create admission test</button>
           <div class="formclass">
             <div class="mb-3 px-3">
               <h4>CT Scan - Room 1</h4>
@@ -586,8 +577,11 @@
 
         <!-- Appointment Action Modal -->
         <!-- Appointment Action Modal: Cancel -->
+
+
         <ng-container>
           <!-- Cancel Check in -->
+          <button class="btn btn-outline-primary mb-2 me-2" (click)="cancelAppointment()">cancel appointment test</button>
           <div>
             <div class="mb-3">Anda akan membatalkan Appointment ini?</div>
             <div class="mb-3">
@@ -659,7 +653,7 @@
             </div>
           </div>
           <div class="d-flex flex-row justify-content-end">
-            <button class="btn btn-primary">Cetak Tiket</button>
+            <button class="btn btn-primary" (click)="showHistoryModal()">Cetak Tiket</button>
           </div>
         </ng-container>
 

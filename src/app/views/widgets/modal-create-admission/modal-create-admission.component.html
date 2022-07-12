@@ -1,0 +1,100 @@
+<div class="modal-content">
+  <div class="modal-header border-0">
+    <div class="mb-3 px-3">
+      <p class="text-modal-custom">Create Admission</p>
+    </div>
+    <button #close_button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
+      <i class="fa fa-close text-muted"></i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="formclass">
+      <div class="mb-3 px-3">
+        <h4>CT Scan - Room 1</h4>
+      </div>
+      <div class="mb-3 px-3">
+        <label for="">Date and Time</label>
+        <div>
+          <app-date-picker></app-date-picker>
+        </div>
+      </div>
+      <div class="d-flex flex-wrap flex-row mb-3 py-2 bg-secondary px-3">
+        <div class="w-50">
+          <label for="" class="text-muted">Local MR Number</label>
+          <div>
+            <span class="form-label">4757323</span>
+          </div>
+        </div>
+        <div class="w-50 pl-4">
+          <label for="" class="text-muted">Admission Number</label>
+          <div>
+            <span class="form-label">-</span>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="mb-3 px-3">
+        <label for="" class="text-muted">Nama Lengkap</label>
+        <div>
+          <span class="form-label">Michael Angelo</span>
+        </div>
+      </div> -->
+      <div class="d-flex flex-wrap flex-row px-3">
+        <div class="mb-3 w-50">
+          <label for="" class="text-muted">Nama Lengkap</label>
+          <div>
+            <span class="form-label">Michael Angelo</span>
+          </div>
+        </div>
+        <div class="mb-3 w-50 pl-4">
+          <label for="" class="text-muted">Date of Birth</label>
+          <div>
+            <span class="form-label">12-08-1991</span>
+          </div>
+        </div>
+        <!-- <div class="mb-3 w-50 pl-4">
+          <label for="" class="text-muted">ID Number</label>
+          <div>
+            <span class="form-label">KTP - 1234567890123456</span>
+          </div>
+        </div> -->
+        <div class="mb-3 w-50">
+          <label for="" class="text-muted">Mobile Phone</label>
+          <div>
+            <span class="form-label">081234567890</span>
+          </div>
+        </div>
+        <div class="mb-3 w-50 pl-4">
+          <label for="" class="text-muted">Email</label>
+          <div>
+            <span class="form-label">-</span>
+          </div>
+        </div>
+        <div class="mb-3 w-50">
+          <label for="">Examination <sup class="text-required">*</sup></label>
+          <div class="">
+            <select id="title" class="form-control" name="dropDownRoom" (change)="changeExamination($event)">
+              <option *ngFor="let examination of examinationsList" [value]="examination.value">
+                {{examination.description}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-3 w-50 pl-4">
+          <label for="" class="text-muted">Patient Type</label>
+          <div class="">
+            <select id="title" class="form-control" name="dropDownRoom" (change)="changeExamination($event)">
+              <option *ngFor="let type of patientTypesList" [value]="type.value">
+                {{type.description}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="d-flex flex-row justify-content-end">
+      <button class="btn btn-success ml-2">Create Admission</button>
+    </div>
+  </div>
+</div>

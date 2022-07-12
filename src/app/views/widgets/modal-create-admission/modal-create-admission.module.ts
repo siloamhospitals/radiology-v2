@@ -1,23 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ModalCreateAdmissionComponent } from './modal-create-admission.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbAlertModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { ModalHistoryComponent } from './modal-history.component';
+import { DatepickerModule } from '../date-picker/date-picker.module';
 
 @NgModule({
   declarations: [
-    ModalHistoryComponent
+    ModalCreateAdmissionComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbAlertModule,
-    NgbModalModule,
+    DatepickerModule
   ],
   exports: [
-    ModalHistoryComponent
+    ModalCreateAdmissionComponent,
   ]
 })
-export class ModalHistoryComponentModule { }
+export class ModalCreateAdmissionModule { }
