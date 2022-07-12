@@ -1,3 +1,4 @@
+import { ModalCancelAppointmentModule } from './../../widgets/modal-cancel-appointment/modal-cancel-appointment.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageRadiologyScheduleComponent } from './page-radiology-schedule.component';
@@ -10,6 +11,7 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { FormsModule } from '@angular/forms';
 import { ModalHistoryComponentModule } from '../../widgets/modal-history/modal-history.module';
 import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
+import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -21,14 +23,16 @@ import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history
     SectionSidebarModule,
     SectionFooterModule,
     NgxDaterangepickerMd.forRoot(),
-    FormsModule
+    FormsModule,
+    ModalCancelAppointmentModule
   ],
   exports: [
     PageRadiologyScheduleComponent
   ],
   entryComponents: [
-    ModalHistoryComponent
-  ]
+    ModalHistoryComponent,
+    ModalCancelAppointmentComponent
+  ],
 })
 export class PageRadiologyScheduleModule { 
 

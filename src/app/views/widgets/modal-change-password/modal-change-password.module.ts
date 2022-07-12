@@ -15,7 +15,8 @@ import { ModalChangePasswordComponent } from './modal-change-password.component'
     ReactiveFormsModule,
     NgbAlertModule,
     NgbModalModule,
-  ], exports: [
+  ],
+  exports: [
     ModalChangePasswordComponent
   ]
 })

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as moment from 'moment'
+import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
+// import * as moment from 'moment';
 
 @Component({
   selector: 'app-page-radiology-schedule',
@@ -8,13 +9,16 @@ import * as moment from 'moment'
   styleUrls: ['./page-radiology-schedule.component.css']
 })
 export class PageRadiologyScheduleComponent implements OnInit {
+  constructor(
+    private modalService: NgbModal,
+  ) { }
 
   public scheduleList: any[]
   protected indexNumber: number = 0
 
   public createAppointmentTabId: number = 1
 
-  
+
   rooms: string[] = [
     "CT Scan - Room 1",
     "CT Scan - Room 2",
@@ -24,11 +28,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
     "USG - 3D & 4D - Room 5",
     "CT CARDIAC - Room 1",
   ]
-  selected = moment()
-
-  constructor(
-    private modalService: NgbModal
-  ) { }
 
   ngOnInit() {
     this.scheduleListGenerate()
@@ -148,7 +147,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     const squashData  = data.map((x: any) => {
       x.rowmerge = []
       x.rows = baseData.filter((y: any, yi: number) => {
-        const rangeCond = 
+        const rangeCond =
           Math.min(hourToDate(x.fromTime).getTime(), hourToDate(x.toTime).getTime()) <= Math.max(hourToDate(y.timeSlotFrom).getTime(), hourToDate(y.timeSlotTo).getTime())
           && Math.max(hourToDate(x.fromTime).getTime(), hourToDate(x.toTime).getTime()) >= Math.min(hourToDate(y.timeSlotFrom).getTime(), hourToDate(y.timeSlotTo).getTime())
         // console.log('dateRangeFrom', rangeCond,
@@ -194,7 +193,13 @@ export class PageRadiologyScheduleComponent implements OnInit {
     const m = this.modalService.open(modalId, { windowClass: 'fo_modal_confirmation', backdrop: 'static', keyboard: false })
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
-    }) 
+    })
   }
 
+  cancelAppointment() {
+    const m = this.modalService.open(ModalCancelAppointmentComponent, { windowClass: 'modal_cancel_appointment', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
 }

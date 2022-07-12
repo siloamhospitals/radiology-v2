@@ -48,3 +48,5 @@ Thumbs.db
 
 src/environtments/environtments.ts
 src/environtments/environtments.prod.ts
+
+package-lock.json
