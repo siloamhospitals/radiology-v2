@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ModalCancelAppointmentComponent } from '../modal-cancel-appointment/modal-cancel-appointment.component';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -13,7 +12,6 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModalModule
   ],
   exports: [
     ModalCancelAppointmentComponent

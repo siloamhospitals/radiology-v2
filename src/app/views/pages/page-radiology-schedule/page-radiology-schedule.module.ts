@@ -10,6 +10,10 @@ import { PageRadiologyScheduleRoutingModule } from './page-radiology-schedule-ro
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { FormsModule } from '@angular/forms';
 import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
+import { ModalCreateAdmissionComponent } from '../../widgets/modal-create-admission/modal-create-admission.component';
+import { ModalCreateAdmissionModule } from '../../widgets/modal-create-admission/modal-create-admission.module';
+import { ModalDetailScheduleModule } from '../../widgets/modal-detail-schedule/modal-detail-schedule.module';
+import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -21,13 +25,17 @@ import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appo
     SectionFooterModule,
     NgxDaterangepickerMd.forRoot(),
     FormsModule,
-    ModalCancelAppointmentModule
+    ModalCancelAppointmentModule,
+    ModalCreateAdmissionModule,
+    ModalDetailScheduleModule
   ],
   exports: [
     PageRadiologyScheduleComponent
   ],
   entryComponents: [
-    ModalCancelAppointmentComponent
+    ModalCancelAppointmentComponent,
+    ModalCreateAdmissionComponent,
+    ModalDetailScheduleComponent
   ],
 })
 export class PageRadiologyScheduleModule { }

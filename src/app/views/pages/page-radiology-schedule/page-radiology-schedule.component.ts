@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
+import { ModalCreateAdmissionComponent } from '../../widgets/modal-create-admission/modal-create-admission.component';
+import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 // import * as moment from 'moment';
 
 @Component({
@@ -198,6 +200,20 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   cancelAppointment() {
     const m = this.modalService.open(ModalCancelAppointmentComponent, { windowClass: 'modal_cancel_appointment', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+
+  createAdmission() {
+    const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+
+  detailSchedule() {
+    const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
