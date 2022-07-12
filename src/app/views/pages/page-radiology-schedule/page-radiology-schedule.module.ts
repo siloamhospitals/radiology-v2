@@ -13,6 +13,10 @@ import { TimepickerModule } from '../../widgets/time-picker/time-picker.module'
 import { ModalHistoryComponentModule } from '../../widgets/modal-history/modal-history.module';
 import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
+import { ModalCreateAdmissionComponent } from '../../widgets/modal-create-admission/modal-create-admission.component';
+import { ModalCreateAdmissionModule } from '../../widgets/modal-create-admission/modal-create-admission.module';
+import { ModalDetailScheduleModule } from '../../widgets/modal-detail-schedule/modal-detail-schedule.module';
+import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -26,7 +30,9 @@ import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appo
     FormsModule,
     DatepickerModule,
     TimepickerModule,
-    ModalCancelAppointmentModule
+    ModalCancelAppointmentModule,
+    ModalCreateAdmissionModule,
+    ModalDetailScheduleModule
   ],
   exports: [
     PageRadiologyScheduleComponent
