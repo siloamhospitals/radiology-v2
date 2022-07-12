@@ -8,10 +8,13 @@ import { SectionFooterModule } from '../../sections/section-footer/section-foote
 import { PageRadiologyScheduleRoutingModule } from './page-radiology-schedule-routing.module';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { FormsModule } from '@angular/forms';
+import { ModalHistoryComponentModule } from '../../widgets/modal-history/modal-history.module';
+import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
   imports: [
+    ModalHistoryComponentModule,
     CommonModule,
     PageRadiologyScheduleRoutingModule,
     SectionHeaderModule,
@@ -22,6 +25,17 @@ import { FormsModule } from '@angular/forms';
   ],
   exports: [
     PageRadiologyScheduleComponent
+  ],
+  entryComponents: [
+    ModalHistoryComponent
   ]
 })
-export class PageRadiologyScheduleModule { }
+export class PageRadiologyScheduleModule { 
+
+  showHistoryModal() {
+    const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_cancel_appointment', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+}

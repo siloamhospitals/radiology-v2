@@ -33,7 +33,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   ngOnInit() {
     this.scheduleListGenerate()
     this.scheduleListSquash()
-
+    //this.scheduleList()
     // console.log('list', this.scheduleList)
   }
 

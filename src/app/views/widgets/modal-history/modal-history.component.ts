@@ -10,7 +10,7 @@ import { appInfo, sourceApps } from '../../../variables/common.variable';
   templateUrl: './modal-history.component.html',
   styleUrls: ['./modal-history.component.css']
 })
-export class ModalChangePasswordComponent implements OnInit {
+export class ModalHistoryComponent implements OnInit {
 
   @Input() username: any;
   public key: { user: any; };
@@ -156,4 +156,5 @@ export class ModalChangePasswordComponent implements OnInit {
   removeAlert(alert: Alert) {
     this.alerts = this.alerts.filter(x => x !== alert);
   }
+  
 }

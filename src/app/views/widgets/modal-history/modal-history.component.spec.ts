@@ -1,17 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { NgbAlertModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalChangePasswordComponent } from './modal-change-password.component';
+import { ModalHistoryComponent } from './modal-history.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
-describe('ModalChangePasswordComponent', () => {
-  let component: ModalChangePasswordComponent;
-  let fixture: ComponentFixture<ModalChangePasswordComponent>;
+describe('ModalHistoryComponent', () => {
+  let component: ModalHistoryComponent;
+  let fixture: ComponentFixture<ModalHistoryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModalChangePasswordComponent ],
+      declarations: [ ModalHistoryComponent ],
       imports: [
         FormsModule,
         ReactiveFormsModule,
@@ -27,7 +27,7 @@ describe('ModalChangePasswordComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModalChangePasswordComponent);
+    fixture = TestBed.createComponent(ModalHistoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
