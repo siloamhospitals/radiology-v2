@@ -1,65 +1,71 @@
 <app-section-header></app-section-header>
 <div class="d-flex justify-content-start">
   <div class="fo_menu_container">
-      <app-section-sidebar></app-section-sidebar>
+    <app-section-sidebar></app-section-sidebar>
   </div>
   <div class="fo_content_container mt-4 d-block">
     <div class="box bg-white">
-      <h3 class="p-3 border-bottom">
-        Radiology Schedule
-      </h3>
-      <div class="px-3 py-2 d-flex aling-items-center justify-content-between border-bottom">
-        <div>
-          <button class="btn">
-            <span class="fa fa-angle-left font-weight-bold"></span>
-          </button>
-          <button class="btn">
-            <span class="fa fa-angle-right font-weight-bold"></span>
-          </button>
-          <span>06 May, 2022</span>
-        </div>
-        <div class="d-flex" >
-          <button class="btn btn-light font-weight-bold text-muted d-flex mx-2" >
-            <img src="../../../../assets/icons/ic_today.png" /> 
-            <span class="ml-2" >Today</span>
-          </button>
-          <div style="width: 2px; background: #ccc;" ></div>
-          <select class="form-control px-2 mx-2">
-            <option>Day</option>
-          </select>
-          <input class="form-control" type="text" value="May 2022" />
-        </div>
+      <div class="header-radiology-schedule" >
+        <h3 class="p-3 border-bottom">
+          Radiology Schedule
+        </h3>
+        <div class="px-3 py-2 d-flex aling-items-center justify-content-between border-bottom">
+          <div>
+            <button class="btn">
+              <span class="fa fa-angle-left font-weight-bold"></span>
+            </button>
+            <button class="btn">
+              <span class="fa fa-angle-right font-weight-bold"></span>
+            </button>
+            <span>06 May, 2022</span>
+          </div>
+          <div class="d-flex">
+            <button class="btn btn-light font-weight-bold text-muted d-flex mx-2">
+              <img src="../../../../assets/icons/ic_today.png" />
+              <span class="ml-2">Today</span>
+            </button>
+            <div style="width: 2px; background: #ccc;"></div>
+            <select class="form-control px-2 mx-2">
+              <option>Day</option>
+            </select>
+            <input class="form-control" type="text" value="May 2022" />
+          </div>
 
-      </div>
-      <div class="p-3 border-bottom" >
-        <button *ngFor="let room of rooms" type="button" class="btn btn-secondary bg-light text-muted mb-2 rounded-8 room px-3 py-2">
-          {{ room }}
-        </button>
-      </div>
-      <div class="px-3 border-bottom" >
-        <div class="row" >
-          <div class="col-md-3 position-relative pr-0" >
-            <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari nama pasien" title="Find patients" />
-            <span class="fa fa-search position-absolute" ></span>
-          </div>
-          <div class="col-md-3 position-relative pr-0" >
-            <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari Local MR" title="Find local MR" />
-            <span class="fa fa-search position-absolute" ></span>
-          </div>
-          <div class="col-md-3 position-relative pr-0 d-flex flex-column" >
-            <small>Time Range</small>
-            <div class="d-flex aling-items-center">
-              <select class="form-control border-0" >
-                <option>00:00</option>
-              </select>
-              <b>-</b>
-              <select class="form-control border-0">
-                <option>23:00</option>
-              </select>
+        </div>
+        <div class="p-3 border-bottom">
+          <button *ngFor="let room of rooms" type="button"
+            class="btn bg-light text-muted mb-2 rounded-8 room px-3 py-2 border">
+            {{ room }}
+          </button>
+        </div>
+        <div class="px-3 border-bottom">
+          <div class="row">
+            <div class="col-md-3 position-relative pr-0 border-right">
+              <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari nama pasien"
+                title="Find patients" />
+              <span class="fa fa-search position-absolute"></span>
+            </div>
+            <div class="col-md-3 position-relative pr-0 border-right">
+              <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari Local MR"
+                title="Find local MR" />
+              <span class="fa fa-search position-absolute"></span>
+            </div>
+            <div class="col-md-3 pr-0 d-flex flex-column border-right">
+              <small>Time Range</small>
+              <div class="d-flex aling-items-center">
+                <select class="form-control border-0">
+                  <option>00:00</option>
+                </select>
+                <b>-</b>
+                <select class="form-control border-0">
+                  <option>23:00</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
       <!-- Content -->
       <section class="p-3">
         <table class="table table-bordered mt-3 table-list-radiology">
@@ -76,7 +82,9 @@
           </thead>
           <tbody>
             <ng-container *ngIf="!(scheduleList && scheduleList.length)">
-              <tr><td colspan="100%" class="text-center p-3">No data from this section</td></tr>
+              <tr>
+                <td colspan="100%" class="text-center p-3">No data from this section</td>
+              </tr>
             </ng-container>
             <!-- testing purpose -->
             <!-- <tr>
@@ -115,7 +123,8 @@
             </tr> -->
             <!-- end testing purpose -->
             <tr *ngFor="let item of scheduleList; let i=index">
-              <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle; width: 25px;" class="text-right">{{(item.rowIndex).toString().padStart(2, '0')}}</td>
+              <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle; width: 25px;" class="text-right">
+                {{(item.rowIndex).toString().padStart(2, '0')}}</td>
               <!-- <td>{{item.timeSlot}}</td> -->
               <td style="width: 100px;">{{item.timeSlotFrom}} - {{item.timeSlotTo}}</td>
               <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'">
@@ -127,7 +136,8 @@
                 </td>
                 <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.dob}}</td>
                 <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.localMrNo}}</td>
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.examination}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.examination}}
+                </td>
                 <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.note}}</td>
                 <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">
                   <span *ngIf="item.status === 'scheduled'" class="table-status status-scheduled">Scheduled</span>
@@ -137,12 +147,14 @@
                 </td>
               </ng-container>
               <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status === 'note'">
-                <td [attr.rowspan]="item.rowspan || 1" colspan="7" class="table-td table-td-{{item.status}}">{{item.note}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" colspan="7" class="table-td table-td-{{item.status}}">
+                  {{item.note}}</td>
               </ng-container>
               <ng-container *ngIf="!item.isCanCreate && item.isSpan">
               </ng-container>
               <ng-container *ngIf="item.isCanCreate">
-                <td (click)="open(createAppointmentModal)" style="cursor: pointer;"><span class="text-success">Available</span></td>
+                <td (click)="open(createAppointmentModal)" style="cursor: pointer;"><span
+                    class="text-success">Available</span></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -159,7 +171,8 @@
         <div>
           <div class="modal-header">
             <h4 class="modal-title" id="modal-basic-title">New Appointment</h4>
-            <button type="button" class="btn btn-clear btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <button type="button" class="btn btn-clear btn-close" aria-label="Close"
+              (click)="modal.dismiss('Cross click')">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -327,7 +340,7 @@
               <div class="mb-3 w-50">
                 <label for="">Examination <sup class="text-required">*</sup></label>
                 <div>
-                  <input type="text" class="form-control" placeholder="Select Examination"/>
+                  <input type="text" class="form-control" placeholder="Select Examination" />
                 </div>
               </div>
             </div>
@@ -407,7 +420,7 @@
               <div class="mb-3 w-50">
                 <label for="">Examination <sup class="text-required">*</sup></label>
                 <div>
-                  <input type="text" class="form-control" placeholder="Select Examination"/>
+                  <input type="text" class="form-control" placeholder="Select Examination" />
                 </div>
               </div>
             </div>

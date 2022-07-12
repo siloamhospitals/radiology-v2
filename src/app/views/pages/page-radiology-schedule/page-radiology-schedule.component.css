@@ -21,26 +21,26 @@
     border-radius: 8px;
 }
 
-.room.active, .room:hover {
+.header-radiology-schedule .room.active, .header-radiology-schedule .room:hover {
     transition: all ease 0.8s;
     background: rgba(200, 203, 250, 0.5);
-    border: 1px solid #341F97;
-    color: #341F97;
+    border: 1px solid #341F97 !important;
+    color: #341F97 !important;
 }
 
-.input-filter {
+.header-radiology-schedule .input-filter {
     font-size: 14px;
-    height: auto;
+    height: 100%;
     border: 0;
-    border-right: 1px solid #dee2e6;
+    padding-bottom: 5px;
 }
 
-.input-filter:focus { 
+.header-radiology-schedule .input-filter:focus { 
     outline: none;
     box-shadow: none;
 }
 
-.input-filter ~ .fa.fa-search {
+.header-radiology-schedule .input-filter ~ .fa.fa-search {
     right: 20px;
     bottom: 10px;
     color: #ccc;
@@ -76,15 +76,15 @@
 .table-td.table-td-completed .item-indicator { background-color: #acf685; }
 .table-td.table-td-note .item-indicator { background-color: rgba(248, 222, 127, 0.5); }
 
-.form-control {
+section .form-control {
   padding: 15px;
   border: 1px solid rgba(34, 47, 62, 0.38);
   border-radius: 4px;
 }
-.form-control::placeholder {
+section .form-control::placeholder {
   color: rgba(34, 47, 62, 0.38);
 }
-.form-control:focus {
+section .form-control:focus {
   border-color: inherit;
   -webkit-box-shadow: none;
   box-shadow: none;
