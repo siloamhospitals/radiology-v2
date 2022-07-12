@@ -7,31 +7,45 @@ import { SectionHeaderModule } from '../../sections/section-header/section-heade
 import { SectionSidebarModule } from '../../sections/section-sidebar/section-sidebar.module';
 import { SectionFooterModule } from '../../sections/section-footer/section-footer.module';
 import { PageRadiologyScheduleRoutingModule } from './page-radiology-schedule-routing.module';
-import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { FormsModule } from '@angular/forms';
-import { ModalHistoryComponentModule } from '../../widgets/modal-history/modal-history.module';
-import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
+import { DatepickerModule } from '../../widgets/date-picker/date-picker.module';
+import { TimepickerModule } from '../../widgets/time-picker/time-picker.module'
+// import { ModalHistoryComponentModule } from '../../widgets/modal-history/modal-history.module';
+// import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
   imports: [
-    ModalHistoryComponentModule,
+    // ModalHistoryComponentModule,
     CommonModule,
     PageRadiologyScheduleRoutingModule,
     SectionHeaderModule,
     SectionSidebarModule,
     SectionFooterModule,
-    NgxDaterangepickerMd.forRoot(),
     FormsModule,
+    DatepickerModule,
+    TimepickerModule,
     ModalCancelAppointmentModule
   ],
   exports: [
     PageRadiologyScheduleComponent
   ],
   entryComponents: [
-    ModalHistoryComponent,
+    // ModalHistoryComponent,
     ModalCancelAppointmentComponent
   ],
 })
+<<<<<<< HEAD
 export class PageRadiologyScheduleModule { }
+=======
+export class PageRadiologyScheduleModule { 
+
+  showHistoryModal() {
+    // const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_cancel_appointment', backdrop: 'static', keyboard: false })
+    // m.result.then((result: any) => {
+    //   console.log('modal is closed', {result})
+    // })
+  }
+}
+>>>>>>> 329193ba2db7ac3e3441a712b604f37c8c94e25f

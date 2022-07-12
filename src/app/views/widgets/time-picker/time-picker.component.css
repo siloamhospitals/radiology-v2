@@ -1,0 +1,25 @@
+.timer-picker {
+  font-size: 14px;
+}
+
+#timer-picker .select-option{
+  height: 300px;
+  overflow-y: hidden;
+  font-size: 14px;  
+}
+
+#timer-picker .select-option:hover{
+  height: 300px;
+  overflow-y: auto;
+}
+
+#timer-picker .select-option button:hover{
+  color: white;
+  background-color: #341F97 !important;
+  transition: all ease 0.5s;
+}
+#timer-picker .fa-caret-down{
+  right: 5px;
+  top: 10px;
+  font-size: 14px;
+}

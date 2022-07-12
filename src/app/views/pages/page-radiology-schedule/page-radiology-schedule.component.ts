@@ -188,7 +188,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     console.log('appdata', squashData.length, squashData)
     console.log('baseData', baseData.length, baseData)
 
-    this.scheduleList = baseData
+    // this.scheduleList = baseData
   }
 
   open (modalId: any) {
