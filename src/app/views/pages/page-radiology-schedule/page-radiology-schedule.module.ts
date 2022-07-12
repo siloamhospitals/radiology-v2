@@ -39,15 +39,9 @@ import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedul
   ],
   entryComponents: [
     ModalHistoryComponent,
-    ModalCancelAppointmentComponent
+    ModalCancelAppointmentComponent,
+    ModalCreateAdmissionComponent,
+    ModalDetailScheduleComponent
   ],
 })
-export class PageRadiologyScheduleModule { 
-
-  showHistoryModal() {
-    const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_cancel_appointment', backdrop: 'static', keyboard: false })
-    m.result.then((result: any) => {
-    console.log('modal is closed', {result})
-    })
-  }
-}
+export class PageRadiologyScheduleModule {}

@@ -15,7 +15,8 @@ import { ModalHistoryComponent } from './modal-history.component';
     ReactiveFormsModule,
     NgbAlertModule,
     NgbModalModule,
-  ], exports: [
+  ],
+  exports: [
     ModalHistoryComponent
   ]
 })
