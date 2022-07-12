@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-// import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment'
+
 @Component({
   selector: 'app-page-radiology-schedule',
   templateUrl: './page-radiology-schedule.component.html',
@@ -8,7 +9,12 @@ import * as moment from 'moment'
 })
 export class PageRadiologyScheduleComponent implements OnInit {
 
-  constructor() { }
+  public scheduleList: any[]
+  protected indexNumber: number = 0
+
+  public createAppointmentTabId: number = 1
+
+  
   rooms: string[] = [
     "CT Scan - Room 1",
     "CT Scan - Room 2",
@@ -19,6 +25,10 @@ export class PageRadiologyScheduleComponent implements OnInit {
     "CT CARDIAC - Room 1",
   ]
   selected = moment()
+
+  constructor(
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.scheduleListGenerate()
