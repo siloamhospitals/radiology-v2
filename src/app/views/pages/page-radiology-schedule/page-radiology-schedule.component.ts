@@ -20,7 +20,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   scheduleListGenerate () {
-    const mainArr = Array(23).fill([]).map((m, i) => {
+    const mainArr = Array(24).fill([]).map((m, i) => {
       // In Custom Functions
       const createTimeSlot = (i: number, isEven: boolean = false) => {
         const hourWith = (v: number) => String(v).padStart(2, '0')
