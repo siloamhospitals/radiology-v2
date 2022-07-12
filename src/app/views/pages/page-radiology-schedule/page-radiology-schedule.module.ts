@@ -10,14 +10,14 @@ import { PageRadiologyScheduleRoutingModule } from './page-radiology-schedule-ro
 import { FormsModule } from '@angular/forms';
 import { DatepickerModule } from '../../widgets/date-picker/date-picker.module';
 import { TimepickerModule } from '../../widgets/time-picker/time-picker.module'
-// import { ModalHistoryComponentModule } from '../../widgets/modal-history/modal-history.module';
-// import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
+import { ModalHistoryComponentModule } from '../../widgets/modal-history/modal-history.module';
+import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
   imports: [
-    // ModalHistoryComponentModule,
+    ModalHistoryComponentModule,
     CommonModule,
     PageRadiologyScheduleRoutingModule,
     SectionHeaderModule,
@@ -32,16 +32,16 @@ import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appo
     PageRadiologyScheduleComponent
   ],
   entryComponents: [
-    // ModalHistoryComponent,
+    ModalHistoryComponent,
     ModalCancelAppointmentComponent
   ],
 })
 export class PageRadiologyScheduleModule { 
 
   showHistoryModal() {
-    // const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_cancel_appointment', backdrop: 'static', keyboard: false })
-    // m.result.then((result: any) => {
-    //   console.log('modal is closed', {result})
-    // })
+    const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_cancel_appointment', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+    console.log('modal is closed', {result})
+    })
   }
 }
