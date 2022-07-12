@@ -10,8 +10,8 @@ import { PageRadiologyScheduleRoutingModule } from './page-radiology-schedule-ro
 import { FormsModule } from '@angular/forms';
 import { DatepickerModule } from '../../widgets/date-picker/date-picker.module';
 import { TimepickerModule } from '../../widgets/time-picker/time-picker.module'
-// import { ModalHistoryComponentModule } from '../../widgets/modal-history/modal-history.module';
-// import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
+import { ModalHistoryComponentModule } from '../../widgets/modal-history/modal-history.module';
+import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
 import { ModalCreateAdmissionComponent } from '../../widgets/modal-create-admission/modal-create-admission.component';
 import { ModalCreateAdmissionModule } from '../../widgets/modal-create-admission/modal-create-admission.module';
@@ -21,7 +21,7 @@ import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedul
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
   imports: [
-    // ModalHistoryComponentModule,
+    ModalHistoryComponentModule,
     CommonModule,
     PageRadiologyScheduleRoutingModule,
     SectionHeaderModule,
@@ -38,9 +38,16 @@ import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedul
     PageRadiologyScheduleComponent
   ],
   entryComponents: [
-    ModalCancelAppointmentComponent,
-    ModalCreateAdmissionComponent,
-    ModalDetailScheduleComponent
+    ModalHistoryComponent,
+    ModalCancelAppointmentComponent
   ],
 })
-export class PageRadiologyScheduleModule {}
+export class PageRadiologyScheduleModule { 
+
+  showHistoryModal() {
+    const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_cancel_appointment', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+    console.log('modal is closed', {result})
+    })
+  }
+}
