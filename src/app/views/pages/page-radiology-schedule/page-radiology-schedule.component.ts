@@ -1,12 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-// import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import * as moment from 'moment'
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
+import { ModalCreateAdmissionComponent } from '../../widgets/modal-create-admission/modal-create-admission.component';
+import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
+import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
+
+// import * as moment from 'moment';
+
 @Component({
   selector: 'app-page-radiology-schedule',
   templateUrl: './page-radiology-schedule.component.html',
   styleUrls: ['./page-radiology-schedule.component.css']
 })
 export class PageRadiologyScheduleComponent implements OnInit {
+  constructor(
+    private modalService: NgbModal,
+    modalSetting: NgbModalConfig, 
+  ) { 
+    modalSetting.backdrop = 'static';
+    modalSetting.keyboard = false;
+   }
+
+  public scheduleList: any[]
+  protected indexNumber: number = 0
+
+  public createAppointmentTabId: number = 1
+  public selected: any;
+  
 
   constructor() { }
   rooms: string[] = [
@@ -181,7 +201,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   open (modalId: any) {
-    const m = this.modalService.open(modalId, { windowClass: 'fo_modal_confirmation', backdrop: 'static', keyboard: false })
+    const m = this.modalService.open(modalId, { windowClass: 'fo_modal_confirmation', size: 'lg' })
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     }) 
