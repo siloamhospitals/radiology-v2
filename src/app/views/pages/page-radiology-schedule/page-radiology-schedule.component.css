@@ -49,6 +49,11 @@
 .form-control::placeholder {
   color: rgba(34, 47, 62, 0.38);
 }
+.form-control:focus {
+  border-color: inherit;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 
 .text-required { color: #EB4D4B; }
 .text-muted { color: rgba(34, 47, 62, 0.54) !important; }
