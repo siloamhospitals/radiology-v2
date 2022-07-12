@@ -44,3 +44,9 @@ select {
 ::-ms-input-placeholder { /* Microsoft Edge */
   color: rgba(34, 47, 62, 0.38);
 }
+
+.national-type-id {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}

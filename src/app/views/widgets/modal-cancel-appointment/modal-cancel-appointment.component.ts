@@ -7,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./modal-cancel-appointment.component.css']
 })
 export class ModalCancelAppointmentComponent implements OnInit {
-
   constructor(
     private activeModal: NgbActiveModal,
   ) { }
+
+  public selectedText: string = '';
 
   ngOnInit() {
   }

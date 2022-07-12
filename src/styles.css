@@ -1207,3 +1207,18 @@ section .form-control:focus {
   background-color: #043a72;
   border-color: #007bff;
 }
+
+.back-button {
+  color: rgba(34, 47, 62, 0.38);
+  display: inline-block;
+  font-size: 28px;
+}
+
+.back-button:hover {
+  color: black;
+}
+
+.modal-header-custom {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
