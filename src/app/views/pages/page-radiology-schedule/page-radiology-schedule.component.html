@@ -40,6 +40,472 @@
         asdsadsa
       </div>
       asdsa
+
+      <!-- Content -->
+      <section class="p-3">
+        <table class="table table-bordered mt-3 table-list-radiology">
+          <thead class="border-0 bg-secondary">
+            <tr>
+              <td colspan="2" class="py-3 border-0">Appointment</td>
+              <td class="py-3 border-0">Patient</td>
+              <td class="py-3 border-0">DoB</td>
+              <td class="py-3 border-0">Local MR No</td>
+              <td class="py-3 border-0">Examination</td>
+              <td class="py-3 border-0">Note</td>
+              <td class="py-3 border-0">Status</td>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="!(scheduleList && scheduleList.length)">
+              <tr><td colspan="100%" class="text-center p-3">No data from this section</td></tr>
+            </ng-container>
+            <!-- testing purpose -->
+            <!-- <tr>
+              <td>-11</td>
+              <td>00:00 - 00:29</td>
+              <td>Patient Test</td>
+              <td>32-13-1990</td>
+              <td>00001X</td>
+              <td>Examination</td>
+              <td>Note</td>
+              <td>Status</td>
+            </tr>
+            <tr>
+              <td>-11</td>
+              <td>00:00 - 00:29</td>
+              <td rowspan="2">Patient Test</td>
+              <td rowspan="2">32-13-1990</td>
+              <td rowspan="2">00001X</td>
+              <td rowspan="2">Examination</td>
+              <td rowspan="2">Note</td>
+              <td rowspan="2">Status</td>
+            </tr>
+            <tr>
+              <td>-11</td>
+              <td>00:00 - 00:29</td>
+            </tr>
+            <tr>
+              <td>-11</td>
+              <td>00:00 - 00:29</td>
+              <td>Patient Test</td>
+              <td>32-13-1990</td>
+              <td>00001X</td>
+              <td>Examination</td>
+              <td>Note</td>
+              <td>Status</td>
+            </tr> -->
+            <!-- end testing purpose -->
+            <tr *ngFor="let item of scheduleList; let i=index">
+              <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle; width: 25px;" class="text-right">{{(item.rowIndex).toString().padStart(2, '0')}}</td>
+              <!-- <td>{{item.timeSlot}}</td> -->
+              <td style="width: 100px;">{{item.timeSlotFrom}} - {{item.timeSlotTo}}</td>
+              <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'">
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">
+                  <div style="display: grid; grid-template-columns: 5px auto; height: 100%; overflow: auto !important;">
+                    <div class="item-indicator mr-1"></div>
+                    <div>{{item.patient}}</div>
+                  </div>
+                </td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.dob}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.localMrNo}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.examination}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.note}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">
+                  <span *ngIf="item.status === 'scheduled'" class="table-status status-scheduled">Scheduled</span>
+                  <span *ngIf="item.status === 'arrived'" class="table-status status-arrived">Arrived</span>
+                  <span *ngIf="item.status === 'process'" class="table-status status-process">Process</span>
+                  <span *ngIf="item.status === 'completed'" class="table-status status-completed">Completed</span>
+                </td>
+              </ng-container>
+              <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status === 'note'">
+                <td [attr.rowspan]="item.rowspan || 1" colspan="7" class="table-td table-td-{{item.status}}">{{item.note}}</td>
+              </ng-container>
+              <ng-container *ngIf="!item.isCanCreate && item.isSpan">
+              </ng-container>
+              <ng-container *ngIf="item.isCanCreate">
+                <td (click)="open(createAppointmentModal)" style="cursor: pointer;"><span class="text-success">Available</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Modal Section -->
+      <ng-template #createAppointmentModal let-modal>
+        <div>
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">New Appointment</h4>
+            <button type="button" class="btn btn-clear btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Search Patient Modal -->
+            <ng-container>
+              <div>
+                <div class="mb-3 d-flex flex-row justify-content-between">
+                  <div class="pl-0">
+                    <label for="">DOB</label>
+                    <div>
+                      <input type="text" class="form-control" placeholder="DD-MM-YYYY" />
+                    </div>
+                  </div>
+                  <div class="pl-3">
+                    <label for="">Nama</label>
+                    <div>
+                      <input type="text" class="form-control" placeholder="Cari Nama" />
+                    </div>
+                  </div>
+                  <div class="pl-3">
+                    <label for="">Local MR</label>
+                    <div>
+                      <input type="text" class="form-control" placeholder="Cari Local MR" />
+                    </div>
+                  </div>
+                  <div class="pl-3">
+                    <label for="">ID Number</label>
+                    <div>
+                      <input type="text" class="form-control" placeholder="NIK" />
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <table class="table table-stripped table-secondary">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Patient</th>
+                        <th>DOB</th>
+                        <th>Local MR No</th>
+                        <th>ID Number</th>
+                        <th>Phone No</th>
+                        <th>Alamat</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <td><input type="radio" name="" id=""></td>
+                      <td>Patient</td>
+                      <td>DOB</td>
+                      <td>Local MR No</td>
+                      <td>ID Number</td>
+                      <td>Phone No</td>
+                      <td>Alamat</td>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="mb-3">
+                  <div class="mb-3">
+                    <h4>CT Scan - Room 1</h4>
+                  </div>
+                  <div class="d-flex flex-row justify-content-start">
+                    <div class="pl-0 w-50">
+                      <label for="">Date and Time</label>
+                      <div>
+                        <input type="text" class="form-control" placeholder="" />
+                      </div>
+                    </div>
+                    <div class="pl-3 w-25">
+                      <label for="">Examination <sup class="text-required">*</sup></label>
+                      <div>
+                        <input type="text" class="form-control" placeholder="Select Examination" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="mb-0">
+                    <label for="">Note</label>
+                    <div>
+                      <textarea rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div class="modal-footer">
+            <div class="d-flex flex-row justify-content-end">
+              <button (click)="modal.dismiss('Cross click')" class="btn btn-secondary">Reset</button>
+              <button (click)="modal.close('Save click')" class="btn btn-success ml-2">Create Appointment</button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <section class="p-5">
+        <!-- Create / Update Appointment Modal -->
+        <ng-container>
+          <div class="formclass">
+            <div class="mb-3">
+              <h4>CT Scan - Room 1</h4>
+            </div>
+            <div class="mb-3">
+              <label for="">Date and Time</label>
+              <div>
+                (date picker component)
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="">Nama Lengkap <sup class="text-required">*</sup></label>
+              <div>
+                <input type="text" class="form-control" placeholder="Masukkan Nama Lengkap Pasien" />
+              </div>
+            </div>
+            <div class="d-flex flex-wrap flex-row">
+              <div class="mb-3 w-50">
+                <label for="">Date of Birth <sup class="text-required">*</sup></label>
+                <div>
+                  <input type="date" class="form-control" placeholder="DD-MM-YYYY" />
+                </div>
+              </div>
+              <div class="mb-3 w-50 pl-3">
+                <label for="">ID Number <sup class="text-required">*</sup></label>
+                <div>
+                  <input type="text" class="form-control" placeholder="ID Number" />
+                </div>
+              </div>
+              <div class="mb-3 w-50">
+                <label for="">Mobile Phone <sup class="text-required">*</sup></label>
+                <div>
+                  <input type="text" class="form-control" placeholder="0822..." />
+                </div>
+              </div>
+              <div class="mb-3 w-50 pl-3">
+                <label for="">Email</label>
+                <div>
+                  <input type="text" class="form-control" placeholder="email@domain.com" />
+                </div>
+              </div>
+              <div class="mb-3 w-50">
+                <label for="">Examination <sup class="text-required">*</sup></label>
+                <div>
+                  <input type="text" class="form-control" placeholder="Select Examination"/>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap flex-row">
+              <div class="mb-3 w-50">
+                <label for="">Note</label>
+                <div>
+                  <textarea rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
+                </div>
+              </div>
+              <div class="mb-3 w-50 pl-3">
+                <label for="">Alamat</label>
+                <div>
+                  <textarea rows="3" class="form-control" placeholder="Alamat Pasien"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <!-- View Appointment Modal -->
+        <ng-container>
+          <div class="formclass">
+            <div class="mb-3 px-3">
+              <h4>CT Scan - Room 1</h4>
+            </div>
+            <div class="mb-3 px-3">
+              <label for="">Date and Time</label>
+              <div>
+                (date picker component)
+              </div>
+            </div>
+            <div class="d-flex flex-wrap flex-row mb-3 py-2 bg-secondary px-3">
+              <div class="w-50">
+                <label for="" class="text-muted">Local MR Number</label>
+                <div>
+                  <span class="form-label">4757323</span>
+                </div>
+              </div>
+              <div class="w-50">
+                <label for="" class="text-muted">Admission Number</label>
+                <div>
+                  <span class="form-label">-</span>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 px-3">
+              <label for="" class="text-muted">Nama Lengkap</label>
+              <div>
+                <span class="form-label">Michael Angelo</span>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap flex-row px-3">
+              <div class="mb-3 w-50">
+                <label for="" class="text-muted">Date of Birth</label>
+                <div>
+                  <span class="form-label">12-08-1991</span>
+                </div>
+              </div>
+              <div class="mb-3 w-50 pl-3">
+                <label for="" class="text-muted">ID Number</label>
+                <div>
+                  <span class="form-label">KTP - 1234567890123456</span>
+                </div>
+              </div>
+              <div class="mb-3 w-50">
+                <label for="" class="text-muted">Mobile Phone</label>
+                <div>
+                  <span class="form-label">081234567890</span>
+                </div>
+              </div>
+              <div class="mb-3 w-50 pl-3">
+                <label for="" class="text-muted">Email</label>
+                <div>
+                  <span class="form-label">-</span>
+                </div>
+              </div>
+              <div class="mb-3 w-50">
+                <label for="">Examination <sup class="text-required">*</sup></label>
+                <div>
+                  <input type="text" class="form-control" placeholder="Select Examination"/>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap flex-row px-3">
+              <div class="mb-3 w-50">
+                <label for="">Note</label>
+                <div>
+                  <textarea readonly rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
+                </div>
+              </div>
+              <div class="mb-3 w-50 pl-3">
+                <label for="">Alamat</label>
+                <div>
+                  <textarea readonly rows="3" class="form-control" placeholder="Alamat Pasien"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Notif Data Patient -->
+        <ng-container>
+          <!-- Data Pasien -->
+          <div>Pasien belum melengkapi data, silahkan lengkapi data pasien untuk melanjutkan ke proses Admission.</div>
+          <div class="d-flex flex-row justify-content-end">
+            <button class="btn btn-secondary">Kembali</button>
+            <button class="btn btn-primary ml-2">Lengkapi Data Pasien</button>
+          </div>
+        </ng-container>
+
+        <!-- Appointment Action Modal -->
+        <!-- Appointment Action Modal: Cancel -->
+        <ng-container>
+          <!-- Cancel Check in -->
+          <div>
+            <div class="mb-3">Anda akan membatalkan Appointment ini?</div>
+            <div class="mb-3">
+              <label for="">Alasan <sup class="text-required">*</sup></label>
+              <div>
+                <textarea rows="3" class="form-control" placeholder="Isikan alasan membatalkan appointment"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-row justify-content-end">
+            <button class="btn btn-secondary">Kembali</button>
+            <button class="btn btn-danger ml-2">Cancel Appointment</button>
+          </div>
+        </ng-container>
+        <!-- Appointment Action Modal: Check-in -->
+        <ng-container>
+          <!-- Check in -->
+          <div>
+            <div class="mb-3">Lakukan check in pasien?</div>
+            <div class="mb-3">
+              <label for="">Visit Number Pasien <sup class="text-required">*</sup></label>
+              <div>
+                <input type="text" class="form-control" placeholder="Visit Number" />
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-row justify-content-end">
+            <button class="btn btn-secondary">Kembali</button>
+            <button class="btn btn-success ml-2">Check In</button>
+          </div>
+        </ng-container>
+        <!-- Appointment Action Modal: Check-in Success Notif -->
+        <ng-container>
+          <!-- Check in Berhasil -->
+          <div>
+            <div class="d-flex flex-column align-items-center text-center">
+              <div class="mb-3">
+                <h4>Siloam Hospital Lippo Village</h4>
+                <label for="">26 / 06 / 2022 - 11:37:20</label>
+              </div>
+              <div class="mb-3">
+                <label for="">Your Visit Number</label>
+                <h3>I0002</h3>
+              </div>
+              <div class="mb-3">
+                <h3>Taufik Hidayanto</h3>
+                <label for="">Male, 22 Juni 1998</label>
+              </div>
+            </div>
+            <div class="d-flex flex-row justify-content-around text-center">
+              <div class="mb-3">
+                <label for="">Modality</label>
+                <div>
+                  <h4>CT-Scan Room 1</h4>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="">Date</label>
+                <div>
+                  <h4>26 / 06 /2022</h4>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="">Time</label>
+                <div>
+                  <h4>15:30 - 16:29</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-row justify-content-end">
+            <button class="btn btn-primary">Cetak Tiket</button>
+          </div>
+        </ng-container>
+
+        <!-- Update History Timeline -->
+        <ng-container>
+          <!-- Update History -->
+          <div>
+            <!-- WIP -->
+          </div>
+        </ng-container>
+      </section>
     </div>
   </div>
 </div>
