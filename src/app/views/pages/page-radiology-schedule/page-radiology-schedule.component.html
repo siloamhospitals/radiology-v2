@@ -89,7 +89,12 @@
               <!-- <td>{{item.timeSlot}}</td> -->
               <td style="width: 100px;">{{item.timeSlotFrom}} - {{item.timeSlotTo}}</td>
               <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'">
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.patient}}</td>
+                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">
+                  <div style="display: grid; grid-template-columns: 5px auto; height: 100%; overflow: auto !important;">
+                    <div class="item-indicator mr-1"></div>
+                    <div>{{item.patient}}</div>
+                  </div>
+                </td>
                 <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.dob}}</td>
                 <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.localMrNo}}</td>
                 <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.examination}}</td>
