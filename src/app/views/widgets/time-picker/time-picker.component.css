@@ -2,6 +2,10 @@
   font-size: 14px;
 }
 
+#timer-picker .select-timer{
+  z-index: 20;
+}
+
 #timer-picker .select-option{
   height: 300px;
   overflow-y: hidden;
