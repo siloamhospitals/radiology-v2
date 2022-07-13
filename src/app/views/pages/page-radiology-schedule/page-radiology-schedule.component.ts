@@ -20,10 +20,10 @@ export class PageRadiologyScheduleComponent implements OnInit {
     private modalityService: ModalityService,
   ) { }
 
-  public tableViewCurrentDate: any = new Date()
+  public tableViewCurrentDate: Date
   public tableViewCurrentDateLabel: String = '(not selected date)'
   public tableViewCurrentIsToday: Boolean = false
-  public tableViewActive: any = 2
+  public tableViewActive: number = 2
   public tableViewSelect: any[] = [
     {key: 0, text: 'Day'},
     {key: 1, text: 'Week'},
@@ -249,10 +249,11 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   changeTableDate (date: Date) {
+    if (!(date.getTime())) { return }
     this.tableViewCurrentDate = date ? date : this.tableViewCurrentDate
     // if today date
     this.tableViewCurrentIsToday = moment().isSame(moment(date), 'days')
-    console.log('current Date', date, this.tableViewCurrentDate)
+    console.log('current date 2', date, this.tableViewCurrentDate)
     let formatDate = `DD MMMM YYYY`
     if (this.tableViewActive === 1) { formatDate = '[Minggu ke-]WW MMMM YYYY' } // weekly
     if (this.tableViewActive === 2) { formatDate = 'MMMM YYYY' } // monthly
@@ -285,7 +286,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   toActionDate (backward: Boolean = false) {
     const dtp = this.tableViewActive
-    let t = dtp === 1 ? 'weeks' : dtp === 2 ? 'months' : 'days'
+    let t: moment.unitOfTime.DurationConstructor = dtp === 1 ? 'weeks' : dtp === 2 ? 'months' : 'days'
     let d = moment(this.tableViewCurrentDate).add(1, t).toDate()
     if (backward) {
       d = moment(this.tableViewCurrentDate).subtract(1, t).toDate()

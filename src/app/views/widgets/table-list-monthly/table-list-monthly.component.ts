@@ -42,7 +42,7 @@ export class TableListMonthlyComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.generateCalendarItems()
+    // this.generateCalendarItems()
   }
 
   ngOnChanges (changes: any) {
@@ -122,7 +122,7 @@ export class TableListMonthlyComponent implements OnInit {
       return model
     })
     this.items = lodash.chunk(data, 7)
-    console.log('table monthly', this.items)
+    // console.log('table monthly', this.items)
   }
 
 }
