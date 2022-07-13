@@ -22,7 +22,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
     modalSetting.backdrop = true;
     modalSetting.keyboard = false;
     modalSetting.centered = true;
-    modalSetting.backdropClass = 'modal-backdrop';
   }
 
   public scheduleList: any[]

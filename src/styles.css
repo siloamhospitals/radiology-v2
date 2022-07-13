@@ -1213,14 +1213,6 @@ section .form-control:focus {
   background: #C8CBFA;
 }
 
-.modal-backdrop {
-  background-color: black;
-}
-
-.modal-backdrop-transparant {
-  background-color: rgba(0,0,0,.87);
-}
-
 .modal-content {
   border: none;
 }
@@ -1288,5 +1280,5 @@ section .form-control:focus {
 .modal-custom-size {
   width: 588px;
   border: 0;
-  box-shadow: 0px 8px 16px rgb(0 0 0 / 15%);
+  box-shadow: 0px 8px 16px rgb(0 0 0 / 35%);
 }

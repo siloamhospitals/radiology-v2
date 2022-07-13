@@ -20,7 +20,6 @@ export class ModalDetailScheduleComponent implements OnInit {
     modalSetting.backdrop = 'static';
     modalSetting.keyboard = false;
     modalSetting.centered = true;
-    modalSetting.backdropClass = 'modal-backdrop-transparant';
   }
 
   date : any = moment()
