@@ -25,8 +25,12 @@
               <span class="ml-2">Today</span>
             </button>
             <div style="width: 2px; background: #ccc;"></div>
-            <select class="form-control px-2 mx-2" style="width: 94px;" >
-              <option>Day</option>
+            <select 
+              [(ngModel)]="tableViewActive" 
+              (change)="changeTableView($event)"
+              class="form-control px-2 mx-2" 
+              style="width: 94px;">
+              <option *ngFor="let t of tableViewSelect" [ngValue]="t.key">{{t.text}}</option>
             </select>
             <app-date-picker [selected]="selected" ></app-date-picker>
           </div>
@@ -65,10 +69,14 @@
       <!-- Content -->
       <section class="p-3">
         <app-table-list-monthly
+          *ngIf="tableViewActive===2"
+          (itemClick)="toDaily($event)"
           [data]="scheduleList"></app-table-list-monthly>
         <app-table-list-weekly
+          *ngIf="tableViewActive===1"
           [data]="scheduleList"></app-table-list-weekly>
         <app-table-list-daily
+          *ngIf="tableViewActive===0"
           [data]="scheduleList"></app-table-list-daily>
       </section>
 

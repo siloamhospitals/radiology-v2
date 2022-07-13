@@ -17,6 +17,12 @@ export class PageRadiologyScheduleComponent implements OnInit {
     private modalService: NgbModal,
   ) { }
 
+  public tableViewActive: any = 2
+  public tableViewSelect: any[] = [
+    {key: 0, text: 'Day'},
+    {key: 1, text: 'Week'},
+    {key: 2, text: 'Month'},
+  ]
   public scheduleList: any[]
   protected indexNumber: number = 0
 
@@ -217,5 +223,14 @@ export class PageRadiologyScheduleComponent implements OnInit {
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
+  }
+
+  changeTableView (val?: any) {
+    console.log('view table is changed', val)
+  }
+
+  toDaily (val?: any) {
+    this.tableViewActive = 0
+    this.changeTableView()
   }
 }

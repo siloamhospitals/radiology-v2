@@ -9,6 +9,23 @@
       <tr>
         <td colspan="100%" class="text-center p-3">No data from this section</td>
       </tr>
+      <!-- <ng-container *ngFor="let item of items; let i=index">
+        <tr *ngIf="i%7==0">
+          <td>{{item}}</td>
+        </tr>
+      </ng-container> -->
+      <tr *ngFor="let row of items; let i = index">
+        <td *ngFor="let c of row; let j = index">
+          <div class="pt-1 pb-4">
+            <div class="px-3 py-2 highlight-item-label text-center">{{ (''+j).padStart(2, '0') }}</div>
+            <div class="cursor-pointer" (click)="toDaily(j)">
+              <div class="px-3 py-2 highlight-item-primary">10 Appointment</div>
+              <div class="px-3 py-2 highlight-item-secondary">100 Slot Available</div>
+              <div class="px-3 py-2 highlight-item-warning">9 Maintenence</div>
+            </div>
+          </div>
+        </td>
+      </tr>
     </ng-container>
   </tbody>
 </table>
