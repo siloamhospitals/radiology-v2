@@ -28,7 +28,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public tableViewCurrentDate: Date
   public tableViewCurrentDateLabel: String = '(not selected date)'
   public tableViewCurrentIsToday: Boolean = false
-  public tableViewActive: number = 2
+  public tableViewActive: number = 1
   public tableViewSelect: any[] = [
     {key: 0, text: 'Day'},
     {key: 1, text: 'Week'},
@@ -256,9 +256,15 @@ export class PageRadiologyScheduleComponent implements OnInit {
     this.tableViewCurrentIsToday = moment().isSame(moment(date), 'days')
     console.log('current date 2', date, this.tableViewCurrentDate)
     let formatDate = `DD MMMM YYYY`
-    if (this.tableViewActive === 1) { formatDate = '[Minggu ke-]WW MMMM YYYY' } // weekly
     if (this.tableViewActive === 2) { formatDate = 'MMMM YYYY' } // monthly
     this.tableViewCurrentDateLabel = moment(this.tableViewCurrentDate).format(formatDate)
+    // weekly sets
+    if (this.tableViewActive === 1) {
+      const now = moment(this.tableViewCurrentDate)
+      const minDay = now.clone().weekday(1)
+      const maxDay = now.clone().weekday(7)
+      this.tableViewCurrentDateLabel = `${minDay.format('DD MMMM YYYY')} - ${maxDay.format('DD MMMM YYYY')}`
+    }
   }
 
   changeTableDateSelected (date: any) {

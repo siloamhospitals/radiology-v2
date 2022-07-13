@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-table-list-weekly',
@@ -11,13 +12,13 @@ export class TableListWeeklyComponent implements OnInit {
   @Input() dateSelected: Date
 
   days: any[] = [
-    'Senin',
-    'Selasa',
-    'Rabu',
-    'Kamis',
-    'Jumat',
-    'Sabtu',
-    'Minggu',
+    {date: null, label: 'Senin', value: '01'},
+    {date: null, label: 'Selasa', value: '02'},
+    {date: null, label: 'Rabu', value: '03'},
+    {date: null, label: 'Kamis', value: '04'},
+    {date: null, label: 'Jumat', value: '05'},
+    {date: null, label: 'Sabtu', value: '06'},
+    {date: null, label: 'Minggu', value: '06'},
   ]
 
   scheduleList: any[] = []
@@ -28,8 +29,30 @@ export class TableListWeeklyComponent implements OnInit {
     this.scheduleListGenerate()
   }
 
+  ngOnChanges(changes: any) {
+    // console.log('chanes', changes)
+    this.generateDayLabel()
+  }
+
   scheduleListGenerate () {
     this.scheduleList = this.data
+  }
+
+  generateDayLabel () {
+    const now = moment(this.dateSelected)
+    const minDay = now.clone().weekday(0)
+    const maxDay = now.clone().weekday(6)
+    const weeks = []
+    for(let d = Number(minDay.format('d')); d<=Number(maxDay.format('d'))+1; d++) {
+      const current = minDay.clone().add(d, 'days')
+      weeks[d] = {
+        date: current.toDate(),
+        label: current.format('dddd'),
+        value: current.format('DD'),
+      }
+    }
+    this.days = weeks
+    return this.days
   }
 
 }
