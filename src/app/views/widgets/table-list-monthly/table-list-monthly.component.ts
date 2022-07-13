@@ -10,6 +10,16 @@ export class TableListMonthlyComponent implements OnInit {
 
   @Input() data: any[]
   @Output() itemClick = new EventEmitter<string>()
+  
+  itemModel = {
+    date: '2022-01-01',
+    dateLabel: '01',
+    items: {
+      availables: 99,
+      appointments: 9,
+      maintenences: 1,
+    }
+  }
 
   days: any[] = [
     'Senin',
@@ -40,7 +50,12 @@ export class TableListMonthlyComponent implements OnInit {
   }
 
   generateCalendarItems () {
-    this.items = lodash.chunk(this.items, 7)
+    const data = Array(42).fill({}).map((item: any) => {
+      const model = this.itemModel
+      return model
+    })
+    this.items = lodash.chunk(data, 7)
+    console.log('table monthly', this.items)
   }
 
   getFirstDay(theYear: any, theMonth: any){
