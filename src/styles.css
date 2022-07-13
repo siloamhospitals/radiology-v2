@@ -1332,16 +1332,10 @@ section .form-control:focus {
   transition: .4s;
 }
 
-.multiselect-item-checkbox[_ngcontent-serverApp-c6] input[type=checkbox][_ngcontent-serverApp-c6] + div[_ngcontent-serverApp-c6]:before {
+.multiselect-item {
   box-sizing: content-box;
   content: '';
   color: #337ab7;
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 14px;
-  height: 14px;
-  margin-top: -9px;
   border: 2px solid #dbdbdb !important;
   text-align: center;
   transition: .4s;
