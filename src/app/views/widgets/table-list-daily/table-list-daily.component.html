@@ -22,11 +22,10 @@
       <!-- <td>{{item.timeSlot}}</td> -->
       <td style="width: 100px;">{{item.timeSlotFrom}} - {{item.timeSlotTo}}</td>
       <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'" >
-        <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-scheduled cursor-pointer" (click)="detailSchedule()" >
-          <div style="display: grid; grid-template-columns: 5px auto; height: 100%; overflow: auto !important;">
-            <div class="item-indicator mr-1"></div>
-            <div>{{item.patient}}</div>
-          </div>
+        <td [attr.rowspan]="item.rowspan || 1"
+          class="table-td table-td-scheduled cursor-pointer item-indicator-primary"
+          (click)="detailSchedule()" >
+          <div>{{item.patient}}</div>
         </td>
         <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-scheduled">{{item.dob}}</td>
         <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-scheduled">{{item.localMrNo}}</td>
@@ -41,7 +40,9 @@
         </td>
       </ng-container>
       <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status === 'note'">
-        <td [attr.rowspan]="item.rowspan || 1" colspan="7" class="table-td table-td-{{item.status}}">
+        <td [attr.rowspan]="item.rowspan || 1" 
+          colspan="7" 
+          class="table-td table-td-note item-indicator-warning">
           {{item.note}}</td>
       </ng-container>
       <ng-container *ngIf="!item.isCanCreate && item.isSpan">
