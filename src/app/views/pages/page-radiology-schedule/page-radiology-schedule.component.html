@@ -259,16 +259,22 @@
                                 <h4>CT Scan - Room 1w</h4>
                               </div>
                               <div class="d-flex flex-row justify-content-start">
-                                <div class="pl-0 w-25">
+                                <div class="pl-0 col-md-3" style="border-right: 1px doted rgba(200, 203, 250, 0.5); ">
                                   <label for="">Date and Time</label>
                                   <div>
-                                    <div class="position-relative pr-0">
-                                      <input class="form-control input-filter pr-4" type="text" placeholder="DD-MM-YYY"
-                                        title="Senin, 09 May 2022"/>
+                                    <div class="position-relative">
+                                      <app-date-picker [selected]="selected" class="input-filter" ></app-date-picker>
                                     </div>
                                   </div>
                                 </div>
-                                <div class="pl-3 w-25">
+                                <div class="col-md-2 flex-row justify-content-start">
+                                  <div class="d-flex align-items-center pt-3 mt-3 pr-5">
+                                    <app-time-picker placeholder="23:00" ></app-time-picker>
+                                    <b> - </b>
+                                    <app-time-picker placeholder="23:00" ></app-time-picker>
+                                  </div>
+                                </div>
+                                <div class="pl-5 col-md-6">
                                   <label for="">Examination <sup class="text-required">*</sup></label>
                                   <div>
                                     <select class="form-control">
@@ -300,12 +306,25 @@
                     <ng-container>
                       <div class="formclass pl-3 pt-3 pr-3">
                         <div class="mb-3">
-                          <h4>CT Scan - Room 1</h4>
-                        </div>
-                        <div class="mb-3">
-                          <label for="">Date and Time</label>
-                          <div>
-                            (date picker component)
+                          <div class="mb-3">
+                            <h4>CT Scan - Room 1w</h4>
+                          </div>
+                          <div class="d-flex flex-row justify-content-start">
+                            <div class="pl-0 col-md-3" style="border-right: 1px doted rgba(200, 203, 250, 0.5); ">
+                              <label for="">Date and Time</label>
+                              <div>
+                                <div class="position-relative">
+                                  <app-date-picker [selected]="selected" class="input-filter" ></app-date-picker>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-2 flex-row justify-content-start">
+                              <div class="d-flex align-items-center pt-3 mt-3 pr-5">
+                                <app-time-picker placeholder="23:00" ></app-time-picker>
+                                <b> - </b>
+                                <app-time-picker placeholder="23:00" ></app-time-picker>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div class="mb-3">

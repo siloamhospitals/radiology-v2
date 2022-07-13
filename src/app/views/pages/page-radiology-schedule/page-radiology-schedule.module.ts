@@ -32,7 +32,9 @@ import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedul
     TimepickerModule,
     ModalCancelAppointmentModule,
     ModalCreateAdmissionModule,
-    ModalDetailScheduleModule
+    ModalDetailScheduleModule,
+    NgbModule, 
+    NgbTabsetModule
   ],
   exports: [
     PageRadiologyScheduleComponent

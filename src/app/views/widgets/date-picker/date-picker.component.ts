@@ -6,10 +6,15 @@ import * as moment from 'moment'
   templateUrl: './date-picker.component.html',
   styleUrls: ['./date-picker.component.css']
 })
+
 export class DatepickerComponent implements OnInit {
-
-  constructor() { }
-
+  public moment: any = moment;
+  public today: any = moment().locale('id').format('dddd, DD-MM-YYYY')
+  
+  dateFormat: 'dd, DD-MM-YYYY'
+  constructor() {
+    moment.locale('id');
+   }
 
   @Input() width : string = '94px'
   @Input() selected = moment()
