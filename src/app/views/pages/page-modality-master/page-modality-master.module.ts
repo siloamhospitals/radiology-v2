@@ -6,22 +6,19 @@ import { SectionSidebarModule } from '../../sections/section-sidebar/section-sid
 import { SectionFooterModule } from '../../sections/section-footer/section-footer.module';
 import { PageSwabListRoutingModule } from './page-modality-master-routing.module';
 import { PageModalityMasterComponent } from './page-modality-master.component';
-import { WidgetSwabListComponent } from '../../widgets/widget-swab-list/widget-swab-list.component';
-import { MyDatePickerModule } from 'mydatepicker';
-import { MyDateRangePickerModule } from 'mydaterangepicker';
+
 import { TextMaskModule } from 'angular2-text-mask';
-import { NgbAlertModule, NgbPopoverModule, NgbProgressbarModule, NgbModalModule, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
-import { AutocompleteLibModule } from 'angular-ng-autocomplete';
-import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown-angular7';
+
 import { ModalModalityentModule } from '../../widgets/modal-modality/modal-modality.module';
 import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modality.component';
 
 @NgModule({
   declarations: [
-    PageModalityMasterComponent,
-    WidgetSwabListComponent,
+    PageModalityMasterComponent
   ],
   imports: [
+    NgMultiSelectDropDownModule.forRoot(),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -29,23 +26,15 @@ import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modal
     SectionHeaderModule,
     SectionSidebarModule,
     SectionFooterModule,
-    MyDatePickerModule,
-    MyDateRangePickerModule,
-    NgbDatepickerModule,
     TextMaskModule,
-    NgbAlertModule,
-    NgbPopoverModule,
-    NgbProgressbarModule,
-    NgbModalModule,
-    AutocompleteLibModule,
-    NguiAutoCompleteModule,
     ModalModalityentModule
   ],
   exports: [
-    PageModalityMasterComponent,
+    PageModalityMasterComponent
   ],
   entryComponents: [
     ModalModalityComponent
-  ]
+  ],
+  bootstrap: [PageModalityMasterComponent]
 })
 export class PageModalityMasterModule { }

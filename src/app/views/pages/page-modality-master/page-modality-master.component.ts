@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modality.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-page-modality-master',
@@ -14,21 +12,15 @@ export class PageModalityMasterComponent implements OnInit {
   checklist:any;
   checkedList:any;
   clickedComponentList: boolean;
+  dropdownListSchduleType: { item_id: number; item_text: string; }[];
+  dropdownListFloor: { item_id: number; item_text: string; }[];
+  dropdownListStatus: { item_id: number; item_text: string; }[];
+  selectedItems: { item_id: number; item_text: string; }[];
+  dropdownSettings: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
 
-  constructor( private modalService: NgbModal) { 
+  constructor() { 
     this.clickedComponentList = false;
     this.masterSelected = false;
-      this.checklist = [
-        {id:1,value:'Elenor Anderson',isSelected:false},
-        {id:2,value:'Caden Kunze',isSelected:true},
-        {id:3,value:'Ms. Hortense Zulauf',isSelected:true},
-        {id:4,value:'Grady Reichert',isSelected:false},
-        {id:5,value:'Dejon Olson',isSelected:false},
-        {id:6,value:'Jamir Pfannerstill',isSelected:false},
-        {id:7,value:'Aracely Renner DVM',isSelected:false},
-        {id:8,value:'Genoveva Luettgen',isSelected:false}
-      ];
-      this.getCheckedItemList();
   }
 
   checkUncheckAll() {
@@ -51,23 +43,57 @@ export class PageModalityMasterComponent implements OnInit {
     this.checkedList = [];
     for (var i = 0; i < this.checklist.length; i++) {
       if(this.checklist[i].isSelected)
-      this.checkedList.push(this.checklist[i].value);
+      this.checkedList.push(this.checklist[i]);
     }
-    this.checkedList = JSON.stringify(this.checkedList.toString());
+    this.checkedList = JSON.stringify(this.checkedList);
   }
 
   showListType(){
-    
-  }
-
-  showModalityModal() {
-    const m = this.modalService.open(ModalModalityComponent, { windowClass: 'modal_modality', backdrop: 'static', keyboard: false })
-    m.result.then((result: any) => {
-      console.log('modal is closed', {result})
-    })
+    this.clickedComponentList = true;
   }
 
   ngOnInit() {
+    this.dropdownListSchduleType = [
+      { item_id: 1, item_text: 'Mumbai' },
+      { item_id: 2, item_text: 'Bangaluru' },
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' },
+      { item_id: 5, item_text: 'New Delhi' }
+    ];
+    this.dropdownListFloor = [
+      { item_id: 1, item_text: 'Mumbai' },
+      { item_id: 2, item_text: 'Bangaluru' },
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' },
+      { item_id: 5, item_text: 'New Delhi' }
+    ];
+    this.dropdownListStatus = [
+      { item_id: 1, item_text: 'Mumbai' },
+      { item_id: 2, item_text: 'Bangaluru' },
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' },
+      { item_id: 5, item_text: 'New Delhi' }
+    ];
+    this.selectedItems = [
+      { item_id: 3, item_text: 'Pune' },
+      { item_id: 4, item_text: 'Navsari' }
+    ];
+    this.dropdownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
+  }
+
+  onItemSelect(item: any) {
+    console.log(item);
+  }
+  onSelectAll(items: any) {
+    console.log(items);
   }
 
 }

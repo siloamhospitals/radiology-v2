@@ -29,49 +29,37 @@
               <span class="fa fa-search position-absolute"></span>
             </div>
             <div class="col-md-2 position-relative pr-0 border-right" >
-                <ul class="list-group" (mouseover)="clickedComponentList=true" >
-                  <li class="list-group-item"   style="border: 0px !important;">
-                    <input class="form-control pt-3 input-filter pr-4" type="text" value="{{checkedList}}" placeholder="Schedule Type"
-                title="Find patients" />
-                  </li>
-                </ul>
-                <ul class="list-group" *ngIf="clickedComponentList" style="position: absolute;" >
-                  <li class="list-group-item" *ngFor="let item of checklist" >
-                    <input (mouseout)="clickedComponentList=false" type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
-                      (change)="isAllSelected()" />
-                    {{item.value}}
-                  </li>
-                </ul>
+              <ng-multiselect-dropdown-angular7
+                [placeholder]="'Schdule Type'"
+                [data]="dropdownListSchduleType"
+                [(ngModel)]="selectedItemsSchdule"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown-angular7>
             </div>
             <div class="col-md-2 position-relative pr-0 border-right" >
-              <ul class="list-group" (mouseover)="clickedComponentList=true" >
-                <li class="list-group-item"   style="border: 0px !important;">
-                  <input class="form-control pt-3 input-filter pr-4" type="text" value="{{checkedList}}" placeholder="Schedule Type"
-              title="Find patients" />
-                </li>
-              </ul>
-              <ul class="list-group" *ngIf="clickedComponentList" style="position: absolute;" >
-                <li class="list-group-item" *ngFor="let item of checklist" >
-                  <input (mouseout)="clickedComponentList=false" type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
-                    (change)="isAllSelected()" />
-                  {{item.value}}
-                </li>
-              </ul>
-          </div>
+              <ng-multiselect-dropdown-angular7
+                [placeholder]="'Floor'"
+                [data]="dropdownListFloor"
+                [(ngModel)]="selectedItemsFloor"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown-angular7>
+            </div>
             <div class="col-md-2 position-relative pr-0 border-right" >
-              <ul class="list-group" (mouseover)="clickedComponentList=true" >
-                <li class="list-group-item"   style="border: 0px !important;">
-                  <input class="form-control pt-3 input-filter pr-4" type="text" value="{{checkedList}}" placeholder="Schedule Type"
-              title="Find patients" />
-                </li>
-              </ul>
-              <ul class="list-group" *ngIf="clickedComponentList" style="position: absolute;" >
-                <li class="list-group-item" *ngFor="let item of checklist" >
-                  <input (mouseout)="clickedComponentList=false" type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
-                    (change)="isAllSelected()" />
-                  {{item.value}}
-                </li>
-              </ul>
+              <ng-multiselect-dropdown-angular7
+                [placeholder]="'Status'"
+                [data]="dropdownListStatus"
+                [(ngModel)]="selectedItemsStatus"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown-angular7>
           </div>
             
           </div>
