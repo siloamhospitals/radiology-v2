@@ -64,6 +64,8 @@
 
       <!-- Content -->
       <section class="p-3">
+        <app-table-list-weekly
+          [data]="scheduleList"></app-table-list-weekly>
         <table class="table table-bordered mt-3 table-list-radiology">
           <thead class="border-0 bg-secondary">
             <tr>
@@ -288,8 +290,7 @@
 
 
 
-
-      <section class="p-5">
+      <section *ngIf="false" class="p-5">
         <!-- Create / Update Appointment Modal -->
         <ng-container>
           <button class="btn btn-outline-primary mb-2 me-2" (click)="detailSchedule()">create admission test</button>

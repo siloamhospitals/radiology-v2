@@ -17,6 +17,7 @@ import { ModalCreateAdmissionComponent } from '../../widgets/modal-create-admiss
 import { ModalCreateAdmissionModule } from '../../widgets/modal-create-admission/modal-create-admission.module';
 import { ModalDetailScheduleModule } from '../../widgets/modal-detail-schedule/modal-detail-schedule.module';
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
+import { TableListWeeklyModule } from '../../widgets/table-list-weekly/table-list-weekly.module';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -32,7 +33,8 @@ import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedul
     TimepickerModule,
     ModalCancelAppointmentModule,
     ModalCreateAdmissionModule,
-    ModalDetailScheduleModule
+    ModalDetailScheduleModule,
+    TableListWeeklyModule,
   ],
   exports: [
     PageRadiologyScheduleComponent
