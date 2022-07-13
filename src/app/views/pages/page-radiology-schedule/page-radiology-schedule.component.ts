@@ -330,8 +330,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   initView (viewId: number, dateVal: Date) {
     dateVal = new Date(dateVal)
-    // console.log({viewId, dateVal})
-    this.tableViewActive = Number(viewId)
+    this.tableViewActive = !isNaN(Number(viewId)) ? Number(viewId) : 0
     this.changeTableDate(dateVal)
   }
 }
