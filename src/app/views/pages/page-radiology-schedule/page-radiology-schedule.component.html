@@ -17,7 +17,7 @@
             <button class="btn">
               <span class="fa fa-angle-right font-weight-bold"></span>
             </button>
-            <span>06 May, 2022</span>
+            <span>{{tableViewCurrentDateLabel}}</span>
           </div>
           <div class="d-flex align-items-center">
             <button class="btn btn-light font-weight-bold text-muted d-flex mx-2">
@@ -32,7 +32,10 @@
               style="width: 94px;">
               <option *ngFor="let t of tableViewSelect" [ngValue]="t.key">{{t.text}}</option>
             </select>
-            <app-date-picker (newItemEvent)="addItem($event)" [selected]="selected"></app-date-picker>
+            <app-date-picker 
+              (changeValue)="changeTableDateSelected($event)" 
+              width="140px"
+              [selected]="tableViewCurrentDate"></app-date-picker>
           </div>
 
         </div>
@@ -71,12 +74,15 @@
         <app-table-list-monthly
           *ngIf="tableViewActive===2"
           (itemClick)="toDaily($event)"
+          [dateSelected]="tableViewCurrentDate"
           [data]="scheduleList"></app-table-list-monthly>
         <app-table-list-weekly
           *ngIf="tableViewActive===1"
+          [dateSelected]="tableViewCurrentDate"
           [data]="scheduleList"></app-table-list-weekly>
         <app-table-list-daily
           *ngIf="tableViewActive===0"
+          [dateSelected]="tableViewCurrentDate"
           [data]="scheduleList"></app-table-list-daily>
       </section>
 

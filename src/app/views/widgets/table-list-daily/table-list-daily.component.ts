@@ -10,6 +10,7 @@ import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-det
 export class TableListDailyComponent implements OnInit {
 
   @Input() data: any[]
+  @Input() dateSelected: Date
   
   constructor(
     private modalService: NgbModal,

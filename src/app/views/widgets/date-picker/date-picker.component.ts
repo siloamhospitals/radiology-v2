@@ -16,13 +16,13 @@ export class DatepickerComponent implements OnInit {
   @Input() format = 'MMMM YYYY';
   @Input() hideIcon: boolean;
 
-  @Output() newItemEvent = new EventEmitter<string>();
+  @Output() changeValue = new EventEmitter<string>();
 
   locale: object;
 
-  addNewItem(value: string) {
+  changeSelected(value: string) {
     value = this.selected.startDate ? this.selected.startDate.format('YYYY-MM-DD') : '';
-    this.newItemEvent.emit(value);
+    this.changeValue.emit(value);
   }
 
   ngOnInit() {

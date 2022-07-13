@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
+import * as moment from 'moment';
 
 // import * as moment from 'moment';
 
@@ -19,6 +20,8 @@ export class PageRadiologyScheduleComponent implements OnInit {
     private modalityService: ModalityService,
   ) { }
 
+  public tableViewCurrentDate: any = new Date()
+  public tableViewCurrentDateLabel: String = '(not selected date)'
   public tableViewActive: any = 2
   public tableViewSelect: any[] = [
     {key: 0, text: 'Day'},
@@ -29,7 +32,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
   protected indexNumber: number = 0
 
   public createAppointmentTabId: number = 1
-  public selected: any = '';
 
   public key: any = JSON.parse(localStorage.getItem('key') || '{}');
   public hospital = this.key.hospital;
@@ -51,7 +53,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   ]
 
   ngOnInit() {
-    this.getCategories();
+    this.initTodayView();
     this.scheduleListGenerate();
     this.scheduleListSquash();
     //this.scheduleList()
@@ -228,9 +230,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
     })
   }
 
-  getModalityHospitalList() {
-    if(this.selected && this.selectedTimeSchedule) {
-      this.modalityService.getModalityHospital(this.hospital.id, this.selected, this.selected)
+  getModalityHospitalList(val?: any) {
+    if(val && this.selectedTimeSchedule) {
+      this.modalityService.getModalityHospital(this.hospital.id, val, val)
         .subscribe(res => {
           const activeModalityHospital = res.data.map((eachModality: any) => {
               if (eachModality.status === '1') return eachModality;
@@ -245,26 +247,27 @@ export class PageRadiologyScheduleComponent implements OnInit {
     }
   }
 
-  addItem(event: any) {
-    this.selected = event;
-    this.getModalityHospitalList();
+  changeTableDate (date: Date) {
+    this.tableViewCurrentDate = date ? date : this.tableViewCurrentDate
+    console.log('current Date', date, this.tableViewCurrentDate)
+    let formatDate = `DD MMMM YYYY`
+    if (this.tableViewActive === 1) { formatDate = '[Minggu ke-]WW MMMM YYYY' } // weekly
+    if (this.tableViewActive === 2) { formatDate = 'MMMM YYYY' } // monthly
+    this.tableViewCurrentDateLabel = moment(this.tableViewCurrentDate).format(formatDate)
   }
 
-  getCategories() {
-    this.categories = [{
-      value: '1',
-      description: 'Day'
-    }, {
-      value: '2',
-      description: 'Week'
-    }, {
-      value: '3',
-      description: 'Month'
-    }]
+  changeTableDateSelected (date: any) {
+    this.changeTableDate(moment(date, 'YYYY-MM-DD').toDate())
+    this.getModalityHospitalList(date)
+  }
+
+  initTodayView () {
+    this.changeTableDate(new Date())
   }
 
   changeTableView (val?: any) {
     console.log('view table is changed', val)
+    this.changeTableDate(new Date())
   }
 
   toDaily (val?: any) {
