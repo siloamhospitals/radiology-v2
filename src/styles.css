@@ -1343,3 +1343,11 @@ section .form-control:focus {
   text-align: center;
   transition: .4s;
 }
+
+.item-hover:hover {
+  background-color: #f5f5f5;
+}
+
+.item-hover:active {
+  background-color: #eee;
+}

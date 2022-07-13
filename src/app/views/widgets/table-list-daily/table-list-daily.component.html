@@ -16,7 +16,7 @@
         <td colspan="100%" class="text-center p-3">No data from this section</td>
       </tr>
     </ng-container>
-    <tr *ngFor="let item of data; let i=index">
+    <tr *ngFor="let item of data; let i=index" class="item-hover">
       <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle; width: 25px;" class="text-right">
         {{(item.rowIndex).toString().padStart(2, '0')}}</td>
       <!-- <td>{{item.timeSlot}}</td> -->
