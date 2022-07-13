@@ -1,48 +1,79 @@
 <div class="modal-content" style="width: 800px;">
-  <div class="modal-header">
-    <div class="header">
-      Cancel Appointment
-    </div>
-    <button #close_button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <ul class="timeline">
-      <li>
-         <!-- begin timeline-time -->
-         <div class="timeline-time">
-            <span class="lastupdate">Last Updated</span>
-            <span class="time">12/06/2022</span>
-            <span class="time">04:20</span>
+   <div class="modal-header">
+      <div class="header">
+         Modality
+      </div>
+      <button #close_button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <div class="modal-body">
+      <ng-container>
+         <div class="formclass">
+         <div class="mb-3 px-3">
+            <h4>New Radiology Modality</h4>
          </div>
-         <!-- end timeline-time -->
-         <!-- begin timeline-icon -->
-         <div class="timeline-icon">
-            <a href="javascript:;">&nbsp;</a>
-         </div>
-         <!-- end timeline-icon -->
-         <!-- begin timeline-body -->
-         <div class="timeline-body">
-            <div class="timeline-header">
-               <span class="username"><a href="javascript:;">John Smith</a> <small></small></span>
-               <span class="pull-right text-muted">By Admin Fo-2</span>
+         <div class="mb-3 px-3">
+            <label for="">Modality Name</label>
+            <div>
+               <input type="text" class="form-control input-lg" placeholder="Type modality name" />
             </div>
-            <div class="timeline-content">
-               <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                  Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
-               </p>
-            </div>
-            
          </div>
-         <!-- end timeline-body -->
-      </li>
-   </ul>
-  </div>
-  <div class="modal-footer">
-    <div class="d-flex flex-row justify-content-end">
-      <button class="btn btn-primary ml-2">Tutup</button>
-    </div>
+         
+        
+         <div class="d-flex flex-wrap flex-row px-3">
+            <div class="mb-3 w-30">
+               <label for="" class="text-muted" >Schdule Type</label>
+            </div>
+         </div>
+         <div class="d-flex flex-wrap flex-row px-3">
+            <div class="w-15 p-3">
+               <div>
+               <input type="radio" class="form-control" style="width: 80px;margin-left:-30px;margin-top:-5px" >
+               </div>
+            </div>
+          
+            <div class="w-75 p-3">
+               <div>
+                  <label style="margin-left: -40px;"> Fixed Appointment</label>
+                  <input type="select" class="form form-control" style="margin-left: -40px;">
+               </div>
+            </div>
+         </div>
+         <div class="d-flex flex-wrap flex-row px-3">
+            <div class="w-15 p-3">
+               <div>
+               <input type="radio" class="form-control" style="width: 80px;margin-left:-30px;margin-top:-5px" >
+               </div>
+            </div>
+          
+            <div class="w-75 p-3">
+               <div>
+                  <label style="margin-left: -40px;">Fixed Appointment</label>
+               </div>
+            </div>
+         </div>
+         <div class="mb-3 px-3">
+            <label for="">Room</label>
+            <div>
+               <input type="text" class="form-control input-lg" placeholder="Type modality name" />
+            </div>
+         </div>
+
+         <div class="mb-3 px-3">
+            <label for="">Note</label>
+            <div>
+               <input type="text" class="form-control input-lg" placeholder="Type modality name" />
+            </div>
+         </div>
+        
+         </div>
+      </ng-container>
+   </div>
+   <div class="modal-footer">
+   <div class="d-flex flex-row justify-content-end">
+      <button class="btn btn-default ml-2">Reset</button>
+      <button class="btn btn-primary ml-2">Save</button>
+   </div>
   </div>
 </div>
