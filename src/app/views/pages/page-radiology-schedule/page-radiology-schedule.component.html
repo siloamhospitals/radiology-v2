@@ -54,7 +54,7 @@
               <small>Time Range</small>
               <div class="d-flex align-items-center">
                 <app-time-picker placeholder="23:00" ></app-time-picker>
-                <b>-</b>
+                <b class="mx-2" >-</b>
                 <app-time-picker placeholder="23:00" ></app-time-picker>
               </div>
             </div>
@@ -123,9 +123,9 @@
                 {{(item.rowIndex).toString().padStart(2, '0')}}</td>
               <!-- <td>{{item.timeSlot}}</td> -->
               <td style="width: 100px;">{{item.timeSlotFrom}} - {{item.timeSlotTo}}</td>
-              <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'">
+              <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'" >
                 <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">
-                  <div style="display: grid; grid-template-columns: 5px auto; height: 100%; overflow: auto !important;">
+                  <div class="cursor-pointer" (click)="detailSchedule()" style="display: grid; grid-template-columns: 5px auto; height: 100%; overflow: auto !important;">
                     <div class="item-indicator mr-1"></div>
                     <div>{{item.patient}}</div>
                   </div>
@@ -292,7 +292,7 @@
       <section class="p-5">
         <!-- Create / Update Appointment Modal -->
         <ng-container>
-          <button class="btn btn-outline-primary mb-2 me-2" (click)="detailSchedule()">create admission test</button>
+          <button class="btn btn-outline-primary mb-2 me-2" (click)="detailSchedule()">detail schedule create admission test</button>
           <div class="formclass">
             <div class="mb-3">
               <h4>CT Scan - Room 1</h4>

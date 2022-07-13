@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment'
 
 @Component({
   selector: 'app-modal-detail-schedule',
@@ -11,6 +12,8 @@ export class ModalDetailScheduleComponent implements OnInit {
   constructor(
     private activeModal: NgbActiveModal,
   ) { }
+
+  date : any = moment()
 
   ngOnInit() {
   }

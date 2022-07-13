@@ -1,52 +1,80 @@
-<div class="modal-content">
-  <div class="modal-header">
+<div id="modal-detail-schedule" class="modal-content">
+  <div class="modal-header border-bottom-0">
     <div class="header">
-      // masukin icon ya diriku
+      <button class="btn border-0" >  
+        <span class="fa fa-lg fa-trash-o text-muted" ></span>
+      </button>
+      <button class="btn border-0" >  
+        <span class="fa fa-lg fa-history text-muted" ></span>
+      </button>
+      <button class="btn border-0" >  
+        <span class="fa fa-lg fa-check-circle-o text-muted" ></span>
+      </button>
     </div>
-    <button #close_button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
+    <button #close_button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal- px-0">
     <div class="formclass">
-      <div class="mb-3">
+      <div class="mb-3 d-flex align-items-center justify-content-between px-3">
         <h4>CT Scan - Room 1</h4>
+        <span class="badge badge-primary p-2 rounded-pill">
+          <h6 class="mb-0" >Scheduled</h6>
+        </span>
       </div>
-      <div class="mb-3">
+      <div class="mb-3 px-3">
         <label for="">Date and Time</label>
-        <div>
-          (date picker component)
+        <div class="d-flex align-items-center" >
+          <app-date-picker format="dddd, DD MMMM YYYY" width="160px" hideIcon="true" ></app-date-picker>
+          <span class="mx-2" >|</span>
+          <app-time-picker useMinute="true" ></app-time-picker>&nbsp;
+          <app-time-picker useMinute="true" ></app-time-picker>
         </div>
       </div>
-      <div class="mb-3">
-        <label for="">Nama Lengkap <sup class="text-required">*</sup></label>
-        <div>
-          <input type="text" class="form-control" placeholder="Masukkan Nama Lengkap Pasien" />
-        </div>
-      </div>
-      <div class="d-flex flex-wrap flex-row">
-        <div class="mb-3 w-50">
-          <label for="">Date of Birth <sup class="text-required">*</sup></label>
+      <div class="d-flex flex-wrap flex-row mb-3 py-2 bg-secondary px-3">
+        <div class="w-50">
+          <label for="" class="text-muted">Local MR Number</label>
           <div>
-            <input type="date" class="form-control" placeholder="DD-MM-YYYY" />
+            <span class="form-label">4757323</span>
+          </div>
+        </div>
+        <div class="w-50">
+          <label for="" class="text-muted">Admission Number</label>
+          <div>
+            <span class="form-label">-</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3 px-3">
+        <label for="" class="text-muted">Nama Lengkap</label>
+        <div>
+          <span class="form-label">Michael Angelo</span>
+        </div>
+      </div>
+      <div class="d-flex flex-wrap flex-row px-3">
+        <div class="mb-3 w-50">
+          <label for="" class="text-muted">Date of Birth</label>
+          <div>
+            <span class="form-label">12-08-1991</span>
           </div>
         </div>
         <div class="mb-3 w-50 pl-3">
-          <label for="">ID Number <sup class="text-required">*</sup></label>
+          <label for="" class="text-muted">ID Number</label>
           <div>
-            <input type="text" class="form-control" placeholder="ID Number" />
+            <span class="form-label">KTP - 1234567890123456</span>
           </div>
         </div>
         <div class="mb-3 w-50">
-          <label for="">Mobile Phone <sup class="text-required">*</sup></label>
+          <label for="" class="text-muted">Mobile Phone</label>
           <div>
-            <input type="text" class="form-control" placeholder="0822..." />
+            <span class="form-label">081234567890</span>
           </div>
         </div>
         <div class="mb-3 w-50 pl-3">
-          <label for="">Email</label>
+          <label for="" class="text-muted">Email</label>
           <div>
-            <input type="text" class="form-control" placeholder="email@domain.com" />
+            <span class="form-label">-</span>
           </div>
         </div>
         <div class="mb-3 w-50">
@@ -56,26 +84,27 @@
           </div>
         </div>
       </div>
-      <div class="d-flex flex-wrap flex-row">
+      <div class="d-flex flex-wrap flex-row px-3">
         <div class="mb-3 w-50">
           <label for="">Note</label>
           <div>
-            <textarea rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
+            <textarea readonly rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
           </div>
         </div>
         <div class="mb-3 w-50 pl-3">
           <label for="">Alamat</label>
           <div>
-            <textarea rows="3" class="form-control" placeholder="Alamat Pasien"></textarea>
+            <textarea readonly rows="3" class="form-control" placeholder="Alamat Pasien"></textarea>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="modal-footer">
-    <div class="d-flex flex-row justify-content-end">
-      <div class="btn btn-danger ml-2">Local Updated by FO 2</div>
-      <button class="btn btn-danger ml-2">Save Changes</button>
-    </div>
+  <div class="modal-footer d-flex align-items-center justify-content-between">
+      <div>
+        <span class="text-muted" >Local Updated by </span><br/>
+        <h5 class="text-primary">Admin FO 2</h5>
+      </div>
+      <button class="btn btn-success ml-2">Save Changes</button>
   </div>
 </div>
