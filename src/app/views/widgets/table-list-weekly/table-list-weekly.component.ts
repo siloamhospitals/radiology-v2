@@ -40,16 +40,17 @@ export class TableListWeeklyComponent implements OnInit {
 
   generateDayLabel () {
     const now = moment(this.dateSelected)
+    // console.log('now', now)
     const minDay = now.clone().weekday(0)
-    const maxDay = now.clone().weekday(6)
+    // const maxDay = minDay.clone().weekday(6)
     const weeks = []
-    for(let d = Number(minDay.format('d')); d<=Number(maxDay.format('d'))+1; d++) {
+    for(let d = Number(minDay.format('d')); d<7; d++) {
       const current = minDay.clone().add(d, 'days')
-      weeks[d] = {
+      weeks.push({
         date: current.toDate(),
         label: current.format('dddd'),
         value: current.format('DD'),
-      }
+      })
     }
     this.days = weeks
     return this.days
