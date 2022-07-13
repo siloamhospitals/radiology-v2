@@ -19,6 +19,12 @@ export class PageRadiologyScheduleComponent implements OnInit {
     private modalityService: ModalityService,
   ) { }
 
+  public tableViewActive: any = 2
+  public tableViewSelect: any[] = [
+    {key: 0, text: 'Day'},
+    {key: 1, text: 'Week'},
+    {key: 2, text: 'Month'},
+  ]
   public scheduleList: any[]
   protected indexNumber: number = 0
 
@@ -171,12 +177,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
         const rangeCond =
           Math.min(hourToDate(x.fromTime).getTime(), hourToDate(x.toTime).getTime()) <= Math.max(hourToDate(y.timeSlotFrom).getTime(), hourToDate(y.timeSlotTo).getTime())
           && Math.max(hourToDate(x.fromTime).getTime(), hourToDate(x.toTime).getTime()) >= Math.min(hourToDate(y.timeSlotFrom).getTime(), hourToDate(y.timeSlotTo).getTime())
-        // console.log('dateRangeFrom', rangeCond,
-        // // x.timeSlotFrom, '>=', y.fromTime, '<=', x.timeSlotTo,
-        // y.fromTime, '>=', x.timeSlotFrom, '&&', y.fromTime, '<=', x.timeSlotTo,
-        // '||', y.toTime, '>=', x.timeSlotFrom, '&&', y.toTime, '<=', x.timeSlotTo,
-        // // hourToDate(x.timeSlotFrom), '>=', y.fromTime, '<=', hourToDate(x.timeSlotTo),
-        // )
         if (rangeCond) {
           x.rowmerge.push(yi)
           // console.log('ONLIST', x.timeSlotFrom, '>=', y.fromTime, '<=', x.timeSlotTo,)
@@ -196,14 +196,11 @@ export class PageRadiologyScheduleComponent implements OnInit {
             baseData[y] = {...baseData[y], ...item}
           } else {
             baseData[y] = {...baseData[y], ...item, ...{isSpan: true}}
-            // console.log(baseData[y])
-            // baseData.splice(y, 1)
           }
         })
       }
     })
 
-    // console.log('nmix', squashData.filter(x => x.row >= 0))
     console.log('appdata', squashData.length, squashData)
     console.log('baseData', baseData.length, baseData)
 
@@ -264,5 +261,15 @@ export class PageRadiologyScheduleComponent implements OnInit {
       value: '3',
       description: 'Month'
     }]
+  }
+
+  changeTableView (val?: any) {
+    console.log('view table is changed', val)
+  }
+
+  toDaily (val?: any) {
+    if (val) {}
+    this.tableViewActive = 0
+    this.changeTableView()
   }
 }

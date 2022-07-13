@@ -25,9 +25,12 @@
               <span class="ml-2">Today</span>
             </button>
             <div style="width: 2px; background: #ccc;"></div>
-            <select class="form-control px-2 mx-2" style="width: 94px;" [(ngModel)]="selectedTimeSchedule">
-              <option value="undefined" disabled hidden selected>Select...</option>
-              <option *ngFor="let c of categories" ngDefaultControl [value]="c.value">{{ c.description }}</option>
+            <select
+              [(ngModel)]="tableViewActive"
+              (change)="changeTableView($event)"
+              class="form-control px-2 mx-2"
+              style="width: 94px;">
+              <option *ngFor="let t of tableViewSelect" [ngValue]="t.key">{{t.text}}</option>
             </select>
             <app-date-picker (newItemEvent)="addItem($event)" [selected]="selected"></app-date-picker>
           </div>
@@ -65,102 +68,16 @@
 
       <!-- Content -->
       <section class="p-3">
-        <table class="table table-bordered mt-3 table-list-radiology">
-          <thead class="border-0 bg-secondary">
-            <tr>
-              <td colspan="2" class="py-3 border-0">Appointment</td>
-              <td class="py-3 border-0">Patient</td>
-              <td class="py-3 border-0">DoB</td>
-              <td class="py-3 border-0">Local MR No</td>
-              <td class="py-3 border-0">Examination</td>
-              <td class="py-3 border-0">Note</td>
-              <td class="py-3 border-0">Status</td>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngIf="!(scheduleList && scheduleList.length)">
-              <tr>
-                <td colspan="100%" class="text-center p-3">No data from this section</td>
-              </tr>
-            </ng-container>
-            <!-- testing purpose -->
-            <!-- <tr>
-              <td>-11</td>
-              <td>00:00 - 00:29</td>
-              <td>Patient Test</td>
-              <td>32-13-1990</td>
-              <td>00001X</td>
-              <td>Examination</td>
-              <td>Note</td>
-              <td>Status</td>
-            </tr>
-            <tr>
-              <td>-11</td>
-              <td>00:00 - 00:29</td>
-              <td rowspan="2">Patient Test</td>
-              <td rowspan="2">32-13-1990</td>
-              <td rowspan="2">00001X</td>
-              <td rowspan="2">Examination</td>
-              <td rowspan="2">Note</td>
-              <td rowspan="2">Status</td>
-            </tr>
-            <tr>
-              <td>-11</td>
-              <td>00:00 - 00:29</td>
-            </tr>
-            <tr>
-              <td>-11</td>
-              <td>00:00 - 00:29</td>
-              <td>Patient Test</td>
-              <td>32-13-1990</td>
-              <td>00001X</td>
-              <td>Examination</td>
-              <td>Note</td>
-              <td>Status</td>
-            </tr> -->
-            <!-- end testing purpose -->
-            <tr *ngFor="let item of scheduleList; let i=index">
-              <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle; width: 25px;" class="text-right">
-                {{(item.rowIndex).toString().padStart(2, '0')}}</td>
-              <!-- <td>{{item.timeSlot}}</td> -->
-              <td style="width: 100px;">{{item.timeSlotFrom}} - {{item.timeSlotTo}}</td>
-              <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'" >
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">
-                  <div class="cursor-pointer" (click)="detailSchedule()" style="display: grid; grid-template-columns: 5px auto; height: 100%; overflow: auto !important;">
-                    <div class="item-indicator mr-1"></div>
-                    <div>{{item.patient}}</div>
-                  </div>
-                </td>
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.dob}}</td>
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.localMrNo}}</td>
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.examination}}
-                </td>
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.note}}</td>
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">
-                  <span *ngIf="item.status === 'scheduled'" class="table-status status-scheduled">Scheduled</span>
-                  <span *ngIf="item.status === 'arrived'" class="table-status status-arrived">Arrived</span>
-                  <span *ngIf="item.status === 'process'" class="table-status status-process">Process</span>
-                  <span *ngIf="item.status === 'completed'" class="table-status status-completed">Completed</span>
-                </td>
-              </ng-container>
-              <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status === 'note'">
-                <td [attr.rowspan]="item.rowspan || 1" colspan="7" class="table-td table-td-{{item.status}}">
-                  {{item.note}}</td>
-              </ng-container>
-              <ng-container *ngIf="!item.isCanCreate && item.isSpan">
-              </ng-container>
-              <ng-container *ngIf="item.isCanCreate">
-                <td (click)="open(createAppointmentModal)" style="cursor: pointer;"><span
-                    class="text-success">Available</span></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </ng-container>
-            </tr>
-          </tbody>
-        </table>
+        <app-table-list-monthly
+          *ngIf="tableViewActive===2"
+          (itemClick)="toDaily($event)"
+          [data]="scheduleList"></app-table-list-monthly>
+        <app-table-list-weekly
+          *ngIf="tableViewActive===1"
+          [data]="scheduleList"></app-table-list-weekly>
+        <app-table-list-daily
+          *ngIf="tableViewActive===0"
+          [data]="scheduleList"></app-table-list-daily>
       </section>
 
       <!-- Modal Section -->
@@ -289,8 +206,7 @@
 
 
 
-
-      <section class="p-5">
+      <section *ngIf="false" class="p-5">
         <!-- Create / Update Appointment Modal -->
         <ng-container>
           <button class="btn btn-outline-primary mb-2 me-2" (click)="detailSchedule()">detail schedule create admission test</button>
