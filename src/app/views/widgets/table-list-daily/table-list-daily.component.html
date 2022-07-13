@@ -16,50 +16,14 @@
         <td colspan="100%" class="text-center p-3">No data from this section</td>
       </tr>
     </ng-container>
-    <!-- testing purpose -->
-    <!-- <tr>
-      <td>-11</td>
-      <td>00:00 - 00:29</td>
-      <td>Patient Test</td>
-      <td>32-13-1990</td>
-      <td>00001X</td>
-      <td>Examination</td>
-      <td>Note</td>
-      <td>Status</td>
-    </tr>
-    <tr>
-      <td>-11</td>
-      <td>00:00 - 00:29</td>
-      <td rowspan="2">Patient Test</td>
-      <td rowspan="2">32-13-1990</td>
-      <td rowspan="2">00001X</td>
-      <td rowspan="2">Examination</td>
-      <td rowspan="2">Note</td>
-      <td rowspan="2">Status</td>
-    </tr>
-    <tr>
-      <td>-11</td>
-      <td>00:00 - 00:29</td>
-    </tr>
-    <tr>
-      <td>-11</td>
-      <td>00:00 - 00:29</td>
-      <td>Patient Test</td>
-      <td>32-13-1990</td>
-      <td>00001X</td>
-      <td>Examination</td>
-      <td>Note</td>
-      <td>Status</td>
-    </tr> -->
-    <!-- end testing purpose -->
     <tr *ngFor="let item of data; let i=index">
       <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle; width: 25px;" class="text-right">
         {{(item.rowIndex).toString().padStart(2, '0')}}</td>
       <!-- <td>{{item.timeSlot}}</td> -->
       <td style="width: 100px;">{{item.timeSlotFrom}} - {{item.timeSlotTo}}</td>
       <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'" >
-        <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}" (click)="detailSchedule()" >
-          <div class="cursor-pointer" style="display: grid; grid-template-columns: 5px auto; height: 100%; overflow: auto !important;">
+        <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}} cursor-pointer" (click)="detailSchedule()" >
+          <div style="display: grid; grid-template-columns: 5px auto; height: 100%; overflow: auto !important;">
             <div class="item-indicator mr-1"></div>
             <div>{{item.patient}}</div>
           </div>
@@ -83,8 +47,9 @@
       <ng-container *ngIf="!item.isCanCreate && item.isSpan">
       </ng-container>
       <ng-container *ngIf="item.isCanCreate">
-        <td style="cursor: pointer;"><span
-            class="text-success">Available</span></td>
+        <td class="cursor-pointer">
+          <span class="text-success">Available</span>
+        </td>
         <td></td>
         <td></td>
         <td></td>
