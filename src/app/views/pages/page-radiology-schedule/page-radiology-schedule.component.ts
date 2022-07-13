@@ -1,7 +1,7 @@
 import { General } from './../../../models/generals/general';
 import { ModalityService } from './../../../services/modality.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
@@ -18,6 +18,7 @@ import * as moment from 'moment';
 export class PageRadiologyScheduleComponent implements OnInit {
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private modalService: NgbModal,
     private modalityService: ModalityService,
     modalSetting: NgbModalConfig,
@@ -25,6 +26,17 @@ export class PageRadiologyScheduleComponent implements OnInit {
     modalSetting.backdrop = true;
     modalSetting.keyboard = false;
     // modalSetting.centered = true;
+
+    // router.events.subscribe((val: any) => {
+    //   if(val instanceof NavigationEnd) {
+    //     console.log(location.pathname);
+    //     console.log('router', val)
+    //   }
+    // })
+    this.route.queryParams.subscribe(p => {
+      console.log('myQueryParam',p);
+      this.initView(p.view, p.value)
+    })
   }
 
   public tableViewCurrentDate: Date
@@ -283,10 +295,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     if (!(val && val instanceof Date && val.getTime())) {
       val = this.tableViewCurrentDate
     }
-    this.router.navigate(
-      ['/schedule'],
-      {queryParams: {view: this.tableViewActive, value: val.toISOString()}}
-    )
+    this.setRouterViewValue({view: this.tableViewActive, value: val.toISOString()})
     this.changeTableDate(val || new Date())
   }
 
@@ -310,5 +319,19 @@ export class PageRadiologyScheduleComponent implements OnInit {
       d = moment(this.tableViewCurrentDate).subtract(1, t).toDate()
     }
     this.changeTableDate(d)
+  }
+
+  setRouterViewValue (item: Object) {
+    this.router.navigate(
+      ['.'],
+      {relativeTo: this.route, queryParams: {...item}}
+    )
+  }
+
+  initView (viewId: number, dateVal: Date) {
+    dateVal = new Date(dateVal)
+    // console.log({viewId, dateVal})
+    this.tableViewActive = Number(viewId)
+    this.changeTableDate(dateVal)
   }
 }
