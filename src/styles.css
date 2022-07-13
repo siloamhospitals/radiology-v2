@@ -1208,6 +1208,27 @@ section .form-control:focus {
   border-color: #007bff;
 }
 
+.badge-primary {
+  color: #575FCF;
+  background: #C8CBFA;
+}
+
+.modal-backdrop {
+  background-color: transparent;
+}
+
+.modal-content {
+  border: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.text-primary {
+  color: #575FCF;
+}
+
 .back-button {
   color: rgba(34, 47, 62, 0.38);
   display: inline-block;
