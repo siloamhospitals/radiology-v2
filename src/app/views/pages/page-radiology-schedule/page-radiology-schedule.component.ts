@@ -268,7 +268,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   toDaily (val?: any) {
-    console.log(val)
+    if (val) {}
     this.tableViewActive = 0
     this.changeTableView()
   }
