@@ -25,17 +25,18 @@
               <span class="ml-2">Today</span>
             </button>
             <div style="width: 2px; background: #ccc;"></div>
-            <select class="form-control px-2 mx-2" style="width: 94px;" >
-              <option>Day</option>
+            <select class="form-control px-2 mx-2" style="width: 94px;" [(ngModel)]="selectedTimeSchedule">
+              <option value="undefined" disabled hidden selected>Select...</option>
+              <option *ngFor="let c of categories" ngDefaultControl [value]="c.value">{{ c.description }}</option>
             </select>
-            <app-date-picker [selected]="selected" ></app-date-picker>
+            <app-date-picker (newItemEvent)="addItem($event)" [selected]="selected"></app-date-picker>
           </div>
 
         </div>
         <div class="p-3 border-bottom">
-          <button *ngFor="let room of rooms" type="button"
+          <button *ngFor="let modalityHospital of modalitiesHospitalList" type="button"
             class="btn bg-light text-muted mb-2 rounded-8 room px-3 py-2 border">
-            {{ room }}
+            {{ modalityHospital.modality_label }}
           </button>
         </div>
         <div class="px-3 border-bottom">
@@ -293,73 +294,9 @@
         <!-- Create / Update Appointment Modal -->
         <ng-container>
           <button class="btn btn-outline-primary mb-2 me-2" (click)="detailSchedule()">detail schedule create admission test</button>
-          <div class="formclass">
-            <div class="mb-3">
-              <h4>CT Scan - Room 1</h4>
-            </div>
-            <div class="mb-3">
-              <label for="">Date and Time</label>
-              <div>
-                (date picker component)
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="">Nama Lengkap <sup class="text-required">*</sup></label>
-              <div>
-                <input type="text" class="form-control" placeholder="Masukkan Nama Lengkap Pasien" />
-              </div>
-            </div>
-            <div class="d-flex flex-wrap flex-row">
-              <div class="mb-3 w-50">
-                <label for="">Date of Birth <sup class="text-required">*</sup></label>
-                <div>
-                  <input type="date" class="form-control" placeholder="DD-MM-YYYY" />
-                </div>
-              </div>
-              <div class="mb-3 w-50 pl-3">
-                <label for="">ID Number <sup class="text-required">*</sup></label>
-                <div>
-                  <input type="text" class="form-control" placeholder="ID Number" />
-                </div>
-              </div>
-              <div class="mb-3 w-50">
-                <label for="">Mobile Phone <sup class="text-required">*</sup></label>
-                <div>
-                  <input type="text" class="form-control" placeholder="0822..." />
-                </div>
-              </div>
-              <div class="mb-3 w-50 pl-3">
-                <label for="">Email</label>
-                <div>
-                  <input type="text" class="form-control" placeholder="email@domain.com" />
-                </div>
-              </div>
-              <div class="mb-3 w-50">
-                <label for="">Examination <sup class="text-required">*</sup></label>
-                <div>
-                  <input type="text" class="form-control" placeholder="Select Examination" />
-                </div>
-              </div>
-            </div>
-            <div class="d-flex flex-wrap flex-row">
-              <div class="mb-3 w-50">
-                <label for="">Note</label>
-                <div>
-                  <textarea rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
-                </div>
-              </div>
-              <div class="mb-3 w-50 pl-3">
-                <label for="">Alamat</label>
-                <div>
-                  <textarea rows="3" class="form-control" placeholder="Alamat Pasien"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
         </ng-container>
-        <!-- View Appointment Modal -->
+        <!-- Create Appointment Modal -->
         <ng-container>
-          <button class="btn btn-outline-primary mb-2 me-2" (click)="createAdmission()">create admission test</button>
           <div class="formclass">
             <div class="mb-3 px-3">
               <h4>CT Scan - Room 1</h4>
@@ -450,26 +387,6 @@
         </ng-container>
 
         <!-- Appointment Action Modal -->
-        <!-- Appointment Action Modal: Cancel -->
-
-
-        <ng-container>
-          <!-- Cancel Check in -->
-          <button class="btn btn-outline-primary mb-2 me-2" (click)="cancelAppointment()">cancel appointment test</button>
-          <div>
-            <div class="mb-3">Anda akan membatalkan Appointment ini?</div>
-            <div class="mb-3">
-              <label for="">Alasan <sup class="text-required">*</sup></label>
-              <div>
-                <textarea rows="3" class="form-control" placeholder="Isikan alasan membatalkan appointment"></textarea>
-              </div>
-            </div>
-          </div>
-          <div class="d-flex flex-row justify-content-end">
-            <button class="btn btn-secondary">Kembali</button>
-            <button class="btn btn-danger ml-2">Cancel Appointment</button>
-          </div>
-        </ng-container>
         <!-- Appointment Action Modal: Check-in -->
         <ng-container>
           <!-- Check in -->

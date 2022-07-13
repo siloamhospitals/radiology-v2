@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ModalCreateAdmissionComponent } from './modal-create-admission.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerModule } from '../date-picker/date-picker.module';
+import { TimepickerModule } from '../time-picker/time-picker.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { DatepickerModule } from '../date-picker/date-picker.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    DatepickerModule
+    DatepickerModule,
+    TimepickerModule
   ],
   exports: [
     ModalCreateAdmissionComponent,
