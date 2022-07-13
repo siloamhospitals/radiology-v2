@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class TableListWeeklyComponent implements OnInit {
 
   @Input() data: any[]
+  @Input() dateSelected: Date
 
   days: any[] = [
     'Senin',

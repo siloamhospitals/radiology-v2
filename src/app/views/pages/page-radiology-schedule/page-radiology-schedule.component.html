@@ -11,17 +11,20 @@
         </h3>
         <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
           <div class="d-flex align-items-center">
-            <button class="btn">
+            <button class="btn" (click)="toActionDate(false)">
               <span class="fa fa-angle-left font-weight-bold"></span>
             </button>
-            <button class="btn">
+            <button class="btn" (click)="toActionDate()">
               <span class="fa fa-angle-right font-weight-bold"></span>
             </button>
-            <span>06 May, 2022</span>
+            <span>{{tableViewCurrentDateLabel}}</span>
           </div>
           <div class="d-flex align-items-center">
-            <button class="btn btn-light font-weight-bold text-muted d-flex mx-2">
-              <img src="../../../../assets/icons/ic_today.png" alt="ic_today" />
+            <button
+              class="btn font-weight-bold text-muted d-flex mx-2 {{tableViewCurrentIsToday ? 'btn-primary' : 'btn-light'}}"
+              (click)="toToday()">
+              <!-- <img src="../../../../assets/icons/ic_today.png" alt="ic_today" /> -->
+              <i class="fa fa-calendar-check-o" style="font-size: 16px;"></i>
               <span class="ml-2">Today</span>
             </button>
             <div style="width: 2px; background: #ccc;"></div>
@@ -32,7 +35,10 @@
               style="width: 94px;">
               <option *ngFor="let t of tableViewSelect" [ngValue]="t.key">{{t.text}}</option>
             </select>
-            <app-date-picker (newItemEvent)="addItem($event)" [selected]="selected"></app-date-picker>
+            <app-date-picker 
+              (changeValue)="changeTableDateSelected($event)" 
+              width="140px"
+              [selected]="tableViewCurrentDate"></app-date-picker>
           </div>
 
         </div>
@@ -71,12 +77,15 @@
         <app-table-list-monthly
           *ngIf="tableViewActive===2"
           (itemClick)="toDaily($event)"
+          [dateSelected]="tableViewCurrentDate"
           [data]="scheduleList"></app-table-list-monthly>
         <app-table-list-weekly
           *ngIf="tableViewActive===1"
+          [dateSelected]="tableViewCurrentDate"
           [data]="scheduleList"></app-table-list-weekly>
         <app-table-list-daily
           *ngIf="tableViewActive===0"
+          [dateSelected]="tableViewCurrentDate"
           [data]="scheduleList"></app-table-list-daily>
       </section>
 

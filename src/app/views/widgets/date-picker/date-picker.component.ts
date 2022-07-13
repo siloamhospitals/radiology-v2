@@ -16,18 +16,25 @@ export class DatepickerComponent implements OnInit {
   @Input() format = 'MMMM YYYY';
   @Input() hideIcon: boolean;
 
-  @Output() newItemEvent = new EventEmitter<string>();
+  @Output() changeValue = new EventEmitter<string>();
 
   locale: object;
 
-  addNewItem(value: string) {
+  changeSelected(value: string) {
     value = this.selected.startDate ? this.selected.startDate.format('YYYY-MM-DD') : '';
-    this.newItemEvent.emit(value);
+    this.changeValue.emit(value);
   }
 
   ngOnInit() {
     this.locale = {
       format: this.format
+    }
+  }
+
+  ngOnChanges (changes: any) {
+    if (changes.selected) {
+      this.selected = moment(changes.selected.currentValue).format('YYYY-MM-DD');
+      // console.log('selected change', changes.selected.currentValue)
     }
   }
 }

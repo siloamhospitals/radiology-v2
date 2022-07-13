@@ -10,6 +10,7 @@ import * as moment from 'moment'
 export class TableListMonthlyComponent implements OnInit {
 
   @Input() data: any[]
+  @Input() dateSelected: Date
   @Output() itemClick = new EventEmitter<string>()
   
   itemModel = {
@@ -41,7 +42,12 @@ export class TableListMonthlyComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.generateCalendarItems()
+    // this.generateCalendarItems()
+  }
+
+  ngOnChanges (changes: any) {
+    // console.log('changes', changes)
+    if (changes.dateSelected.currentValue) { this.generateCalendarItems() }
   }
 
   scheduleListGenerate () {
@@ -72,7 +78,8 @@ export class TableListMonthlyComponent implements OnInit {
   }
 
   generateCalendarItems () {
-    const currentDate = new Date(2022, 6, 13)
+    // const currentDate = new Date(2022, 6, 13)
+    const currentDate = this.dateSelected
     const theMonth = currentDate.getMonth()
     const theYear = currentDate.getFullYear()
 
@@ -115,7 +122,7 @@ export class TableListMonthlyComponent implements OnInit {
       return model
     })
     this.items = lodash.chunk(data, 7)
-    console.log('table monthly', this.items)
+    // console.log('table monthly', this.items)
   }
 
 }
