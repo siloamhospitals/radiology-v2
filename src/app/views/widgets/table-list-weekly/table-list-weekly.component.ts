@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as moment from 'moment';
 
 @Component({
@@ -10,6 +10,8 @@ export class TableListWeeklyComponent implements OnInit {
 
   @Input() data: any[]
   @Input() dateSelected: Date
+
+  @Output() itemClick = new EventEmitter<any>()
 
   days: any[] = [
     {date: null, label: 'Senin', value: '01'},
@@ -30,7 +32,7 @@ export class TableListWeeklyComponent implements OnInit {
   }
 
   ngOnChanges(changes: any) {
-    // console.log('chanes', changes)
+    console.log('weekly changes', changes)
     this.generateDayLabel()
   }
 
@@ -48,11 +50,16 @@ export class TableListWeeklyComponent implements OnInit {
         date: current.toDate(),
         label: current.format('dddd'),
         value: current.format('DD'),
+        isToday: moment().isSame(current, 'days'),
       })
     }
     weeks.shift()
     this.days = weeks
     return this.days
+  }
+
+  toDaily (val: any) {
+    this.itemClick.emit(val)
   }
 
 }

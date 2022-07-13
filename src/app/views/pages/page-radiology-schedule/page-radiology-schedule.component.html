@@ -81,6 +81,7 @@
           [data]="scheduleList"></app-table-list-monthly>
         <app-table-list-weekly
           *ngIf="tableViewActive===1"
+          (itemClick)="toDaily($event)"
           [dateSelected]="tableViewCurrentDate"
           [data]="scheduleList"></app-table-list-weekly>
         <app-table-list-daily

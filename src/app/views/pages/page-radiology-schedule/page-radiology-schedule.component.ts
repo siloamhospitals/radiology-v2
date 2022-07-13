@@ -28,7 +28,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public tableViewCurrentDate: Date
   public tableViewCurrentDateLabel: String = '(not selected date)'
   public tableViewCurrentIsToday: Boolean = false
-  public tableViewActive: number = 1
+  public tableViewActive: number = 2
   public tableViewSelect: any[] = [
     {key: 0, text: 'Day'},
     {key: 1, text: 'Week'},
@@ -250,7 +250,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   changeTableDate (date: Date) {
-    if (!(date.getTime())) { return }
+    if (!(date && date instanceof Date && date.getTime())) { return }
     this.tableViewCurrentDate = date ? date : this.tableViewCurrentDate
     // if today date
     this.tableViewCurrentIsToday = moment().isSame(moment(date), 'days')
@@ -278,13 +278,15 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   changeTableView (val?: any) {
     console.log('view table is changed', val)
-    this.changeTableDate(new Date())
+    this.changeTableDate(val || new Date())
   }
 
   toDaily (val?: any) {
-    if (val) {}
-    this.tableViewActive = 0
-    this.changeTableView()
+    if (val instanceof Date && val.getTime()) {
+      this.tableViewActive = 0
+      this.changeTableView(val)
+    }
+    // console.log(val, val instanceof Date && val.getTime())
   }
 
   toToday () {

@@ -2,7 +2,9 @@
   <thead class="border-0 bg-secondary">
     <tr>
       <td colspan="2" style="vertical-align: middle;"><span class="py-2">Appointment</span></td>
-      <td *ngFor="let day of days">
+      <td *ngFor="let day of days"
+        class="item-hover cursor-pointer {{day.isToday?'highlight-item-current':''}}"
+        (click)="toDaily(day.date)">
         <div class="d-flex align-items-center justify-content-between px-1 py-2">
           <span>{{day.label}}</span>
           <b class="pr-2">{{day.value}}</b>

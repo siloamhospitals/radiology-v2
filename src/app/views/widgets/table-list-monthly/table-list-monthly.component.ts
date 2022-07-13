@@ -14,7 +14,8 @@ export class TableListMonthlyComponent implements OnInit {
   @Output() itemClick = new EventEmitter<string>()
   
   itemModel = {
-    date: '2022-01-01',
+    date: {},
+    dateIndex: 0,
     dateLabel: '01',
     isToday: false,
     currentDayInMonth: false,
@@ -119,6 +120,8 @@ export class TableListMonthlyComponent implements OnInit {
       if (moment(today).diff(moment(dateIndex), 'days') === 0) {
         model.isToday = true
       }
+      model.dateIndex = dayIndex
+      model.date = dateIndex
       return model
     })
     this.items = lodash.chunk(data, 7)
