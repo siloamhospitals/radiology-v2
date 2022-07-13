@@ -277,7 +277,10 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   changeTableView (val?: any) {
-    console.log('view table is changed', val)
+    // console.log('view table is changed', val)
+    if (!(val && val instanceof Date && val.getTime())) {
+      val = this.tableViewCurrentDate
+    }
     this.changeTableDate(val || new Date())
   }
 
