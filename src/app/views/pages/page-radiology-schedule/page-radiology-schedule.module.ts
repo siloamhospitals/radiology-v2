@@ -19,6 +19,7 @@ import { ModalDetailScheduleModule } from '../../widgets/modal-detail-schedule/m
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 import { TableListWeeklyModule } from '../../widgets/table-list-weekly/table-list-weekly.module';
 import { TableListMonthlyModule } from '../../widgets/table-list-monthly/table-list-monthly.module';
+import { TableListDailyModule } from '../../widgets/table-list-daily/table-list-daily.module';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -35,6 +36,7 @@ import { TableListMonthlyModule } from '../../widgets/table-list-monthly/table-l
     ModalCancelAppointmentModule,
     ModalCreateAdmissionModule,
     ModalDetailScheduleModule,
+    TableListDailyModule,
     TableListWeeklyModule,
     TableListMonthlyModule,
   ],
