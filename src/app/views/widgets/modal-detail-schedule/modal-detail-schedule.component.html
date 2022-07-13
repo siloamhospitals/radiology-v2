@@ -80,7 +80,7 @@
         <div class="mb-3 w-50">
           <label for="">Examination <sup class="text-required">*</sup></label>
           <div class="">
-            <select id="title" class="form-control" name="dropDownRoom" (change)="changeExamination($event)">
+            <select id="title" class="form-control" name="dropDownRoom">
               <option *ngFor="let examination of examinationsList" [value]="examination.value">
                 {{examination.description}}
               </option>

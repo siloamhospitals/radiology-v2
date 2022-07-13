@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as moment from 'moment'
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-date-picker',
@@ -10,18 +11,23 @@ export class DatepickerComponent implements OnInit {
 
   constructor() { }
 
-
-  @Input() width : string = '94px';
-  @Input() selected = moment();
+  @Input() width: string = '94px';
+  @Input() selected: any = moment().format('YYYY-MM-DD');
   @Input() format = 'MMMM YYYY';
-  @Input() hideIcon : boolean;
+  @Input() hideIcon: boolean;
+
+  @Output() newItemEvent = new EventEmitter<string>();
+
   locale: object;
 
+  addNewItem(value: string) {
+    value = this.selected.startDate ? this.selected.startDate.format('YYYY-MM-DD') : '';
+    this.newItemEvent.emit(value);
+  }
 
   ngOnInit() {
     this.locale = {
       format: this.format
     }
   }
-
 }

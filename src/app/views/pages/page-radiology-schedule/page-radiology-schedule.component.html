@@ -27,9 +27,9 @@
             <div style="width: 2px; background: #ccc;"></div>
             <select class="form-control px-2 mx-2" style="width: 94px;" [(ngModel)]="selectedTimeSchedule">
               <option value="undefined" disabled hidden selected>Select...</option>
-              <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+              <option *ngFor="let c of categories" ngDefaultControl [value]="c.value">{{ c.description }}</option>
             </select>
-            <app-date-picker [selected]="selected"></app-date-picker>
+            <app-date-picker (newItemEvent)="addItem($event)" [selected]="selected"></app-date-picker>
           </div>
 
         </div>

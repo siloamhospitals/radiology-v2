@@ -1,3 +1,4 @@
+import { General } from './../../../models/generals/general';
 import { ModalityService } from './../../../services/modality.service';
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +12,7 @@ import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history
   templateUrl: './page-radiology-schedule.component.html',
   styleUrls: ['./page-radiology-schedule.component.css']
 })
+
 export class PageRadiologyScheduleComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
@@ -21,7 +23,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   protected indexNumber: number = 0
 
   public createAppointmentTabId: number = 1
-  public selected: any;
+  public selected: any = '';
 
   public key: any = JSON.parse(localStorage.getItem('key') || '{}');
   public hospital = this.key.hospital;
@@ -29,16 +31,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   public modalitiesHospitalList: any = [];
   public selectedTimeSchedule: any;
-  public categories: any = [{
-    id: '1',
-    name: 'Day'
-  }, {
-    id: '2',
-    name: 'Week'
-  }, {
-    id: '3',
-    name: 'Month'
-  }];
+  public categories: General[];
 
   // note to self (delete "rooms" later if this repo works just fine since it's dummy well at least for now )
   rooms: string[] = [
@@ -52,15 +45,15 @@ export class PageRadiologyScheduleComponent implements OnInit {
   ]
 
   ngOnInit() {
+    this.getCategories();
     this.scheduleListGenerate();
     this.scheduleListSquash();
-    this.getModalityHospitalList();
     //this.scheduleList()
     // console.log('list', this.scheduleList)
   }
 
-  ngOnChanges() {
-    this.getModalityHospitalList();
+  ngOnChanges(changes: any) {
+    console.log(changes, '============ changes di parent')
   }
 
   scheduleListGenerate () {
@@ -239,16 +232,37 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   getModalityHospitalList() {
-    console.log(this.selected, '================== selected')
-    this.modalityService.getModalityHospital(this.hospital.id, '2022-07-13', '2022-07-13')
-      .subscribe(res => {
-        const activeModalityHospital = res.data.map((eachModality: any) => {
-            if (eachModality.status === '1') return eachModality;
-          }
-        );
-        this.modalitiesHospitalList = activeModalityHospital;
-      }, () => {
-        this.modalitiesHospitalList = [];
-      });
+    if(this.selected && this.selectedTimeSchedule) {
+      this.modalityService.getModalityHospital(this.hospital.id, this.selected, this.selected)
+        .subscribe(res => {
+          const activeModalityHospital = res.data.map((eachModality: any) => {
+              if (eachModality.status === '1') return eachModality;
+            }
+          );
+          this.modalitiesHospitalList = activeModalityHospital;
+        }, () => {
+          this.modalitiesHospitalList = [];
+        });
+    } else {
+      this.modalitiesHospitalList = [];
+    }
+  }
+
+  addItem(event: any) {
+    this.selected = event;
+    this.getModalityHospitalList();
+  }
+
+  getCategories() {
+    this.categories = [{
+      value: '1',
+      description: 'Day'
+    }, {
+      value: '2',
+      description: 'Week'
+    }, {
+      value: '3',
+      description: 'Month'
+    }]
   }
 }

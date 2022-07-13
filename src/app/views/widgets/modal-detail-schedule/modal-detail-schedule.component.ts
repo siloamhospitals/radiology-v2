@@ -46,4 +46,12 @@ export class ModalDetailScheduleComponent implements OnInit {
       console.log('modal is closed', {result})
     })
   }
+
+   public examinationsList: any = [{
+    value: '01',
+    description: 'CT HEAD NON CONTRAST'
+  },{
+    value: '02',
+    description: 'LOREM IPSUM'
+  }]
 }
