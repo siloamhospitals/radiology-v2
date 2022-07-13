@@ -1286,3 +1286,63 @@ section .form-control:focus {
   box-shadow: 0px 8px 16px rgb(0 0 0 / 15%);
 }
 
+.multiselect-dropdown[_ngcontent-serverApp-c10] .dropdown-btn[_ngcontent-serverApp-c10] {
+  display: inline-block;
+  border: 1px solid #adadad00 !important;
+  width: 100%;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-weight: 400;
+  line-height: 1.52857143;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border-radius: 4px;
+}
+
+.multiselect-item-checkbox[_ngcontent-serverApp-c6] input[type=checkbox][_ngcontent-serverApp-c6]:checked + div[_ngcontent-serverApp-c6]:before {
+  -webkit-animation: .2s ease-in borderscale;
+  animation: .2s ease-in borderscale;
+  background: #1a2268 !important;
+  border-radius: 3px;
+  border-color: #1a2268 !important;
+}
+
+.multiselect-item-checkbox[_ngcontent-serverApp-c4] input[type=checkbox][_ngcontent-serverApp-c4]:checked + div[_ngcontent-serverApp-c4]:before {
+  -webkit-animation: .2s ease-in borderscale;
+  animation: .2s ease-in borderscale;
+  background: #1a2268 !important;
+  border-radius: 3px;
+  border-color: #1a2268 !important;
+}
+
+.multiselect-item-checkbox[_ngcontent-serverApp-c4] input[type=checkbox][_ngcontent-serverApp-c4] + div[_ngcontent-serverApp-c4]:before {
+  box-sizing: content-box;
+  content: '';
+  color: #337ab7;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: -9px;
+  border: 2px solid #dbdbdb !important;
+  text-align: center;
+  transition: .4s;
+}
+
+.multiselect-item-checkbox[_ngcontent-serverApp-c6] input[type=checkbox][_ngcontent-serverApp-c6] + div[_ngcontent-serverApp-c6]:before {
+  box-sizing: content-box;
+  content: '';
+  color: #337ab7;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  margin-top: -9px;
+  border: 2px solid #dbdbdb !important;
+  text-align: center;
+  transition: .4s;
+}
