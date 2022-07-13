@@ -1,7 +1,7 @@
 import { General } from './../../../models/generals/general';
 import { ModalityService } from './../../../services/modality.service';
 import { Component, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 
@@ -17,7 +17,12 @@ export class PageRadiologyScheduleComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private modalityService: ModalityService,
-  ) { }
+    modalSetting: NgbModalConfig,
+  ) {
+    modalSetting.backdrop = true;
+    modalSetting.keyboard = false;
+    modalSetting.centered = true;
+  }
 
   public tableViewActive: any = 2
   public tableViewSelect: any[] = [
@@ -56,10 +61,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
     this.scheduleListSquash();
     //this.scheduleList()
     // console.log('list', this.scheduleList)
-  }
-
-  ngOnChanges(changes: any) {
-    console.log(changes, '============ changes di parent')
   }
 
   scheduleListGenerate () {
@@ -208,21 +209,21 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   open (modalId: any) {
-    const m = this.modalService.open(modalId, { windowClass: 'fo_modal_confirmation', backdrop: 'static', keyboard: false })
+    const m = this.modalService.open(modalId, { windowClass: 'fo_modal_confirmation' })
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
   }
 
   detailSchedule() {
-    const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
+    const m = this.modalService.open(ModalDetailScheduleComponent, {})
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
   }
 
   showHistoryModal() {
-    const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_history', backdrop: 'static', keyboard: false })
+    const m = this.modalService.open(ModalHistoryComponent, {  })
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
