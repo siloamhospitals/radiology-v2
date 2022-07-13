@@ -83,6 +83,7 @@ export class TableListMonthlyComponent implements OnInit {
     today.setHours(0,0,0,0)
 
     const data = Array(42).fill({}).map((item: any, i: number) => {
+      console.log(item)
       const {...model} = this.itemModel
       const dayIndex = (i - firstDay + 1)
       const dateIndex = new Date(theYear, theMonth, dayIndex)

@@ -1243,3 +1243,46 @@ section .form-control:focus {
   padding: 1rem;
   border-bottom: 1px solid #dee2e6;
 }
+
+.multiselect-dropdown[_ngcontent-serverApp-c4] .dropdown-btn[_ngcontent-serverApp-c4] {
+  display: inline-block;
+  border: 1px solid #adadad00 !important;
+  width: 100%;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-weight: 400;
+  line-height: 1.52857143;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border-radius: 4px;
+}
+
+.multiselect-dropdown[_ngcontent-serverApp-c4] .dropdown-btn[_ngcontent-serverApp-c4] .selected-item[_ngcontent-serverApp-c4] {
+  border: 1px solid #341f9700 !important;
+  margin-right: 4px;
+  background: #b5b4b9 !important;
+  padding: 0 5px;
+  color: #fff;
+  border-radius: 2px;
+  float: left;
+}
+
+.dropdown-list[_ngcontent-serverApp-c4] {
+  position: absolute;
+  padding-top: 6px;
+  width: 100%;
+  z-index: 9999;
+  border: 1px solid #ccc !important;
+  border-radius: 0px !important;
+  background: #fff;
+  margin-top: 10px;
+  box-shadow: 0 1px 5px #dfd6d6 !important;
+}
+.modal-custom-size {
+  width: 588px;
+  border: 0;
+  box-shadow: 0px 8px 16px rgb(0 0 0 / 15%);
+}
+
