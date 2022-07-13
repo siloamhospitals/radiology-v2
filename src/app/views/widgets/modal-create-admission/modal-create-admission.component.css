@@ -4,3 +4,49 @@
   line-height: 20px;
   letter-spacing: 0.00016em;
 }
+
+.admission-status {
+  background: #C8CBFA;
+  border-radius: 3.125rem;
+  width: 6em;
+  height: 2em;
+  line-height: 1.5em;
+  text-align: center;
+}
+
+.admission-status > p {
+  font-size: 1rem;
+  color: #575FCF;
+}
+
+.id-type {
+  width: 30%;
+}
+
+select {
+  background: url("data:image/svg+xml,<svg height='12px' width='12px' viewBox='0 0 16 16' fill='%23222f3e61' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>") no-repeat;
+  background-position: calc(100% - 0.75rem) center !important;
+  -moz-appearance:none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  padding-right: 2rem !important;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba(34, 47, 62, 0.38);
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: rgba(34, 47, 62, 0.38);
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: rgba(34, 47, 62, 0.38);
+}
+
+.national-type-id {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}

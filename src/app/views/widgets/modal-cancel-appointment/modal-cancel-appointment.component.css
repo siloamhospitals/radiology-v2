@@ -1,0 +1,25 @@
+.p-vertical-modal {
+  padding-top: 0.583em;
+  padding-bottom: 0.583em;
+  cursor: pointer;
+}
+
+.p-vertical-modal:hover {
+  color: #341F97;
+  text-shadow: 1px 1px 2px pink;
+}
+
+.back-button {
+  color: rgba(34, 47, 62, 0.38);
+  display: inline-block;
+  font-size: 28px;
+}
+
+.back-button:hover {
+  color: black;
+}
+
+.modal-header-custom {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}

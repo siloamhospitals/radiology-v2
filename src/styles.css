@@ -919,7 +919,7 @@ button:disabled { cursor: not-allowed }
 .table-status.status-process { background-color: rgba(249, 242, 219, 0.5); color: #EEBD10; }
 .table-status.status-completed { background-color: #DCF0D3; color: #6AB04C; }
 
-.table-td { vertical-align: middle; }
+.table-td { vertical-align: middle !important; }
 /* .table-td:first-of-type::before {
   width: 20px;
   height: 100px;
@@ -1227,4 +1227,19 @@ section .form-control:focus {
 
 .text-primary {
   color: #575FCF;
+}
+
+.back-button {
+  color: rgba(34, 47, 62, 0.38);
+  display: inline-block;
+  font-size: 28px;
+}
+
+.back-button:hover {
+  color: black;
+}
+
+.modal-header-custom {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
 }

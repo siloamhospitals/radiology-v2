@@ -39,8 +39,13 @@ export class TimepickerComponent implements OnInit {
   }
 
   onSelectHour(hour : string) {
-    const minute = this.value.split(':')[1] || '00'
-    this.value = hour + ':' + minute
+    if(this.useMinute) {
+      const minute = this.value.split(':')[1] || '00'
+      this.value = hour + ':' + minute
+    }else{
+      this.value = hour
+    }
+    
   }
 
   onSelectMinute(minute : string) {

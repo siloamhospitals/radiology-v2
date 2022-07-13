@@ -1,93 +1,112 @@
 <div class="modal-content">
-  <div class="modal-header border-0">
-    <div class="mb-3 px-3">
-      <p class="text-modal-custom">Create Admission</p>
+  <div class="modal-header-custom border-0 px-0 px-4">
+    <div class="d-flex flex-wrap justify-content-between">
+      <div class="align-self-center">
+        <h5 class="m-0">Create Admission</h5>
+      </div>
+      <div>
+        <button #close_button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
+          <span class="back-button" aria-hidden="true">&times;</span>
+        </button>
+      </div>
     </div>
-    <button #close_button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
-      <i class="fa fa-close text-muted"></i>
-    </button>
   </div>
-  <div class="modal-body">
-    <div class="formclass">
-      <div class="mb-3 px-3">
+  <div class="modal-body p-0 mt-3">
+    <div class="d-flex flex-wrap flex-row mb-3 px-4">
+      <div class="w-50">
         <h4>CT Scan - Room 1</h4>
       </div>
-      <div class="mb-3 px-3">
-        <label for="">Date and Time</label>
+      <div class="w-50 pl-4">
+        <div class="admission-status float-right px-2 py-1 align-self-center">
+          <p>{{status}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="mb-4 px-4">
+      <label for="">Date and Time</label>
+      <div>
+        <app-date-picker></app-date-picker>
+      </div>
+    </div>
+    <div class="d-flex flex-wrap flex-row py-4 px-4 bg-secondary">
+      <div class="w-50">
+        <label for="" class="text-muted">Local MR Number</label>
         <div>
-          <app-date-picker></app-date-picker>
+          <span class="form-label">4757323</span>
         </div>
       </div>
-      <div class="d-flex flex-wrap flex-row mb-3 py-2 bg-secondary px-3">
-        <div class="w-50">
-          <label for="" class="text-muted">Local MR Number</label>
-          <div>
-            <span class="form-label">4757323</span>
-          </div>
-        </div>
-        <div class="w-50 pl-4">
-          <label for="" class="text-muted">Admission Number</label>
-          <div>
-            <span class="form-label">-</span>
-          </div>
+      <div class="w-50 pl-4">
+        <label for="" class="text-muted">Admission Number</label>
+        <div>
+          <span class="form-label">-</span>
         </div>
       </div>
-      <!-- <div class="mb-3 px-3">
-        <label for="" class="text-muted">Nama Lengkap</label>
+    </div>
+    <div class="d-flex flex-wrap flex-row my-4 px-4">
+      <div class="mb-4 pb-2 w-50">
+        <label for="" class="text-muted">Patient's Name</label>
         <div>
           <span class="form-label">Michael Angelo</span>
         </div>
-      </div> -->
-      <div class="d-flex flex-wrap flex-row px-3">
-        <div class="mb-3 w-50">
-          <label for="" class="text-muted">Nama Lengkap</label>
-          <div>
-            <span class="form-label">Michael Angelo</span>
-          </div>
+      </div>
+      <div class="mb-4 pb-2 w-50 pl-4">
+        <label for="" class="text-muted">DOB</label>
+        <div>
+          <span class="form-label">12-08-1991</span>
         </div>
-        <div class="mb-3 w-50 pl-4">
-          <label for="" class="text-muted">Date of Birth</label>
-          <div>
-            <span class="form-label">12-08-1991</span>
-          </div>
+      </div>
+      <div class="mb-4 pb-2 w-50">
+        <label for="" class="text-muted">Mobile Phone</label>
+        <div>
+          <span class="form-label">081234567890</span>
         </div>
-        <!-- <div class="mb-3 w-50 pl-4">
-          <label for="" class="text-muted">ID Number</label>
-          <div>
-            <span class="form-label">KTP - 1234567890123456</span>
-          </div>
-        </div> -->
-        <div class="mb-3 w-50">
-          <label for="" class="text-muted">Mobile Phone</label>
-          <div>
-            <span class="form-label">081234567890</span>
-          </div>
+      </div>
+      <div class="mb-4 pb-2 w-50 pl-4">
+        <label for="" class="text-muted">Email</label>
+        <div>
+          <span class="form-label">-</span>
         </div>
-        <div class="mb-3 w-50 pl-4">
-          <label for="" class="text-muted">Email</label>
-          <div>
-            <span class="form-label">-</span>
-          </div>
-        </div>
-        <div class="mb-3 w-50">
-          <label for="">Examination <sup class="text-required">*</sup></label>
-          <div class="">
-            <select id="title" class="form-control" name="dropDownRoom" (change)="changeExamination($event)">
-              <option *ngFor="let examination of examinationsList" [value]="examination.value">
-                {{examination.description}}
-              </option>
+      </div>
+      <div class="mb-4 w-50 pb-2">
+        <label for="">ID Number <sup class="text-required">*</sup></label>
+        <div class="input-group">
+          <div class="id-type" >
+            <select placeholder="ID Number" name="national-type" class="form-control national-type-id" [(ngModel)]="model.nationalIdTypeId">
+              <option value="undefined" disabled selected hidden>Select</option>
+              <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.key}}</option>
             </select>
           </div>
+          <input
+            name="id-number"
+            id="id-number-field"
+            type="text"
+            class="form-control"
+            placeholder="ID Number"
+            [(ngModel)]="model.idNumber"
+          />
         </div>
-        <div class="mb-3 w-50 pl-4">
-          <label for="" class="text-muted">Patient Type</label>
-          <div class="">
-            <select id="title" class="form-control" name="dropDownRoom" (change)="changeExamination($event)">
-              <option *ngFor="let type of patientTypesList" [value]="type.value">
-                {{type.description}}
-              </option>
-            </select>
-          </div>
+        <div class="mt-1 text-muted">Validasi identitas pasien</div>
+      </div>
+      <div class="mb-4 w-50 pl-4">
+      </div>
+      <div class="mb-1 w-50">
+        <label for="">Examination <sup class="text-required">*</sup></label>
+        <div class="">
+          <select id="title" class="form-control" name="dropDownRoom" (change)="changeExamination($event)">
+            <option *ngFor="let examination of examinationsList" [value]="examination.value">
+              {{examination.description}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-1 w-50 pl-4">
+        <label for="">Payer Type</label>
+        <div class="">
+          <select id="title" class="form-control" name="dropDownRoom" (change)="changeExamination($event)">
+            <option *ngFor="let type of payerTypesList" [value]="type.value">
+              {{type.description}}
+            </option>
+          </select>
         </div>
       </div>
     </div>
