@@ -30,4 +30,11 @@ export class DatepickerComponent implements OnInit {
       format: this.format
     }
   }
+
+  ngOnChanges (changes: any) {
+    if (changes.selected) {
+      this.selected = moment(changes.selected.currentValue).format('YYYY-MM-DD');
+      console.log('selected change', changes.selected.currentValue)
+    }
+  }
 }

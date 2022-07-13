@@ -11,17 +11,20 @@
         </h3>
         <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
           <div class="d-flex align-items-center">
-            <button class="btn">
+            <button class="btn" (click)="toActionDate(false)">
               <span class="fa fa-angle-left font-weight-bold"></span>
             </button>
-            <button class="btn">
+            <button class="btn" (click)="toActionDate()">
               <span class="fa fa-angle-right font-weight-bold"></span>
             </button>
             <span>{{tableViewCurrentDateLabel}}</span>
           </div>
           <div class="d-flex align-items-center">
-            <button class="btn btn-light font-weight-bold text-muted d-flex mx-2">
-              <img src="../../../../assets/icons/ic_today.png" alt="ic_today" />
+            <button
+              class="btn font-weight-bold text-muted d-flex mx-2 {{tableViewCurrentIsToday ? 'btn-primary' : 'btn-light'}}"
+              (click)="toToday()">
+              <!-- <img src="../../../../assets/icons/ic_today.png" alt="ic_today" /> -->
+              <i class="fa fa-calendar-check-o" style="font-size: 16px;"></i>
               <span class="ml-2">Today</span>
             </button>
             <div style="width: 2px; background: #ccc;"></div>
