@@ -308,7 +308,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   toToday () {
-    this.changeTableDate(new Date())
+    this.changeTableView(new Date())
   }
 
   toActionDate (backward: Boolean = false) {
@@ -318,7 +318,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     if (backward) {
       d = moment(this.tableViewCurrentDate).subtract(1, t).toDate()
     }
-    this.changeTableDate(d)
+    this.changeTableView(d)
   }
 
   setRouterViewValue (item: Object) {
