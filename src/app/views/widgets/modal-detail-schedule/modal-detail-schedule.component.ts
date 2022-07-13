@@ -19,7 +19,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   ) {
     modalSetting.backdrop = 'static';
     modalSetting.keyboard = false;
-    modalSetting.centered = true;
+    // modalSetting.centered = true;
   }
 
   date : any = moment()

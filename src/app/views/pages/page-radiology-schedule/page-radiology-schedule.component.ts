@@ -22,7 +22,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   ) {
     modalSetting.backdrop = true;
     modalSetting.keyboard = false;
-    modalSetting.centered = true;
+    // modalSetting.centered = true;
   }
 
   public tableViewCurrentDate: Date
