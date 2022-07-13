@@ -22,6 +22,12 @@
   color: rgba(34, 47, 62, 0.54);
 }
 
+.highlight-item-active .highlight-item-label {
+  background-color: #DCF0D3 !important;
+  border-bottom: 2px solid #6AB04C !important;
+  color: #6AB04C !important;
+}
+
 .item-hover:hover {
   background-color: #f5f5f5;
 }

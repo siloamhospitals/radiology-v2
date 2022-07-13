@@ -14,6 +14,7 @@ export class TableListMonthlyComponent implements OnInit {
   itemModel = {
     date: '2022-01-01',
     dateLabel: '01',
+    isToday: false,
     items: {
       availables: 99,
       appointments: 9,
