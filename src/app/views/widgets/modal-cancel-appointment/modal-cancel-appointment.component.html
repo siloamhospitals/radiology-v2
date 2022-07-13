@@ -1,27 +1,31 @@
 <div class="modal-content">
-  <div class="modal-header">
-    <div class="header">
-      Cancel Appointment
+  <div class="modal-header-custom">
+    <div class="d-flex flex-wrap justify-content-between">
+      <div class="align-self-center">
+        <h5 class="m-0">Cancel Appointment</h5>
+      </div>
+      <div>
+        <button #close_button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
+          <span class="back-button" aria-hidden="true">&times;</span>
+        </button>
+      </div>
     </div>
-    <button #close_button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
   </div>
   <div class="modal-body">
     <div>
-      <div class="mb-3">Anda akan membatalkan Appointment ini?</div>
-      <div class="mb-3">
+      <div class="mb-4">Anda akan membatalkan Appointment ini?</div>
+      <div class="mb-2">
         <label for="">Alasan <sup class="text-required">*</sup></label>
         <div>
-          <textarea rows="3" class="form-control" placeholder="Isikan alasan membatalkan appointment"></textarea>
+          <textarea [(ngModel)]="selectedText" rows="3" class="form-control" placeholder="Isikan alasan membatalkan appointment"></textarea>
         </div>
       </div>
     </div>
   </div>
   <div class="modal-footer">
     <div class="d-flex flex-row justify-content-end">
-      <button class="btn btn-secondary">Kembali</button>
-      <button class="btn btn-danger ml-2">Cancel Appointment</button>
+      <div class="p-vertical-modal mx-4" (click)="close()">Kembali</div>
+      <button [disabled]="!selectedText" [ngClass]="selectedText ? 'btn btn-danger' : 'btn btn-secondary'" class="">Cancel Appointment</button>
     </div>
   </div>
 </div>

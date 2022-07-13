@@ -25,7 +25,7 @@ const routes: Routes = [
   {
     path: 'modality-master',
     canActivate: [AuthGuard],
-    loadChildren: './views/pages/page-modality-master/page-modality-master.module#PageModalityMasterModule'
+    loadChildren: './views/pages/page-modality-master/page-modality-master.module#PageModalityMasterModule',
   },
   {
     path: 'maintenence-schedule',
