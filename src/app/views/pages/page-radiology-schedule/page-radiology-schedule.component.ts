@@ -34,7 +34,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
     //   }
     // })
     this.route.queryParams.subscribe(p => {
-      console.log('myQueryParam',p);
       this.initView(p.view, p.value)
     })
   }
@@ -62,15 +61,16 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public categories: General[];
 
   // note to self (delete "rooms" later if this repo works just fine since it's dummy well at least for now )
-  rooms: string[] = [
-    "CT Scan - Room 1",
-    "CT Scan - Room 2",
-    "MAMMOGRAPHY - Room 1",
-    "MRA 3T CONTRAST - Room 3",
-    "RADIOLOGY CONVENTIONAL - Room 3",
-    "USG - 3D & 4D - Room 5",
-    "CT CARDIAC - Room 1",
+  sections: any = [
+    {key: '1', text: 'CT Scan - Room 1', active: false},
+    {key: '2', text: 'MAMMOGRAPHY - Room 1', active: false},
+    {key: '3', text: 'MRA 3T CONTRAST - Room 3', active: false},
+    {key: '4', text: 'RADIOLOGY CONVENTIONAL - Room 3', active: false},
+    {key: '5', text: 'USG - 3D & 4D - Room 5', active: false},
+    {key: '6', text: 'CT CARDIAC - Room 1', active: false},
   ]
+  sectionSelected: any = []
+  sectionSelectedCanMultiple: Boolean = true
 
   ngOnInit() {
     this.initTodayView();
@@ -332,5 +332,26 @@ export class PageRadiologyScheduleComponent implements OnInit {
     dateVal = new Date(dateVal)
     this.tableViewActive = !isNaN(Number(viewId)) ? Number(viewId) : 0
     this.changeTableDate(dateVal)
+  }
+
+  setSelectedSection (v: any) {
+    const indexSection = this.sections.findIndex((x: any) => x.key == v)
+    const indexSelectedSection = this.sectionSelected.findIndex((x: any) => x == v)
+    if (this.sectionSelectedCanMultiple) {
+      if (indexSelectedSection !== -1) {
+        this.sectionSelected.splice(indexSelectedSection, 1)
+      } else {
+        this.sectionSelected.push(v)
+      }
+    } else {
+      if (this.sections[indexSection].active === true) {
+        this.sections[indexSection].active = false
+        this.sectionSelected = []
+        return
+      }
+      this.sections = this.sections.map((x: any) => ({...x, active: false}))
+      this.sectionSelected = [v]
+    }
+    this.sections[indexSection].active = !this.sections[indexSection].active
   }
 }
