@@ -1,7 +1,6 @@
+import { ModalityService } from './../../../services/modality.service';
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
-import { ModalCreateAdmissionComponent } from '../../widgets/modal-create-admission/modal-create-admission.component';
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 
@@ -15,6 +14,7 @@ import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history
 export class PageRadiologyScheduleComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
+    private modalityService: ModalityService,
   ) { }
 
   public scheduleList: any[]
@@ -23,6 +23,24 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public createAppointmentTabId: number = 1
   public selected: any;
 
+  public key: any = JSON.parse(localStorage.getItem('key') || '{}');
+  public hospital = this.key.hospital;
+  public user = this.key.user;
+
+  public modalitiesHospitalList: any = [];
+  public selectedTimeSchedule: any;
+  public categories: any = [{
+    id: '1',
+    name: 'Day'
+  }, {
+    id: '2',
+    name: 'Week'
+  }, {
+    id: '3',
+    name: 'Month'
+  }];
+
+  // note to self (delete "rooms" later if this repo works just fine since it's dummy well at least for now )
   rooms: string[] = [
     "CT Scan - Room 1",
     "CT Scan - Room 2",
@@ -34,10 +52,15 @@ export class PageRadiologyScheduleComponent implements OnInit {
   ]
 
   ngOnInit() {
-    this.scheduleListGenerate()
-    this.scheduleListSquash()
+    this.scheduleListGenerate();
+    this.scheduleListSquash();
+    this.getModalityHospitalList();
     //this.scheduleList()
     // console.log('list', this.scheduleList)
+  }
+
+  ngOnChanges() {
+    this.getModalityHospitalList();
   }
 
   scheduleListGenerate () {
@@ -91,7 +114,8 @@ export class PageRadiologyScheduleComponent implements OnInit {
     const lblStatus = ['scheduled', 'arrived', 'process', 'completed', 'note']
     const spanType = [null, 'full']
     let baseData = (this.scheduleList || [])
-    console.log('default basedata', baseData)
+    // note to self ( delete console.log later )
+    // console.log('default basedata', baseData)
     let data = [
       {
         fromTime: '01:00',
@@ -200,20 +224,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
     })
   }
 
-  cancelAppointment() {
-    const m = this.modalService.open(ModalCancelAppointmentComponent, { windowClass: 'modal_cancel_appointment', backdrop: 'static', keyboard: false })
-    m.result.then((result: any) => {
-      console.log('modal is closed', {result})
-    })
-  }
-
-  createAdmission() {
-    const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission', backdrop: 'static', keyboard: false, size: "lg" })
-    m.result.then((result: any) => {
-      console.log('modal is closed', {result})
-    })
-  }
-
   detailSchedule() {
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
     m.result.then((result: any) => {
@@ -226,5 +236,19 @@ export class PageRadiologyScheduleComponent implements OnInit {
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
+  }
+
+  getModalityHospitalList() {
+    console.log(this.selected, '================== selected')
+    this.modalityService.getModalityHospital(this.hospital.id, '2022-07-13', '2022-07-13')
+      .subscribe(res => {
+        const activeModalityHospital = res.data.map((eachModality: any) => {
+            if (eachModality.status === '1') return eachModality;
+          }
+        );
+        this.modalitiesHospitalList = activeModalityHospital;
+      }, () => {
+        this.modalitiesHospitalList = [];
+      });
   }
 }

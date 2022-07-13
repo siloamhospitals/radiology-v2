@@ -11,8 +11,8 @@ export class DatepickerComponent implements OnInit {
   constructor() { }
 
 
-  @Input() width : string = '94px'
-  @Input() selected = moment()
+  @Input() width : string = '94px';
+  @Input() selected = moment();
   @Input() format = 'MMMM YYYY';
   @Input() hideIcon : boolean;
   locale: object;

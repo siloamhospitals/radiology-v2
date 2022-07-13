@@ -1,33 +1,32 @@
-<div class="modal-content">
+<div class="modal-content modal-custom-size">
   <div class="modal-header-custom border-0 px-0 px-4">
     <div class="d-flex flex-wrap justify-content-between">
       <div class="align-self-center">
         <h5 class="m-0">Create Admission</h5>
       </div>
       <div>
-        <button #close_button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
+        <button #close_button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
           <span class="back-button" aria-hidden="true">&times;</span>
         </button>
       </div>
     </div>
   </div>
   <div class="modal-body p-0 mt-3">
-    <div class="d-flex flex-wrap flex-row mb-3 px-4">
-      <div class="w-50">
-        <h4>CT Scan - Room 1</h4>
-      </div>
-      <div class="w-50 pl-4">
-        <div class="admission-status float-right px-2 py-1 align-self-center">
-          <p>{{status}}</p>
-        </div>
-      </div>
+    <div class="mb-3 d-flex align-items-center justify-content-between px-4">
+      <h4>CT Scan - Room 1</h4>
+      <span class="badge badge-primary p-2 rounded-pill">
+        <h6 class="mb-0" >Scheduled</h6>
+      </span>
     </div>
     <div class="mb-4 px-4">
-      <label for="">Date and Time</label>
-      <div>
-        <app-date-picker></app-date-picker>
+        <label for="">Date and Time</label>
+        <div class="d-flex align-items-center" >
+          <app-date-picker format="dddd, DD MMMM YYYY" width="160px" hideIcon="true" ></app-date-picker>
+          <span class="mx-2" >|</span>
+          <app-time-picker useMinute="true" ></app-time-picker>&nbsp;
+          <app-time-picker useMinute="true" ></app-time-picker>
+        </div>
       </div>
-    </div>
     <div class="d-flex flex-wrap flex-row py-4 px-4 bg-secondary">
       <div class="w-50">
         <label for="" class="text-muted">Local MR Number</label>
@@ -113,7 +112,7 @@
   </div>
   <div class="modal-footer">
     <div class="d-flex flex-row justify-content-end">
-      <button class="btn btn-success ml-2">Create Admission</button>
+      <button (click)="close()" class="btn btn-success ml-2">Create Admission</button>
     </div>
   </div>
 </div>
