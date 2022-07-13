@@ -11,7 +11,10 @@
       </tr>
     </ng-container>
     <tr *ngFor="let row of items; let i = index">
-      <td *ngFor="let item of row; let j = index" class="item-hover {{item.isToday ? 'highlight-item-active' : ''}}">
+      <td *ngFor="let item of row; let j = index" 
+        class="item-hover 
+          {{!item.currentDayInMonth ? 'highlight-item-notactive' : ''}}
+          {{item.isToday ? 'highlight-item-active' : ''}}">
         <div class="pt-1 pb-3">
           <div class="px-3 py-2 highlight-item-label text-center">{{item.dateLabel}}</div>
           <div class="cursor-pointer mt-1 px-1" (click)="toDaily(j)">

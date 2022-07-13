@@ -28,6 +28,11 @@
   color: #6AB04C !important;
 }
 
+.highlight-item-notactive .highlight-item-label {
+  background: rgba(34, 47, 62, 0.05);
+  color: rgba(34, 47, 62, 0.38);
+}
+
 .item-hover:hover {
   background-color: #f5f5f5;
 }

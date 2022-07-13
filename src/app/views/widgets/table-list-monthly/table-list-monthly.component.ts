@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as lodash from 'lodash'
+import * as moment from 'moment'
 
 @Component({
   selector: 'app-table-list-monthly',
@@ -15,6 +16,7 @@ export class TableListMonthlyComponent implements OnInit {
     date: '2022-01-01',
     dateLabel: '01',
     isToday: false,
+    currentDayInMonth: false,
     items: {
       availables: 99,
       appointments: 9,
@@ -50,15 +52,6 @@ export class TableListMonthlyComponent implements OnInit {
     this.itemClick.emit(val)
   }
 
-  generateCalendarItems () {
-    const data = Array(42).fill({}).map((item: any) => {
-      const model = this.itemModel
-      return model
-    })
-    this.items = lodash.chunk(data, 7)
-    console.log('table monthly', this.items)
-  }
-
   getFirstDay(theYear: any, theMonth: any){
     let firstDate = new Date(theYear,theMonth,1)
     return firstDate.getDay()
@@ -76,6 +69,53 @@ export class TableListMonthlyComponent implements OnInit {
   getY2KYear(today: any) {
     let yr = today.getYear()
     return ((yr < 1900) ? yr+1900 : yr)
+  }
+
+  generateCalendarItems () {
+    const currentDate = new Date(2022, 6, 13)
+    const theMonth = currentDate.getMonth()
+    const theYear = currentDate.getFullYear()
+
+    const firstDay = this.getFirstDay(theYear, theMonth) - 1
+    const howMany = this.getMonthLen(theYear, theMonth)
+
+    const today = new Date()
+    today.setHours(0,0,0,0)
+
+    const data = Array(42).fill({}).map((item: any, i: number) => {
+      const {...model} = this.itemModel
+      const dayIndex = (i - firstDay + 1)
+      const dateIndex = new Date(theYear, theMonth, dayIndex)
+      
+      // mapping data
+      // model.items.appointments = 0
+      // model.items.availables = 0
+      // model.items.maintenences = 0
+
+      if (i < firstDay) {
+        // if past in month
+        const mm = moment(dateIndex).format('MMMM DD')
+        model.dateLabel = String(mm)
+      } else if (i >= (howMany + firstDay)) {
+        // if next in month
+        const mm = moment(dateIndex).format('MMMM DD') 
+        model.dateLabel = String(mm)
+      } else {
+        model.dateLabel = String((moment(dateIndex).format('DD')))
+        model.currentDayInMonth = true
+        
+        // model.items.appointments = 10
+        // model.items.availables = 10
+        // model.items.maintenences = 1
+      }
+      // if today
+      if (moment(today).diff(moment(dateIndex), 'days') === 0) {
+        model.isToday = true
+      }
+      return model
+    })
+    this.items = lodash.chunk(data, 7)
+    console.log('table monthly', this.items)
   }
 
 }
