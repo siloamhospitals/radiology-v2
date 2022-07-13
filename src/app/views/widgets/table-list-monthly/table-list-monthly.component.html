@@ -1,0 +1,14 @@
+<table class="table table-bordered mt-3 table-list-radiology">
+  <thead class="border-0 bg-secondary">
+    <tr>
+      <td colspan="1">Label</td>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="!(scheduleList && scheduleList.length)">
+      <tr>
+        <td colspan="100%" class="text-center p-3">No data from this section</td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
