@@ -1,11 +1,11 @@
 <app-section-header></app-section-header>
-<div class="d-flex justify-content-start">
+<div class="d-flex justify-content-start"  style="position: relative;">
   <div class="fo_menu_container">
     <app-section-sidebar></app-section-sidebar>
   </div>
   <div class="fo_content_container mt-4 d-block">
     <div class="box bg-white">
-      <div class="header-radiology-schedule" >
+      <div class="header-radiology-schedule">
         <h3 class="p-3 border-bottom">
           Radiology Schedule
         </h3>
@@ -75,21 +75,24 @@
       </div>
 
       <!-- Content -->
-      <section class="p-3">
-        <app-table-list-monthly
-          *ngIf="tableViewActive===2"
-          (itemClick)="toDaily($event)"
-          [dateSelected]="tableViewCurrentDate"
-          [data]="scheduleList"></app-table-list-monthly>
-        <app-table-list-weekly
-          *ngIf="tableViewActive===1"
-          (itemClick)="toDaily($event)"
-          [dateSelected]="tableViewCurrentDate"
-          [data]="scheduleList"></app-table-list-weekly>
-        <app-table-list-daily
-          *ngIf="tableViewActive===0"
-          [dateSelected]="tableViewCurrentDate"
-          [data]="scheduleList"></app-table-list-daily>
+      <section class="px-3 my-3">
+        <div *ngIf="tableViewActive===2" class="no-sticky">
+          <app-table-list-monthly
+            (itemClick)="toDaily($event)"
+            [dateSelected]="tableViewCurrentDate"
+            [data]="scheduleList"></app-table-list-monthly>
+        </div>
+        <div *ngIf="tableViewActive===1" class="table-head-sticky">
+          <app-table-list-weekly
+            (itemClick)="toDaily($event)"
+            [dateSelected]="tableViewCurrentDate"
+            [data]="scheduleList"></app-table-list-weekly>
+        </div>
+        <div *ngIf="tableViewActive===0" class="table-head-sticky">
+          <app-table-list-daily
+            [dateSelected]="tableViewCurrentDate"
+            [data]="scheduleList"></app-table-list-daily>
+        </div>
       </section>
 
       <!-- Modal Section -->

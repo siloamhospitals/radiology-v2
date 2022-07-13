@@ -1,7 +1,7 @@
 <table class="table table-bordered mt-3 table-list-radiology">
   <thead class="border-0 bg-secondary">
     <tr>
-      <td *ngFor="let day of days" class="text-center">{{day}}</td>
+      <td *ngFor="let day of days" class="text-center py-4 border-0">{{day}}</td>
     </tr>
   </thead>
   <tbody>
@@ -12,6 +12,7 @@
     </ng-container>
     <tr *ngFor="let row of items; let i = index">
       <td *ngFor="let item of row; let j = index" 
+        title="{{item.date}}"
         class="item-hover 
           {{!item.currentDayInMonth ? 'highlight-item-notactive' : ''}}
           {{item.isToday ? 'highlight-item-active' : ''}}">
