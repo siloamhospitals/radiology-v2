@@ -156,5 +156,5 @@ export class ModalHistoryComponent implements OnInit {
   removeAlert(alert: Alert) {
     this.alerts = this.alerts.filter(x => x !== alert);
   }
-  
+
 }
