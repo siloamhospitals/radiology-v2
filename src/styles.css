@@ -1220,6 +1220,9 @@ section .form-control:focus {
 .cursor-pointer {
   cursor: pointer;
 }
+.cursor-pointer-force * {
+  cursor: pointer;
+}
 
 .text-primary {
   color: #575FCF;

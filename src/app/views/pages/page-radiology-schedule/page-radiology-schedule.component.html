@@ -31,14 +31,16 @@
             <select
               [(ngModel)]="tableViewActive"
               (change)="changeTableView($event)"
-              class="form-control px-2 mx-2"
+              class="form-control px-2 mx-2 cursor-pointer"
               style="width: 94px;">
               <option *ngFor="let t of tableViewSelect" [ngValue]="t.key">{{t.text}}</option>
             </select>
-            <app-date-picker 
-              (changeValue)="changeTableDateSelected($event)" 
-              width="140px"
-              [selected]="tableViewCurrentDate"></app-date-picker>
+            <div class="cursor-pointer-force">
+              <app-date-picker 
+                (changeValue)="changeTableDateSelected($event)" 
+                width="140px"
+                [selected]="tableViewCurrentDate"></app-date-picker>
+            </div>
           </div>
 
         </div>
