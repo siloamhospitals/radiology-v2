@@ -7,6 +7,7 @@ import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedul
 import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 import { RadiologyService } from 'src/app/services/radiology/radiology.service';
 import * as moment from 'moment';
+import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
 
 // import * as moment from 'moment';
 
@@ -61,6 +62,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public modalitiesHospitalList: any = [];
   public selectedTimeSchedule: any;
   public categories: General[];
+  public modalitySlots : ModalitySlot[] = [];
 
   // note to self (delete "rooms" later if this repo works just fine since it's dummy well at least for now )
   sections: any = [
@@ -73,9 +75,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
   ]
   sectionSelected: any = []
   sectionSelectedCanMultiple: Boolean = true
-
+  
   ngOnInit() {
-    this.getSchedules()
+    this.getModalitySlots()
     this.initTodayView();
     
   }
@@ -84,76 +86,14 @@ export class PageRadiologyScheduleComponent implements OnInit {
     console.log(changes, '============ changes di parent')
   }
 
-  async getSchedules() {
+  async getModalitySlots() {
     const modalityHospitalId = 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'
     const reserveDate = '2022-07-14'
     const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
-    const slots =responseSlots.data || [];
-    const setToHour2Digit = (time : number) => ('0' + time).slice(-2);
-    let lastCaptureSlot : any = {};
-    let rowSpan = 0;
-    this.scheduleList = Array.from(Array(24).keys()).map(time => {
-      const hour2digit = setToHour2Digit(time)
-      const firstFromTime = hour2digit  + ':00'
-      const firstToTime = hour2digit + ':30'
-      const lastFromTime = hour2digit  + ':30'
-      const lastToTime = setToHour2Digit(time+1) + ':00'
-
-      const patientFirst : any = slots.find(s => 
-          moment(firstFromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
-          moment(firstToTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
-        ) || {};
-      
-      if(patientFirst.patient_name && patientFirst.patient_name === lastCaptureSlot.patient){
-        lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
-      }else{
-        rowSpan = 1
-      }
-           
-      const firstSlot = {
-          fromTime: firstFromTime,
-          toTime:  firstToTime,
-          patient: patientFirst.patient_name,
-          dob: patientFirst.patient_dob,
-          localMrNo: patientFirst.local_mr_no,
-          examination: patientFirst.modality_examination_name,
-          note: patientFirst.notes,
-          status: patientFirst.status,
-          rowSpan: lastCaptureSlot.patient && patientFirst.patient_name === lastCaptureSlot.patient ? null : rowSpan
-      }  
-      
-      lastCaptureSlot = firstSlot
-
-      const patientLast : any = slots.find(s => 
-          moment(lastFromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
-          moment(lastToTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
-        ) || {};
-        
-      if(patientLast.patient_name && patientLast.patient_name === lastCaptureSlot.patient){
-        lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;       
-      } else {
-        rowSpan = 1;
-      }
-
-      
-      const lastSlot = {
-        fromTime: lastFromTime,
-        toTime: lastToTime,
-        patient: patientLast.patient_name,
-        dob: patientLast.patient_dob,
-        localMrNo: patientLast.local_mr_no,
-        examination: patientLast.modality_examination_name,
-        note: patientLast.notes,
-        status: patientLast.status,
-        rowSpan: lastCaptureSlot.patient && patientLast.patient_name === lastCaptureSlot.patient ? null : rowSpan
-     }
-
-     lastCaptureSlot = patientLast
-
-      return [ firstSlot, lastSlot ]
-    })
-
+    this.modalitySlots = responseSlots.data || [];
   }
+
+ 
 
 
   open (modalId: any) {

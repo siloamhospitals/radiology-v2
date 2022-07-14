@@ -1225,7 +1225,7 @@ section .form-control:focus {
 }
 
 .text-primary {
-  color: #575FCF;
+  color: #575FCF !important;
 }
 
 .back-button {
@@ -1361,3 +1361,8 @@ section .form-control:focus {
   left: 20%;
   margin-left: -2.5px;
 }
+
+.bg-primary {
+  background: rgba(200, 203, 250, 0.5) !important;
+}
+
