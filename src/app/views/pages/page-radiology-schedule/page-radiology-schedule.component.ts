@@ -71,6 +71,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   ngOnInit() {
     this.getModalitySlots()
+    this.getModalityHospitalList()
     // this.initTodayView();
 
   }
@@ -83,9 +84,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
     this.modalitySlots = responseSlots.data || [];
   }
 
-  onChangeDate = async (val?:any) => {
+  onChangeDate = async () => {
     await this.getModalitySlots()
-    await this.getModalityHospitalList(val)
+    await this.getModalityHospitalList()
     // note to self (ntar aku ubah getModalitynya sesuai dengan tableViewCurrentDateLabel)
     this.tableViewCurrentDateLabel = this.tableViewCurrentDate.format('DD MMMM YYYY')
     this.tableViewActive = 0
