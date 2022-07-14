@@ -17,7 +17,7 @@
             <button class="btn" title="To Next Period" (click)="toActionDate()">
               <span class="fa fa-angle-right font-weight-bold"></span>
             </button>
-            <span title="Current period view" class="pl-1" style="cursor: default;">{{tableViewCurrentDateLabel}}</span>
+            <span title="Current period view" class="pl-1" style="cursor: default;">{{ tableViewCurrentDate.format('DD MMMM YYYY')  }}</span>
           </div>
           <div class="d-flex align-items-center">
             <button
