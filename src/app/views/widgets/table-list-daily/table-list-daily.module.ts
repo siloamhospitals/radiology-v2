@@ -1,23 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ModalCreateAdmissionComponent } from './modal-create-admission.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TableListDailyComponent } from './table-list-daily.component';
+import { FormsModule } from '@angular/forms';
 import { DatepickerModule } from '../date-picker/date-picker.module';
 import { TimepickerModule } from '../time-picker/time-picker.module';
 
 @NgModule({
-  declarations: [
-    ModalCreateAdmissionComponent
-  ],
+  declarations: [TableListDailyComponent],
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
     DatepickerModule,
-    TimepickerModule
+    TimepickerModule,
   ],
   exports: [
-    ModalCreateAdmissionComponent,
+    TableListDailyComponent
   ]
 })
-export class ModalCreateAdmissionModule { }
+export class TableListDailyModule { }

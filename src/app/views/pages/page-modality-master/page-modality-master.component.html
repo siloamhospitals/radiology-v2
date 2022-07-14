@@ -22,95 +22,85 @@
           </div>
         </div>
         <div class="px-3 border-bottom" >
-          <div class="row border-bottom" >
+          <div class="row border-bottom" style="height: 52px;;" >
             <div class="col-md-3 position-relative pr-0 border-right">
               <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Find Modality"
                 title="Find patients" />
               <span class="fa fa-search position-absolute"></span>
             </div>
-            <!-- <div class="col-md-2 position-relative pr-0 border-right" >
-                <ul class="list-group" (mouseover)="clickedComponentList=true" >
-                  <li class="list-group-item"   style="border: 0px !important;">
-                    <input class="form-control pt-3 input-filter pr-4" type="text" value="{{checkedList}}" placeholder="Schedule Type"
-                title="Find patients" />
-                  </li>
-                </ul>
-                <ul class="list-group" *ngIf="clickedComponentList" style="position: absolute;" >
-                  <li class="list-group-item" *ngFor="let item of checklist" >
-                    <input (mouseout)="clickedComponentList=false" type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
-                      (change)="isAllSelected()" />
-                    {{item.value}}
-                  </li>
-                </ul>
+            <div class="col-md-2 position-relative pr-0 border-right" >
+              <ng-multiselect-dropdown-angular7
+                [placeholder]="'Schdule Type'"
+                [data]="dropdownListSchduleType"
+                [(ngModel)]="selectedItemsSchdule"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown-angular7>
             </div>
             <div class="col-md-2 position-relative pr-0 border-right" >
-              <ul class="list-group" (mouseover)="clickedComponentList=true" >
-                <li class="list-group-item"   style="border: 0px !important;">
-                  <input class="form-control pt-3 input-filter pr-4" type="text" value="{{checkedList}}" placeholder="Schedule Type"
-              title="Find patients" />
-                </li>
-              </ul>
-              <ul class="list-group" *ngIf="clickedComponentList" style="position: absolute;" >
-                <li class="list-group-item" *ngFor="let item of checklist" >
-                  <input (mouseout)="clickedComponentList=false" type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
-                    (change)="isAllSelected()" />
-                  {{item.value}}
-                </li>
-              </ul>
-          </div>
+              <ng-multiselect-dropdown-angular7
+                [placeholder]="'Floor'"
+                [data]="dropdownListFloor"
+                [(ngModel)]="selectedItemsFloor"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown-angular7>
+            </div>
             <div class="col-md-2 position-relative pr-0 border-right" >
-              <ul class="list-group" (mouseover)="clickedComponentList=true" >
-                <li class="list-group-item"   style="border: 0px !important;">
-                  <input class="form-control pt-3 input-filter pr-4" type="text" value="{{checkedList}}" placeholder="Schedule Type"
-              title="Find patients" />
-                </li>
-              </ul>
-              <ul class="list-group" *ngIf="clickedComponentList" style="position: absolute;" >
-                <li class="list-group-item" *ngFor="let item of checklist" >
-                  <input (mouseout)="clickedComponentList=false" type="checkbox" [(ngModel)]="item.isSelected" name="list_name" value="{{item.id}}"
-                    (change)="isAllSelected()" />
-                  {{item.value}}
-                </li>
-              </ul>
-          </div> -->
+              <ng-multiselect-dropdown-angular7
+                [placeholder]="'Status'"
+                [data]="dropdownListStatus"
+                [(ngModel)]="selectedItemsStatus"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown-angular7>
+          </div>
             
           </div>
-          <table class="table table-borderless table-stripped" id="appointment-list-table">
-            <thead class="fo_color_blue foot-note table-sticky">
-              <th style="min-width: 10em">
-                Modality Name
-              </th>
-              <th style="min-width: 10em">
-                Modality Label
-              </th>
-              <th>Schdule Type</th>
-              <th width="100px" style="text-align: left">Floor</th>
-              <th width="100px" style="text-align: left">Room</th>
-              <th width="100px" style="text-align: left">Dur (min)</th>
-              <th class="text-center" width="100px">Status</th>
-              <th class="pr-3" style="text-align: right; min-width: 10em;">Action</th>
-              <th width="50px"></th>
-            </thead>
-        
-            <tbody>
-              <tr *ngFor="let item of operationals.data; let i = index">
-                <td>{{item.modality_name}}</td>
-                <td>{{item.modality_label}}</td>
-                <td>{{item.operational_type_label}}</td>
-                <td style="text-align: left">{{item.room.floor_name}}</td>
-                <td style="text-align: left">{{item.room.name}}</td>
-                <td style="text-align: left">{{item.operational_type == 3 ? item.duration : '-'}}</td>
-                <td>
-                  <span *ngIf="item.status == 1" class="modality-status status-scheduled">Active</span>
-                  <span *ngIf="item.status == 2" class="modality-status status-arrived">Inactive</span>
-                </td>
-                <td class="pr-3" style="text-align: right">
-                  <a class="detailed-button" (click)="showModalityModal(item)">Detail</a>
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-head-sticky">
+            <table class="table table-borderless table-stripped" id="appointment-list-table">
+              <thead class="border-0 bg-secondary">
+                <th style="min-width: 10em">
+                  Modality Name
+                </th>
+                <th style="min-width: 10em">
+                  Modality Label
+                </th>
+                <th>Schdule Type</th>
+                <th width="100px" style="text-align: left">Floor</th>
+                <th width="100px" style="text-align: left">Room</th>
+                <th width="100px" style="text-align: left">Dur (min)</th>
+                <th class="text-center" width="100px">Status</th>
+                <th class="pr-3" style="text-align: right; min-width: 10em;">Action</th>
+                <th width="50px"></th>
+              </thead>
+          
+              <tbody>
+                <tr *ngFor="let item of operationals.data; let i = index">
+                  <td>{{item.modality_name}}</td>
+                  <td>{{item.modality_label}}</td>
+                  <td>{{item.operational_type_label}}</td>
+                  <td style="text-align: left">{{item.room.floor_name}}</td>
+                  <td style="text-align: left">{{item.room.name}}</td>
+                  <td style="text-align: left">{{item.operational_type == 3 ? item.duration : '-'}}</td>
+                  <td>
+                    <span *ngIf="item.status == 1" class="modality-status status-scheduled">Active</span>
+                    <span *ngIf="item.status == 2" class="modality-status status-arrived">Inactive</span>
+                  </td>
+                  <td class="pr-3" style="text-align: right">
+                    <a class="detailed-button" (click)="showModalityModal(item)">Detail</a>
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

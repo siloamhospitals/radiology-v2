@@ -1,21 +1,21 @@
-<div id="modal-detail-schedule" class="modal-content">
+<div id="modal-detail-schedule" class="modal-content modal-custom-size">
   <div class="modal-header border-bottom-0">
     <div class="header">
-      <button class="btn border-0" >  
-        <span class="fa fa-lg fa-trash-o text-muted" ></span>
+      <button class="btn border-0" (click)="cancelAppointment()">
+        <span class="fa fa-lg fa-trash-o text-muted"></span>
       </button>
-      <button class="btn border-0" >  
-        <span class="fa fa-lg fa-history text-muted" ></span>
+      <button class="btn border-0" (click)="showHistoryModal()">
+        <span class="fa fa-lg fa-history text-muted"></span>
       </button>
-      <button class="btn border-0" >  
-        <span class="fa fa-lg fa-check-circle-o text-muted" ></span>
+      <button class="btn border-0" (click)="createAdmission()">
+        <span class="fa fa-lg fa-check-circle-o text-muted"></span>
       </button>
     </div>
     <button #close_button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal- px-0">
+  <div class="modal-body px-0">
     <div class="formclass">
       <div class="mb-3 d-flex align-items-center justify-content-between px-3">
         <h4>CT Scan - Room 1</h4>
@@ -39,7 +39,7 @@
             <span class="form-label">4757323</span>
           </div>
         </div>
-        <div class="w-50">
+        <div class="w-50 pl-3">
           <label for="" class="text-muted">Admission Number</label>
           <div>
             <span class="form-label">-</span>
@@ -79,8 +79,12 @@
         </div>
         <div class="mb-3 w-50">
           <label for="">Examination <sup class="text-required">*</sup></label>
-          <div>
-            <input type="text" class="form-control" placeholder="Select Examination" />
+          <div class="">
+            <select id="title" class="form-control" name="dropDownRoom">
+              <option *ngFor="let examination of examinationsList" [value]="examination.value">
+                {{examination.description}}
+              </option>
+            </select>
           </div>
         </div>
       </div>

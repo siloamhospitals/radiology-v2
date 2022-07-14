@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modality.component';
-import { RadiologyService2 } from '../../../services/radiology/radiology.service';
+import { RadiologyService } from '../../../services/radiology/radiology.service';
 import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';
 
 @Component({
@@ -32,7 +32,7 @@ export class PageModalityMasterComponent implements OnInit {
 
   constructor( 
     private modalService: NgbModal,
-    private service: RadiologyService2,
+    private service: RadiologyService,
     ) { 
    
     this.clickedComponentList = false;
@@ -80,7 +80,6 @@ export class PageModalityMasterComponent implements OnInit {
   }
 
   showModalityModal(val: any = null) {
-    console.log(val, 'ini vall')
     const modalRef = this.modalService.open(ModalModalityComponent, 
       { 
         windowClass: 'modal_modality', 

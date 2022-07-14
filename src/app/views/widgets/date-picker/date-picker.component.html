@@ -1,12 +1,14 @@
 <div class="position-relative" [style.width]="width" >
   <img *ngIf="!hideIcon" src="../../../../assets/icons/ic_datepicker.png" class="position-absolute icon-datepicker" alt="datepicker" />
-  <input type="text" ngxDaterangepickerMd
-  [locale]="locale"
-  [(ngModel)]="selected"
-  [singleDatePicker]="true"
-  [autoApply]="true"
-  [showDropdowns]="true"
-  opens="left"  
-  class="form-control text-center"
-  [class.pl-4]="!hideIcon" />
+  <input type="text"
+    ngxDaterangepickerMd
+    [locale]="locale"
+    [(ngModel)]="selected"
+    (change)="changeSelected($event)"
+    [singleDatePicker]="true"
+    [autoApply]="true"
+    [showDropdowns]="true"
+    opens="left"
+    class="form-control text-center"
+    [class.pl-4]="!hideIcon" />
 </div>

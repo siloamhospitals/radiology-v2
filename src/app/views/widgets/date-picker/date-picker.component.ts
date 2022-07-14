@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import * as moment from 'moment'
+import { Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-date-picker',
@@ -16,12 +17,19 @@ export class DatepickerComponent implements OnInit {
     moment.locale('id');
    }
 
-  @Input() width : string = '94px'
-  @Input() selected = moment()
-  @Input() format = 'dddd, DD MMMM YYYY';
-  @Input() hideIcon : boolean;
+   @Input() width: string = '94px';
+   @Input() selected: any = moment().format('YYYY-MM-DD');
+   @Input() format = 'MMMM YYYY';
+   @Input() hideIcon: boolean;
+ 
+   @Output() changeValue = new EventEmitter<string>();
+ 
   locale: object;
 
+  changeSelected(value: string) {
+    value = this.selected.startDate ? this.selected.startDate.format('YYYY-MM-DD') : '';
+    this.changeValue.emit(value);
+  }
 
   ngOnInit() {
     this.locale = {
@@ -29,4 +37,10 @@ export class DatepickerComponent implements OnInit {
     }
   }
 
+  ngOnChanges (changes: any) {
+    if (changes.selected) {
+      this.selected = moment(changes.selected.currentValue).format('YYYY-MM-DD');
+      // console.log('selected change', changes.selected.currentValue)
+    }
+  }
 }

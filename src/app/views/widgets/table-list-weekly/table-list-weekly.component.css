@@ -1,0 +1,5 @@
+.highlight-item-current {
+  background-color: rgba(87, 95, 207, 0.15);
+  border-bottom: 2px solid rgba(87, 95, 207, 1);
+  color: #575FCF;
+}
