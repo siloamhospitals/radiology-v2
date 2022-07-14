@@ -83,47 +83,11 @@
                 <td colspan="100%" class="text-center p-3">No data from this section</td>
               </tr>
             </ng-container>
-            <!-- testing purpose -->
-            <!-- <tr>
-              <td>-11</td>
-              <td>00:00 - 00:29</td>
-              <td>Patient Test</td>
-              <td>32-13-1990</td>
-              <td>00001X</td>
-              <td>Examination</td>
-              <td>Note</td>
-              <td>Status</td>
-            </tr>
-            <tr>
-              <td>-11</td>
-              <td>00:00 - 00:29</td>
-              <td rowspan="2">Patient Test</td>
-              <td rowspan="2">32-13-1990</td>
-              <td rowspan="2">00001X</td>
-              <td rowspan="2">Examination</td>
-              <td rowspan="2">Note</td>
-              <td rowspan="2">Status</td>
-            </tr>
-            <tr>
-              <td>-11</td>
-              <td>00:00 - 00:29</td>
-            </tr>
-            <tr>
-              <td>-11</td>
-              <td>00:00 - 00:29</td>
-              <td>Patient Test</td>
-              <td>32-13-1990</td>
-              <td>00001X</td>
-              <td>Examination</td>
-              <td>Note</td>
-              <td>Status</td>
-            </tr> -->
-            <!-- end testing purpose -->
-            <tr *ngFor="let item of scheduleList; let i=index">
-              <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle; width: 25px;" class="text-right">
-                {{(item.rowIndex).toString().padStart(2, '0')}}</td>
-              <!-- <td>{{item.timeSlot}}</td> -->
-              <td style="width: 100px;">{{item.timeSlotFrom}} - {{item.timeSlotTo}}</td>
+           
+            <!-- <tr *ngFor="let item of scheduleList; let i=index">
+              <td rowspan="2" style="vertical-align: middle; width: 25px;" class="text-right">
+                {{ i + 1 }}</td>
+              <td style="width: 100px;">{{item.fromTime}} - {{item.toTime}}</td>
               <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'" >
                 <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">
                   <div class="cursor-pointer" (click)="detailSchedule()" style="display: grid; grid-template-columns: 5px auto; height: 100%; overflow: auto !important;">
@@ -158,7 +122,29 @@
                 <td></td>
                 <td></td>
               </ng-container>
-            </tr>
+            </tr> -->
+          
+            <ng-container *ngFor="let item of scheduleList; let i=index" >              
+              <tr *ngFor="let schedule of item; let j = index;" >
+                <td *ngIf="j % 2 == 0" rowspan="2" >
+                  {{ ('0' + i).slice(-2) }}
+                </td>
+                <td>{{ schedule.fromTime + ' - ' + schedule.toTime }}</td>                
+                <ng-container *ngIf="schedule.rowSpan">
+                  <td [attr.rowspan]="schedule.rowSpan" >
+                    <span [class.text-success]="!schedule.patient" >
+                      {{ schedule.patient || 'Tersedia' }}
+                    </span>
+                  </td>
+                  <td [attr.rowspan]="schedule.rowSpan" >{{ schedule.dob || '-' }}</td>
+                  <td [attr.rowspan]="schedule.rowSpan" >{{ schedule.localMrNo || '-' }}</td>
+                  <td [attr.rowspan]="schedule.rowSpan" >{{ schedule.examination || '-' }}</td>
+                  <td [attr.rowspan]="schedule.rowSpan" >{{ schedule.note || '-' }}</td>
+                  <td [attr.rowspan]="schedule.rowSpan" >{{ schedule.status || '-' }}</td>
+                </ng-container>
+              </tr>
+            </ng-container>
+
           </tbody>
         </table>
       </section>
