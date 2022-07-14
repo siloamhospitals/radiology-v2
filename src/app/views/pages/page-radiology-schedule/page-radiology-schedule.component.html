@@ -1,43 +1,66 @@
 <app-section-header></app-section-header>
-<div class="d-flex justify-content-start">
+<div class="d-flex justify-content-start"  style="position: relative;">
   <div class="fo_menu_container">
     <app-section-sidebar></app-section-sidebar>
   </div>
   <div class="fo_content_container mt-4 d-block">
     <div class="box bg-white">
-      <div class="header-radiology-schedule" >
+      <div class="header-radiology-schedule">
         <h3 class="p-3 border-bottom">
           Radiology Schedule
         </h3>
         <div class="px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
           <div class="d-flex align-items-center">
-            <button class="btn">
+            <button class="btn" title="To Prev Period" (click)="toActionDate(true)">
               <span class="fa fa-angle-left font-weight-bold"></span>
             </button>
-            <button class="btn">
+            <button class="btn" title="To Next Period" (click)="toActionDate()">
               <span class="fa fa-angle-right font-weight-bold"></span>
             </button>
-            <span>06 May, 2022</span>
+            <span title="Current period view" class="pl-1" style="cursor: default;">{{tableViewCurrentDateLabel}}</span>
           </div>
           <div class="d-flex align-items-center">
-            <button class="btn btn-light font-weight-bold text-muted d-flex mx-2">
-              <img src="../../../../assets/icons/ic_today.png" alt="ic_today" />
+            <button
+              title="To Today"
+              class="btn font-weight-bold text-muted d-flex mx-2 {{tableViewCurrentIsToday ? 'btn-primary' : 'btn-light'}}"
+              (click)="toToday()">
+              <!-- <img src="../../../../assets/icons/ic_today.png" alt="ic_today" /> -->
+              <i class="fa fa-calendar-check-o" style="font-size: 16px;"></i>
               <span class="ml-2">Today</span>
             </button>
             <div style="width: 2px; background: #ccc;"></div>
-            <select class="form-control px-2 mx-2" style="width: 94px;" [(ngModel)]="selectedTimeSchedule">
-              <option value="undefined" disabled hidden selected>Select...</option>
-              <option *ngFor="let c of categories" ngDefaultControl [value]="c.value">{{ c.description }}</option>
+            <select
+              title="Change tyoe of period table"
+              [(ngModel)]="tableViewActive"
+              (change)="changeTableView($event)"
+              class="form-control px-2 mx-2 cursor-pointer"
+              style="width: 94px;">
+              <option *ngFor="let t of tableViewSelect" [ngValue]="t.key">{{t.text}}</option>
             </select>
-            <app-date-picker (newItemEvent)="addItem($event)" [selected]="selected"></app-date-picker>
+            <div title="Pick period table" class="cursor-pointer-force">
+              <app-date-picker 
+                (changeValue)="changeTableDateSelected($event)" 
+                width="140px"
+                [selected]="tableViewCurrentDate"></app-date-picker>
+            </div>
           </div>
 
         </div>
         <div class="p-3 border-bottom">
-          <button *ngFor="let modalityHospital of modalitiesHospitalList" type="button"
+          <!-- Maaf aku comment yah, 
+            klo mau masukin list nya di sections, 
+            dan klo multiple sectionSelectedCanMultiple
+            value nya ditampung di sectionSelected, klo bisa pecah aja komponen ini jadi indie -->
+          <!-- <button *ngFor="let modalityHospital of modalitiesHospitalList" type="button"
             class="btn bg-light text-muted mb-2 rounded-8 room px-3 py-2 border">
             {{ modalityHospital.modality_label }}
-          </button>
+          </button> -->
+          <div class="btn-group-toggle" data-toggle="buttons">
+            <label *ngFor="let item of sections"
+              class="btn btn-light text-muted mb-2 rounded-8 room px-3 py-2 border {{item.active?'active':''}}">
+              <input [attr.type]="sectionSelectedCanMultiple ? 'checkbox' : 'radio'" [value]="item.key" (change)="setSelectedSection(item.key)"><span>{{item.text}}</span>
+            </label>
+          </div>
         </div>
         <div class="px-3 border-bottom">
           <div class="row">
@@ -84,46 +107,6 @@
               </tr>
             </ng-container>
            
-            <!-- <tr *ngFor="let item of scheduleList; let i=index">
-              <td rowspan="2" style="vertical-align: middle; width: 25px;" class="text-right">
-                {{ i + 1 }}</td>
-              <td style="width: 100px;">{{item.fromTime}} - {{item.toTime}}</td>
-              <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'" >
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">
-                  <div class="cursor-pointer" (click)="detailSchedule()" style="display: grid; grid-template-columns: 5px auto; height: 100%; overflow: auto !important;">
-                    <div class="item-indicator mr-1"></div>
-                    <div>{{item.patient}}</div>
-                  </div>
-                </td>
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.dob}}</td>
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.localMrNo}}</td>
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.examination}}
-                </td>
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">{{item.note}}</td>
-                <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-{{item.status}}">
-                  <span *ngIf="item.status === 'scheduled'" class="table-status status-scheduled">Scheduled</span>
-                  <span *ngIf="item.status === 'arrived'" class="table-status status-arrived">Arrived</span>
-                  <span *ngIf="item.status === 'process'" class="table-status status-process">Process</span>
-                  <span *ngIf="item.status === 'completed'" class="table-status status-completed">Completed</span>
-                </td>
-              </ng-container>
-              <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status === 'note'">
-                <td [attr.rowspan]="item.rowspan || 1" colspan="7" class="table-td table-td-{{item.status}}">
-                  {{item.note}}</td>
-              </ng-container>
-              <ng-container *ngIf="!item.isCanCreate && item.isSpan">
-              </ng-container>
-              <ng-container *ngIf="item.isCanCreate">
-                <td (click)="open(createAppointmentModal)" style="cursor: pointer;"><span
-                    class="text-success">Available</span></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </ng-container>
-            </tr> -->
-          
             <ng-container *ngFor="let item of scheduleList; let i=index" >              
               <tr *ngFor="let schedule of item; let j = index;" >
                 <td *ngIf="j % 2 == 0" rowspan="2" >
@@ -147,6 +130,25 @@
 
           </tbody>
         </table>
+      </section>
+      <section class="px-3 my-3">
+        <div *ngIf="tableViewActive===2" class="no-sticky">
+          <app-table-list-monthly
+            (itemClick)="toDaily($event)"
+            [dateSelected]="tableViewCurrentDate"
+            [data]="scheduleList"></app-table-list-monthly>
+        </div>
+        <div *ngIf="tableViewActive===1" class="table-head-sticky">
+          <app-table-list-weekly
+            (itemClick)="toDaily($event)"
+            [dateSelected]="tableViewCurrentDate"
+            [data]="scheduleList"></app-table-list-weekly>
+        </div>
+        <div *ngIf="tableViewActive===0" class="table-head-sticky">
+          <app-table-list-daily
+            [dateSelected]="tableViewCurrentDate"
+            [data]="scheduleList"></app-table-list-daily>
+        </div>
       </section>
 
       <!-- Modal Section -->
@@ -275,8 +277,7 @@
 
 
 
-
-      <section class="p-5">
+      <section *ngIf="false" class="p-5">
         <!-- Create / Update Appointment Modal -->
         <ng-container>
           <button class="btn btn-outline-primary mb-2 me-2" (click)="detailSchedule()">detail schedule create admission test</button>

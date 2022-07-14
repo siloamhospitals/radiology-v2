@@ -1,0 +1,34 @@
+.hightight-item-label {
+  color: rgba(34, 47, 62, 0.87);
+}
+
+.highlight-item-primary {
+  background-color: rgba(190, 210, 255, 0.15);
+  border-left: 2px solid #575FCF;
+  border-radius: 0px;
+  color: #341F97;
+}
+
+.highlight-item-warning {
+  background: rgba(249, 242, 219, 0.5);
+  border-left: 2px solid #EEBD10;
+  border-radius: 0px;
+  color: #EEBD10;
+}
+
+.highlight-item-secondary {
+  border-left: 2px solid transparent;
+  border-radius: 0px;
+  color: rgba(34, 47, 62, 0.54);
+}
+
+.highlight-item-active .highlight-item-label {
+  background-color: #DCF0D3 !important;
+  border-bottom: 2px solid #6AB04C !important;
+  color: #6AB04C !important;
+}
+
+.highlight-item-notactive .highlight-item-label {
+  background: rgba(34, 47, 62, 0.05);
+  color: rgba(34, 47, 62, 0.38);
+}

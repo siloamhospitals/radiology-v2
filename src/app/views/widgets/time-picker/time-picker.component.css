@@ -2,6 +2,10 @@
   font-size: 14px;
 }
 
+#timer-picker .select-timer{
+  z-index: 20;
+}
+
 #timer-picker .select-option{
   height: 300px;
   overflow-y: hidden;
@@ -19,7 +23,8 @@
   transition: all ease 0.5s;
 }
 #timer-picker .fa-caret-down{
-  right: 5px;
+  right: 8px;
   top: 10px;
-  font-size: 14px;
+  font-size: 12px;
+  color: rgba(34, 47, 62, 0.38);
 }

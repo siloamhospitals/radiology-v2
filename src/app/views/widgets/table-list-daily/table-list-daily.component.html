@@ -1,0 +1,62 @@
+<table class="table table-bordered mt-3 table-list-radiology">
+  <thead class="border-0 bg-secondary">
+    <tr>
+      <td colspan="2" class="py-4 border-0">Appointment</td>
+      <td class="py-4 border-0">Patient</td>
+      <td class="py-4 border-0">DoB</td>
+      <td class="py-4 border-0">Local MR No</td>
+      <td class="py-4 border-0">Examination</td>
+      <td class="py-4 border-0">Note</td>
+      <td class="py-4 border-0">Status</td>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="!(data && data.length)">
+      <tr>
+        <td colspan="100%" class="text-center p-3">No data from this section</td>
+      </tr>
+    </ng-container>
+    <tr *ngFor="let item of data; let i=index" class="item-hover">
+      <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle; width: 25px;" class="text-right">
+        {{(item.rowIndex).toString().padStart(2, '0')}}</td>
+      <!-- <td>{{item.timeSlot}}</td> -->
+      <td style="width: 100px;">{{item.timeSlotFrom}} - {{item.timeSlotTo}}</td>
+      <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status !== 'note'" >
+        <td [attr.rowspan]="item.rowspan || 1"
+          class="table-td table-td-scheduled cursor-pointer item-indicator-primary"
+          (click)="detailSchedule()" >
+          <div>{{item.patient}}</div>
+        </td>
+        <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-scheduled">{{item.dob}}</td>
+        <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-scheduled">{{item.localMrNo}}</td>
+        <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-scheduled">{{item.examination}}
+        </td>
+        <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-scheduled">{{item.note}}</td>
+        <td [attr.rowspan]="item.rowspan || 1" class="table-td table-td-scheduled">
+          <span *ngIf="item.status === 'scheduled'" class="table-status status-scheduled">Scheduled</span>
+          <span *ngIf="item.status === 'arrived'" class="table-status status-arrived">Arrived</span>
+          <span *ngIf="item.status === 'process'" class="table-status status-process">Process</span>
+          <span *ngIf="item.status === 'completed'" class="table-status status-completed">Completed</span>
+        </td>
+      </ng-container>
+      <ng-container *ngIf="!item.isCanCreate && !item.isSpan && item.status === 'note'">
+        <td [attr.rowspan]="item.rowspan || 1" 
+          colspan="7" 
+          class="table-td table-td-note item-indicator-warning">
+          {{item.note}}</td>
+      </ng-container>
+      <ng-container *ngIf="!item.isCanCreate && item.isSpan">
+      </ng-container>
+      <ng-container *ngIf="item.isCanCreate">
+        <td class="cursor-pointer">
+          <span class="text-success">Available</span>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </ng-container>
+    </tr>
+  </tbody>
+</table>
