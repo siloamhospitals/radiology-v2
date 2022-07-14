@@ -142,7 +142,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     console.log('current date 2', date, this.tableViewCurrentDate)
     let formatDate = `DD MMMM YYYY`
     if (this.tableViewActive === 2) { formatDate = 'MMMM YYYY' } // monthly
-    this.tableViewCurrentDateLabel = moment(this.tableViewCurrentDate).format(formatDate)
+    this.tableViewCurrentDateLabel = this.tableViewCurrentDate.format(formatDate)
     // weekly sets
     if (this.tableViewActive === 1) {
       const now = this.tableViewCurrentDate
