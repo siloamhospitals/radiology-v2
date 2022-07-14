@@ -15,7 +15,7 @@ export class ModalityService {
 
   private modalityHospital = environment.OPADMIN_SERVICE + '/radiology/modality-hospital';
 
-  getModalityHospital(hospitalId: string, fromDate: string, toDate: string): Observable<any> {
+  getModalityHospital(hospitalId: string, fromDate: any, toDate: any): Observable<any> {
     const query = `?fromDate=${fromDate}&toDate=${toDate}&hospitalId=${hospitalId}`;
     const url = this.modalityHospital + query;
     return this.http.get<any[]>(url, httpOptions);

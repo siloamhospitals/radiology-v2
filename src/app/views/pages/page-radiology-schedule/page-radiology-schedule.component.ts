@@ -65,25 +65,17 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public modalitySlots : ModalitySlot[] = [];
 
   // note to self (delete "rooms" later if this repo works just fine since it's dummy well at least for now )
-  sections: any = [
-    {key: '1', text: 'CT Scan - Room 1', active: false},
-    {key: '2', text: 'MAMMOGRAPHY - Room 1', active: false},
-    {key: '3', text: 'MRA 3T CONTRAST - Room 3', active: false},
-    {key: '4', text: 'RADIOLOGY CONVENTIONAL - Room 3', active: false},
-    {key: '5', text: 'USG - 3D & 4D - Room 5', active: false},
-    {key: '6', text: 'CT CARDIAC - Room 1', active: false},
-  ]
-  sectionSelected: any = []
+  sections: any = [];
+  sectionSelected: any = [];
   sectionSelectedCanMultiple: Boolean = false
-  
+
   ngOnInit() {
     this.getModalitySlots()
     // this.initTodayView();
-    this.getModalityHospitalList(this.tableViewCurrentDate.toDate())
-    
+
   }
 
-  
+
   async getModalitySlots() {
     const modalityHospitalId = 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'
     const reserveDate = this.tableViewCurrentDate.format('YYYY-MM-DD')
@@ -91,12 +83,14 @@ export class PageRadiologyScheduleComponent implements OnInit {
     this.modalitySlots = responseSlots.data || [];
   }
 
-  onChangeDate = async () => {
+  onChangeDate = async (val?:any) => {
     await this.getModalitySlots()
+    await this.getModalityHospitalList(val)
+    // note to self (ntar aku ubah getModalitynya sesuai dengan tableViewCurrentDateLabel)
     this.tableViewCurrentDateLabel = this.tableViewCurrentDate.format('DD MMMM YYYY')
     this.tableViewActive = 0
   }
- 
+
 
 
   open (modalId: any) {
@@ -129,12 +123,12 @@ export class PageRadiologyScheduleComponent implements OnInit {
               if (eachModality.status === '1') return eachModality;
             }
           );
-          this.modalitiesHospitalList = activeModalityHospital;
+          this.sections = activeModalityHospital;
         }, () => {
-          this.modalitiesHospitalList = [];
+          this.sections = [];
         });
     } else {
-      this.modalitiesHospitalList = [];
+      this.sections = [];
     }
   }
 
@@ -194,7 +188,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     }else{
       this.tableViewCurrentDate = this.tableViewCurrentDate.add(1, t)
     }
-  
+
     this.changeTableView(this.tableViewCurrentDate.toDate())
   }
   setRouterViewValue (item: Object) {
