@@ -5,6 +5,7 @@ import { ScheduleStatus } from 'src/app/variables/common.variable';
 import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
 import * as moment from 'moment'
 import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
+import * as _ from 'lodash'
 @Component({
   selector: 'app-table-list-daily',
   templateUrl: './table-list-daily.component.html',
@@ -14,6 +15,7 @@ export class TableListDailyComponent implements OnInit {
 
   @Input() modalitySlots: ModalitySlot[];
   @Input() dateSelected: Date
+  @Input() sectionSelected: any;
   public scheduleStatus = ScheduleStatus
   public scheduleList: any[] = []
 
@@ -111,7 +113,8 @@ export class TableListDailyComponent implements OnInit {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    if(changes.modalitySlots) {
+    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue)) || 
+    (this.sectionSelected.modality_hospital_id && (changes.modalitySlots && changes.modalitySlots.currentValue))) {
       await this.getSchedules()
     }
   }

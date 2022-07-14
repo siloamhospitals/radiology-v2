@@ -66,7 +66,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   // note to self (delete "rooms" later if this repo works just fine since it's dummy well at least for now )
   sections: any = [];
-  sectionSelected: any = [];
+  sectionSelected: any = {};
   sectionSelectedCanMultiple: Boolean = false
 
   ngOnInit() {
@@ -78,10 +78,12 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
 
   async getModalitySlots() {
-    const modalityHospitalId = 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'
-    const reserveDate = this.tableViewCurrentDate.format('YYYY-MM-DD')
-    const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
-    this.modalitySlots = responseSlots.data || [];
+    if(this.sectionSelected.modality_hospital_id) {
+      const modalityHospitalId = this.sectionSelected.modality_hospital_id  // 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'      
+      const reserveDate = this.tableViewCurrentDate.format('YYYY-MM-DD')
+      const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
+      this.modalitySlots = responseSlots.data || [];
+    }
   }
 
   onChangeDate = async () => {
@@ -207,8 +209,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
     await this.getModalitySlots()
   }
 
-  setSelectedSection (v: any) {
-    const modality =  this.modalitiesHospitalList.find( (md : any) => md.modality_hospital_id === v.modality_hospital_id) || {}
-    modality.active = !modality.active
+  async setSelectedSection (modalityHospital: any) {
+    this.sectionSelected = modalityHospital
+    await this.getModalitySlots()
+    this.changeTableDate(this.tableViewCurrentDate.toDate())
   }
 }
