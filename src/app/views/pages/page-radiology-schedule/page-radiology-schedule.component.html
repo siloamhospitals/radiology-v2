@@ -118,87 +118,226 @@
           </div>
           <div class="modal-body">
             <!-- Search Patient Modal -->
-            <ng-container>
-              <div>
-                <div class="mb-3 d-flex flex-row justify-content-between">
-                  <div class="pl-0">
-                    <label for="">DOB</label>
-                    <div>
-                      <input type="text" class="form-control" placeholder="DD-MM-YYYY" />
+            <div class="fo_personal_detail_container shadow-10">
+              <ngb-tabset [destroyOnHide]="false">
+                <ngb-tab>
+                  <ng-template ngbTabTitle><b>Contact Detail</b></ng-template>
+                  <ng-template ngbTabContent>
+                    <div id="fo_id_contact_detail">
+                      <div class="fo_contact_detail justify-content-start ">
+                        <ng-container>
+                          <div>
+                            <div class="border-bottom mb-3">
+                              <div class="row">
+                                <div class="col-md-2 pt-3">
+                                  <label for="DOB" class="ml-3">DOB</label>
+                                  <input class="form-control mb-2 input-filter form-placeholder" type="text" placeholder="DD-MM-YYYY"
+                                    />
+                                </div>
+                                <div class="col-md-3 border-right pt-3">
+                                  <label for="DOB" class="pl-3">Nama</label>
+                                  <input class="form-control pt-2 input-filter mb-2" type="text" placeholder="Nama Pasien" />
+                                  <span class="fa fa-search position-absolute"></span>
+                                </div>
+                                <div class="col-md-3 pt-3">
+                                  <label for="mr" class="">Local MR</label>
+                                  <input class="form-control mb-2 input-filter" type="text" placeholder="Cari Local MR"
+                                    title="Find local MR" />
+                                  <span class="fa fa-search position-absolute"></span>
+                                </div>
+                                  <div class="col-md-4 pt-3" style="margin-top:24px; padding-left: 5px;">
+                                    <div class="d-flex">
+                                      <select class="form-control input-filter" name="select-id-type-search" style="width: 35%;">
+                                        <option value="1">KTP</option>
+                                      </select>
+                                      <input
+                                        name="id-number-search"
+                                        style="width: 65%;"
+                                        id="id-number-field"
+                                        type="text"
+                                        class="form-control input-filter"
+                                        placeholder=""
+                                      />
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="mb-3">
+                              <table class="table table-stripped" style="background-color: #F8F9FA; border-bottom: 1px solid #F8F9FA;">
+                                <thead style="background-color: #F8F9FA; border-bottom: 1px solid #F8F9FA;">
+                                  <tr>
+                                    <th></th>
+                                    <th>Patient</th>
+                                    <th>DOB</th>
+                                    <th>Local MR No</th>
+                                    <th>ID Number</th>
+                                    <th>Phone No</th>
+                                    <th>Alamat</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td><input type="radio" id="huey" name="radio" value="huey"
+                                      checked></td>
+                                    <td>Fitria Palastri</td>
+                                    <td>28 Des, 1999</td>
+                                    <td>0819538</td>
+                                    <td>KTP - 1234567890123456</td>
+                                    <td>081234567890</td>
+                                    <td>Jakarta Barat</td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="radio" id="dewey" name="radio" value="dewey"></td>
+                                    <td>Mila Suhartini</td>
+                                    <td>23 Mar, 1994</td>
+                                    <td>8350970</td>
+                                    <td>KTP - 1234567890123456</td>
+                                    <td>081817892091</td>
+                                    <td>Jakarta Barat</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="mb-3 pl-3">
+                              <div class="mb-3">
+                                <h4>CT Scan - Room 1w</h4>
+                              </div>
+                              <div class="d-flex flex-row justify-content-start">
+                                <div class="pl-0 col-md-3" style="border-right: 1px doted rgba(200, 203, 250, 0.5); ">
+                                  <label for="">Date and Time</label>
+                                  <div>
+                                    <div class="position-relative">
+                                      <app-date-picker [selected]="selected" class="input-filter" ></app-date-picker>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="col-md-2 flex-row justify-content-start">
+                                  <div class="d-flex align-items-center pt-3 mt-3 pr-5">
+                                    <app-time-picker placeholder="23:00" ></app-time-picker>
+                                    <b> - </b>
+                                    <app-time-picker placeholder="23:00" ></app-time-picker>
+                                  </div>
+                                </div>
+                                <div class="pl-5 col-md-6">
+                                  <label for="">Examination <sup class="text-required">*</sup></label>
+                                  <div>
+                                    <select class="form-control">
+                                      <option value="1" selected>Pilih Examination</option>
+                                      <option value="">CT HEAD NON CONTRAST GK</option>
+                                      <option value="">CT HEAD CONTRAST GK</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="mb-3 pl-3">
+                              <div class="mb-0">
+                                <label for="">Note</label>
+                                <div>
+                                  <textarea rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </ng-container>
                     </div>
                   </div>
-                  <div class="pl-3">
-                    <label for="">Nama</label>
-                    <div>
-                      <input type="text" class="form-control" placeholder="Cari Nama" />
-                    </div>
-                  </div>
-                  <div class="pl-3">
-                    <label for="">Local MR</label>
-                    <div>
-                      <input type="text" class="form-control" placeholder="Cari Local MR" />
-                    </div>
-                  </div>
-                  <div class="pl-3">
-                    <label for="">ID Number</label>
-                    <div>
-                      <input type="text" class="form-control" placeholder="NIK" />
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <table class="table table-stripped table-secondary">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>Patient</th>
-                        <th>DOB</th>
-                        <th>Local MR No</th>
-                        <th>ID Number</th>
-                        <th>Phone No</th>
-                        <th>Alamat</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <td><input type="radio" name="" id=""></td>
-                      <td>Patient</td>
-                      <td>DOB</td>
-                      <td>Local MR No</td>
-                      <td>ID Number</td>
-                      <td>Phone No</td>
-                      <td>Alamat</td>
-                    </tbody>
-                  </table>
-                </div>
-                <div class="mb-3">
-                  <div class="mb-3">
-                    <h4>CT Scan - Room 1</h4>
-                  </div>
-                  <div class="d-flex flex-row justify-content-start">
-                    <div class="pl-0 w-50">
-                      <label for="">Date and Time</label>
-                      <div>
-                        <input type="text" class="form-control" placeholder="" />
+                </ng-template>
+                </ngb-tab>
+                <ngb-tab>
+                  <ng-template ngbTabTitle><b>Pasien Baru</b></ng-template>
+                  <ng-template ngbTabContent>
+                    <ng-container>
+                      <div class="formclass pl-3 pt-3 pr-3">
+                        <div class="mb-3">
+                          <div class="mb-3">
+                            <h4>CT Scan - Room 1w</h4>
+                          </div>
+                          <div class="d-flex flex-row justify-content-start">
+                            <div class="pl-0 col-md-3" style="border-right: 1px doted rgba(200, 203, 250, 0.5); ">
+                              <label for="">Date and Time</label>
+                              <div>
+                                <div class="position-relative">
+                                  <app-date-picker [selected]="selected" class="input-filter" ></app-date-picker>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-2 flex-row justify-content-start">
+                              <div class="d-flex align-items-center pt-3 mt-3 pr-5">
+                                <app-time-picker placeholder="23:00" ></app-time-picker>
+                                <b> - </b>
+                                <app-time-picker placeholder="23:00" ></app-time-picker>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-3">
+                          <label for="">Nama Lengkap <sup class="text-required">*</sup></label>
+                          <div>
+                            <input type="text" class="form-control" placeholder="Masukkan Nama Lengkap Pasien" />
+                          </div>
+                        </div>
+                        <div class="d-flex flex-wrap flex-row">
+                          <div class="mb-3 w-50">
+                            <label for="">Date of Birth <sup class="text-required">*</sup></label>
+                            <div>
+                              <input type="date" class="form-control" placeholder="DD-MM-YYYY" />
+                            </div>
+                          </div>
+                          <div class="w-50" style="margin-top:24px; padding-left: 5px;">
+                            <div class="d-flex">
+                              <select class="form-control" name="select-id-type-search" style="width: 35%;">
+                                <option value="1">KTP</option>
+                              </select>
+                              <input
+                                name="id-number-search"
+                                style="width: 65%;"
+                                id="id-number-field"
+                                type="text"
+                                class="form-control"
+                                placeholder=""
+                              />
+                            </div>
+                          </div>
+                          <div class="mb-3 w-50">
+                            <label for="">Mobile Phone <sup class="text-required">*</sup></label>
+                            <div>
+                              <input type="text" class="form-control" placeholder="0822..." />
+                            </div>
+                          </div>
+                          <div class="mb-3 w-50 pl-3">
+                            <label for="">Email</label>
+                            <div>
+                              <input type="text" class="form-control" placeholder="email@domain.com" />
+                            </div>
+                          </div>
+                          <div class="mb-3 w-50">
+                            <label for="">Examination <sup class="text-required">*</sup></label>
+                            <div>
+                              <input type="text" class="form-control" placeholder="Select Examination" />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="d-flex flex-wrap flex-row">
+                          <div class="mb-3 w-50">
+                            <label for="">Note</label>
+                            <div>
+                              <textarea rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
+                            </div>
+                          </div>
+                          <div class="mb-3 w-50 pl-3">
+                            <label for="">Alamat</label>
+                            <div>
+                              <textarea rows="3" class="form-control" placeholder="Alamat Pasien"></textarea>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="pl-3 w-25">
-                      <label for="">Examination <sup class="text-required">*</sup></label>
-                      <div>
-                        <input type="text" class="form-control" placeholder="Select Examination" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <div class="mb-0">
-                    <label for="">Note</label>
-                    <div>
-                      <textarea rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
+                    </ng-container>
+                  </ng-template>
+                </ngb-tab>
+              </ngb-tabset>
+            </div>
           </div>
           <div class="modal-footer">
             <div class="d-flex flex-row justify-content-end">
@@ -236,6 +375,75 @@
         <!-- Create / Update Appointment Modal -->
         <ng-container>
           <button class="btn btn-outline-primary mb-2 me-2" (click)="detailSchedule()">detail schedule create admission test</button>
+          <div class="formclass">
+            <div class="mb-3">
+              <h4>CT Scan - Room 1</h4>
+            </div>
+            <div class="mb-3">
+              <label for="">Date and Time</label>
+              <div>
+                (date picker component)
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="">Nama Lengkap <sup class="text-required">*</sup></label>
+              <div>
+                <input type="text" class="form-control" placeholder="Masukkan Nama Lengkap Pasien" />
+              </div>
+            </div>
+            <div class="d-flex flex-wrap flex-row">
+              <div class="mb-3 w-50">
+                <label for="">Date of Birth <sup class="text-required">*</sup></label>
+                <div>
+                  <input type="date" class="form-control" placeholder="DD-MM-YYYY" />
+                </div>
+              </div>
+              <div class="mb-3 w-50 pl-3">
+                <label for="">ID Number <sup class="text-required">*</sup></label>
+                <div>
+                  <input type="text" class="form-control" placeholder="ID Number" />
+                </div>
+              </div>
+              <div class="mb-3 w-50">
+                <label for="">Mobile Phone <sup class="text-required">*</sup></label>
+                <div>
+                  <input type="text" class="form-control" placeholder="0822..." />
+                </div>
+              </div>
+              <div class="mb-3 w-50 pl-3">
+                <label for="">Email</label>
+                <div>
+                  <input type="text" class="form-control" placeholder="email@domain.com" />
+                </div>
+              </div>
+              <div class="mb-3 w-50">
+                <label for="">Examination <sup class="text-required">*</sup></label>
+                <div>
+                  <div>
+                    <select class="form-control">
+                      <option value="1" selected>Pilih Examination</option>
+                      <option value="">CT HEAD NON CONTRAST GK</option>
+                      <option value="">CT HEAD CONTRAST GK</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex flex-wrap flex-row">
+              <div class="mb-3 w-50">
+                <label for="">Note</label>
+                <div>
+                  <textarea rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
+                </div>
+              </div>
+              <div class="mb-3 w-50 pl-3">
+                <label for="">Alamat</label>
+                <div>
+                  <textarea rows="3" class="form-control" placeholder="Alamat Pasien"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
         </ng-container>
         <!-- Create Appointment Modal -->
         <ng-container>

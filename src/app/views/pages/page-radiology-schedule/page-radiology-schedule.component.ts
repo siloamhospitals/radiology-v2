@@ -1,8 +1,10 @@
 import { General } from './../../../models/generals/general';
 import { ModalityService } from './../../../services/modality.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appointment/modal-cancel-appointment.component';
+import { ModalCreateAdmissionComponent } from '../../widgets/modal-create-admission/modal-create-admission.component';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 import { RadiologyService } from 'src/app/services/radiology/radiology.service';

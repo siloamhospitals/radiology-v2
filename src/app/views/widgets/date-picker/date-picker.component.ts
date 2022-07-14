@@ -7,17 +7,23 @@ import { Output, EventEmitter } from '@angular/core';
   templateUrl: './date-picker.component.html',
   styleUrls: ['./date-picker.component.css']
 })
+
 export class DatepickerComponent implements OnInit {
+  public moment: any = moment;
+  public today: any = moment().locale('id').format('dddd, DD-MM-YYYY')
+  
+  dateFormat: 'dd, DD-MM-YYYY'
+  constructor() {
+    moment.locale('id');
+   }
 
-  constructor() { }
-
-  @Input() width: string = '94px';
-  @Input() selected: any = moment().format('YYYY-MM-DD');
-  @Input() format = 'MMMM YYYY';
-  @Input() hideIcon: boolean;
-
-  @Output() changeValue = new EventEmitter<string>();
-
+   @Input() width: string = '94px';
+   @Input() selected: any = moment().format('YYYY-MM-DD');
+   @Input() format = 'MMMM YYYY';
+   @Input() hideIcon: boolean;
+ 
+   @Output() changeValue = new EventEmitter<string>();
+ 
   locale: object;
 
   changeSelected(value: string) {
