@@ -86,6 +86,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
   onChangeDate = async (val?:any) => {
     await this.getModalitySlots()
     await this.getModalityHospitalList(val)
+    // note to self (ntar aku ubah getModalitynya sesuai dengan tableViewCurrentDateLabel)
+    this.tableViewCurrentDateLabel = this.tableViewCurrentDate.format('DD MMMM YYYY')
+    this.tableViewActive = 0
   }
 
 
