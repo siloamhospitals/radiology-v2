@@ -21,6 +21,8 @@ import { TableListWeeklyModule } from '../../widgets/table-list-weekly/table-lis
 import { TableListMonthlyModule } from '../../widgets/table-list-monthly/table-list-monthly.module';
 import { TableListDailyModule } from '../../widgets/table-list-daily/table-list-daily.module';
 import { DropdownExaminationModule } from '../../widgets/dropdown-examination/dropdown-examination.module';
+import { ModalCreateAppointmentModule } from '../../widgets/modal-create-appointment/modal-create-appointment.module';
+import { ModalCreateAppointmentComponent } from '../../widgets/modal-create-appointment/modal-create-appointment.component';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -40,7 +42,8 @@ import { DropdownExaminationModule } from '../../widgets/dropdown-examination/dr
     TableListDailyModule,
     TableListWeeklyModule,
     TableListMonthlyModule,
-    DropdownExaminationModule
+    DropdownExaminationModule,
+    ModalCreateAppointmentModule,
   ],
   exports: [
     PageRadiologyScheduleComponent
@@ -49,7 +52,8 @@ import { DropdownExaminationModule } from '../../widgets/dropdown-examination/dr
     ModalHistoryComponent,
     ModalCancelAppointmentComponent,
     ModalCreateAdmissionComponent,
-    ModalDetailScheduleComponent
+    ModalDetailScheduleComponent,
+    ModalCreateAppointmentComponent,
   ],
 })
 export class PageRadiologyScheduleModule {}
