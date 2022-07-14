@@ -1,0 +1,35 @@
+<table class="table table-bordered mt-3 table-list-radiology">
+  <thead class="border-0 bg-secondary">
+    <tr>
+      <td *ngFor="let day of days" class="text-center py-4 border-0">{{day}}</td>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="!(items && items.length)">
+      <tr>
+        <td colspan="100%" class="text-center p-3">No data from this section</td>
+      </tr>
+    </ng-container>
+    <tr *ngFor="let row of items; let i = index">
+      <td *ngFor="let item of row; let j = index" 
+        title="{{item.date}}"
+        class="item-hover 
+          {{!item.currentDayInMonth ? 'highlight-item-notactive' : ''}}
+          {{item.isToday ? 'highlight-item-active' : ''}}">
+        <div class="pt-1 pb-3">
+          <div class="px-3 py-2 highlight-item-label text-center">{{item.dateLabel}}</div>
+          <div class="cursor-pointer mt-1 px-1" (click)="toDaily(item.date)">
+            <ng-container *ngIf="!(item.items.appointments > 0 || item.items.availables > 0 || item.items.maintenences > 0)">
+              <div class="pt-3 pb-5 py-2 highlight-item-secondary text-center">No Data</div>
+            </ng-container>
+            <ng-container>
+              <div *ngIf="item.items.appointments > 0" class="px-3 py-2 mb-2 highlight-item-primary">{{item.items.appointments}} Appointment</div>
+              <div *ngIf="item.items.maintenences > 0" class="px-3 py-2 mb-2 highlight-item-warning">{{item.items.maintenences}} Maintenence</div>  
+              <div *ngIf="item.items.availables > 0" class="px-3 py-2 mb-2 highlight-item-secondary">{{item.items.availables}} Slot Available</div>
+            </ng-container>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

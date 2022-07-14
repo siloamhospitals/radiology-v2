@@ -1,0 +1,114 @@
+<div id="modal-detail-schedule" class="modal-content modal-custom-size">
+  <div class="modal-header border-bottom-0">
+    <div class="header">
+      <button class="btn border-0" (click)="cancelAppointment()">
+        <span class="fa fa-lg fa-trash-o text-muted"></span>
+      </button>
+      <button class="btn border-0" (click)="showHistoryModal()">
+        <span class="fa fa-lg fa-history text-muted"></span>
+      </button>
+      <button class="btn border-0" (click)="createAdmission()">
+        <span class="fa fa-lg fa-check-circle-o text-muted"></span>
+      </button>
+    </div>
+    <button #close_button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body px-0">
+    <div class="formclass">
+      <div class="mb-3 d-flex align-items-center justify-content-between px-3">
+        <h4>CT Scan - Room 1</h4>
+        <span class="badge badge-primary p-2 rounded-pill">
+          <h6 class="mb-0" >Scheduled</h6>
+        </span>
+      </div>
+      <div class="mb-3 px-3">
+        <label for="">Date and Time</label>
+        <div class="d-flex align-items-center" >
+          <app-date-picker format="dddd, DD MMMM YYYY" width="160px" hideIcon="true" ></app-date-picker>
+          <span class="mx-2" >|</span>
+          <app-time-picker useMinute="true" ></app-time-picker>&nbsp;
+          <app-time-picker useMinute="true" ></app-time-picker>
+        </div>
+      </div>
+      <div class="d-flex flex-wrap flex-row mb-3 py-2 bg-secondary px-3">
+        <div class="w-50">
+          <label for="" class="text-muted">Local MR Number</label>
+          <div>
+            <span class="form-label">4757323</span>
+          </div>
+        </div>
+        <div class="w-50 pl-3">
+          <label for="" class="text-muted">Admission Number</label>
+          <div>
+            <span class="form-label">-</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3 px-3">
+        <label for="" class="text-muted">Nama Lengkap</label>
+        <div>
+          <span class="form-label">Michael Angelo</span>
+        </div>
+      </div>
+      <div class="d-flex flex-wrap flex-row px-3">
+        <div class="mb-3 w-50">
+          <label for="" class="text-muted">Date of Birth</label>
+          <div>
+            <span class="form-label">12-08-1991</span>
+          </div>
+        </div>
+        <div class="mb-3 w-50 pl-3">
+          <label for="" class="text-muted">ID Number</label>
+          <div>
+            <span class="form-label">KTP - 1234567890123456</span>
+          </div>
+        </div>
+        <div class="mb-3 w-50">
+          <label for="" class="text-muted">Mobile Phone</label>
+          <div>
+            <span class="form-label">081234567890</span>
+          </div>
+        </div>
+        <div class="mb-3 w-50 pl-3">
+          <label for="" class="text-muted">Email</label>
+          <div>
+            <span class="form-label">-</span>
+          </div>
+        </div>
+        <div class="mb-3 w-50">
+          <label for="">Examination <sup class="text-required">*</sup></label>
+          <div class="">
+            <select id="title" class="form-control" name="dropDownRoom">
+              <option *ngFor="let examination of examinationsList" [value]="examination.value">
+                {{examination.description}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-wrap flex-row px-3">
+        <div class="mb-3 w-50">
+          <label for="">Note</label>
+          <div>
+            <textarea readonly rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
+          </div>
+        </div>
+        <div class="mb-3 w-50 pl-3">
+          <label for="">Alamat</label>
+          <div>
+            <textarea readonly rows="3" class="form-control" placeholder="Alamat Pasien"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer d-flex align-items-center justify-content-between">
+      <div>
+        <span class="text-muted" >Local Updated by </span><br/>
+        <h5 class="text-primary">Admin FO 2</h5>
+      </div>
+      <button class="btn btn-success ml-2">Save Changes</button>
+  </div>
+</div>

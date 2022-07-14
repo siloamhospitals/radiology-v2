@@ -79,44 +79,36 @@
   .side_button:focus{
     outline: none;
   }
-  .side_button:hover{
-    background: #1A2268;
-    color: #F2C22C;
+  .side_button:not(.side_button_first):hover{
+    background: #323B79;
+    color: white;
     border-right: 5px solid #F2C22C ;
     transform: translateZ(0);
   }
-  .active.active{
-    background: #1A2268;
-    color: #F2C22C;
+  .side_button.active{
+    background: #323B79;
+    color: white;
     border-right: 5px solid #F2C22C ;
     transform: translateZ(0);
   }
-  .active.active img:last-of-type{display: block;}
-  .active.active img:first-of-type{display: none;}
-  
+ 
   .side_button {
     display: flex;
     font-weight: bold;
     text-align: left;
-    padding: 5px 1.5em ;
-    border-top-right-radius: 5px ;
-    border-bottom-right-radius: 5px ;
+    padding: 5px 1.5em ;    
     display: flex;
     align-items: center;
     border: none;
-    max-width: 19rem;
-    min-width: 1rem;
-  }
-  .side_button{
-    background: white ;
-    color: black ;
+    height: inherit;
+    background: #1A2268 ;
+    color: white ;
     border: none ;
+    transition: all ease 0.5s;
   }
-  .side_button img:last-of-type{display: none;}
-  .side_button img:first-of-type{display: block;}
-  .side_button:hover img:last-of-type{display: block;}
-  .side_button:hover img:first-of-type{display: none;}
-  
+  .side_button_first { border-top-right-radius: 8px ; color: #eabc2e; }
+  .side_button_last { border-bottom-right-radius: 8px ; }
+ 
   .fo_minimized .fo_minimized_text{
     white-space: nowrap;
     margin-left: 0.8333rem;
@@ -128,13 +120,11 @@
   }
   .container-button{
     border-radius: 0;
-    border-top-right-radius: 5px !important;
-    border-bottom-right-radius: 5px !important;
     border: none;
-    height: fit-content;
-    width: fit-content;
     background: white !important;
-  
+    margin: 0;
+    width: 216px;
+    height: 44px;
   }
   .container-button > a:hover { 
       text-decoration: none;
@@ -162,6 +152,5 @@
     background: #c43d32;
     color: white;
   }
-  
   
   

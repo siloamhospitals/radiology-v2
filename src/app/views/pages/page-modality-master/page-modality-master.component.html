@@ -1,0 +1,135 @@
+<app-section-header></app-section-header>
+<div class="d-flex justify-content-start">
+  <div class="fo_menu_container">
+      <app-section-sidebar></app-section-sidebar>
+  </div>
+  <div class="fo_content_container mt-4 d-block" >
+    <div class="box bg-white">
+      <div class="header-radiology-schedule" >
+        <div class="row border-bottom">
+          <div class="col-md-3">
+            <h3 class="p-3 ">
+              Modality Master
+            </h3>
+          </div>
+          <div class="col-md-7 justify-content-end">
+
+          </div>
+          <div class="col-md-2 justify-content-end">
+            <h3 class="p-3">
+              <button class="btn btn-primary ml-2" (click)="showModalityModal()">+ Add New Modality</button>
+            </h3>
+          </div>
+        </div>
+        <div class="px-3 border-bottom" >
+          <div class="row border-bottom" style="height: 52px;;" >
+            <div class="col-md-3 position-relative pr-0 border-right">
+              <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Find Modality"
+                title="Find patients" />
+              <span class="fa fa-search position-absolute"></span>
+            </div>
+            <div class="col-md-2 position-relative pr-0 border-right" >
+              <ng-multiselect-dropdown-angular7
+                [placeholder]="'Schdule Type'"
+                [data]="dropdownListSchduleType"
+                [(ngModel)]="selectedItemsSchdule"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown-angular7>
+            </div>
+            <div class="col-md-2 position-relative pr-0 border-right" >
+              <ng-multiselect-dropdown-angular7
+                [placeholder]="'Floor'"
+                [data]="dropdownListFloor"
+                [(ngModel)]="selectedItemsFloor"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown-angular7>
+            </div>
+            <div class="col-md-2 position-relative pr-0 border-right" >
+              <ng-multiselect-dropdown-angular7
+                [placeholder]="'Status'"
+                [data]="dropdownListStatus"
+                [(ngModel)]="selectedItemsStatus"
+                [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+              >
+              </ng-multiselect-dropdown-angular7>
+          </div>
+            
+          </div>
+          <table class="table table-borderless table-striped" id="appointment-list-table">
+            <thead class="fo_color_blue foot-note">
+              <th style="min-width: 14em">
+                Modality Name
+              </th>
+              <th>Schdule Type</th>
+              <th width="100px">Floor</th>
+              <th width="100px">Room</th>
+              <th width="100px">Dur (min)</th>
+              <th width="100px">Status</th>
+              <th width="100px">Action</th>
+              
+            </thead>
+        
+            <tbody>
+              <tr>
+                <td>
+                  CT Scan Room
+                </td>
+                <td>
+                  Fixed Appointment
+                </td>
+                <td>
+                 1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  <a href="#">Detail</a>
+                </td>
+
+              </tr>
+              <tr>
+                <td>
+                  CT Scan Room
+                </td>
+                <td>
+                  Fixed Appointment
+                </td>
+                <td>
+                 1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  <a href="#">Detail</a>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

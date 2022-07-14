@@ -1,0 +1,58 @@
+.header {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.height-row {
+  height: 2rem;
+  line-height: 2rem;
+}
+
+.height-row-2 {
+  height: 2.5rem;
+  line-height: 2.5rem;
+}
+
+.text-column {
+  font-size: 13px;
+}
+
+.space-div {
+  margin-top: 2rem;
+}
+
+.space-row {
+  margin-top: 2rem;
+}
+
+.right-text {
+  text-align: right;
+}
+
+.btn-grey{
+  background: #f4f4f4  !important;
+  color: black !important;
+  border: 1px solid #ced4da;
+}
+
+.btn-submit {
+  width: 11rem;
+}
+
+.left-space {
+  width: 40%;
+}
+
+.right-space {
+  width: 60%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error-msg {
+  color: red;
+  float: right;
+  right:0;
+}

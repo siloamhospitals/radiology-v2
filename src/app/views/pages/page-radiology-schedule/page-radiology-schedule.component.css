@@ -3,7 +3,7 @@
     display: flex;
     flex-flow: column;
 }
-  
+
 .fo_content_container{
     margin-left: 1.5rem;
     margin-right: 1.5rem;
@@ -11,8 +11,53 @@
     display: flex;
     justify-content: left;
   }
-  
+
 .box {
     box-shadow: 0px 2px 4px #ccc;
     border-radius: 8px;
 }
+
+.rounded-8 {
+    border-radius: 8px;
+}
+
+.header-radiology-schedule .room.active, .header-radiology-schedule .room:hover {
+    transition: all ease 0.8s;
+    background: rgba(200, 203, 250, 0.5);
+    border: 1px solid #341F97 !important;
+    color: #341F97 !important;
+}
+
+.header-radiology-schedule .input-filter {
+    font-size: 14px;
+    height: 100%;
+    border: 0;
+    padding-bottom: 5px;
+}
+
+.header-radiology-schedule .input-filter:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.header-radiology-schedule .input-filter ~ .fa.fa-search {
+    right: 20px;
+    bottom: 10px;
+    color: #ccc;
+    font-size: 14px;
+}
+
+.table-list-radiology { border: 0; }
+.table-list-radiology td:first-of-type { border-left: 0; }
+.table-list-radiology td:last-of-type { border-right: 0; }
+
+
+.table-head-sticky { height: 68vh; position: relative; overflow: hidden auto; }
+.table-head-sticky ::ng-deep .table { position: relative !important; }
+.table-head-sticky ::ng-deep .table:not(.no-sticky) ::ng-deep thead {
+  position: sticky !important;
+  top: -1px !important;
+}
+
+
+/* .btn.btn-info { background-color: #F8F9FA !important; } */
