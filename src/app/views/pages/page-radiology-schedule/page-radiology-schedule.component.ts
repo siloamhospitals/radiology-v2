@@ -152,7 +152,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   changeTableDateSelected (date: any) {
     this.changeTableView(moment(date, 'YYYY-MM-DD').toDate())
-    this.getModalityHospitalList(date)
+    this.getModalityHospitalList()
   }
 
   initTodayView () {
