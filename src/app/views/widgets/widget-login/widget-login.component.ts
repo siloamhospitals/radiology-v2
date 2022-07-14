@@ -51,7 +51,6 @@ export class WidgetLoginComponent implements OnInit {
 
   ngOnInit() {
 
-    document.body.className = 'body-login';
     this.userService.deleteLocalStorage();
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
     this.getListHopital();

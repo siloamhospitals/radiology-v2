@@ -45,11 +45,13 @@ const routes: Routes = [
   {
     path: '',
     canActivate: [AuthGuard],
-    loadChildren: './views/pages/page-home/page-home.module#PageHomeModule'
+    redirectTo: '/schedule',
+    pathMatch: 'full'
+    // loadChildren: './views/pages/page-home/page-home.module#PageHomeModule'
   },  
   {
     path: '**',
-    redirectTo: ''
+    redirectTo: '/schedule'
   },
 ];
 
