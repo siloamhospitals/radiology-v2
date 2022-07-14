@@ -104,7 +104,7 @@
           <app-table-list-weekly
             (itemClick)="toDaily($event)"
             [dateSelected]="tableViewCurrentDate"
-            [data]="scheduleList"></app-table-list-weekly>
+            [modalitySlots]="modalitySlots"></app-table-list-weekly>
         </div>
         <div *ngIf="tableViewActive===0" class="table-head-sticky">
           <app-table-list-daily
