@@ -130,8 +130,6 @@ export class TableListWeeklyComponent implements OnInit {
     })
 
     this.scheduleList = lodash.flatten(this.scheduleList)
-
-    console.log('weekly', this.scheduleList)
   }
 
   toDaily (val: any) {
