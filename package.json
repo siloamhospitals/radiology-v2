@@ -39,7 +39,7 @@
     "@nguniversal/module-map-ngfactory-loader": "0.0.0",
     "@types/lodash": "^4.14.182",
     "angular-archwizard": "^5.0.0",
-    "angular-ng-autocomplete": "^1.1.12",
+    "angular-ng-autocomplete": "^1.1.17",
     "angular2-text-mask": "^9.0.0",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
