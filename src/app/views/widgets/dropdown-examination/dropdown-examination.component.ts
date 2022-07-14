@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-dropdown-examination',
@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DropdownExaminationComponent implements OnInit {
 
+  @Input() customFilter: string[]
+  @Input() customFilterDivider: string = '-'
+
   constructor() { }
 
   ngOnInit() {
+    this.setCustomFilter()
   }
 
   keyword = 'name';
@@ -59,6 +63,18 @@ export class DropdownExaminationComponent implements OnInit {
   onFocused(e: any){
     // do something when input is focused
     console.log('DropdownExaminationComponent', e)
+  }
+
+  setCustomFilter () {
+    if (this.customFilter && this.customFilter) {
+      this.data = this.data.map((item: any) => {
+        item.customFilterLabel = (
+          this.customFilter.map((l: string) => item[l])
+          || []).join(this.customFilterDivider)
+        return item
+      })
+      this.keyword = 'customFilterLabel'
+    }
   }
 
 

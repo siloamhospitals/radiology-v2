@@ -88,7 +88,9 @@
 
       <!-- Content -->
       <section class="bg-secondary p-5">
-        <app-dropdown-examination></app-dropdown-examination>
+        <app-dropdown-examination
+          [customFilterDivider]="' + '"
+          [customFilter]="['name', 'id']"></app-dropdown-examination>
       </section>
 
       <section class="px-3 my-3">

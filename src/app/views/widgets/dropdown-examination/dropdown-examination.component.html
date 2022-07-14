@@ -11,7 +11,7 @@
   </ng-autocomplete>
     
   <ng-template #itemTemplate let-item>
-    <a [innerHTML]="item.name"></a>
+    <a [innerHTML]="item.customFilterLabel ? item.customFilterLabel : item.name"></a>
   </ng-template>
     
   <ng-template #notFoundTemplate let-notFound>
