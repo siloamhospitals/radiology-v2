@@ -182,3 +182,10 @@ export const checkupTypeId = {
 };
 
 export const delaySubmit = 60000;
+
+export const ScheduleStatus = {
+  '1': 'Scheduled',
+  '2': 'Arrived',
+  '3': 'Process',
+  '4': 'Completed'
+};

@@ -93,7 +93,7 @@
           [customFilter]="['name', 'id']"></app-dropdown-examination>
       </section>
 
-      <section class="px-3 my-3">
+      <section class="px-3 my-3 pb-3">
         <div *ngIf="tableViewActive===2" class="no-sticky">
           <app-table-list-monthly
             (itemClick)="toDaily($event)"
@@ -109,7 +109,7 @@
         <div *ngIf="tableViewActive===0" class="table-head-sticky">
           <app-table-list-daily
             [dateSelected]="tableViewCurrentDate"
-            [data]="scheduleList"></app-table-list-daily>
+            [modalitySlots]="modalitySlots"></app-table-list-daily>
         </div>
       </section>
 
