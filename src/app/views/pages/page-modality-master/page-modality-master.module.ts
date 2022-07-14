@@ -13,6 +13,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { NgbAlertModule, NgbPopoverModule, NgbProgressbarModule, NgbModalModule, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+import { RouterModule } from '@angular/router';
 import { ModalModalityentModule } from '../../widgets/modal-modality/modal-modality.module';
 import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modality.component';
 
@@ -39,7 +40,8 @@ import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modal
     NgbModalModule,
     AutocompleteLibModule,
     NguiAutoCompleteModule,
-    ModalModalityentModule
+    ModalModalityentModule,
+    RouterModule
   ],
   exports: [
     PageModalityMasterComponent,
