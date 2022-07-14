@@ -12,8 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { RoomMappingService } from '../../../services/room-mapping.service';
 import { RoomMapping } from '../../../models/room-mapping';
-import { RadiologyService } from 'src/app/services/radiology.service';
-import { RadiologyService2 } from 'src/app/services/radiology/radiology.service';
+import { RadiologyService } from 'src/app/services/radiology/radiology.service';
 import RadiologyItem from '../../../models/radiology/radiology-item';
 import { ModalConfirmDeleteComponent } from '../modal-confirm-delete/modal-confirm-delete.component';
 import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';
@@ -89,7 +88,6 @@ export class ModalModalityComponent implements OnInit {
 
   constructor(
     public modalService: NgbModal,
-    private service2: RadiologyService2,
     private service: RadiologyService,
     public activeModal: NgbActiveModal,
     private alertService: AlertService,
@@ -470,7 +468,7 @@ export class ModalModalityComponent implements OnInit {
   }
 
   public sendDeleteRequest(item: RadiologyItem) {
-    this.service2.deleteModalityHospital(item.modality_hospital_id).subscribe((res: any) => {
+    this.service.deleteModalityHospital(item.modality_hospital_id).subscribe((res: any) => {
         if (res.status === 'OK') {
           this.showSuccessAlert('Successfully deleted');
           this.deleteModalityBy(item.modality_hospital_id);
