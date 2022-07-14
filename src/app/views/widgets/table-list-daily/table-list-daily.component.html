@@ -30,10 +30,10 @@
 <!--            <div>{{item.patient}}</div>-->
 <!--          </td>-->
       <tr *ngFor="let schedule of item; let j = index;" class="item-hover" >
-        <td *ngIf="j % 2 == 0" rowspan="2" >
+        <td *ngIf="j % 2 == 0" rowspan="2" style="vertical-align: middle; width: 25px; background: #fff !important;" class="text-right">
           {{ ('0' + i).slice(-2) }}
         </td>
-        <td>{{ schedule.fromTime + ' - ' + schedule.toTime }}</td>
+        <td class="vertical-align: middle;">{{ schedule.fromTime + ' - ' + schedule.toTime }}</td>
         <ng-container *ngIf="schedule.rowSpan">
           <td [attr.rowspan]="schedule.rowSpan"
             (click)="isRowScheduled(schedule) ? detailSchedule() : createAppointment()"
