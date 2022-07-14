@@ -48,8 +48,8 @@
 
         </div>
         <div class="p-3 border-bottom">
-          <!-- Maaf aku comment yah, 
-            klo mau masukin list nya di sections, 
+          <!-- Maaf aku comment yah,
+            klo mau masukin list nya di sections,
             dan klo multiple sectionSelectedCanMultiple
             value nya ditampung di sectionSelected, klo bisa pecah aja komponen ini jadi indie -->
           <!-- <button *ngFor="let modalityHospital of modalitiesHospitalList" type="button"
@@ -86,6 +86,13 @@
           </div>
         </div>
       </div>
+
+      <!-- Content -->
+      <section class="bg-secondary p-5">
+        <app-dropdown-examination
+          [customFilterDivider]="' + '"
+          [customFilter]="['name', 'id']"></app-dropdown-examination>
+      </section>
 
       <section class="px-3 my-3 pb-3">
         <div *ngIf="tableViewActive===2" class="no-sticky">
