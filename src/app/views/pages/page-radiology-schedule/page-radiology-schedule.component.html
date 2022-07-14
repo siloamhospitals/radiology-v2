@@ -56,10 +56,10 @@
             class="btn bg-light text-muted mb-2 rounded-8 room px-3 py-2 border">
             {{ modalityHospital.modality_label }}
           </button> -->
-          <div class="btn-group-toggle" data-toggle="buttons">
-            <label *ngFor="let item of sections"
+          <div class="btn-group-toggle" data-toggle="buttons" style="max-height: 150px;overflow: auto;">
+            <label *ngFor="let item of modalitiesHospitalList"
               class="btn btn-light text-muted mb-2 rounded-8 room px-3 py-2 border {{item.active?'active':''}}">
-              <input [attr.type]="sectionSelectedCanMultiple ? 'checkbox' : 'radio'" [value]="item.key" (change)="setSelectedSection(item.key)"><span>{{item.text}}</span>
+              <input [attr.type]="sectionSelectedCanMultiple ? 'checkbox' : 'radio'" [value]="item.modality_id" (change)="setSelectedSection(item)"><span>{{item.modality_label}}</span>
             </label>
           </div>
         </div>

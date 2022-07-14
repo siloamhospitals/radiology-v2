@@ -74,11 +74,12 @@ export class PageRadiologyScheduleComponent implements OnInit {
     {key: '6', text: 'CT CARDIAC - Room 1', active: false},
   ]
   sectionSelected: any = []
-  sectionSelectedCanMultiple: Boolean = true
+  sectionSelectedCanMultiple: Boolean = false
   
   ngOnInit() {
     this.getModalitySlots()
     // this.initTodayView();
+    this.getModalityHospitalList(this.tableViewCurrentDate.toDate())
     
   }
 
@@ -119,9 +120,10 @@ export class PageRadiologyScheduleComponent implements OnInit {
     })
   }
 
-  getModalityHospitalList(val?: any) {
-    if(val && this.selectedTimeSchedule) {
-      this.modalityService.getModalityHospital(this.hospital.id, val, val)
+  getModalityHospitalList() {
+    if(this.tableViewCurrentDate) {
+      const dateString = this.tableViewCurrentDate.format('YYYY-MM-DD')
+      this.modalityService.getModalityHospital(this.hospital.id, dateString, dateString)
         .subscribe(res => {
           const activeModalityHospital = res.data.map((eachModality: any) => {
               if (eachModality.status === '1') return eachModality;
@@ -211,23 +213,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   setSelectedSection (v: any) {
-    const indexSection = this.sections.findIndex((x: any) => x.key == v)
-    const indexSelectedSection = this.sectionSelected.findIndex((x: any) => x == v)
-    if (this.sectionSelectedCanMultiple) {
-      if (indexSelectedSection !== -1) {
-        this.sectionSelected.splice(indexSelectedSection, 1)
-      } else {
-        this.sectionSelected.push(v)
-      }
-    } else {
-      if (this.sections[indexSection].active === true) {
-        this.sections[indexSection].active = false
-        this.sectionSelected = []
-        return
-      }
-      this.sections = this.sections.map((x: any) => ({...x, active: false}))
-      this.sectionSelected = [v]
-    }
-    this.sections[indexSection].active = !this.sections[indexSection].active
+    const modality =  this.modalitiesHospitalList.find( (md : any) => md.modality_hospital_id === v.modality_hospital_id) || {}
+    modality.active = !modality.active
   }
 }
