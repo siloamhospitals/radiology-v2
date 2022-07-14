@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-time-picker',
@@ -17,6 +17,8 @@ export class TimepickerComponent implements OnInit {
   minutes : string[]; 
   isShow : boolean;
   @Input() useMinute : boolean;
+
+  @Output() valueChange = new EventEmitter()
 
   ngOnInit() {
     if(this.useMinute) {
@@ -46,11 +48,14 @@ export class TimepickerComponent implements OnInit {
       this.value = hour
     }
     
+    this.valueChange.emit(this.value)
   }
 
   onSelectMinute(minute : string) {
     const hour = this.value.split(':')[0] || '00'
-    this.value = hour + ':' + minute
+    this.value = hour + ':' + minute;
+
+    this.valueChange.emit(this.value)
   }
 
 }

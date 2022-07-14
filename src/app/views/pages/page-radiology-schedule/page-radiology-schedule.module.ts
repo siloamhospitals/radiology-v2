@@ -20,6 +20,7 @@ import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedul
 import { TableListWeeklyModule } from '../../widgets/table-list-weekly/table-list-weekly.module';
 import { TableListMonthlyModule } from '../../widgets/table-list-monthly/table-list-monthly.module';
 import { TableListDailyModule } from '../../widgets/table-list-daily/table-list-daily.module';
+import { DropdownExaminationModule } from '../../widgets/dropdown-examination/dropdown-examination.module';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -41,6 +42,7 @@ import { TableListDailyModule } from '../../widgets/table-list-daily/table-list-
     TableListDailyModule,
     TableListWeeklyModule,
     TableListMonthlyModule,
+    DropdownExaminationModule
   ],
   exports: [
     PageRadiologyScheduleComponent

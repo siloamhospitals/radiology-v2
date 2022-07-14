@@ -3,7 +3,7 @@
   <input type="text"
     ngxDaterangepickerMd
     [locale]="locale"
-    [(ngModel)]="selected"
+    [value]="value.format(format)"
     (change)="changeSelected($event)"
     [singleDatePicker]="true"
     [autoApply]="true"

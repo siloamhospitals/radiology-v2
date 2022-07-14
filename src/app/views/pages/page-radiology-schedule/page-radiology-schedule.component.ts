@@ -41,7 +41,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     })
   }
 
-  public tableViewCurrentDate: Date
+  public tableViewCurrentDate: any = moment()
   public tableViewCurrentDateLabel: String = '(not selected date)'
   public tableViewCurrentIsToday: Boolean = false
   public tableViewActive: number = 2
@@ -78,21 +78,21 @@ export class PageRadiologyScheduleComponent implements OnInit {
   
   ngOnInit() {
     this.getModalitySlots()
-    this.initTodayView();
+    // this.initTodayView();
     
   }
 
-  ngOnChanges(changes: any) {
-    console.log(changes, '============ changes di parent')
-  }
-
+  
   async getModalitySlots() {
     const modalityHospitalId = 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'
-    const reserveDate = '2022-07-14'
+    const reserveDate = this.tableViewCurrentDate.format('YYYY-MM-DD')
     const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
     this.modalitySlots = responseSlots.data || [];
   }
 
+  onChangeDate = async () => {
+    await this.getModalitySlots()
+  }
  
 
 

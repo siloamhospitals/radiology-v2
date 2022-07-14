@@ -39,16 +39,17 @@
             </select>
             <div title="Pick period table" class="cursor-pointer-force">
               <app-date-picker 
-                (changeValue)="changeTableDateSelected($event)" 
                 width="140px"
-                [selected]="tableViewCurrentDate"></app-date-picker>
+                [(value)]="tableViewCurrentDate"
+                [onChange]="onChangeDate">
+              </app-date-picker>
             </div>
           </div>
 
         </div>
         <div class="p-3 border-bottom">
-          <!-- Maaf aku comment yah, 
-            klo mau masukin list nya di sections, 
+          <!-- Maaf aku comment yah,
+            klo mau masukin list nya di sections,
             dan klo multiple sectionSelectedCanMultiple
             value nya ditampung di sectionSelected, klo bisa pecah aja komponen ini jadi indie -->
           <!-- <button *ngFor="let modalityHospital of modalitiesHospitalList" type="button"
@@ -86,6 +87,13 @@
         </div>
       </div>
 
+      <!-- Content -->
+      <!-- <section class="bg-secondary p-5">
+        <app-dropdown-examination
+          [customFilterDivider]="' + '"
+          [customFilter]="['name', 'id']"></app-dropdown-examination>
+      </section> -->
+
       <section class="px-3 my-3 pb-3">
         <div *ngIf="tableViewActive===2" class="no-sticky">
           <app-table-list-monthly
@@ -97,7 +105,7 @@
           <app-table-list-weekly
             (itemClick)="toDaily($event)"
             [dateSelected]="tableViewCurrentDate"
-            [data]="scheduleList"></app-table-list-weekly>
+            [modalitySlots]="modalitySlots"></app-table-list-weekly>
         </div>
         <div *ngIf="tableViewActive===0" class="table-head-sticky">
           <app-table-list-daily
