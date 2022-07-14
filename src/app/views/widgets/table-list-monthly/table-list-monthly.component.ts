@@ -80,7 +80,8 @@ export class TableListMonthlyComponent implements OnInit {
 
   generateCalendarItems () {
     // const currentDate = new Date(2022, 6, 13)
-    const currentDate = this.dateSelected
+    let currentDate = this.dateSelected
+    if (moment.isMoment(currentDate)) { currentDate = moment(currentDate).toDate() }
     const theMonth = currentDate.getMonth()
     const theYear = currentDate.getFullYear()
 
