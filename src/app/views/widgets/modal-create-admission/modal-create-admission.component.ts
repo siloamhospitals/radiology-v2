@@ -10,6 +10,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class ModalCreateAdmissionComponent implements OnInit {
   public model: any = {};
 
+  // note to self those are dummy data, erase them after integration with API
   public examinationsList: any = [{
     value: '01',
     description: 'CT HEAD NON CONTRAST'
