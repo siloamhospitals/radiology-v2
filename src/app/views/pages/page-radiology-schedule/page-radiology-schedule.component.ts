@@ -136,16 +136,16 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   changeTableDate (date: Date) {
     if (!(date && date instanceof Date && date.getTime())) { return }
-    this.tableViewCurrentDate = date ? date : this.tableViewCurrentDate
+    this.tableViewCurrentDate = date ? moment(date) : this.tableViewCurrentDate
     // if today date
     this.tableViewCurrentIsToday = moment().isSame(moment(date), 'days')
     console.log('current date 2', date, this.tableViewCurrentDate)
     let formatDate = `DD MMMM YYYY`
     if (this.tableViewActive === 2) { formatDate = 'MMMM YYYY' } // monthly
-    this.tableViewCurrentDateLabel = moment(this.tableViewCurrentDate).format(formatDate)
+    this.tableViewCurrentDateLabel = this.tableViewCurrentDate.format(formatDate)
     // weekly sets
     if (this.tableViewActive === 1) {
-      const now = moment(this.tableViewCurrentDate)
+      const now = this.tableViewCurrentDate
       const minDay = now.clone().weekday(1)
       const maxDay = now.clone().weekday(7)
       this.tableViewCurrentDateLabel = `${minDay.format('DD MMMM YYYY')} - ${maxDay.format('DD MMMM YYYY')}`
@@ -185,24 +185,27 @@ export class PageRadiologyScheduleComponent implements OnInit {
   toActionDate (backward: Boolean = false) {
     const dtp = this.tableViewActive
     let t: moment.unitOfTime.DurationConstructor = dtp === 1 ? 'weeks' : dtp === 2 ? 'months' : 'days'
-    let d = moment(this.tableViewCurrentDate).add(1, t).toDate()
-    if (backward) {
-      d = moment(this.tableViewCurrentDate).subtract(1, t).toDate()
+    if(backward) {
+      this.tableViewCurrentDate = this.tableViewCurrentDate.subtract(1, t)
+    }else{
+      this.tableViewCurrentDate = this.tableViewCurrentDate.add(1, t)
     }
-    this.changeTableView(d)
+  
+    this.changeTableView(this.tableViewCurrentDate.toDate())
   }
-
   setRouterViewValue (item: Object) {
+
     this.router.navigate(
       ['.'],
       {relativeTo: this.route, queryParams: {...item}}
     )
   }
 
-  initView (viewId: number, dateVal: Date) {
+  async initView (viewId: number, dateVal: Date) {
     dateVal = new Date(dateVal)
     this.tableViewActive = !isNaN(Number(viewId)) ? Number(viewId) : 0
     this.changeTableDate(dateVal)
+    await this.getModalitySlots()
   }
 
   setSelectedSection (v: any) {
