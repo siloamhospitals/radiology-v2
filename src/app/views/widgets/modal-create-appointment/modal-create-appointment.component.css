@@ -1,0 +1,24 @@
+.w-33 {
+  width: 33%;
+}
+
+.w-34 {
+  width: 34%;
+}
+
+.modal-extra-large {
+  width: 1176px;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba(34, 47, 62, 0.38);
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: rgba(34, 47, 62, 0.38);
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: rgba(34, 47, 62, 0.38);
+}
