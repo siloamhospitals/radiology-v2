@@ -63,71 +63,44 @@
           </div>
             
           </div>
-          <table class="table table-borderless table-striped" id="appointment-list-table">
-            <thead class="fo_color_blue foot-note">
-              <th style="min-width: 14em">
-                Modality Name
-              </th>
-              <th>Schdule Type</th>
-              <th width="100px">Floor</th>
-              <th width="100px">Room</th>
-              <th width="100px">Dur (min)</th>
-              <th width="100px">Status</th>
-              <th width="100px">Action</th>
-              
-            </thead>
-        
-            <tbody>
-              <tr>
-                <td>
-                  CT Scan Room
-                </td>
-                <td>
-                  Fixed Appointment
-                </td>
-                <td>
-                 1
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  <a href="#">Detail</a>
-                </td>
-
-              </tr>
-              <tr>
-                <td>
-                  CT Scan Room
-                </td>
-                <td>
-                  Fixed Appointment
-                </td>
-                <td>
-                 1
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  1
-                </td>
-                <td>
-                  <a href="#">Detail</a>
-                </td>
-
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-head-sticky">
+            <table class="table table-borderless table-stripped" id="appointment-list-table">
+              <thead class="border-0 bg-secondary">
+                <th style="min-width: 10em">
+                  Modality Name
+                </th>
+                <th style="min-width: 10em">
+                  Modality Label
+                </th>
+                <th>Schdule Type</th>
+                <th width="100px" style="text-align: left">Floor</th>
+                <th width="100px" style="text-align: left">Room</th>
+                <th width="100px" style="text-align: left">Dur (min)</th>
+                <th class="text-center" width="100px">Status</th>
+                <th class="pr-3" style="text-align: right; min-width: 10em;">Action</th>
+                <th width="50px"></th>
+              </thead>
+          
+              <tbody>
+                <tr *ngFor="let item of operationals.data; let i = index">
+                  <td>{{item.modality_name}}</td>
+                  <td>{{item.modality_label}}</td>
+                  <td>{{item.operational_type_label}}</td>
+                  <td style="text-align: left">{{item.room.floor_name}}</td>
+                  <td style="text-align: left">{{item.room.name}}</td>
+                  <td style="text-align: left">{{item.operational_type == 3 ? item.duration : '-'}}</td>
+                  <td>
+                    <span *ngIf="item.status == 1" class="modality-status status-scheduled">Active</span>
+                    <span *ngIf="item.status == 2" class="modality-status status-arrived">Inactive</span>
+                  </td>
+                  <td class="pr-3" style="text-align: right">
+                    <a class="detailed-button" (click)="showModalityModal(item)">Detail</a>
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

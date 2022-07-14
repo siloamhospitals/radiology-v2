@@ -51,5 +51,21 @@
 .table-list-radiology td:first-of-type { border-left: 0; }
 .table-list-radiology td:last-of-type { border-right: 0; }
 
+::ng-deep .modal-backdrop  {
+    background-color: black !important;
+}
+
+.detailed-button{
+    color:#575FCF;
+    cursor: pointer;
+}
+
+.table-head-sticky { height: 68vh; position: relative; overflow: hidden auto; }
+.table-head-sticky ::ng-deep .table { position: relative !important; }
+.table-head-sticky ::ng-deep .table:not(.no-sticky) ::ng-deep thead {
+  position: sticky !important;
+  top: -1px !important;
+}
+
 
 /* .btn.btn-info { background-color: #F8F9FA !important; } */

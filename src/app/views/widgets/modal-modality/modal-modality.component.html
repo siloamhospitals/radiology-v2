@@ -1,4 +1,4 @@
-<div class="modal-content" style="width: 800px;">
+<div class="modal-content" style="width: 450px;">
    <div class="modal-header">
       <div class="header">
          Modality
@@ -7,73 +7,91 @@
          <span aria-hidden="true">&times;</span>
       </button>
    </div>
+   <form [formGroup]="modalityForm" novalidate>
    <div class="modal-body">
       <ng-container>
          <div class="formclass">
-         <div class="mb-3 px-3">
+         <div class="mb-3 px-2" *ngIf="responseData == null">
             <h4>New Radiology Modality</h4>
          </div>
-         <div class="mb-3 px-3">
-            <label for="">Modality Name</label>
+         <div class="form-group mb-3 px-2" *ngIf="responseData != null">
+            <label for="dropdownMenuLink">Status<span style="color:red">*</span></label>
+            <div class="custom-control custom-switch">
+               <label for="">Modality Status</label>
+               <input type="checkbox" class="custom-control-input pull-right" id="customSwitch1"
+               [checked]="responseData.status == 1" 
+                (change)="changeStatus($event)"
+               >
+               <label class="custom-control-label pull-right" for="customSwitch1"></label>
+             </div>
+          </div>
+         <div class="form-group mb-3 px-2">
+            <label for="dropdownMenuLink">Pilih Modality<span style="color:red">*</span></label>
+            <select class="form-control modalities" formControlName="modalityId" #modalityId
+            [required]="true">
+              <option value="">---</option>
+              <option *ngFor="let modality of modalityOptions" value="{{modality.modality_id}}">
+                {{modality.name}}</option>
+            </select>
+          </div>
+
+         <div class="mb-3 px-2">
+            <label for="">Modality Label <span style="color:red">*</span></label>
             <div>
-               <input type="text" class="form-control input-lg" placeholder="Type modality name" />
+               <input type="text" class="form-control input-lg" formControlName="modalityLabel" [required]="true" placeholder="Type modality name" />
             </div>
          </div>
-         
         
-         <div class="d-flex flex-wrap flex-row px-3">
-            <div class="mb-3 w-30">
-               <label for="" class="text-muted" >Schdule Type</label>
+            <div class="px-2">
+               <label for="">Schdule Type</label>
+                <div class="radio-result">
+                  <input type="radio" id="radiofixed" value="3" formControlName="operationalType" class="radioCheckupResult" style="width: 16px; margin-right: 5px;">
+                  <label for="radiofixed">Fixed</label>
+                </div>
+                <div class="form-group" *ngIf="modalityForm.get('operationalType').value == '3'">
+                  <label for="operationalType">Duration</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="0" aria-describedby="duration" formControlName="duration" #duration>
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="duration">Minute</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="radio-result">
+                  <input type="radio" id="radiofcfs" value="1" formControlName="operationalType" class="radioCheckupResult" style="width: 16px; margin-right: 5px;">
+                  <label for="radiofcfs">FCFS</label>
+                </div>
             </div>
-         </div>
-         <div class="d-flex flex-wrap flex-row px-3">
-            <div class="w-15 p-3">
-               <div>
-               <input type="radio" class="form-control" style="width: 80px;margin-left:-30px;margin-top:-5px" >
+         
+         <div class="form-group mb-3 px-2">
+            <div class="r-autocomplete">
+               <label for="roomLocation">Ruangan</label>
+               <div class="r-center-flex r-isClickAble" (click)="showAutoComplete('room')">
+                   <input type="text" autocomplete="off"  name="room" class="form-control r-isExpand" formControlName="roomName" #roomName placeholder="Pilih Ruangan">
                </div>
-            </div>
-          
-            <div class="w-75 p-3">
-               <div>
-                  <label style="margin-left: -40px;"> Fixed Appointment</label>
-                  <input type="select" class="form form-control" style="margin-left: -40px;">
+               <div class="r-autocomplete-place" [style.display]="autocomplete === 'room' ? 'inherit' : 'none'" >
+                   <input type="text" class="form-control r-isExpand" autocomplete="off" id="room" formControlName="search" #search placeholder="Cari . . " autofocus>
+                   <div class="r-autocomplete-items">
+                       <div class="r-autocomplete-item" *ngFor="let room of filteredOptions | async" (click)="setToItem(room)" >{{roomMapingFormat(room)}}</div>
+                   </div>
                </div>
-            </div>
-         </div>
-         <div class="d-flex flex-wrap flex-row px-3">
-            <div class="w-15 p-3">
-               <div>
-               <input type="radio" class="form-control" style="width: 80px;margin-left:-30px;margin-top:-5px" >
-               </div>
-            </div>
-          
-            <div class="w-75 p-3">
-               <div>
-                  <label style="margin-left: -40px;">Fixed Appointment</label>
-               </div>
-            </div>
-         </div>
-         <div class="mb-3 px-3">
-            <label for="">Room</label>
-            <div>
-               <input type="text" class="form-control input-lg" placeholder="Type modality name" />
-            </div>
+           </div>
          </div>
 
-         <div class="mb-3 px-3">
-            <label for="">Note</label>
-            <div>
-               <input type="text" class="form-control input-lg" placeholder="Type modality name" />
-            </div>
+         <div class="mb-3 px-2">
+            <div class="form-group">
+               <label for="notes">Notes</label>
+               <textarea class="form-control" name="notes" rows="3" formControlName="notes" #notes></textarea>
+             </div>
          </div>
         
          </div>
       </ng-container>
    </div>
    <div class="modal-footer">
-   <div class="d-flex flex-row justify-content-end">
-      <button class="btn btn-default ml-2">Reset</button>
-      <button class="btn btn-primary ml-2">Save</button>
-   </div>
+      <button class="btn btn-default" *ngIf="responseData == null">Reset</button>
+      <button class="btn btn-default mr-auto" *ngIf="responseData != null" (click)="deleteModality(responseData)">Delete Modality</button>
+      <button class="btn btn-primary " (click)="submit()">Save</button>
   </div>
+  </form>
 </div>
