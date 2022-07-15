@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as lodash from 'lodash'
 import * as moment from 'moment'
 import { SlotItemMonthly, SlotItemMonthlyProperties } from 'src/app/models/radiology/modality-slot';
+import { RadiologyService } from 'src/app/services/radiology/radiology.service';
 
 @Component({
   selector: 'app-table-list-monthly',
@@ -12,6 +13,8 @@ export class TableListMonthlyComponent implements OnInit {
 
   @Input() data: any[]
   @Input() dateSelected: Date
+  @Input() sectionSelected: any = null
+
   @Output() itemClick = new EventEmitter<string>()
   
   itemModel = {
@@ -41,15 +44,16 @@ export class TableListMonthlyComponent implements OnInit {
 
   items: any[] = Array(42)
 
-  constructor() { }
+  constructor(
+    private radiologyService: RadiologyService,
+  ) { }
 
   ngOnInit() {
-    // this.generateCalendarItems()
+    this.generateCalendarItems()
   }
 
   ngOnChanges (changes: any) {
-    // console.log('changes', changes)
-    if (changes.dateSelected.currentValue) { this.generateCalendarItems() }
+    if (changes.dateSelected && changes.dateSelected.currentValue) { this.generateCalendarItems() }
   }
 
   scheduleListGenerate () {
@@ -79,12 +83,24 @@ export class TableListMonthlyComponent implements OnInit {
     return ((yr < 1900) ? yr+1900 : yr)
   }
 
-  generateCalendarItems () {
+  async fetchData (sectionSelected: any, dateSelected: any) {
+    if (sectionSelected && sectionSelected.modality_hospital_id) {
+      const reserveDate = moment(dateSelected).format('YYYY-MM')
+      const responseSlots = await this.radiologyService.getModalitySlotsMonthly(sectionSelected.modality_hospital_id, reserveDate).toPromise()
+      return responseSlots.data || []
+    }
+    return []
+  }
+
+  async generateCalendarItems () {
     // const currentDate = new Date(2022, 6, 13)
     let currentDate = this.dateSelected
     if (moment.isMoment(currentDate)) { currentDate = moment(currentDate).toDate() }
     const theMonth = currentDate.getMonth()
     const theYear = currentDate.getFullYear()
+
+    // fetch data
+    const xdata = await this.fetchData(this.sectionSelected, currentDate)
 
     const firstDay = this.getFirstDay(theYear, theMonth) - 1
     const howMany = this.getMonthLen(theYear, theMonth)
@@ -93,7 +109,7 @@ export class TableListMonthlyComponent implements OnInit {
     today.setHours(0,0,0,0)
 
     const data = Array(42).fill({}).map((_item: any, i: number) => {
-      const model: SlotItemMonthly = {
+      let model: SlotItemMonthly = {
         date: new Date(),
         dateIndex: 0,
         dateLabel: '',
@@ -101,13 +117,16 @@ export class TableListMonthlyComponent implements OnInit {
         currentDayInMonth: false,
         items: new SlotItemMonthlyProperties
       }
+      if (xdata[i] && 'date' in xdata[i]) {
+        model = {...model, ...xdata[i]}
+      }
       const dayIndex = (i - firstDay + 1)
       const dateIndex = new Date(theYear, theMonth, dayIndex)
       
       // mapping data
-      model.items.appointments = 1
-      model.items.availables = 2
-      model.items.maintenences = 3
+      // model.items.appointments = 1
+      // model.items.availables = 2
+      // model.items.maintenences = 3
 
       if (i < firstDay) {
         // if past in month
@@ -120,10 +139,6 @@ export class TableListMonthlyComponent implements OnInit {
       } else {
         model.dateLabel = String((moment(dateIndex).format('DD')))
         model.currentDayInMonth = true
-        
-        model.items.appointments = 10
-        model.items.availables = 10
-        model.items.maintenences = 1
       }
       // if today
       if (moment(today).diff(moment(dateIndex), 'days') === 0) {

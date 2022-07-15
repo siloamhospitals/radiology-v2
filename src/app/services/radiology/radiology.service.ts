@@ -19,4 +19,9 @@ export class RadiologyService {
     return this.client.get<ModalitySlotListResponse>(url, httpOptions);
   }
 
+  getModalitySlotsMonthly(modalityHospitalId: string, reserveIndex: string): Observable<ModalitySlotListResponse> {
+    const url = `${this.radiologyCCUrl}/modality-slot/monthly?reserveDate=${reserveIndex}&modalityHospitalId=${modalityHospitalId}`;
+    return this.client.get<ModalitySlotListResponse>(url, httpOptions);
+  }
+
 }
