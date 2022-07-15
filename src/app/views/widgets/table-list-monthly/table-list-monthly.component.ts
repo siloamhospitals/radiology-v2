@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as lodash from 'lodash'
 import * as moment from 'moment'
-import { SlotItemMonthly, SlotItemMonthlyProperties } from 'src/app/models/radiology/modality-slot';
-import { RadiologyService } from 'src/app/services/radiology/radiology.service';
+import { SlotItemMonthly, SlotItemMonthlyProperties } from '../../../models/radiology/modality-slot';
+import { RadiologyService } from '../../../services/radiology/radiology.service';
 
 @Component({
   selector: 'app-table-list-monthly',
@@ -44,6 +44,8 @@ export class TableListMonthlyComponent implements OnInit {
 
   items: any[] = Array(42)
 
+  fetchDataDebounce: any = null
+
   constructor(
     private radiologyService: RadiologyService,
   ) { }
@@ -53,7 +55,10 @@ export class TableListMonthlyComponent implements OnInit {
   }
 
   ngOnChanges (changes: any) {
-    if (changes.dateSelected && changes.dateSelected.currentValue) { this.generateCalendarItems() }
+    if (changes.dateSelected && changes.dateSelected.currentValue) {
+      if (this.fetchDataDebounce) { clearTimeout(this.fetchDataDebounce) }
+      this.fetchDataDebounce = setTimeout(() => { this.generateCalendarItems() }, 800)
+    }
   }
 
   scheduleListGenerate () {
