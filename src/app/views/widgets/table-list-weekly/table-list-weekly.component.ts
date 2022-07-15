@@ -36,7 +36,7 @@ export class TableListWeeklyComponent implements OnInit {
   }
 
   ngOnChanges(changes: any) {
-    console.log('weekly changes', changes)
+    // console.log('weekly changes', changes)
     this.generateDayLabel()
   }
 
@@ -65,6 +65,7 @@ export class TableListWeeklyComponent implements OnInit {
 
   async getSchedules() {
     const slots = this.modalitySlots
+    console.log('slots', slots)
     const setToHour2Digit = (time : number) => ('0' + time).slice(-2);
     let lastCaptureSlot : any = {};
     let rowSpan = 0;
@@ -128,6 +129,8 @@ export class TableListWeeklyComponent implements OnInit {
 
       return [ firstSlot, lastSlot ]
     })
+
+    console.log('this.scheduleList', this.scheduleList)
 
     this.scheduleList = lodash.flatten(this.scheduleList)
   }
