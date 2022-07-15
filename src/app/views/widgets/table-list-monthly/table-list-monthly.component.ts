@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as lodash from 'lodash'
 import * as moment from 'moment'
+import { SlotItemMonthly, SlotItemMonthlyProperties } from 'src/app/models/radiology/modality-slot';
 
 @Component({
   selector: 'app-table-list-monthly',
@@ -92,14 +93,21 @@ export class TableListMonthlyComponent implements OnInit {
     today.setHours(0,0,0,0)
 
     const data = Array(42).fill({}).map((_item: any, i: number) => {
-      const {...model} = this.itemModel
+      const model: SlotItemMonthly = {
+        date: new Date(),
+        dateIndex: 0,
+        dateLabel: '',
+        isToday: false,
+        currentDayInMonth: false,
+        items: new SlotItemMonthlyProperties
+      }
       const dayIndex = (i - firstDay + 1)
       const dateIndex = new Date(theYear, theMonth, dayIndex)
       
       // mapping data
-      // model.items.appointments = 0
-      // model.items.availables = 0
-      // model.items.maintenences = 0
+      model.items.appointments = 1
+      model.items.availables = 2
+      model.items.maintenences = 3
 
       if (i < firstDay) {
         // if past in month
@@ -113,9 +121,9 @@ export class TableListMonthlyComponent implements OnInit {
         model.dateLabel = String((moment(dateIndex).format('DD')))
         model.currentDayInMonth = true
         
-        // model.items.appointments = 10
-        // model.items.availables = 10
-        // model.items.maintenences = 1
+        model.items.appointments = 10
+        model.items.availables = 10
+        model.items.maintenences = 1
       }
       // if today
       if (moment(today).diff(moment(dateIndex), 'days') === 0) {
