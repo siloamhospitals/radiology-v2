@@ -124,6 +124,7 @@ export class ModalModalityComponent implements OnInit {
     this.service.getModalityHospitalById(this.modalityHospitalId)
       .subscribe(data => {
         this.modalityHospital = data.data;
+        console.log(this.modalityHospital, 'modality')
         if (this.modalityHospital != null) {
           this.setData();
         } else {
@@ -150,7 +151,6 @@ export class ModalModalityComponent implements OnInit {
           // eslint-disable-next-line
           map(val => this._filter(val))
         );
-        console.log('🚀 ~ filteredOptions', this.filteredOptions);
       }, () => {
         this.roomOptions = [];
       });
@@ -183,7 +183,6 @@ export class ModalModalityComponent implements OnInit {
         notes
       };
     }
-    console.log(this.modalityHospital.notes)
     this.modalityForm.patchValue({
       modalityId: this.modalityHospital.modality_id,
       modalityLabel: this.modalityHospital.modality_label,
@@ -341,7 +340,6 @@ export class ModalModalityComponent implements OnInit {
 
   changeStatus(event: any){
     const value = event.target.checked;
-    console.log(value)
     if(value != true){
       this.modalityForm.get('status').setValue('2');
     }else{
@@ -406,7 +404,6 @@ export class ModalModalityComponent implements OnInit {
       ...closeModalityHospital,
       notes: this.modalityForm.controls.notes.value,
     };
-    console.log(this.modalityHospitalRequest)
     if(this.modalityHospitalId != null){
       this.updateModalityHospital()
     }else{
@@ -457,7 +454,6 @@ export class ModalModalityComponent implements OnInit {
   }
   
   public deleteModality(item: RadiologyItem) {
-    console.log(item)
     this.modalRef = this.modalService.open(ModalConfirmDeleteComponent);
     this.modalRef.componentInstance.itemId = item.modality_hospital_id;
     this.modalRef.componentInstance.msg = `modality: '${item.modality_label}'`;

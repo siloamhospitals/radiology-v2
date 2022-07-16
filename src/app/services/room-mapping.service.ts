@@ -15,8 +15,15 @@ export class RoomMappingService {
   ) { }
 
   private getRoomActiveUrl = environment.OPADMIN_SERVICE+'/room-mappings/hospital';
+  private getFloorActiveeUrl = environment.OPADMIN_SERVICE+'/room-mappings/floors/hospital';
   private getDoctorAssignedByDayUrl = environment.OPADMIN_SERVICE+'/schedules/hospital';
   private editRoomMappingUrl = environment.OPADMIN_SERVICE+'/room-mappings';
+
+  getFloorActive(hospital: string): Observable<any> {
+    let url = this.getFloorActiveeUrl;
+    url = `${url}/${hospital}`;
+    return this.http.get<RoomMapping[]>(url, httpOptions);
+  }
 
   editRoomMapping(hospital: string, roomMapping: string, isian: string): Observable<any> {
     let url = this.editRoomMappingUrl;
