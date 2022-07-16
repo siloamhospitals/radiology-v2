@@ -17,7 +17,7 @@
             <button class="btn" title="To Next Period" (click)="toActionDate()">
               <span class="fa fa-angle-right font-weight-bold"></span>
             </button>
-            <span title="Current period view" class="pl-1" style="cursor: default;">{{ tableViewCurrentDate.format('DD MMMM YYYY')  }}</span>
+            <span title="Current period view" class="pl-1" style="cursor: default;">{{ tableViewCurrentDateLabel }}</span>
           </div>
           <div class="d-flex align-items-center">
             <button
@@ -38,7 +38,7 @@
               <option *ngFor="let t of tableViewSelect" [ngValue]="t.key">{{t.text}}</option>
             </select>
             <div title="Pick period table" class="cursor-pointer-force">
-              <app-date-picker 
+              <app-date-picker
                 width="140px"
                 [(value)]="tableViewCurrentDate"
                 [onChange]="onChangeDate">
@@ -56,10 +56,10 @@
             class="btn bg-light text-muted mb-2 rounded-8 room px-3 py-2 border">
             {{ modalityHospital.modality_label }}
           </button> -->
-          <div class="btn-group-toggle" data-toggle="buttons">
+          <div class="btn-group-toggle" data-toggle="buttons" style="max-height: 150px;overflow: auto;">
             <label *ngFor="let item of sections"
-              class="btn btn-light text-muted mb-2 rounded-8 room px-3 py-2 border {{item.active?'active':''}}">
-              <input [attr.type]="sectionSelectedCanMultiple ? 'checkbox' : 'radio'" [value]="item.key" (change)="setSelectedSection(item.key)"><span>{{item.text}}</span>
+              class="btn btn-light text-muted mb-2 rounded-8 room px-3 py-2 border {{item.modality_hospital_id === sectionSelected.modality_hospital_id ?'active':''}}">
+              <input [attr.type]="sectionSelectedCanMultiple ? 'checkbox' : 'radio'" [value]="item.modality_hospital_id" (click)="setSelectedSection(item)"><span>{{item.modality_label}}</span>
             </label>
           </div>
         </div>
@@ -109,6 +109,7 @@
         </div>
         <div *ngIf="tableViewActive===0" class="table-head-sticky">
           <app-table-list-daily
+            [sectionSelected]="sectionSelected"
             [dateSelected]="tableViewCurrentDate"
             [modalitySlots]="modalitySlots"></app-table-list-daily>
         </div>

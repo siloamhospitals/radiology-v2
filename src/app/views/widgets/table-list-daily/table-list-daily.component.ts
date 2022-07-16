@@ -2,9 +2,10 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
 import { ScheduleStatus } from 'src/app/variables/common.variable';
-import { ModalCreateAdmissionComponent } from '../modal-create-admission/modal-create-admission.component';
 import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
 import * as moment from 'moment'
+import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
+import * as _ from 'lodash'
 @Component({
   selector: 'app-table-list-daily',
   templateUrl: './table-list-daily.component.html',
@@ -14,19 +15,20 @@ export class TableListDailyComponent implements OnInit {
 
   @Input() modalitySlots: ModalitySlot[];
   @Input() dateSelected: Date
+  @Input() sectionSelected: any;
   public scheduleStatus = ScheduleStatus
   public scheduleList: any[] = []
 
   constructor(
     private modalService: NgbModal,
   ) { }
-  
+
   ngOnInit(): void {
-   
+
   }
 
   createAppointment() {
-    const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'fo_modal_confirmation', backdrop: 'static', keyboard: false })
+    const m = this.modalService.open(ModalCreateAppointmentComponent, { windowClass: 'fo_modal_confirmation', centered: true, size: 'lg'})
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
@@ -51,17 +53,17 @@ export class TableListDailyComponent implements OnInit {
       const lastFromTime = hour2digit  + ':30'
       const lastToTime = setToHour2Digit(time+1) + ':00'
 
-      const patientFirst : any = slots.find(s => 
+      const patientFirst : any = slots.find(s =>
           moment(firstFromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
           moment(firstToTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
         ) || {};
-      
+
       if(patientFirst.patient_name && patientFirst.patient_name === lastCaptureSlot.patient){
         lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
       }else{
         rowSpan = 1
       }
-           
+
       const firstSlot = {
           fromTime: firstFromTime,
           toTime:  firstToTime,
@@ -72,22 +74,22 @@ export class TableListDailyComponent implements OnInit {
           note: patientFirst.notes,
           status: patientFirst.status,
           rowSpan: lastCaptureSlot.patient && patientFirst.patient_name === lastCaptureSlot.patient ? null : rowSpan
-      }  
-      
+      }
+
       lastCaptureSlot = firstSlot
 
-      const patientLast : any = slots.find(s => 
+      const patientLast : any = slots.find(s =>
           moment(lastFromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
           moment(lastToTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
         ) || {};
-        
+
       if(patientLast.patient_name && patientLast.patient_name === lastCaptureSlot.patient){
-        lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;       
+        lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
       } else {
         rowSpan = 1;
       }
 
-      
+
       const lastSlot = {
         fromTime: lastFromTime,
         toTime: lastToTime,
@@ -111,7 +113,8 @@ export class TableListDailyComponent implements OnInit {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    if(changes.modalitySlots) {
+    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue)) || 
+    (this.sectionSelected.modality_hospital_id && (changes.modalitySlots && changes.modalitySlots.currentValue))) {
       await this.getSchedules()
     }
   }

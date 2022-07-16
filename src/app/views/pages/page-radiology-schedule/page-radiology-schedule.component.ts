@@ -65,35 +65,35 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public modalitySlots : ModalitySlot[] = [];
 
   // note to self (delete "rooms" later if this repo works just fine since it's dummy well at least for now )
-  sections: any = [
-    {key: '1', text: 'CT Scan - Room 1', active: false},
-    {key: '2', text: 'MAMMOGRAPHY - Room 1', active: false},
-    {key: '3', text: 'MRA 3T CONTRAST - Room 3', active: false},
-    {key: '4', text: 'RADIOLOGY CONVENTIONAL - Room 3', active: false},
-    {key: '5', text: 'USG - 3D & 4D - Room 5', active: false},
-    {key: '6', text: 'CT CARDIAC - Room 1', active: false},
-  ]
-  sectionSelected: any = []
-  sectionSelectedCanMultiple: Boolean = true
-  
+  sections: any = [];
+  sectionSelected: any = {};
+  sectionSelectedCanMultiple: Boolean = false
+
   ngOnInit() {
     this.getModalitySlots()
+    this.getModalityHospitalList()
     // this.initTodayView();
-    
+
   }
 
-  
+
   async getModalitySlots() {
-    const modalityHospitalId = 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'
-    const reserveDate = this.tableViewCurrentDate.format('YYYY-MM-DD')
-    const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
-    this.modalitySlots = responseSlots.data || [];
+    if(this.sectionSelected.modality_hospital_id) {
+      const modalityHospitalId = this.sectionSelected.modality_hospital_id  // 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'      
+      const reserveDate = this.tableViewCurrentDate.format('YYYY-MM-DD')
+      const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
+      this.modalitySlots = responseSlots.data || [];
+    }
   }
 
   onChangeDate = async () => {
     await this.getModalitySlots()
+    await this.getModalityHospitalList()
+    // note to self (ntar aku ubah getModalitynya sesuai dengan tableViewCurrentDateLabel)
+    this.tableViewCurrentDateLabel = this.tableViewCurrentDate.format('DD MMMM YYYY')
+    this.tableViewActive = 0
   }
- 
+
 
 
   open (modalId: any) {
@@ -117,20 +117,21 @@ export class PageRadiologyScheduleComponent implements OnInit {
     })
   }
 
-  getModalityHospitalList(val?: any) {
-    if(val && this.selectedTimeSchedule) {
-      this.modalityService.getModalityHospital(this.hospital.id, val, val)
+  getModalityHospitalList() {
+    if(this.tableViewCurrentDate) {
+      const dateString = this.tableViewCurrentDate.format('YYYY-MM-DD')
+      this.modalityService.getModalityHospital(this.hospital.id, dateString, dateString)
         .subscribe(res => {
           const activeModalityHospital = res.data.map((eachModality: any) => {
               if (eachModality.status === '1') return eachModality;
             }
           );
-          this.modalitiesHospitalList = activeModalityHospital;
+          this.sections = activeModalityHospital;
         }, () => {
-          this.modalitiesHospitalList = [];
+          this.sections = [];
         });
     } else {
-      this.modalitiesHospitalList = [];
+      this.sections = [];
     }
   }
 
@@ -154,7 +155,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   changeTableDateSelected (date: any) {
     this.changeTableView(moment(date, 'YYYY-MM-DD').toDate())
-    this.getModalityHospitalList(date)
+    this.getModalityHospitalList()
   }
 
   initTodayView () {
@@ -190,7 +191,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     }else{
       this.tableViewCurrentDate = this.tableViewCurrentDate.add(1, t)
     }
-  
+
     this.changeTableView(this.tableViewCurrentDate.toDate())
   }
   setRouterViewValue (item: Object) {
@@ -208,24 +209,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
     await this.getModalitySlots()
   }
 
-  setSelectedSection (v: any) {
-    const indexSection = this.sections.findIndex((x: any) => x.key == v)
-    const indexSelectedSection = this.sectionSelected.findIndex((x: any) => x == v)
-    if (this.sectionSelectedCanMultiple) {
-      if (indexSelectedSection !== -1) {
-        this.sectionSelected.splice(indexSelectedSection, 1)
-      } else {
-        this.sectionSelected.push(v)
-      }
-    } else {
-      if (this.sections[indexSection].active === true) {
-        this.sections[indexSection].active = false
-        this.sectionSelected = []
-        return
-      }
-      this.sections = this.sections.map((x: any) => ({...x, active: false}))
-      this.sectionSelected = [v]
-    }
-    this.sections[indexSection].active = !this.sections[indexSection].active
+  async setSelectedSection (modalityHospital: any) {
+    this.sectionSelected = modalityHospital
+    await this.getModalitySlots()
+    this.changeTableDate(this.tableViewCurrentDate.toDate())
   }
 }
