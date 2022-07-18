@@ -91,12 +91,14 @@
         <div *ngIf="tableViewActive===2" class="no-sticky">
           <app-table-list-monthly
             (itemClick)="toDaily($event)"
+            [sectionSelected]="sectionSelected"
             [dateSelected]="tableViewCurrentDate"
             [data]="scheduleList"></app-table-list-monthly>
         </div>
         <div *ngIf="tableViewActive===1" class="table-head-sticky">
           <app-table-list-weekly
             (itemClick)="toDaily($event)"
+            [sectionSelected]="sectionSelected"
             [dateSelected]="tableViewCurrentDate"
             [modalitySlots]="modalitySlots"></app-table-list-weekly>
         </div>
