@@ -28,7 +28,7 @@ export class TableListDailyComponent implements OnInit {
   }
 
   createAppointment() {
-    const m = this.modalService.open(ModalCreateAppointmentComponent, { windowClass: 'fo_modal_confirmation', centered: true, size: 'lg'})
+    const m = this.modalService.open(ModalCreateAppointmentComponent, { windowClass: 'fo_modal_confirmation', centered: true, size: 'xl'})
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
@@ -113,7 +113,7 @@ export class TableListDailyComponent implements OnInit {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue)) || 
+    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue)) ||
     (this.sectionSelected.modality_hospital_id && (changes.modalitySlots && changes.modalitySlots.currentValue))) {
       await this.getSchedules()
     }

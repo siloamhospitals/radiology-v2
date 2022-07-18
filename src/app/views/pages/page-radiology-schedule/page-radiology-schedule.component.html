@@ -48,14 +48,6 @@
 
         </div>
         <div class="p-3 border-bottom">
-          <!-- Maaf aku comment yah,
-            klo mau masukin list nya di sections,
-            dan klo multiple sectionSelectedCanMultiple
-            value nya ditampung di sectionSelected, klo bisa pecah aja komponen ini jadi indie -->
-          <!-- <button *ngFor="let modalityHospital of modalitiesHospitalList" type="button"
-            class="btn bg-light text-muted mb-2 rounded-8 room px-3 py-2 border">
-            {{ modalityHospital.modality_label }}
-          </button> -->
           <div class="btn-group-toggle" data-toggle="buttons" style="max-height: 150px;overflow: auto;">
             <label *ngFor="let item of sections"
               class="btn btn-light text-muted mb-2 rounded-8 room px-3 py-2 border {{item.modality_hospital_id === sectionSelected.modality_hospital_id ?'active':''}}">

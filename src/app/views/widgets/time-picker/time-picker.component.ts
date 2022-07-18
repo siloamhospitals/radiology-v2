@@ -14,7 +14,7 @@ export class TimepickerComponent implements OnInit {
   @Input() placeholder: string = '00:00'
   @Input() value : string = ''
   hours : string[];
-  minutes : string[]; 
+  minutes : string[];
   isShow : boolean;
   @Input() useMinute : boolean;
 
@@ -47,7 +47,7 @@ export class TimepickerComponent implements OnInit {
     }else{
       this.value = hour
     }
-    
+
     this.valueChange.emit(this.value)
   }
 

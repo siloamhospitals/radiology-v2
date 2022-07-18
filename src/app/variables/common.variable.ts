@@ -189,3 +189,11 @@ export const ScheduleStatus = {
   '3': 'Process',
   '4': 'Completed'
 };
+
+export const nationalTypeIdNames = {
+  1: 'KTP',
+  2: 'SIM',
+  3: 'PASPOR',
+  4: 'KITAS',
+  5: 'KITAP',
+};
