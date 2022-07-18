@@ -4,6 +4,7 @@ import { ModalCreateAppointmentComponent } from './modal-create-appointment.comp
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerModule } from '../date-picker/date-picker.module';
 import { TimepickerModule } from '../time-picker/time-picker.module';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [ModalCreateAppointmentComponent],
@@ -12,7 +13,8 @@ import { TimepickerModule } from '../time-picker/time-picker.module';
     FormsModule,
     ReactiveFormsModule,
     DatepickerModule,
-    TimepickerModule
+    TimepickerModule,
+    NgxMaskModule.forRoot()
   ]
 })
 export class ModalCreateAppointmentModule { }

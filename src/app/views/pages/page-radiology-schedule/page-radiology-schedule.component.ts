@@ -41,19 +41,19 @@ export class PageRadiologyScheduleComponent implements OnInit {
     })
   }
 
-  public tableViewCurrentDate: any = moment()
-  public tableViewCurrentDateLabel: String = '(not selected date)'
-  public tableViewCurrentIsToday: Boolean = false
-  public tableViewActive: number = 2
+  public tableViewCurrentDate: any = moment();
+  public tableViewCurrentDateLabel: String = '(not selected date)';
+  public tableViewCurrentIsToday: Boolean = false;
+  public tableViewActive: number = 2;
   public tableViewSelect: any[] = [
     {key: 0, text: 'Day'},
     {key: 1, text: 'Week'},
     {key: 2, text: 'Month'},
-  ]
-  public scheduleList: any[]
-  protected indexNumber: number = 0
+  ];
+  public scheduleList: any[];
+  protected indexNumber: number = 0;
 
-  public createAppointmentTabId: number = 1
+  public createAppointmentTabId: number = 1;
 
   public key: any = JSON.parse(localStorage.getItem('key') || '{}');
   public hospital = this.key.hospital;
@@ -64,7 +64,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public categories: General[];
   public modalitySlots : ModalitySlot[] = [];
 
-  // note to self (delete "rooms" later if this repo works just fine since it's dummy well at least for now )
   sections: any = [];
   sectionSelected: any = {};
   sectionSelectedCanMultiple: Boolean = false
@@ -79,7 +78,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   async getModalitySlots() {
     if(this.sectionSelected.modality_hospital_id) {
-      const modalityHospitalId = this.sectionSelected.modality_hospital_id  // 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'      
+      const modalityHospitalId = this.sectionSelected.modality_hospital_id  // 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'
       const reserveDate = this.tableViewCurrentDate.format('YYYY-MM-DD')
       const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
       this.modalitySlots = responseSlots.data || [];
@@ -89,12 +88,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
   onChangeDate = async () => {
     await this.getModalitySlots()
     await this.getModalityHospitalList()
-    // note to self (ntar aku ubah getModalitynya sesuai dengan tableViewCurrentDateLabel)
     this.tableViewCurrentDateLabel = this.tableViewCurrentDate.format('DD MMMM YYYY')
     this.tableViewActive = 0
   }
-
-
 
   open (modalId: any) {
     const m = this.modalService.open(modalId, { windowClass: 'fo_modal_confirmation' })

@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { httpOptions } from '../../app/utils/http.util';
+import { SearchPatientHopeGroupedRequest } from '../models/patients/search-patient-hope-grouped-request';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,7 @@ export class PatientService {
 
   private uploadImageUrl = environment.UPLOAD_IMAGE + '/pdf-upload';
   private uploadDocBpjsUrl = environment.UPLOAD_IMAGE + '/bpjs/';
+  private patientHopeGroupUrl = environment.CALL_CENTER_SERVICE + '/patients/hope/group';
 
   private searchPatientHopeSource = new Subject<any>();
   public searchPatientHopeSource$ = this.searchPatientHopeSource.asObservable();
@@ -152,6 +154,11 @@ export class PatientService {
     // return of(PATIENTHOPE);
   }
 
+  // searchPatientGroupDob(hospitalId: string, patientName: string, birthDate: string): Observable<any> {
+  //   const url = `${this.patientHopeGroupUrl}?hospitalId=${hospitalId}&patientName=${patientName}&birthDate=${birthDate}`;
+  //   return this.http.get<any>(url, httpOptions);
+  // }
+
   searchPatientHope2(hospitalId: string, localMrNo: number): Observable<any> {
     const url = `${this.patientHopeUrl}?hospitalId=${hospitalId}&mrLocalNo=${localMrNo}`;
     return this.http.get<any>(url, httpOptions);
@@ -217,4 +224,18 @@ export class PatientService {
     return this.http.post<any>(url, body, httpOptions);
   }
 
+  searchPatientHopeGroup(request: SearchPatientHopeGroupedRequest) {
+    console.log()
+    const newRequest: any = request.hospitalId && request.mrLocalNo ? {
+      hospitalId: request.hospitalId,
+      mrLocalNo: request.mrLocalNo,
+    } : request;
+
+    const queryParams = Object.keys(newRequest)
+      .filter((e:any) => newRequest[e])
+      .map((e:any) => `${encodeURIComponent(e)}=${encodeURIComponent(newRequest[e])}`)
+      .join('&');
+    const url = `${this.patientHopeGroupUrl}?${queryParams!}`;
+    return this.http.get<any>(url, httpOptions);
+  }
 }

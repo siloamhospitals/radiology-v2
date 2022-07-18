@@ -54,6 +54,7 @@
     "mydaterangepicker": "^4.2.1",
     "ng-multiselect-dropdown-angular7": "^0.1.5",
     "ngx-daterangepicker-material": "^2.4.2",
+    "ngx-mask": "^8.1.6",
     "pdfmake": "^0.1.56",
     "rxjs": "~6.3.3",
     "socket.io-client": "^2.4.0",
