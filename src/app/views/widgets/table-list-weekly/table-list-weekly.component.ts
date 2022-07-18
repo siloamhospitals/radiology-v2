@@ -34,6 +34,7 @@ export class TableListWeeklyComponent implements OnInit {
 
   list: any[] = []
   slotData: any[] = []
+  fetchDataDebounce: any = null
 
   mockData = [
     [
@@ -132,16 +133,16 @@ export class TableListWeeklyComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.scheduleListGenerate()
+    // this.refresh()
   }
 
   ngOnChanges(_changes: any) {
-    this.generateDayLabel()
+    this.refresh()
   }
 
-  scheduleListGenerate () {
-    // this.scheduleList = this.data
-    // this.getSchedules()
+  refresh () {
+    if (this.fetchDataDebounce) { clearTimeout(this.fetchDataDebounce) }
+    this.fetchDataDebounce = setTimeout(() => { this.generateDayLabel() }, 800)
   }
 
   generateDayLabel () {
@@ -221,6 +222,7 @@ export class TableListWeeklyComponent implements OnInit {
       })
       return model
     })
+    console.log('list', list)
     this.list = list
   }
 
@@ -241,6 +243,7 @@ export class TableListWeeklyComponent implements OnInit {
     const list: any = []
     for (let item of this.days) {
       const d = await this.getModalitySlots(item.date, this.sectionSelected.modality_hospital_id)
+        .catch(() => [])
       list.push(d)
     }
     this.slotData = list
