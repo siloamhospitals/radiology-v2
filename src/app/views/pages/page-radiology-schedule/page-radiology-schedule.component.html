@@ -71,9 +71,9 @@
             <div class="col-md-2 pr-0 d-flex flex-column border-right pb-2">
               <small>Time Range</small>
               <div class="d-flex align-items-center">
-                <app-time-picker placeholder="23:00" ></app-time-picker>
+                <app-time-picker placeholder="23:00" [(value)]="fromTimeRange" ></app-time-picker>
                 <b class="mx-2" >-</b>
-                <app-time-picker placeholder="23:00" ></app-time-picker>
+                <app-time-picker placeholder="23:00" [(value)]="toTimeRange" ></app-time-picker>
               </div>
             </div>
           </div>
@@ -104,6 +104,8 @@
           <app-table-list-daily
             [sectionSelected]="sectionSelected"
             [dateSelected]="tableViewCurrentDate"
+            [fromTimeRange]="fromTimeRange"
+            [toTimeRange]="toTimeRange"
             ></app-table-list-daily>
         </div>
       </section>

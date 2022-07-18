@@ -67,6 +67,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
   sectionSelected: ModalityHospital = new ModalityHospital();
   sectionSelectedCanMultiple: Boolean = false
 
+  fromTimeRange: string = "00:00";
+  toTimeRange: string = "00:00";
+
   ngOnInit() {
     // this.getModalitySlots()
     this.getModalityHospitalList()

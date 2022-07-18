@@ -18,8 +18,12 @@ export class TableListDailyComponent implements OnInit {
   modalitySlots: ModalitySlot[];
   @Input() dateSelected: moment.Moment;
   @Input() sectionSelected: ModalityHospital;
+  @Input() fromTimeRange: string;
+  @Input() toTimeRange: string;
+
   public scheduleStatus = ScheduleStatus
   public scheduleList: any[] = []
+  public scheduleListBk: any[] = []
 
   constructor(
     private modalService: NgbModal,
@@ -97,10 +101,13 @@ export class TableListDailyComponent implements OnInit {
       })
 
       return {
+        hour: hour2digit,
         rowSpan: numberSlotInHour,
         items
       }
     })
+
+    this.scheduleListBk = this.scheduleList.slice()
   }
 
   isRowScheduled(schedule : any) {
@@ -113,6 +120,20 @@ export class TableListDailyComponent implements OnInit {
       await this.getModalitySlots()
       await this.getSchedules()
     }
+  
+    if((changes.fromTimeRange && changes.fromTimeRange.currentValue) 
+      || (changes.toTimeRange && changes.toTimeRange.currentValue)) {
+        if(this.fromTimeRange === '00:00' && this.toTimeRange === '00:00') {
+          this.scheduleList = this.scheduleListBk.slice()
+        }else {
+          const momentFromTime = moment(this.fromTimeRange, 'hh:mm')
+          const momentToTime = moment(this.toTimeRange, 'hh:mm')
+          this.scheduleList = this.scheduleListBk.filter(sc => {
+            return sc.items.find((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm')) 
+                && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) )
+          })
+        }
+      }
   }
 
 }
