@@ -17,6 +17,9 @@ export class TableListWeeklyComponent implements OnInit {
   @Input() sectionSelected: any
   @Input() modalitySlots: ModalitySlot[];
 
+  @Input() slotConfigDuration = 30
+  slotConfigIntervalBlock = 2
+
   @Output() itemClick = new EventEmitter<any>()
 
   days: any[] = [
@@ -161,7 +164,7 @@ export class TableListWeeklyComponent implements OnInit {
   }
 
   async getSchedules() {
-    const setToHour2Digit = (time : number) => ('0' + time).slice(-2);
+    // const setToHour2Digit = (time : number) => ('0' + time).slice(-2);
     // const data = this.mockData
     let data = this.slotData
     data = (data||[]).map((x: any) => {
@@ -177,11 +180,22 @@ export class TableListWeeklyComponent implements OnInit {
     })
 
     let temp: any[] = []
-    const list = Array(24).fill({}).map((_m: any, i: number) => {
+    let startIndex = 0
+    const perBlock = this.slotConfigDuration
+    this.slotConfigIntervalBlock = Math.ceil(60 / perBlock)
+    let block = Math.ceil(24*60/perBlock)
+    if (block < 24) {
+      this.slotConfigIntervalBlock = Math.ceil(perBlock / 60)
+    }
+    let lastTime: any = null
+    const list = Array(block).fill({}).map((_m: any, i: number) => {
       const model = new SlotWeeklyRow()
-      model.viewIndex = i
-      model.fromTime = setToHour2Digit(i) + ':00'
-      model.toTime = setToHour2Digit(i) + ':29'
+      model.viewIndex = i%2 === 0 ? startIndex++ : startIndex
+      const startTime = lastTime ? lastTime : moment(`${('0' + model.viewIndex).slice(-2)}:${'00'}`, 'hh:mm')
+      const endTime = startTime.clone().add(perBlock, 'minutes')
+      lastTime = endTime
+      model.fromTime = startTime.format('HH:mm')
+      model.toTime = endTime.format('HH:mm')
       model.days = this.days.map((_n: any, j: number) => {
         let day = new SlotWeeklyItem
         day.fromTime = model.fromTime
