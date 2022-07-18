@@ -13,23 +13,34 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngIf="!(scheduleList && scheduleList.length)">
+    <ng-container *ngIf="!(list && list.length)">
       <tr>
         <td colspan="100%" class="text-center p-3">No data from this section</td>
       </tr>
     </ng-container>
-    <tr *ngFor="let item of scheduleList; let i=index">
+    <tr *ngFor="let item of list; let i=index">
       <!-- <td *ngIf="i%2==0" rowspan="2" style="vertical-align: middle; width: 25px; background: #fff !important;" class="text-right">
         {{(item.rowIndex).toString().padStart(2, '0')}}</td> -->
       <td *ngIf="i % 2 == 0" rowspan="2" style="vertical-align: middle; width: 25px; background: #fff !important;" class="text-right">
         {{ ('0' + i).slice(-2) }}
       </td>
       <td style="width: 100px; vertical-align: middle;">{{ item.fromTime + ' - ' + item.toTime }}</td>
-      <td *ngFor="let day of days" 
-        title="{{day.date}}"  
-        class="cursor-pointer item-hover">
-        <span class="text-success">Available</span>
-      </td>
+      <ng-container *ngFor="let day of item.days" >
+        <td *ngIf="!day.patientName"
+          title="{{day.date}}"  
+          class="cursor-pointer item-hover">
+          <span class="text-success">Available</span>
+        </td>
+        <td *ngIf="day.patientName"
+          title="{{day.date}}"  
+          class="cursor-pointer item-hover table-td table-td-scheduled item-indicator-primary">
+          <div class="pb-4" style="line-height: 1.4;">
+            <div style="font-size: 14px;"><b>{{day.patientName}}</b></div>
+            <div class="text-muted">{{day.patientDob}}</div>
+            <div class="text-muted">{{day.patientLocalMrNo}}</div>
+          </div>
+        </td>
+      </ng-container>
     </tr>
   </tbody>
 </table>
