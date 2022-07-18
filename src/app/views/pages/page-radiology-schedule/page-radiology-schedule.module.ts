@@ -2,7 +2,7 @@ import { ModalCancelAppointmentModule } from './../../widgets/modal-cancel-appoi
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageRadiologyScheduleComponent } from './page-radiology-schedule.component';
-
+import { NgbModule, NgbTabsetModule } from "@ng-bootstrap/ng-bootstrap";
 import { SectionHeaderModule } from '../../sections/section-header/section-header.module';
 import { SectionSidebarModule } from '../../sections/section-sidebar/section-sidebar.module';
 import { SectionFooterModule } from '../../sections/section-footer/section-footer.module';
@@ -39,6 +39,8 @@ import { ModalCreateAppointmentComponent } from '../../widgets/modal-create-appo
     ModalCancelAppointmentModule,
     ModalCreateAdmissionModule,
     ModalDetailScheduleModule,
+    NgbModule, 
+    NgbTabsetModule,
     TableListDailyModule,
     TableListWeeklyModule,
     TableListMonthlyModule,
