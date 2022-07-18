@@ -222,7 +222,7 @@ export class TableListWeeklyComponent implements OnInit {
       })
       return model
     })
-    console.log('list', list)
+    // console.log('list', list)
     this.list = list
   }
 
