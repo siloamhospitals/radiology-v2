@@ -18,5 +18,5 @@ export const environment = {
   PAYMENT: 'http://10.85.139.13/online-payment',
   VACCINE_CONSENT_SERVICE: 'http://10.85.139.13/consent-covid',
   // OP_ADMIN_SERVICE: 'http://10.85.139.13/opadmin/api/v2',
-  OP_ADMIN_SERVICE: 'http://localhost:8523/api/v2',
+  OP_ADMIN_SERVICE: 'http://10.85.139.101/dev-opadmin-radiology/api/v2',
 };
