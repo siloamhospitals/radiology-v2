@@ -5,9 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
-import { RadiologyService } from 'src/app/services/radiology/radiology.service';
 import * as moment from 'moment';
 import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
+import { ModalityHospital } from 'src/app/models/radiology/modality-hospital';
 
 // import * as moment from 'moment';
 
@@ -22,8 +22,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private modalService: NgbModal,
-    private modalityService: ModalityService,
-    private radiologyService : RadiologyService,
+    private modalityService: ModalityService,    
     private modalSetting : NgbModalConfig
   )  {
     this.modalSetting.backdrop = true;
@@ -41,7 +40,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     })
   }
 
-  public tableViewCurrentDate: any = moment();
+  public tableViewCurrentDate: moment.Moment = moment();
   public tableViewCurrentDateLabel: String = '(not selected date)';
   public tableViewCurrentIsToday: Boolean = false;
   public tableViewActive: number = 2;
@@ -65,28 +64,20 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public modalitySlots : ModalitySlot[] = [];
 
   sections: any = [];
-  sectionSelected: any = {};
+  sectionSelected: ModalityHospital = new ModalityHospital();
   sectionSelectedCanMultiple: Boolean = false
 
   ngOnInit() {
-    this.getModalitySlots()
+    // this.getModalitySlots()
     this.getModalityHospitalList()
     // this.initTodayView();
 
   }
 
 
-  async getModalitySlots() {
-    if(this.sectionSelected.modality_hospital_id) {
-      const modalityHospitalId = this.sectionSelected.modality_hospital_id  // 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'
-      const reserveDate = this.tableViewCurrentDate.format('YYYY-MM-DD')
-      const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
-      this.modalitySlots = responseSlots.data || [];
-    }
-  }
+ 
 
   onChangeDate = async () => {
-    await this.getModalitySlots()
     await this.getModalityHospitalList()
     this.tableViewCurrentDateLabel = this.tableViewCurrentDate.format('DD MMMM YYYY')
     this.tableViewActive = 0
@@ -202,12 +193,10 @@ export class PageRadiologyScheduleComponent implements OnInit {
     dateVal = new Date(dateVal)
     this.tableViewActive = !isNaN(Number(viewId)) ? Number(viewId) : 0
     this.changeTableDate(dateVal)
-    await this.getModalitySlots()
   }
 
-  async setSelectedSection (modalityHospital: any) {
+  async setSelectedSection (modalityHospital: ModalityHospital) {
     this.sectionSelected = modalityHospital
-    await this.getModalitySlots()
     this.changeTableDate(this.tableViewCurrentDate.toDate())
   }
 }

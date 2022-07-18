@@ -6,6 +6,8 @@ import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
 import * as moment from 'moment'
 import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
 import * as _ from 'lodash'
+import { RadiologyService } from 'src/app/services/radiology/radiology.service';
+import { ModalityHospital } from 'src/app/models/radiology/modality-hospital';
 @Component({
   selector: 'app-table-list-daily',
   templateUrl: './table-list-daily.component.html',
@@ -13,18 +15,28 @@ import * as _ from 'lodash'
 })
 export class TableListDailyComponent implements OnInit {
 
-  @Input() modalitySlots: ModalitySlot[];
-  @Input() dateSelected: Date
-  @Input() sectionSelected: any;
+  modalitySlots: ModalitySlot[];
+  @Input() dateSelected: moment.Moment;
+  @Input() sectionSelected: ModalityHospital;
   public scheduleStatus = ScheduleStatus
   public scheduleList: any[] = []
 
   constructor(
     private modalService: NgbModal,
+    private radiologyService : RadiologyService,
   ) { }
 
   ngOnInit(): void {
 
+  }
+
+  async getModalitySlots() {
+    if(this.sectionSelected.modality_hospital_id) {
+      const modalityHospitalId = this.sectionSelected.modality_hospital_id  // 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'
+      const reserveDate = this.dateSelected.format('YYYY-MM-DD')
+      const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
+      this.modalitySlots = responseSlots.data || [];
+    }
   }
 
   createAppointment() {
@@ -113,8 +125,9 @@ export class TableListDailyComponent implements OnInit {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue)) ||
-    (this.sectionSelected.modality_hospital_id && (changes.modalitySlots && changes.modalitySlots.currentValue))) {
+    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue)) 
+      || this.sectionSelected.modality_hospital_id) {
+      await this.getModalitySlots()
       await this.getSchedules()
     }
   }

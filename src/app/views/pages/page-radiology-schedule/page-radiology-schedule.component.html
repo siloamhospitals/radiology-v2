@@ -40,6 +40,7 @@
             <div title="Pick period table" class="cursor-pointer-force">
               <app-date-picker
                 width="140px"
+                [format]="tableViewActive === 2 ? 'MMMM YYYY' : 'DD MMMM YYYY'"
                 [(value)]="tableViewCurrentDate"
                 [onChange]="onChangeDate">
               </app-date-picker>
@@ -51,7 +52,7 @@
           <div class="btn-group-toggle" data-toggle="buttons" style="max-height: 150px;overflow: auto;">
             <label *ngFor="let item of sections"
               class="btn btn-light text-muted mb-2 rounded-8 room px-3 py-2 border {{item.modality_hospital_id === sectionSelected.modality_hospital_id ?'active':''}}">
-              <input [attr.type]="sectionSelectedCanMultiple ? 'checkbox' : 'radio'" [value]="item.modality_hospital_id" (click)="setSelectedSection(item)"><span>{{item.modality_label}}</span>
+              <input [attr.type]="sectionSelectedCanMultiple ? 'checkbox' : 'radio'" [value]="item.modality_hospital_id" (click)="setSelectedSection(item)"><span>{{item.modality_label + ' - Room ' + item.room_name }}</span>
             </label>
           </div>
         </div>
@@ -103,7 +104,7 @@
           <app-table-list-daily
             [sectionSelected]="sectionSelected"
             [dateSelected]="tableViewCurrentDate"
-            [modalitySlots]="modalitySlots"></app-table-list-daily>
+            ></app-table-list-daily>
         </div>
       </section>
 
