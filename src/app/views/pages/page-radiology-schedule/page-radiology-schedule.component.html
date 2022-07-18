@@ -105,6 +105,7 @@
         <div *ngIf="tableViewActive===1" class="table-head-sticky">
           <app-table-list-weekly
             (itemClick)="toDaily($event)"
+            [sectionSelected]="sectionSelected"
             [dateSelected]="tableViewCurrentDate"
             [modalitySlots]="modalitySlots"></app-table-list-weekly>
         </div>
