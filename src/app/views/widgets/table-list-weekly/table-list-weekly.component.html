@@ -25,19 +25,25 @@
         {{ ('0' + i).slice(-2) }}
       </td>
       <td style="width: 100px; vertical-align: middle;">{{ item.fromTime + ' - ' + item.toTime }}</td>
-      <ng-container *ngFor="let day of item.days" >
+      <ng-container *ngFor="let day of item.days; let j=index" >
         <td *ngIf="!day.patientName"
           title="{{day.date}}"  
           class="cursor-pointer item-hover">
           <span class="text-success">Available</span>
         </td>
-        <td *ngIf="day.patientName"
+        <td *ngIf="day.patientName && day.rowSpan > 0"
+          [attr.rowspan]="day.rowSpan"
           title="{{day.date}}"  
-          class="cursor-pointer item-hover table-td table-td-scheduled item-indicator-primary">
-          <div class="pb-4" style="line-height: 1.4;">
-            <div style="font-size: 14px;"><b>{{day.patientName}}</b></div>
-            <div class="text-muted">{{day.patientDob}}</div>
-            <div class="text-muted">{{day.patientLocalMrNo}}</div>
+          class="cursor-pointer item-hover table-td table-td-scheduled item-indicator-primary"
+          style="vertical-align: top !important;">
+          <div style="line-height: 1.4;">
+            <div style="font-size: 12px;"><b>{{day.patientName}}</b></div>
+            <ng-container *ngIf="day.rowSpan > 1">
+              <div class="pb-4 mt-1">
+                <div class="text-muted">{{day.patientDob}}</div>
+                <div class="text-muted">{{day.patientLocalMrNo}}</div>
+              </div>
+            </ng-container>
           </div>
         </td>
       </ng-container>

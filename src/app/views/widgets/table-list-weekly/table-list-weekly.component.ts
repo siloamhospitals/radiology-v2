@@ -37,21 +37,21 @@ export class TableListWeeklyComponent implements OnInit {
       {
         fromTime: '00:00',
         toTime: '01:30',
-        patientName: 'Patient 1',
+        patientName: 'Patient 01',
         patientDob: '2002-01-01',
         patientLocalMrNo: '0123456'
       },
       {
         fromTime: '05:00',
         toTime: '07:30',
-        patientName: 'Patient 2',
+        patientName: 'Patient 02',
         patientDob: '2002-01-01',
         patientLocalMrNo: '0123456'
       },
       {
         fromTime: '10:00',
         toTime: '10:30',
-        patientName: 'Patient 3',
+        patientName: 'Patient 03',
         patientDob: '2002-01-01',
         patientLocalMrNo: '0123456'
       },
@@ -60,14 +60,14 @@ export class TableListWeeklyComponent implements OnInit {
       {
         fromTime: '03:00',
         toTime: '06:00',
-        patientName: 'Patient 1',
+        patientName: 'Patient 11',
         patientDob: '2002-01-01',
         patientLocalMrNo: '0123456'
       },
       {
         fromTime: '07:00',
         toTime: '08:00',
-        patientName: 'Patient 2',
+        patientName: 'Patient 12',
         patientDob: '2002-01-01',
         patientLocalMrNo: '0123456'
       },
@@ -76,14 +76,14 @@ export class TableListWeeklyComponent implements OnInit {
       {
         fromTime: '05:00',
         toTime: '06:00',
-        patientName: 'Patient 1',
+        patientName: 'Patient 31',
         patientDob: '2002-01-01',
         patientLocalMrNo: '0123456'
       },
       {
         fromTime: '10:00',
         toTime: '12:00',
-        patientName: 'Patient 2',
+        patientName: 'Patient 32',
         patientDob: '2002-01-01',
         patientLocalMrNo: '0123456'
       },
@@ -92,14 +92,14 @@ export class TableListWeeklyComponent implements OnInit {
       {
         fromTime: '08:00',
         toTime: '10:00',
-        patientName: 'Patient 1',
+        patientName: 'Patient 41',
         patientDob: '2002-01-01',
         patientLocalMrNo: '0123456'
       },
       {
         fromTime: '10:30',
         toTime: '11:00',
-        patientName: 'Patient 2',
+        patientName: 'Patient 42',
         patientDob: '2002-01-01',
         patientLocalMrNo: '0123456'
       },
@@ -109,14 +109,14 @@ export class TableListWeeklyComponent implements OnInit {
       {
         fromTime: '03:00',
         toTime: '05:59',
-        patientName: 'Patient 1',
+        patientName: 'Patient 61',
         patientDob: '2002-01-01',
         patientLocalMrNo: '0123456'
       },
       {
         fromTime: '07:00',
         toTime: '08:00',
-        patientName: 'Patient 2',
+        patientName: 'Patient 62',
         patientDob: '2002-01-01',
         patientLocalMrNo: '0123456'
       },
@@ -133,7 +133,6 @@ export class TableListWeeklyComponent implements OnInit {
   }
 
   ngOnChanges(_changes: any) {
-    // console.log('weekly changes', changes)
     this.generateDayLabel()
   }
 
@@ -165,7 +164,7 @@ export class TableListWeeklyComponent implements OnInit {
     const setToHour2Digit = (time : number) => ('0' + time).slice(-2);
     // const data = this.mockData
     let data = this.slotData
-    data = data.map((x: any) => {
+    data = (data||[]).map((x: any) => {
       return x.map((y: any) => {
         return {
           fromTime: y.from_time,
@@ -177,6 +176,7 @@ export class TableListWeeklyComponent implements OnInit {
       })
     })
 
+    let temp: any[] = []
     const seeks: any = {}
     const list = Array(24).fill({}).map((_m: any, i: number) => {
       const model = new SlotWeeklyRow()
@@ -201,12 +201,16 @@ export class TableListWeeklyComponent implements OnInit {
           if (!seeks[key]) { seeks[key] = 0 }
           seeks[key] += 1
         }
+        const dayTemp = temp.find(x=> day.patientName && x.patientName === day.patientName)
+        if (dayTemp) {
+          dayTemp.rowSpan += 1
+          day.rowSpan = 0
+        }
+        temp.push(day)
         return day
       })
-      // console.log('rowSnap', {seeks})
       return model
     })
-    // console.log('list', list)
     this.list = list
   }
 
@@ -230,7 +234,6 @@ export class TableListWeeklyComponent implements OnInit {
       list.push(d)
     }
     this.slotData = list
-    // console.log('fetch list', list)
     this.getSchedules()
   }
 
