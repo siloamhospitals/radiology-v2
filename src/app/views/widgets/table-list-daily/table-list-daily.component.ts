@@ -57,29 +57,40 @@ export class TableListDailyComponent implements OnInit {
     })
   }
 
+  setToTime2Digit = (time : number) => ('0' + time).slice(-2);
+
   async getSchedules() {
     const slots = this.modalitySlots
-    const setToTime2Digit = (time : number) => ('0' + time).slice(-2);
     let lastCaptureSlot : any = {};
-    const duration = this.sectionSelected.duration
-    const numberSlotInHour = 60/duration;
+    if(this.sectionSelected.duration > 60) {
+      this.createTimeSlotInDurationHour(slots, lastCaptureSlot);
+    }else {
+      this.createTimeSlotInDurationMinute(slots, lastCaptureSlot);
+    }
 
-    this.scheduleList = Array.from(Array(24).keys()).map(hour => {
+    this.scheduleListBk = this.scheduleList.slice()
+  }
 
-      const hour2digit = setToTime2Digit(hour)
-      const items =  Array.from(Array(numberSlotInHour).keys()).map(time => {
-        const fromTime = hour2digit  + ':' + setToTime2Digit(time * duration)
-        const nextMinute = (time + 1)*duration
-        const toTime = nextMinute === 60 ? (setToTime2Digit(hour+1) + ':00') : (hour2digit + ':' + setToTime2Digit(nextMinute))
+  private createTimeSlotInDurationHour(slots: ModalitySlot[], lastCaptureSlot: any) {
+    const duration = this.sectionSelected.duration || 60;
+    const numberSlotInDay =  Math.ceil(24*60/duration);
+    const stepHour = Math.ceil(duration/60)
 
-        const slot : any = slots.find(s =>
-                moment(fromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
-                moment(toTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
-              ) || {};                
+    this.scheduleList = Array.from(Array(numberSlotInDay).keys()).map(hour => {
+
+      const multiplyHour = hour*stepHour;
+      const hour2digit = this.setToTime2Digit(multiplyHour);
+      const items = multiplyHour >= 24 ? [] : [0].map(() => {
+        const fromTime =  hour2digit + ':00'
+        const toTime = this.setToTime2Digit((hour+1)*stepHour) + ':00'
+
+        const slot: any = slots.find(s => moment(fromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
+          moment(toTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
+        ) || {};
 
         const patient = {
           fromTime: fromTime,
-          toTime:  toTime,
+          toTime: toTime,
           patient: slot.patient_name,
           dob: slot.patient_dob,
           localMrNo: slot.local_mr_no,
@@ -87,27 +98,73 @@ export class TableListDailyComponent implements OnInit {
           note: slot.notes,
           status: slot.status,
           rowSpan: 1
-        }
+        };
 
-        if(slot.patient_name && slot.patient_name === lastCaptureSlot.patient){
+        if (slot.patient_name && slot.patient_name === lastCaptureSlot.patient) {
           lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
-          patient.rowSpan = 0
-        }else {
-          lastCaptureSlot = patient
+          patient.rowSpan = 0;
+        } else {
+          lastCaptureSlot = patient;
         }
 
-        return patient
-      
-      })
+        return patient;
+
+      });
+
+      return {
+        hour: hour2digit,
+        rowSpan: 1,
+        items
+      };
+    });
+  }
+
+  private createTimeSlotInDurationMinute(slots: ModalitySlot[], lastCaptureSlot: any) {
+    const duration = this.sectionSelected.duration || 30;
+    const numberSlotInHour = Math.ceil(60 / duration);
+
+    this.scheduleList = Array.from(Array(24).keys()).map(hour => {
+
+      const hour2digit = this.setToTime2Digit(hour);
+      const items = Array.from(Array(numberSlotInHour).keys()).map(time => {
+        const fromTime = hour2digit + ':' + this.setToTime2Digit(time * duration);
+        const nextMinute = (time + 1) * duration;
+        const toTime = nextMinute === 60 ? (this.setToTime2Digit(hour + 1) + ':00') : (hour2digit + ':' + this.setToTime2Digit(nextMinute));
+
+        const slot: any = slots.find(s => moment(fromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
+          moment(toTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
+        ) || {};
+
+        const patient = {
+          fromTime: fromTime,
+          toTime: toTime,
+          patient: slot.patient_name,
+          dob: slot.patient_dob,
+          localMrNo: slot.local_mr_no,
+          examination: slot.modality_examination_name,
+          note: slot.notes,
+          status: slot.status,
+          rowSpan: 1
+        };
+
+        if (slot.patient_name && slot.patient_name === lastCaptureSlot.patient) {
+          lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
+          patient.rowSpan = 0;
+        } else {
+          lastCaptureSlot = patient;
+        }
+
+        return patient;
+
+      });
 
       return {
         hour: hour2digit,
         rowSpan: numberSlotInHour,
         items
-      }
-    })
+      };
+    });
 
-    this.scheduleListBk = this.scheduleList.slice()
   }
 
   isRowScheduled(schedule : any) {
