@@ -27,9 +27,10 @@ export class RadiologyService {
   private readonly operationalSchedule = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting/schedules';
   private readonly modalityHospital = environment.OPADMIN_SERVICE + '/radiology/modality-hospital';
 
-  private readonly user = {
-    userId: localStorage.getItem('userId'),
-    userName: localStorage.getItem('username'),
+  private key: any = JSON.parse(localStorage.getItem('key')!)
+  private  user = {
+    userId: this.key.user.id,
+    userName: this.key.user.username,
     source: 'OpAdmin',
   };
 
@@ -40,12 +41,13 @@ export class RadiologyService {
     return this.client.get<ModalitySlotListResponse>(url, httpOptions);
   }
 
-  getOperational(hospitalId: string, floor_id?: any, operational_type?:any, status?: any, modality_id?: any): Observable<RadiologyResponse> {
+  getOperational(hospitalId: string, floor_id?: any, operational_type?:any, status?: any, modality_id?: any, modality_label?: any): Observable<RadiologyResponse> {
     let url = `${this.hospitalOperational}/?hospitalId=${hospitalId}`;
     url = floor_id ? `${url}&floor_id=${floor_id}` : url;
     url = operational_type ? `${url}&operational_type=${operational_type}` : url;
     url = status ? `${url}&status=${status}` : url;
     url = modality_id ? `${url}&modality_id=${modality_id}` : url;
+    url = modality_label ? `${url}&modality_label=${modality_label}` : url;
     console.log(url)
     return this.client.get<RadiologyResponse>(url, httpOptions);
   }

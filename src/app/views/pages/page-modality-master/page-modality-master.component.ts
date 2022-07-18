@@ -25,6 +25,7 @@ export class PageModalityMasterComponent implements OnInit {
   selectedItemsFloor:any;
   selectedItemsStatus: any;
   selectedItemsModality: any;
+  selectedModalityLabel: any;
   public strKey = localStorage.getItem('key') || '{}';
   public localKey = JSON.parse(this.strKey);
   public hospitalId = this.localKey.hospital.id;
@@ -144,10 +145,10 @@ export class PageModalityMasterComponent implements OnInit {
       });
   }
 
-  public fillOperationals(floor_id?: any, operational_type?: any, status?: any, modality_id?: any) {
+  public fillOperationals(floor_id?: any, operational_type?: any, status?: any, modality_id?: any, modality_label?:any) {
     const key = JSON.parse(this.strKey)
     const hospitalId: any = key.hospital.id
-    this.service.getOperational(hospitalId, floor_id, operational_type, status, modality_id).subscribe((response) => {
+    this.service.getOperational(hospitalId, floor_id, operational_type, status, modality_id, modality_label).subscribe((response) => {
       if (response.status === 'OK') {
         this.operationals = response;
         if (this.operationals.data) {
@@ -188,9 +189,12 @@ export class PageModalityMasterComponent implements OnInit {
     let selectedSchedule = null;
     let selectedStatus = null;
     let selectedModality = null;
-    
+    let selectedModalityLabelItem = null;
+
     selectedFloor = !isEmpty(this.selectedItemsFloor) ? 
     this.selectedItemsFloor.map((item: any) => item['floor_id']) : null;
+
+    selectedModalityLabelItem = !isEmpty(this.selectedModalityLabel) ? this.selectedModalityLabel : null;
 
     const allSelectedFloor = searchAll === true && query == 'floor' ? 
     items.map((item: any) => item['floor_id']) : ''
@@ -226,15 +230,14 @@ export class PageModalityMasterComponent implements OnInit {
       selectedModality = allSelectedModality
     }
 
-    if (selectedFloor || selectedSchedule || selectedStatus || selectedModality) {
-      this.fillOperationals(selectedFloor, selectedSchedule, selectedStatus, selectedModality);
+    if (selectedFloor || selectedSchedule || selectedStatus || selectedModality || selectedModalityLabelItem) {
+      this.fillOperationals(selectedFloor, selectedSchedule, selectedStatus, selectedModality, selectedModalityLabelItem);
     } else {
       this.fillOperationals();
     }
   }
 
   onItemDeSelect(items: any, searchAll?: boolean, query?: any){
-    console.log(items)
     let deSelectedFloor = null;
     let deSelectedSchedule = null;
     let deSelectedStatus = null;
@@ -252,43 +255,33 @@ export class PageModalityMasterComponent implements OnInit {
     deSelectedModality = !isEmpty(this.selectedItemsModality) ? 
     this.selectedItemsModality.map((item: any) => item['modality_id']) : null;
 
-    let allDeSelectedFloor = isEmpty(items) && query == 'floor' ? items : deSelectedFloor
-    let allDeSelectedSchedule = isEmpty(items) && query == 'operational_type' ? items : deSelectedSchedule
-    let allDeSelectedStatus = isEmpty(items) && query == 'status' ? items : deSelectedStatus
-    let allDeSelectedModality = isEmpty(items) && query == 'modality' ? items : deSelectedModality
-
-    if(isEmpty(allDeSelectedFloor)){
+    let allDeSelectedFloor = isEmpty(items) && searchAll == true && query == 'floor' ? items : deSelectedFloor
+    let allDeSelectedSchedule = isEmpty(items) && searchAll == true && query == 'operational_type' ? items : deSelectedSchedule
+    let allDeSelectedStatus = isEmpty(items) && searchAll == true && query == 'status' ? items : deSelectedStatus
+    let allDeSelectedModality = isEmpty(items) && searchAll == true && query == 'modality' ? items : deSelectedModality
+    if(isEmpty(allDeSelectedFloor) && searchAll == true && query == 'floor'){
       deSelectedFloor = items
     }
-    if(!isEmpty(allDeSelectedSchedule)){
+    if(!isEmpty(allDeSelectedSchedule) && searchAll == true && query == 'operational_type'){
       deSelectedSchedule = allDeSelectedSchedule
     }
-    if(!isEmpty(allDeSelectedStatus)){
+    if(!isEmpty(allDeSelectedStatus) && searchAll == true && query == 'status'){
       deSelectedStatus = allDeSelectedStatus
     }
-    if(!isEmpty(allDeSelectedModality)){
+    if(!isEmpty(allDeSelectedModality) && searchAll == true && query == 'modality'){
       deSelectedModality = allDeSelectedModality
     }
+    console.log(allDeSelectedFloor, allDeSelectedSchedule, allDeSelectedStatus, allDeSelectedModality, 'oi')
+    console.log(deSelectedFloor,
+      deSelectedSchedule,
+      deSelectedStatus,
+      deSelectedModality)
 
-    if (deSelectedFloor || deSelectedSchedule || deSelectedStatus || deSelectedModality) {
+    if (deSelectedFloor|| deSelectedSchedule || deSelectedStatus || deSelectedModality) {
       this.fillOperationals(deSelectedFloor, deSelectedSchedule, deSelectedStatus, deSelectedModality);
     } else {
       this.fillOperationals();
     }
-  }
-
-  onDeSelectAll(items: any, search: boolean) {
-    console.log(items)
-    // const allSelectedFloor = isEmpty(items.floor_id) ? items.map((item: any) => item.floor_id) : null;
-    // const allSelectedSchedule = !isEmpty(items.operational_type) ? items.map((item: any) => item.operational_type) : null;
-    // const allSelecteStatus = isEmpty(items.status) ? items.map((item: any) => item.status) : null;
-    // const allSelecteModality = isEmpty(items.modality_id) ? items.map((item: any) => item.modality_id) : null;
-
-    // if (search = true) {
-    //   this.fillOperationals(allSelectedFloor, allSelectedSchedule, allSelecteStatus, allSelecteModality);
-    // }else {
-    //   this.fillOperationals();
-    // }
   }
 
 }

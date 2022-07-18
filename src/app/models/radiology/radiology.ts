@@ -15,6 +15,7 @@ export class ModalityHospital {
   tx_modality_closes: ModalityClose[];
   tx_room_mapping: RoomMapping;
   notes: string;
+  modality_notes: string;
 }
 export class ModalityClose {
   modality_close_id: string;
@@ -41,6 +42,7 @@ export class ModalityHospitalRequest {
   fromTime: string;
   toTime: string;
   notes: string;
+  modality_notes: string;
 }
 export class Modality {
   modality_id: string;

@@ -28,6 +28,7 @@ export class ModalModalityComponent implements OnInit {
   @Input() username: any;
   @Input() responseData: any
 
+  public temp: any = RoomMapping
   public filteredOptions: Observable<RoomMapping[]>;
   public key: { user: any; };
   public user: any;
@@ -74,6 +75,7 @@ export class ModalModalityComponent implements OnInit {
       return option.toLowerCase().includes(value.toLowerCase());
     });
   }
+  public statusTextArea: boolean = false  
 
   constructor(
     public modalService: NgbModal,
@@ -90,12 +92,12 @@ export class ModalModalityComponent implements OnInit {
       roomId: [{value: '', disabled: false}, [Validators.required]],
       roomName: [{value: '', disabled: false}, [Validators.required]],
       status: [{value: '1', disabled: false}, [Validators.required]],
-      duration: [{value: 0, disabled: false}, [Validators.required, Validators.min(0)]],
+      duration: [{value: 15, disabled: false}, [Validators.required, Validators.min(0)]],
       operationalType: [{value: '3', disabled: false}, [Validators.required]],
       modalityId: [{value: '', disabled: false}, [Validators.required]],
       modalityLabel: [{value: '', disabled: false}, [Validators.required]],
       from_to_date: [{}, []],
-      notes: [{value: '', disabled: false}, []],
+      modality_notes: [{value: '', disabled: false}, []],
       search: [{value: '', disabled: false}, []],
     });
     this.getCollectionAlert();
@@ -105,6 +107,9 @@ export class ModalModalityComponent implements OnInit {
     if (this.responseData) {
       this.modalityHospitalId = this.responseData.modality_hospital_id
       this.getModalityHospitalById();
+      if (this.responseData.status == 2) {
+        this.statusTextArea = true;
+      }
     }
   }
 
@@ -113,9 +118,9 @@ export class ModalModalityComponent implements OnInit {
   }
 
   getRoomDetail(room_mapping_id: string) {
-    const temp: RoomMapping = this.roomOptions.find(x => x.room_mapping_id == room_mapping_id);
-    if (temp != null) {
-      return this.roomMapingFormat(temp);
+    this.temp = this.roomOptions.find(x => x.room_mapping_id == room_mapping_id);
+    if (this.temp != null) {
+      return this.roomMapingFormat(this.temp);
     }
     return null;
   }
@@ -148,8 +153,7 @@ export class ModalModalityComponent implements OnInit {
         this.roomOptions = data.data;
         this.filteredOptions = this.modalityForm.get('search').valueChanges.pipe(
           startWith(''),
-          // eslint-disable-next-line
-          map(val => this._filter(val))
+          map((val: any) => this._filter(val))
         );
       }, () => {
         this.roomOptions = [];
@@ -183,6 +187,7 @@ export class ModalModalityComponent implements OnInit {
         notes
       };
     }
+    console.log(this.modalityHospital.modality_notes, 'ss')
     this.modalityForm.patchValue({
       modalityId: this.modalityHospital.modality_id,
       modalityLabel: this.modalityHospital.modality_label,
@@ -192,6 +197,7 @@ export class ModalModalityComponent implements OnInit {
       duration: this.modalityHospital.operational_type != '3' ? 0 : this.modalityHospital.duration,
       operationalType: this.modalityHospital.operational_type,
       status: this.modalityHospital.status == '3' && this.modalityHospital.tx_modality_closes.length == 0 ? '1' : this.modalityHospital.status,
+      modality_notes: this.modalityHospital.modality_notes,
       ...closeModality
     });
     this.modifiedDate = moment(this.modalityHospital.modified_date).format('DD MMM YYYY, HH:mm');
@@ -204,8 +210,7 @@ export class ModalModalityComponent implements OnInit {
     }
     this.autocomplete = value == this.autocomplete ? null : value;
     setTimeout(() => {
-    // eslint-disable-next-line
-      document.getElementById(value).focus();
+      document.getElementById(value)!.focus();
     }, 100);
   }
 
@@ -344,6 +349,7 @@ export class ModalModalityComponent implements OnInit {
       this.modalityForm.get('status').setValue('2');
     }else{
       this.modalityForm.get('status').setValue('1');
+      this.statusTextArea = false;
     }
   }
 
@@ -364,7 +370,7 @@ export class ModalModalityComponent implements OnInit {
     }
     const from_to_date = this.modalityForm.controls.from_to_date.value;
     const status = this.modalityForm.controls.status.value;
-    let closeModalityHospital = {
+    let closeModalityHospital: any = {
       fromDate: null,
       toDate: null,
       fromTime: null,
@@ -402,7 +408,7 @@ export class ModalModalityComponent implements OnInit {
       source: this.dummyMACAddress,
       userName: this.userName,
       ...closeModalityHospital,
-      notes: this.modalityForm.controls.notes.value,
+      modality_notes: this.modalityForm.controls.modality_notes.value,
     };
     if(this.modalityHospitalId != null){
       this.updateModalityHospital()
@@ -454,12 +460,13 @@ export class ModalModalityComponent implements OnInit {
   }
   
   public deleteModality(item: RadiologyItem) {
-    this.modalRef = this.modalService.open(ModalConfirmDeleteComponent);
+    this.modalRef = this.modalService.open(ModalConfirmDeleteComponent, { windowClass: 'modal_cancel_appointment' })
     this.modalRef.componentInstance.itemId = item.modality_hospital_id;
     this.modalRef.componentInstance.msg = `modality: '${item.modality_label}'`;
     this.modalRef.componentInstance.service = this.service;
     this.modalRef.result.then((result) => {
       if (result === 'OK') {
+        console.log(result)
         this.sendDeleteRequest(item);
       }
     }, (_) => {});

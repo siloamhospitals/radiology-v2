@@ -1,20 +1,20 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { ModalConfirmDeleteComponent } from './modal-confirm-delete.component';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
-  declarations: [ModalConfirmDeleteComponent],
+  declarations: [
+    ModalConfirmDeleteComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModalModule,
   ],
-  entryComponents: [
+  exports: [
     ModalConfirmDeleteComponent
-  ],
-  exports: [ModalConfirmDeleteComponent]
+  ]
 })
-export class ModalConfirmDeleteModule {}
+export class ModalConfirmDeleteModule { }

@@ -24,13 +24,13 @@
         <div class="px-3 border-bottom" >
           <div class="row border-bottom mb-5" style="height: 52px;;" >
             <div class="col-md-3 position-relative mt-3 pr-0 mb-2 border-right">
-              <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Find Modality"
-                title="Find patients" />
+              <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari Label"
+                title="Find patients" [(ngModel)]="selectedModalityLabel" (change)="onItemSelect($event)"/>
               <span class="fa fa-search position-absolute"></span>
             </div>
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
               <ng-multiselect-dropdown-angular7
-                [placeholder]="'Modality'"
+                [placeholder]="'Semua Modality'"
                 [data]="this.modalityOptions"
                 [(ngModel)]="selectedItemsModality"
                 [settings]="modalityDropdownSettings"
