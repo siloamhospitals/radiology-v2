@@ -71,7 +71,7 @@ export class TableListDailyComponent implements OnInit {
         const slot : any = slots.find(s =>
                 moment(fromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
                 moment(toTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
-              ) || {};                
+              ) || {};
 
         const patient = {
           fromTime: fromTime,
@@ -93,7 +93,7 @@ export class TableListDailyComponent implements OnInit {
         }
 
         return patient
-      
+
       })
 
       return {
@@ -108,7 +108,7 @@ export class TableListDailyComponent implements OnInit {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue)) 
+    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue))
       || this.sectionSelected.modality_hospital_id) {
       await this.getModalitySlots()
       await this.getSchedules()
