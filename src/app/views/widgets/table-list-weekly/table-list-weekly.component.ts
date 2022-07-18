@@ -177,7 +177,6 @@ export class TableListWeeklyComponent implements OnInit {
     })
 
     let temp: any[] = []
-    const seeks: any = {}
     const list = Array(24).fill({}).map((_m: any, i: number) => {
       const model = new SlotWeeklyRow()
       model.viewIndex = i
@@ -197,9 +196,6 @@ export class TableListWeeklyComponent implements OnInit {
         })
         if (seekForItem) {
           day = {...day, ...seekForItem}
-          const key = `${j}_${seekForItem.patientName}`
-          if (!seeks[key]) { seeks[key] = 0 }
-          seeks[key] += 1
         }
         const dayTemp = temp.find(x=> day.patientName && x.patientName === day.patientName)
         if (dayTemp) {
