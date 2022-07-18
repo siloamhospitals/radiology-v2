@@ -9,8 +9,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search-patient-hope-grouped-request';
 import * as moment from 'moment';
-import { isOk } from '../../../utils/response.util';
-import { Subscription } from 'rxjs';
+// import { isOk } from '../../../utils/response.util';
+// import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-modal-create-appointment',
@@ -43,7 +43,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
     idNumber: '',
     nationalIdTypeId: '',
   }
-  private postAppointmentSubscription: Subscription;
+  // private postAppointmentSubscription: Subscription;
   public selectedModality: any = {
     modalityHospitalId: '',
     modalityExaminationId: '',
