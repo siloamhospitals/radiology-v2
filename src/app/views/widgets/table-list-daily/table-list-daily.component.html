@@ -18,8 +18,8 @@
     </ng-container>
 
     <ng-container *ngFor="let item of scheduleList; let i=index" >
-      <tr *ngFor="let schedule of item; let j = index;" class="item-hover" >
-        <td *ngIf="j % 2 == 0" rowspan="2" style="vertical-align: middle; width: 25px; background: #fff !important;" class="text-right">
+      <tr *ngFor="let schedule of item.items; let j = index;" class="item-hover" >
+        <td *ngIf="j % item.rowSpan == 0" [attr.rowspan]="item.rowSpan" style="vertical-align: middle; width: 25px; background: #fff !important;" class="text-right">
           {{ ('0' + i).slice(-2) }}
         </td>
         <td style="width: 100px; vertical-align: middle;">{{ schedule.fromTime + ' - ' + schedule.toTime }}</td>
