@@ -71,6 +71,20 @@ export class SlotItem {
   isSame: boolean;
 }
 
+export class SlotItemMonthlyProperties {
+  availables: number;
+  appointments: number;
+  maintenences: number;
+}
+export interface SlotItemMonthly {
+  date: Date; // YYYY-MM-DD,
+  dateIndex: number;
+  dateLabel: string;
+  isToday: boolean;
+  currentDayInMonth: boolean;
+  items: SlotItemMonthlyProperties
+}
+
 export class RadiologySearch {
   patientName?: string;
   dob?: string;

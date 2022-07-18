@@ -41,6 +41,11 @@ export class RadiologyService {
     return this.client.get<ModalitySlotListResponse>(url, httpOptions);
   }
 
+  getModalitySlotsMonthly(modalityHospitalId: string, reserveIndex: string): Observable<ModalitySlotListResponse> {
+    const url = `${this.radiologyCCUrl}/modality-slot/monthly?reserveDate=${reserveIndex}&modalityHospitalId=${modalityHospitalId}`;
+    return this.client.get<ModalitySlotListResponse>(url, httpOptions);
+  }
+
   getOperational(hospitalId: string, floor_id?: any, operational_type?:any, status?: any, modality_id?: any, modality_label?: any): Observable<RadiologyResponse> {
     let url = `${this.hospitalOperational}/?hospitalId=${hospitalId}`;
     url = floor_id ? `${url}&floor_id=${floor_id}` : url;
