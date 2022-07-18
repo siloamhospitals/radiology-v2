@@ -6,6 +6,8 @@ import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
 import * as moment from 'moment'
 import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
 import * as _ from 'lodash'
+import { RadiologyService } from 'src/app/services/radiology/radiology.service';
+import { ModalityHospital } from 'src/app/models/radiology/modality-hospital';
 @Component({
   selector: 'app-table-list-daily',
   templateUrl: './table-list-daily.component.html',
@@ -13,18 +15,28 @@ import * as _ from 'lodash'
 })
 export class TableListDailyComponent implements OnInit {
 
-  @Input() modalitySlots: ModalitySlot[];
-  @Input() dateSelected: Date
-  @Input() sectionSelected: any;
+  modalitySlots: ModalitySlot[];
+  @Input() dateSelected: moment.Moment;
+  @Input() sectionSelected: ModalityHospital;
   public scheduleStatus = ScheduleStatus
   public scheduleList: any[] = []
 
   constructor(
     private modalService: NgbModal,
+    private radiologyService : RadiologyService,
   ) { }
 
   ngOnInit(): void {
 
+  }
+
+  async getModalitySlots() {
+    if(this.sectionSelected.modality_hospital_id) {
+      const modalityHospitalId = this.sectionSelected.modality_hospital_id  // 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'
+      const reserveDate = this.dateSelected.format('YYYY-MM-DD')
+      const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
+      this.modalitySlots = responseSlots.data || [];
+    }
   }
 
   createAppointment() {
@@ -43,68 +55,51 @@ export class TableListDailyComponent implements OnInit {
 
   async getSchedules() {
     const slots = this.modalitySlots
-    const setToHour2Digit = (time : number) => ('0' + time).slice(-2);
+    const setToTime2Digit = (time : number) => ('0' + time).slice(-2);
     let lastCaptureSlot : any = {};
-    let rowSpan = 0;
-    this.scheduleList = Array.from(Array(24).keys()).map(time => {
-      const hour2digit = setToHour2Digit(time)
-      const firstFromTime = hour2digit  + ':00'
-      const firstToTime = hour2digit + ':30'
-      const lastFromTime = hour2digit  + ':30'
-      const lastToTime = setToHour2Digit(time+1) + ':00'
+    const duration = this.sectionSelected.duration
+    const numberSlotInHour = 60/duration;
 
-      const patientFirst : any = slots.find(s =>
-          moment(firstFromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
-          moment(firstToTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
-        ) || {};
+    this.scheduleList = Array.from(Array(24).keys()).map(hour => {
 
-      if(patientFirst.patient_name && patientFirst.patient_name === lastCaptureSlot.patient){
-        lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
-      }else{
-        rowSpan = 1
+      const hour2digit = setToTime2Digit(hour)
+      const items =  Array.from(Array(numberSlotInHour).keys()).map(time => {
+        const fromTime = hour2digit  + ':' + setToTime2Digit(time * duration)
+        const nextMinute = (time + 1)*duration
+        const toTime = nextMinute === 60 ? (setToTime2Digit(hour+1) + ':00') : (hour2digit + ':' + setToTime2Digit(nextMinute))
+
+        const slot : any = slots.find(s =>
+                moment(fromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
+                moment(toTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
+              ) || {};                
+
+        const patient = {
+          fromTime: fromTime,
+          toTime:  toTime,
+          patient: slot.patient_name,
+          dob: slot.patient_dob,
+          localMrNo: slot.local_mr_no,
+          examination: slot.modality_examination_name,
+          note: slot.notes,
+          status: slot.status,
+          rowSpan: 1
+        }
+
+        if(slot.patient_name && slot.patient_name === lastCaptureSlot.patient){
+          lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
+          patient.rowSpan = 0
+        }else {
+          lastCaptureSlot = patient
+        }
+
+        return patient
+      
+      })
+
+      return {
+        rowSpan: numberSlotInHour,
+        items
       }
-
-      const firstSlot = {
-          fromTime: firstFromTime,
-          toTime:  firstToTime,
-          patient: patientFirst.patient_name,
-          dob: patientFirst.patient_dob,
-          localMrNo: patientFirst.local_mr_no,
-          examination: patientFirst.modality_examination_name,
-          note: patientFirst.notes,
-          status: patientFirst.status,
-          rowSpan: lastCaptureSlot.patient && patientFirst.patient_name === lastCaptureSlot.patient ? null : rowSpan
-      }
-
-      lastCaptureSlot = firstSlot
-
-      const patientLast : any = slots.find(s =>
-          moment(lastFromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
-          moment(lastToTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
-        ) || {};
-
-      if(patientLast.patient_name && patientLast.patient_name === lastCaptureSlot.patient){
-        lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
-      } else {
-        rowSpan = 1;
-      }
-
-
-      const lastSlot = {
-        fromTime: lastFromTime,
-        toTime: lastToTime,
-        patient: patientLast.patient_name,
-        dob: patientLast.patient_dob,
-        localMrNo: patientLast.local_mr_no,
-        examination: patientLast.modality_examination_name,
-        note: patientLast.notes,
-        status: patientLast.status,
-        rowSpan: lastCaptureSlot.patient && patientLast.patient_name === lastCaptureSlot.patient ? null : rowSpan
-     }
-
-     lastCaptureSlot = patientLast
-
-      return [ firstSlot, lastSlot ]
     })
   }
 
@@ -113,8 +108,9 @@ export class TableListDailyComponent implements OnInit {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue)) ||
-    (this.sectionSelected.modality_hospital_id && (changes.modalitySlots && changes.modalitySlots.currentValue))) {
+    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue)) 
+      || this.sectionSelected.modality_hospital_id) {
+      await this.getModalitySlots()
       await this.getSchedules()
     }
   }
