@@ -7,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./modal-cancel-appointment.component.css']
 })
 export class ModalCancelAppointmentComponent implements OnInit {
+
+  public static readonly OK = 'OK';
+  public static readonly CLOSE = 'CLOSE';
+  public note = '';
+
   constructor(
     private activeModal: NgbActiveModal,
   ) { }
@@ -17,6 +22,15 @@ export class ModalCancelAppointmentComponent implements OnInit {
   }
 
   close() {
-    this.activeModal.close();
+    const data = {
+      result: ModalCancelAppointmentComponent.OK,
+      note: this.selectedText,
+    };
+    this.activeModal.close(data);
   }
+}
+
+export interface ModalConfirmCancelInput {
+  readonly message: string;
+  readonly toggleNote?: boolean;
 }

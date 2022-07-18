@@ -13,6 +13,8 @@ import {BaseStoreRequestOperational} from '../../models/radiology/requests/base-
 import ModalityListResponse from '../../models/modality-response';
 import ModalityHospitalListResponse from '../../models/radiology/responses/modality-hospital-response';
 import {ModalityHospitalRequest} from '../../models/radiology/radiology';
+import {DeleteModalitySlotRequest} from '../../models/radiology/request/delete-modality-slot-request';
+import {DeleteAppointmentResponse} from '../../models/radiology/responses/delete-appointment-response';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +27,9 @@ export class RadiologyService {
   private readonly hospitalOperational = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting/hospital';
   private readonly schedule = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting';
   private readonly operationalSchedule = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting/schedules';
+  private readonly radiologyCCUrl = environment.CALL_CENTER_SERVICE + '/radiology';
   private readonly modalityHospital = environment.OPADMIN_SERVICE + '/radiology/modality-hospital';
+  private readonly appointment = this.radiologyCCUrl + '/modality-slot';
 
   private key: any = JSON.parse(localStorage.getItem('key')!)
   private  user = {
@@ -34,8 +38,6 @@ export class RadiologyService {
     source: 'OpAdmin',
   };
 
-  private readonly radiologyCCUrl = environment.CALL_CENTER_SERVICE + '/radiology';
-  
   getModalitySlots(modalityHospitalId: string, reserveDate: string): Observable<ModalitySlotListResponse> {
     const url = `${this.radiologyCCUrl}/modality-slot?reserveDate=${reserveDate}&modalityHospitalId=${modalityHospitalId}`;
     return this.client.get<ModalitySlotListResponse>(url, httpOptions);
@@ -102,6 +104,14 @@ export class RadiologyService {
   putModalityHospital(body: ModalityHospitalRequest, modalityHospitalId: any) {
     const url = `${this.radiologyUrl}/modality-hospital/${modalityHospitalId}`;
     return this.client.put(url, body, httpOptions);
+  }
+
+  deleteAppointment(modalitySlotId: string, payload: DeleteModalitySlotRequest): Observable<DeleteAppointmentResponse> {
+    const url = `${this.appointment}/${modalitySlotId}`;
+    return this.client.request<DeleteAppointmentResponse>('delete', url, {
+      ...httpOptions,
+      body: payload
+    });
   }
 
 }
