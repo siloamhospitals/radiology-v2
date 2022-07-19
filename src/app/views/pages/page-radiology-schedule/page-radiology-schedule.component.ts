@@ -67,6 +67,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
   sectionSelected: ModalityHospital = new ModalityHospital();
   sectionSelectedCanMultiple: Boolean = false
 
+  fromTimeRange: string = "00:00";
+  toTimeRange: string = "00:00";
+
   ngOnInit() {
     // this.getModalitySlots()
     this.getModalityHospitalList()
@@ -127,7 +130,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
     this.tableViewCurrentDate = date ? moment(date) : this.tableViewCurrentDate
     // if today date
     this.tableViewCurrentIsToday = moment().isSame(moment(date), 'days')
-    console.log('current date 2', date, this.tableViewCurrentDate)
     let formatDate = `DD MMMM YYYY`
     if (this.tableViewActive === 2) { formatDate = 'MMMM YYYY' } // monthly
     this.tableViewCurrentDateLabel = this.tableViewCurrentDate.format(formatDate)
