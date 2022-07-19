@@ -51,14 +51,19 @@ export class TableListMonthlyComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.generateCalendarItems()
+    // this.generateCalendarItems()
+    // this.refresh()
   }
 
   ngOnChanges (changes: any) {
     if (changes.dateSelected && changes.dateSelected.currentValue) {
-      if (this.fetchDataDebounce) { clearTimeout(this.fetchDataDebounce) }
-      this.fetchDataDebounce = setTimeout(() => { this.generateCalendarItems() }, 800)
+      this.refresh()
     }
+  }
+
+  refresh () {
+    if (this.fetchDataDebounce) { clearTimeout(this.fetchDataDebounce) }
+    this.fetchDataDebounce = setTimeout(() => { this.generateCalendarItems() }, 800)
   }
 
   scheduleListGenerate () {
@@ -106,6 +111,7 @@ export class TableListMonthlyComponent implements OnInit {
 
     // fetch data
     const xdata = await this.fetchData(this.sectionSelected, currentDate)
+      .catch(() => [])
 
     const firstDay = this.getFirstDay(theYear, theMonth) - 1
     const howMany = this.getMonthLen(theYear, theMonth)
