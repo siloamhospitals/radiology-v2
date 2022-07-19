@@ -223,8 +223,8 @@ export class TableListWeeklyComponent implements OnInit {
         })
         if (seekForItem) {
           day = {...day, ...seekForItem}
-          day.fromTime = moment(day.fromTime).format('HH:mm')
-          day.toTime = moment(day.toTime).format('HH:mm')
+          day.fromTime = moment(day.fromTime, 'HH:mm').format('HH:mm')
+          day.toTime = moment(day.toTime, 'HH:mm').format('HH:mm')
         }
         const dayTemp = temp.find(x=> day.modalitySlotId && x.modalitySlotId === day.modalitySlotId)
         if (dayTemp) {
