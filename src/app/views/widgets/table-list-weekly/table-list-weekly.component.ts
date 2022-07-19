@@ -178,6 +178,7 @@ export class TableListWeeklyComponent implements OnInit {
         return {
           fromTime: y.from_time,
           toTime: y.to_time,
+          modalitySlotId: y.modality_slot_id,
           patientName: y.patient_name,
           patientDob: y.patient_dob,
           patientLocalMrNo: y.local_mr_no
@@ -196,14 +197,18 @@ export class TableListWeeklyComponent implements OnInit {
       this.slotConfigIntervalBlock = Math.ceil(perBlock / 60)
     }
     let lastTime: any = null
+    // let dayTemp: any = null
+    // atas-bawah
     const list = Array(block).fill({}).map((_m: any, i: number) => {
       const model = new SlotWeeklyRow()
       model.viewIndex = i%2 === 0 ? startIndex++ : startIndex
-      const startTime = lastTime ? lastTime : moment(`${('0' + model.viewIndex).slice(-2)}:${'00'}`, 'hh:mm')
+      const startTime = lastTime ? lastTime : moment(`${('0' + model.viewIndex).slice(-2)}:${'00'}`, 'HH:mm')
       const endTime = startTime.clone().add(perBlock, 'minutes')
       lastTime = endTime
       model.fromTime = startTime.format('HH:mm')
       model.toTime = endTime.format('HH:mm')
+      if (model.toTime == '00:00') { model.toTime = '24:00' }
+      // kiri-kanan
       model.days = this.days.map((_n: any, j: number) => {
         let day = new SlotWeeklyItem
         day.fromTime = model.fromTime
@@ -212,14 +217,16 @@ export class TableListWeeklyComponent implements OnInit {
         day.rowSpan = 1
         const seekForItem = data[j].find((_k: any) => {
           return (
-            moment(day.fromTime, 'hh:mm').isSameOrAfter(moment(_k.fromTime, 'hh:mm')) &&
-            moment(day.toTime, 'hh:mm').isSameOrBefore(moment(_k.toTime, 'hh:mm'))
+            moment(day.fromTime, 'HH:mm').isSameOrAfter(moment(_k.fromTime, 'HH:mm')) &&
+            moment(day.toTime, 'HH:mm').isSameOrBefore(moment(_k.toTime, 'HH:mm'))
           )
         })
         if (seekForItem) {
           day = {...day, ...seekForItem}
+          day.fromTime = moment(day.fromTime).format('HH:mm')
+          day.toTime = moment(day.toTime).format('HH:mm')
         }
-        const dayTemp = temp.find(x=> day.patientName && x.patientName === day.patientName)
+        const dayTemp = temp.find(x=> day.modalitySlotId && x.modalitySlotId === day.modalitySlotId)
         if (dayTemp) {
           dayTemp.rowSpan += 1
           day.rowSpan = 0
@@ -278,6 +285,7 @@ export class TableListWeeklyComponent implements OnInit {
 }
 
 class SlotWeeklyItem {
+  modalitySlotId: any;
   fromTime: any;
   toTime: any;
   date: Date;
