@@ -83,12 +83,6 @@ export class TableListDailyComponent implements OnInit {
     const numberSlotInDay =  Math.ceil(24*60/duration);
     const stepHour = Math.ceil(duration/60)
 
-<<<<<<< HEAD
-        const slot : any = slots.find(s =>
-                moment(fromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
-                moment(toTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
-              ) || {};
-=======
     this.scheduleList = Array.from(Array(numberSlotInDay).keys()).map(hour => {
 
       const multiplyHour = hour*stepHour;
@@ -100,7 +94,6 @@ export class TableListDailyComponent implements OnInit {
         const slot: any = slots.find(s => moment(fromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
           moment(toTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
         ) || {};
->>>>>>> dev-0
 
         const patient = {
           fromTime: fromTime,
@@ -141,15 +134,9 @@ export class TableListDailyComponent implements OnInit {
           lastCaptureSlot = patient;
         }
 
-<<<<<<< HEAD
-        return patient
-
-      })
-=======
         return patient;
 
       });
->>>>>>> dev-0
 
       return {
         hour: hour2digit,
@@ -237,8 +224,8 @@ export class TableListDailyComponent implements OnInit {
       await this.getModalitySlots()
       await this.getSchedules()
     }
-  
-    if((changes.fromTimeRange && changes.fromTimeRange.currentValue) 
+
+    if((changes.fromTimeRange && changes.fromTimeRange.currentValue)
       || (changes.toTimeRange && changes.toTimeRange.currentValue)) {
         if(this.fromTimeRange === '00:00' && this.toTimeRange === '00:00') {
           this.scheduleList = this.scheduleListBk.slice()
@@ -246,7 +233,7 @@ export class TableListDailyComponent implements OnInit {
           const momentFromTime = moment(this.fromTimeRange, 'hh:mm')
           const momentToTime = moment(this.toTimeRange, 'hh:mm')
           this.scheduleList = this.scheduleListBk.filter(sc => {
-            return sc.items.find((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm')) 
+            return sc.items.find((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
                 && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) )
           })
         }
