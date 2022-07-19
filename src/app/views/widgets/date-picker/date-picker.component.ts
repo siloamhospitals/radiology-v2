@@ -15,7 +15,7 @@ export class DatepickerComponent implements OnInit {
   @Input() value: any = moment();
   @Input() format = 'MMMM YYYY';
   @Input() hideIcon: boolean;
-  @Input() hideIconTwo: boolean;
+  @Input() isModalLarge: boolean = false;
   @Input() noBorder: boolean = false;
   @Input() onChange : Function;
 

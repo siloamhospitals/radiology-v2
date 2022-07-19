@@ -3,3 +3,16 @@
     left: 5px;
   }
 
+.icon-datepicker-2 {
+  right: 5px;
+  top: 7px;
+  font-size: 14px;
+}
+
+.text-custom {
+  font-size: 14px;
+}
+
+.fa.fa-caret-down {
+  font-size: 20px;
+}

@@ -66,7 +66,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
   public selectedInput: any = {};
 
   // buttons
-  public isSubmitting = false;
+  public isSubmitting: boolean = false;
   public isExaminationButtonClicked: boolean = true;
   public isSelectedPatient: any;
   public showModalityList: boolean = false;
@@ -152,7 +152,6 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   getModalityHospitalList() {
-    console.log(this.selectedAppointment, '========= selected appointment')
     if(this.viewCurrentDate) {
       const dateString = this.viewCurrentDate.format('YYYY-MM-DD')
       this.modalityService.getModalityHospital(this.hospital.id, dateString, dateString)
@@ -171,7 +170,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   onChangeDate = async () => {
-    this.selectedModality.reserveDate = moment(this.viewCurrentDate).format('YYYY-MM-DD');
+    this.selectedModality.reserveDate = this.viewCurrentDate.format('YYYY-MM-DD');
     await this.getModalityHospitalList();
   }
 
@@ -181,7 +180,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
     this.getModalityExamination(this.selectedModality.modalityHospitalId)
   }
 
-  public createAppointment() {
+  public onCreateAppointment() {
     this.isSubmitting = true;
 
     if (this.modalityAppointmentList.length > 0) {
@@ -266,18 +265,22 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   addModalityToList() {
-    console.log(this.viewCurrentDate, '========== this viewCurrentDate')
-    const objModality = pick(this.selectedInput, ['modality_label', 'room_name'])
-    const payloadAddedModal = {
+    const objModality = pick(this.selectedInput, ['modality_label', 'room_name', 'modality_hospital_id'])
+    let payloadAddedModal = {
       ...objModality,
       ...this.selectedModality,
     }
+    payloadAddedModal.reserveDate = this.viewCurrentDate.format('dddd, DD MMMM YYYY');
     this.modalityAppointmentList.push(payloadAddedModal);
   }
 
   onChangeDefaultSelected() {
     this.selectedModality.fromTime = this.selectedAppointment.fromTime;
     this.selectedModality.toTime = this.selectedAppointment.toTime;
+  }
+
+  cancelModality() {
+    console.log('cancel ya')
   }
 
 }
