@@ -18,6 +18,9 @@
         <td colspan="100%" class="text-center p-3">No data from this section</td>
       </tr>
     </ng-container>
+    <ng-container *ngIf="isLoading">
+      <tr class="bg-secondary"><td colspan="100%" class="text-center p-3">Please wait ...</td></tr>
+    </ng-container>
     <tr *ngFor="let item of list; let i=index">
       <td *ngIf="i % slotConfigIntervalBlock == 0" [attr.rowspan]="slotConfigIntervalBlock" style="vertical-align: middle; width: 25px; background: #fff !important;" class="text-right">
         {{ ('0' + item.viewIndex).slice(-2) }}
@@ -26,14 +29,16 @@
       <ng-container *ngFor="let day of item.days; let j=index" >
         <td *ngIf="!day.patientName"
           title="{{day.date}}"  
-          class="cursor-pointer item-hover">
+          class="cursor-pointer item-hover"
+          (click)="createAppointment(day.date)">
           <span class="text-success">Available</span>
         </td>
         <td *ngIf="day.patientName && day.rowSpan > 0"
           [attr.rowspan]="day.rowSpan"
           title="{{day.date}}"  
           class="cursor-pointer item-hover table-td table-td-scheduled item-indicator-primary"
-          style="vertical-align: top !important;">
+          style="vertical-align: top !important;"
+          (click)="detailSchedule(null)">
           <div style="line-height: 1.4;">
             <div style="font-size: 12px;"><b>{{day.patientName}}</b></div>
             <ng-container *ngIf="day.rowSpan > 1">

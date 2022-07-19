@@ -3,6 +3,9 @@ import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
 
 import * as moment from 'moment';
 import { RadiologyService } from 'src/app/services/radiology/radiology.service';
+import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
 // import * as lodash from 'lodash'
 
 @Component({
@@ -35,6 +38,7 @@ export class TableListWeeklyComponent implements OnInit {
   list: any[] = []
   slotData: any[] = []
   fetchDataDebounce: any = null
+  isLoading: boolean = false
 
   mockData = [
     [
@@ -130,6 +134,7 @@ export class TableListWeeklyComponent implements OnInit {
 
   constructor(
     private radiologyService : RadiologyService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -182,7 +187,9 @@ export class TableListWeeklyComponent implements OnInit {
 
     let temp: any[] = []
     let startIndex = 0
-    const perBlock = this.slotConfigDuration
+    const perBlock = this.sectionSelected && this.sectionSelected.duration 
+      ? this.sectionSelected.duration 
+      : this.slotConfigDuration
     this.slotConfigIntervalBlock = Math.ceil(60 / perBlock)
     let block = Math.ceil(24*60/perBlock)
     if (block < 24) {
@@ -241,13 +248,31 @@ export class TableListWeeklyComponent implements OnInit {
 
   async fetchSlotData () {
     const list: any = []
+    this.isLoading = true
     for (let item of this.days) {
       const d = await this.getModalitySlots(item.date, this.sectionSelected.modality_hospital_id)
         .catch(() => [])
       list.push(d)
     }
+    this.isLoading = false
     this.slotData = list
     this.getSchedules()
+  }
+
+  createAppointment (date: any = null) {
+    console.log('SELECTED_DATE', date)
+    const m = this.modalService.open(ModalCreateAppointmentComponent, { windowClass: 'fo_modal_confirmation', centered: true, size: 'lg'})
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+
+  detailSchedule (itemId: any = null) {
+    console.log('SELECTED_DETAIL', itemId)
+    const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
   }
 
 }
