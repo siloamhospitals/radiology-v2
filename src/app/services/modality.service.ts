@@ -1,4 +1,3 @@
-import { RadiologyAppointmentResponse } from './../models/radiology/responses/radiology-appointment-response';
 import { RadiologyAppointmentRequest } from './../models/radiology/request/radiology-appointment-request';
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -31,7 +30,7 @@ export class ModalityService {
     return this.http.get<any[]>(url, httpOptions);
   }
 
-  postAppointment(request: RadiologyAppointmentRequest): Observable<RadiologyAppointmentResponse> {
-    return this.http.post<RadiologyAppointmentResponse>(this.appointment, request, httpOptions);
+  postAppointment(request: RadiologyAppointmentRequest): Observable<any> {
+    return this.http.post<any>(this.appointment, request, httpOptions);
   }
 }
