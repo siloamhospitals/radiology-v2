@@ -25,7 +25,7 @@
         <td style="width: 100px; vertical-align: middle;">{{ schedule.fromTime + ' - ' + schedule.toTime }}</td>
         <ng-container *ngIf="schedule.rowSpan">
           <td [attr.rowspan]="schedule.rowSpan"
-            (click)="isRowScheduled(schedule) ? detailSchedule() : createAppointment()"
+            (click)="isRowScheduled(schedule) ? detailSchedule(schedule) : createAppointment()"
             [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled cursor-pointer item-indicator-primary' : 'cursor-pointer'" >
             <span [class.text-success]="!schedule.patient"  >
               {{ schedule.patient || 'Tersedia' }}

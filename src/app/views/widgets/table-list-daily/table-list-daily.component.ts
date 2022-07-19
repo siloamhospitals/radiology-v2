@@ -6,6 +6,7 @@ import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
 import * as moment from 'moment'
 import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
 import * as _ from 'lodash'
+import Swal from 'sweetalert2';
 import { RadiologyService } from 'src/app/services/radiology/radiology.service';
 import { ModalityHospital } from 'src/app/models/radiology/modality-hospital';
 @Component({
@@ -46,15 +47,20 @@ export class TableListDailyComponent implements OnInit {
     })
   }
 
-  detailSchedule() {
+  detailSchedule(item: any) {
+    const payload = item;
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
+    m.componentInstance.data = payload;
     m.result.then((result: any) => {
-      console.log('modal is closed', {result})
+      if (result) {
+        this.showSuccessAlert(`Success`);
+      }
     })
   }
 
   async getSchedules() {
     const slots = this.modalitySlots
+
     const setToTime2Digit = (time : number) => ('0' + time).slice(-2);
     let lastCaptureSlot : any = {};
     const duration = this.sectionSelected.duration
@@ -80,9 +86,29 @@ export class TableListDailyComponent implements OnInit {
           dob: slot.patient_dob,
           localMrNo: slot.local_mr_no,
           examination: slot.modality_examination_name,
+          examination_id: slot.modality_examination_id,
           note: slot.notes,
           status: slot.status,
-          rowSpan: 1
+          rowSpan: 1,
+          modality_slot_id: slot.modality_slot_id,
+          reserve_date: slot.reserve_date,
+          email: slot.email,
+          identity_type_id: slot.identity_type_id,
+          identity_number: slot.identity_number,
+          is_bpjs: slot.is_bpjs,
+          is_anesthesia: slot.is_anesthesia,
+          modality_hospital_id: slot.modality_hospital_id,
+          modality_name: slot.modality_name,
+          modality_operational_id: slot.modality_operational_id,
+          modality_queue_id: slot.modality_queue_id,
+          mapping_room_id: slot.mapping_room_id,
+          contact_id: slot.contact_id,
+          room_id: slot.room_id,
+          room_name: slot.room_name,
+          admission_no: slot.admission_no,
+          patient_phone_number_1: slot.patient_phone_number_1,
+          patient_phone_number_2: slot.patient_phone_number_2,
+          operational_type: slot.operational_type
         }
 
         if(slot.patient_name && slot.patient_name === lastCaptureSlot.patient){
@@ -113,6 +139,15 @@ export class TableListDailyComponent implements OnInit {
       await this.getModalitySlots()
       await this.getSchedules()
     }
+  }
+
+  public showSuccessAlert(message: string) {
+    Swal.fire({
+      type: 'success',
+      title: 'Success',
+      text: message,
+      timer: 1500
+    });
   }
 
 }

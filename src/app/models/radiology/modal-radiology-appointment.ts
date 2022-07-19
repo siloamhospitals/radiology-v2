@@ -4,10 +4,8 @@ import {ModalitySlot} from './modality-slot';
 
 export interface ModalRadiologyAppointment {
 
-  mode: string;
   modalityHospitalId: string;
   hospitalId: string;
-  isFcfs: boolean;
   date: string;
   fromTime: string;
   toTime: string;
