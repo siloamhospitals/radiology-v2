@@ -1289,6 +1289,14 @@ section .form-control:focus {
   box-shadow: 0px 8px 16px rgb(0 0 0 / 35%);
 }
 
+.modal-extralarge-size {
+  max-width: 90em;
+  width: 90em;
+  margin-left: -50%;
+  border: 0;
+  box-shadow: 0px 8px 16px rgb(0 0 0 / 35%);
+}
+
 .multiselect-dropdown .dropdown-btn {
   display: inline-block;
   border: 1px solid #adadad00 !important;

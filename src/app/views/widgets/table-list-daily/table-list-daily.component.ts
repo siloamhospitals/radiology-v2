@@ -40,7 +40,7 @@ export class TableListDailyComponent implements OnInit {
   }
 
   createAppointment(schedule?: any) {
-    const m = this.modalService.open(ModalCreateAppointmentComponent, { windowClass: 'fo_modal_confirmation', centered: true });
+    const m = this.modalService.open(ModalCreateAppointmentComponent, { windowClass: 'fo_modal_confirmation', backdrop: 'static', centered: true });
     m.componentInstance.selectedAppointment = schedule;
     // m.result.then((result: any) => {
     //   console.log('modal is closed', {result})

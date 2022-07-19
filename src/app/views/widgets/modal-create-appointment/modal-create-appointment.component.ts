@@ -51,8 +51,6 @@ export class ModalCreateAppointmentComponent implements OnInit {
     modalityHospitalId: '',
     modalityExaminationId: '',
     reserveDate: moment().format('YYYY-MM-DD'),
-    fromTime: '00:00',
-    toTime: '00:00',
     notes: '',
     isBpjs: false,
     isAnesthesia: false,
@@ -278,8 +276,8 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   onChangeDefaultSelected() {
-    this.selectedModality.fromTime = this.selectedInput.fromTime;
-    this.selectedModality.toTime = this.selectedInput.toTime;
+    this.selectedModality.fromTime = this.selectedAppointment.fromTime;
+    this.selectedModality.toTime = this.selectedAppointment.toTime;
   }
 
 }
