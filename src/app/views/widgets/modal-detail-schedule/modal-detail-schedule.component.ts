@@ -10,6 +10,7 @@ import {sourceApps} from '../../../variables/common.variable';
 import {isOk} from '../../../utils/response.util';
 import Swal from 'sweetalert2';
 import BasicRequest from '../../../models/radiology/requests/basic-request';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   public user = this.key.user;
   public userId: string = this.user.id;
   private userName: string = this.user.fullname;
-  public source: string = sourceApps;
+  public source: string = 'Front Office';
   public isBpjs: false;
   public modalityExaminationId: any;
   public isAnesthesia: false;
@@ -41,12 +42,14 @@ export class ModalDetailScheduleComponent implements OnInit {
       source: sourceApps
     };
   }
+  public updateAppointmentForm:any = FormGroup;
   
 
   constructor(
     private activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private radiologyService : RadiologyService,
+    private _fb: FormBuilder,
     modalSetting: NgbModalConfig,
   ) {
     modalSetting.backdrop = 'static';
@@ -58,6 +61,12 @@ export class ModalDetailScheduleComponent implements OnInit {
 
   ngOnInit() {
     this.fillExaminations(this.data.modality_hospital_id);
+    this.updateAppointmentForm = this._fb.group({
+      modalityExaminationId: [{value: this.data.examination_id, disabled: false}, [Validators.required]],
+      is_bpjs: [{value: false, disabled: false}, [Validators.required]],
+      is_anesthesia: [{value: this.data.is_anesthesia, disabled: false}, [Validators.required]],
+      note: [{value: this.data.note, disabled: false}],
+    });
     this.note = this.data.note
     this.isBpjs = this.data.isBpjs
     this.modalityExaminationId = this.data.modality_examination_id
@@ -102,6 +111,7 @@ export class ModalDetailScheduleComponent implements OnInit {
         .subscribe((res) => {
           if (isOk(res)) {
             this.showSuccessAlert(res.message);
+            location.reload();
           } else {
             this.showErrorAlert('Delete failed');
           }
@@ -113,24 +123,25 @@ export class ModalDetailScheduleComponent implements OnInit {
   public updateAppointment() {
    
     const payload = {
-      modalityExaminationId: this.modalityExaminationId,
+      modalityExaminationId: this.updateAppointmentForm.controls.modalityExaminationId.value,
       modalityHospitalId: this.data.modality_hospital_id,
       modalityOperationalId: this.data.modality_operational_id,
       modalitySlotId: this.data.modality_slot_id,
       channelId: '2',
-      notes: this.note,
-      isBpjs: this.isBpjs,
-      isAnesthesia: this.isAnesthesia,
+      notes: this.updateAppointmentForm.controls.note.value,
+      isBpjs: this.updateAppointmentForm.controls.is_bpjs.value,
+      isAnesthesia: this.updateAppointmentForm.controls.is_anesthesia.value,
       userId: this.userId,
       userName: this.userName,
       source: this.source,
     };
-    console.log(payload)
+    
     this.radiologyService.putAppointment(payload)
       .subscribe((response) => {
         if (isOk(response)) {
           this.showSuccessAlert(response.message);
         }
+        location.reload();
       }, () => {
         this.showErrorAlert('Update gagal');
       });
