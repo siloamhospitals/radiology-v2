@@ -71,9 +71,9 @@
             <div class="col-md-2 pr-0 d-flex flex-column border-right pb-2">
               <small>Time Range</small>
               <div class="d-flex align-items-center">
-                <app-time-picker placeholder="23:00" ></app-time-picker>
+                <app-time-picker placeholder="23:00" [(value)]="fromTimeRange" ></app-time-picker>
                 <b class="mx-2" >-</b>
-                <app-time-picker placeholder="23:00" ></app-time-picker>
+                <app-time-picker placeholder="23:00" [(value)]="toTimeRange" ></app-time-picker>
               </div>
             </div>
           </div>
@@ -91,12 +91,14 @@
         <div *ngIf="tableViewActive===2" class="no-sticky">
           <app-table-list-monthly
             (itemClick)="toDaily($event)"
+            [sectionSelected]="sectionSelected"
             [dateSelected]="tableViewCurrentDate"
             [data]="scheduleList"></app-table-list-monthly>
         </div>
         <div *ngIf="tableViewActive===1" class="table-head-sticky">
           <app-table-list-weekly
             (itemClick)="toDaily($event)"
+            [sectionSelected]="sectionSelected"
             [dateSelected]="tableViewCurrentDate"
             [modalitySlots]="modalitySlots"></app-table-list-weekly>
         </div>
@@ -104,6 +106,8 @@
           <app-table-list-daily
             [sectionSelected]="sectionSelected"
             [dateSelected]="tableViewCurrentDate"
+            [fromTimeRange]="fromTimeRange"
+            [toTimeRange]="toTimeRange"
             ></app-table-list-daily>
         </div>
       </section>

@@ -2,7 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
 
 import * as moment from 'moment';
-import * as lodash from 'lodash'
+import { RadiologyService } from 'src/app/services/radiology/radiology.service';
+import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
+// import * as lodash from 'lodash'
 
 @Component({
   selector: 'app-table-list-weekly',
@@ -13,7 +17,11 @@ export class TableListWeeklyComponent implements OnInit {
 
   @Input() data: any[]
   @Input() dateSelected: Date
+  @Input() sectionSelected: any
   @Input() modalitySlots: ModalitySlot[];
+
+  @Input() slotConfigDuration = 30
+  slotConfigIntervalBlock = 2
 
   @Output() itemClick = new EventEmitter<any>()
 
@@ -27,22 +35,119 @@ export class TableListWeeklyComponent implements OnInit {
     {date: null, label: 'Minggu', value: '06'},
   ]
 
-  scheduleList: any[] = []
+  list: any[] = []
+  slotData: any[] = []
+  fetchDataDebounce: any = null
+  isLoading: boolean = false
 
-  constructor() { }
+  mockData = [
+    [
+      {
+        fromTime: '00:00',
+        toTime: '01:30',
+        patientName: 'Patient 01',
+        patientDob: '2002-01-01',
+        patientLocalMrNo: '0123456'
+      },
+      {
+        fromTime: '05:00',
+        toTime: '07:30',
+        patientName: 'Patient 02',
+        patientDob: '2002-01-01',
+        patientLocalMrNo: '0123456'
+      },
+      {
+        fromTime: '10:00',
+        toTime: '10:30',
+        patientName: 'Patient 03',
+        patientDob: '2002-01-01',
+        patientLocalMrNo: '0123456'
+      },
+    ],
+    [
+      {
+        fromTime: '03:00',
+        toTime: '06:00',
+        patientName: 'Patient 11',
+        patientDob: '2002-01-01',
+        patientLocalMrNo: '0123456'
+      },
+      {
+        fromTime: '07:00',
+        toTime: '08:00',
+        patientName: 'Patient 12',
+        patientDob: '2002-01-01',
+        patientLocalMrNo: '0123456'
+      },
+    ],
+    [
+      {
+        fromTime: '05:00',
+        toTime: '06:00',
+        patientName: 'Patient 31',
+        patientDob: '2002-01-01',
+        patientLocalMrNo: '0123456'
+      },
+      {
+        fromTime: '10:00',
+        toTime: '12:00',
+        patientName: 'Patient 32',
+        patientDob: '2002-01-01',
+        patientLocalMrNo: '0123456'
+      },
+    ],
+    [
+      {
+        fromTime: '08:00',
+        toTime: '10:00',
+        patientName: 'Patient 41',
+        patientDob: '2002-01-01',
+        patientLocalMrNo: '0123456'
+      },
+      {
+        fromTime: '10:30',
+        toTime: '11:00',
+        patientName: 'Patient 42',
+        patientDob: '2002-01-01',
+        patientLocalMrNo: '0123456'
+      },
+    ],
+    [],
+    [
+      {
+        fromTime: '03:00',
+        toTime: '05:59',
+        patientName: 'Patient 61',
+        patientDob: '2002-01-01',
+        patientLocalMrNo: '0123456'
+      },
+      {
+        fromTime: '07:00',
+        toTime: '08:00',
+        patientName: 'Patient 62',
+        patientDob: '2002-01-01',
+        patientLocalMrNo: '0123456'
+      },
+    ],
+    []
+  ]
+
+  constructor(
+    private radiologyService : RadiologyService,
+    private modalService: NgbModal,
+  ) { }
 
   ngOnInit() {
-    this.scheduleListGenerate()
+    // this.refresh()
   }
 
-  ngOnChanges(changes: any) {
-    console.log('weekly changes', changes)
-    this.generateDayLabel()
+  ngOnChanges(_changes: any) {
+    this.refresh()
   }
 
-  scheduleListGenerate () {
-    // this.scheduleList = this.data
-    this.getSchedules()
+  refresh () {
+    if (this.fetchDataDebounce) { clearTimeout(this.fetchDataDebounce) }
+    this.fetchDataDebounce = setTimeout(() => { this.generateDayLabel() }, 800)
   }
 
   generateDayLabel () {
@@ -60,80 +165,138 @@ export class TableListWeeklyComponent implements OnInit {
     }
     weeks.shift()
     this.days = weeks
+    this.fetchSlotData()
     return this.days
   }
 
   async getSchedules() {
-    const slots = this.modalitySlots
-    const setToHour2Digit = (time : number) => ('0' + time).slice(-2);
-    let lastCaptureSlot : any = {};
-    let rowSpan = 0;
-    this.scheduleList = Array.from(Array(24).keys()).map(time => {
-      const hour2digit = setToHour2Digit(time)
-      const firstFromTime = hour2digit  + ':00'
-      const firstToTime = hour2digit + ':30'
-      const lastFromTime = hour2digit  + ':30'
-      const lastToTime = setToHour2Digit(time+1) + ':00'
-
-      const patientFirst : any = slots.find(s => 
-          moment(firstFromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
-          moment(firstToTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
-        ) || {};
-      
-      if(patientFirst.patient_name && patientFirst.patient_name === lastCaptureSlot.patient){
-        lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
-      }else{
-        rowSpan = 1
-      }
-           
-      const firstSlot = {
-          fromTime: firstFromTime,
-          toTime:  firstToTime,
-          patient: patientFirst.patient_name,
-          dob: patientFirst.patient_dob,
-          localMrNo: patientFirst.local_mr_no,
-          examination: patientFirst.modality_examination_name,
-          note: patientFirst.notes,
-          status: patientFirst.status,
-          rowSpan: lastCaptureSlot.patient && patientFirst.patient_name === lastCaptureSlot.patient ? null : rowSpan
-      }  
-      
-      lastCaptureSlot = firstSlot
-
-      const patientLast : any = slots.find(s => 
-          moment(lastFromTime, 'hh:mm').isSameOrAfter(moment(s.from_time, 'hh:mm')) &&
-          moment(lastToTime, 'hh:mm').isSameOrBefore(moment(s.to_time, 'hh:mm'))
-        ) || {};
-        
-      if(patientLast.patient_name && patientLast.patient_name === lastCaptureSlot.patient){
-        lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;       
-      } else {
-        rowSpan = 1;
-      }
-
-      
-      const lastSlot = {
-        fromTime: lastFromTime,
-        toTime: lastToTime,
-        patient: patientLast.patient_name,
-        dob: patientLast.patient_dob,
-        localMrNo: patientLast.local_mr_no,
-        examination: patientLast.modality_examination_name,
-        note: patientLast.notes,
-        status: patientLast.status,
-        rowSpan: lastCaptureSlot.patient && patientLast.patient_name === lastCaptureSlot.patient ? null : rowSpan
-     }
-
-     lastCaptureSlot = patientLast
-
-      return [ firstSlot, lastSlot ]
+    // const setToHour2Digit = (time : number) => ('0' + time).slice(-2);
+    // const data = this.mockData
+    let data = this.slotData
+    data = (data||[]).map((x: any) => {
+      return x.map((y: any) => {
+        return {
+          fromTime: y.from_time,
+          toTime: y.to_time,
+          modalitySlotId: y.modality_slot_id,
+          patientName: y.patient_name,
+          patientDob: y.patient_dob,
+          patientLocalMrNo: y.local_mr_no
+        }
+      })
     })
 
-    this.scheduleList = lodash.flatten(this.scheduleList)
+    let temp: any[] = []
+    let startIndex = 0
+    const perBlock = this.sectionSelected && this.sectionSelected.duration 
+      ? this.sectionSelected.duration 
+      : this.slotConfigDuration
+    this.slotConfigIntervalBlock = Math.ceil(60 / perBlock)
+    let block = Math.ceil(24*60/perBlock)
+    if (block < 24) {
+      this.slotConfigIntervalBlock = Math.ceil(perBlock / 60)
+    }
+    let lastTime: any = null
+    // let dayTemp: any = null
+    // atas-bawah
+    const list = Array(block).fill({}).map((_m: any, i: number) => {
+      const model = new SlotWeeklyRow()
+      model.viewIndex = i%2 === 0 ? startIndex++ : startIndex
+      const startTime = lastTime ? lastTime : moment(`${('0' + model.viewIndex).slice(-2)}:${'00'}`, 'HH:mm')
+      const endTime = startTime.clone().add(perBlock, 'minutes')
+      lastTime = endTime
+      model.fromTime = startTime.format('HH:mm')
+      model.toTime = endTime.format('HH:mm')
+      if (model.toTime == '00:00') { model.toTime = '24:00' }
+      // kiri-kanan
+      model.days = this.days.map((_n: any, j: number) => {
+        let day = new SlotWeeklyItem
+        day.fromTime = model.fromTime
+        day.toTime = model.toTime
+        day.date = _n.date
+        day.rowSpan = 1
+        const seekForItem = data[j].find((_k: any) => {
+          return (
+            moment(day.fromTime, 'HH:mm').isSameOrAfter(moment(_k.fromTime, 'HH:mm')) &&
+            moment(day.toTime, 'HH:mm').isSameOrBefore(moment(_k.toTime, 'HH:mm'))
+          )
+        })
+        if (seekForItem) {
+          day = {...day, ...seekForItem}
+          day.fromTime = moment(day.fromTime, 'HH:mm').format('HH:mm')
+          day.toTime = moment(day.toTime, 'HH:mm').format('HH:mm')
+        }
+        const dayTemp = temp.find(x=> day.modalitySlotId && x.modalitySlotId === day.modalitySlotId)
+        if (dayTemp) {
+          dayTemp.rowSpan += 1
+          day.rowSpan = 0
+        }
+        temp.push(day)
+        return day
+      })
+      return model
+    })
+    // console.log('list', list)
+    this.list = list
   }
 
   toDaily (val: any) {
     this.itemClick.emit(val)
   }
 
+  async getModalitySlots(reserveDate: any, sectionId: any) {
+    if (reserveDate && sectionId) {
+      reserveDate = moment(reserveDate).format('YYYY-MM-DD')
+      const responseSlots = await this.radiologyService.getModalitySlots(sectionId, reserveDate).toPromise()
+      return responseSlots.data || [];
+    }
+    return []
+  }
+
+  async fetchSlotData () {
+    const list: any = []
+    this.isLoading = true
+    for (let item of this.days) {
+      const d = await this.getModalitySlots(item.date, this.sectionSelected.modality_hospital_id)
+        .catch(() => [])
+      list.push(d)
+    }
+    this.isLoading = false
+    this.slotData = list
+    this.getSchedules()
+  }
+
+  createAppointment (date: any = null) {
+    console.log('SELECTED_DATE', date)
+    const m = this.modalService.open(ModalCreateAppointmentComponent, { windowClass: 'fo_modal_confirmation', centered: true, size: 'lg'})
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+
+  detailSchedule (itemId: any = null) {
+    console.log('SELECTED_DETAIL', itemId)
+    const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+
+}
+
+class SlotWeeklyItem {
+  modalitySlotId: any;
+  fromTime: any;
+  toTime: any;
+  date: Date;
+  patientName: any
+  patientDob: any
+  patientLocalMrNo: any
+  rowSpan: number = 0
+}
+class SlotWeeklyRow {
+  viewIndex: number;
+  fromTime: any;
+  toTime: any;
+  days: SlotWeeklyItem[];
 }
