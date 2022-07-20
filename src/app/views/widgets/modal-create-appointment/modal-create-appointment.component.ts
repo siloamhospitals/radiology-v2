@@ -55,6 +55,15 @@ export class ModalCreateAppointmentComponent implements OnInit {
     isBpjs: false,
     isAnesthesia: false,
   };
+  public edittedModality: any = {
+    index: '',
+    modalityHospitalId: '',
+    modalityExaminationId: '',
+    reserveDate: moment().format('YYYY-MM-DD'),
+    notes: '',
+    isBpjs: false,
+    isAnesthesia: false,
+  };
 
   public nationalTypeIds: any = [];
   public examinationsList: any = [];
@@ -71,6 +80,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
   public isSelectedPatient: any;
   public showModalityList: boolean = false;
   public dateTimeWidth: string = '160px';
+  public onEdit: boolean = false;
 
   ngOnInit() {
     this.onChangeDefaultSelected();
@@ -283,4 +293,14 @@ export class ModalCreateAppointmentComponent implements OnInit {
     console.log('cancel ya')
   }
 
+  onDeleteModality(val: any) {
+    const filtered = this.modalityAppointmentList.filter((list: any) => list !== val );
+    this.modalityAppointmentList = filtered;
+  }
+
+  onEditModality(list: any, index: any) {
+    this.onEdit = true;
+    this.edittedModality = list;
+    this.edittedModality.index = index;
+  }
 }

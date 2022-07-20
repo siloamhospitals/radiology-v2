@@ -174,32 +174,41 @@
     <div class="d-flex flex-wrap flex-row px-4">
       <h5 class="w-100">Modality</h5>
       <div class="w-100" *ngIf="showModalityList">
-        <div class="w-100 border border-radius-custom d-flex flex-wrap flex-row" *ngFor="let list of modalityAppointmentList" >
-          <div class="w-25 my-3 border-right">
-            <p class="mx-3">{{list.modality_label}} - ROOM {{list.room_name}}</p>
+        <div class="border border-radius-custom d-flex flex-wrap align-items-center mb-3" *ngFor="let list of modalityAppointmentList; index as i" >
+          <div class="w-25 border-right">
+            <div class="mx-3 my-2">{{list.modality_label}} - ROOM {{list.room_name}}</div>
           </div>
-          <div class="w-75 pl-4">
-            <div class="mx-2 my-2">
-              <div class="d-flex align-items-center">
-                <div class="position-relative" [style.width]="dateTimeWidth" >
-                  <img src="/assets/icons/ic_datepicker.png" class="position-absolute icon-datepicker" alt="datepicker" />
-                  <div class="date-list text-center">
-                    {{list.reserveDate}}
+            <div class="w-50 pl-2 my-2">
+              <div class="mx-3 my-2">
+                <div class="d-flex align-items-center">
+                  <div alt="datepicker">
+                    <i class="fa fa-calendar-o mx-2"></i>
                   </div>
-                </div>
-                <span class="mx-2" >|</span>
-                <div class="position-relative">
-                  <div type="text" class="date-list text-center timer-picker pr-3">
-                    {{list.fromTime}}
+                  <div class="position-relative" style="width: 230px;">
+                    <div class="modality-form text-left text-muted text-custom pl-2 border-right">
+                      {{list.reserveDate}}
+                    </div>
                   </div>
-                </div>
-                <div class="position-relative">
-                  <div type="text" class="date-list text-center timer-picker pr-3">
-                    {{list.toTime}}
+                  <div class="ml-2" alt="datepicker">
+                    <i class="fa fa-clock-o mx-2"></i>
+                  </div>
+                  <div class="position-relative" style="width: 74px;">
+                    <div class="modality-form text-left text-muted text-custom">
+                      {{list.fromTime}}
+                    </div>
+                  </div>
+                  <span class="mr-2 ml-1" >-</span>
+                  <div class="position-relative" style="width: 74px;">
+                    <div class="modality-form text-left text-muted text-custom">
+                      {{list.fromTime}}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          <div class="w-25 justify-content-end">
+            <button (click)="onEditModality(list, i)" class="btn text-primary">Edit</button>
+            <button (click)="onDeleteModality(list)" class="btn text-primary">Hapus</button>
           </div>
         </div>
       </div>
