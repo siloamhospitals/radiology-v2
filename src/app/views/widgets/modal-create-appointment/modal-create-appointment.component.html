@@ -1,4 +1,4 @@
-<div class="modal-content">
+<div class="modal-content modal-extralarge-size">
   <div class="modal-header-custom px-0 px-4">
     <div class="d-flex flex-wrap justify-content-between">
       <div class="align-self-center">
@@ -26,8 +26,8 @@
     </div>
 
     <div class="d-flex flex-wrap flex-row border px-3">
-      <div class="w-33">
-        <div class="d-flex flex-wrap py-3 flex-row border-right mr-4">
+      <div class="w-34">
+        <div class="d-flex flex-wrap py-3 flex-row border-right mr-3">
           <div class="w-25">
             <label class="pl-1" for="patient-dob-search">Tanggal Lahir</label>
             <input
@@ -61,8 +61,8 @@
           </div>
         </div>
       </div>
-      <div class="w-33">
-        <div class="d-flex flex-wrap py-3 flex-row border-right mr-4">
+      <div class="w-33 border-right">
+        <div class="d-flex flex-wrap py-3 flex-row">
           <div class="w-100">
             <label class="pl-1" for="local-mr-search">Nomor MR Local</label>
             <div class="d-flex flex-row">
@@ -83,8 +83,8 @@
           </div>
         </div>
       </div>
-      <div class="w-34">
-        <div class="d-flex flex-wrap py-3 flex-row">
+      <div class="w-33">
+        <div class="d-flex flex-wrap py-3 flex-row pl-3">
           <div class="w-100">
             <label for="identity_no_search" class="pl-1">Nomor Identitas</label>
             <div class="d-flex flex-row">
@@ -131,7 +131,7 @@
           </tr>
         </thead>
 
-        <tbody>
+        <tbody class="tbody-custom">
           <ng-container *ngIf="showPatientTable === '2'">
             <tr *ngFor="let patient of patientHope; let i = index;"
               class="item-hover"
@@ -171,24 +171,43 @@
       </p>
     </ng-template>
 
-    <div class="d-flex flex-wrap flex-row px-4 py-3">
+    <div class="d-flex flex-wrap flex-row px-4">
       <h5 class="w-100">Modality</h5>
       <div class="w-100" *ngIf="showModalityList">
-        <div class="w-100 border d-flex flex-wrap flex-row my-3" *ngFor="let list of modalityAppointmentList" >
+        <div class="w-100 border border-radius-custom d-flex flex-wrap flex-row" *ngFor="let list of modalityAppointmentList" >
           <div class="w-25 my-3 border-right">
-            <p>{{list.modality_label}} - ROOM {{list.room_name}}</p>
+            <p class="mx-3">{{list.modality_label}} - ROOM {{list.room_name}}</p>
           </div>
-          <div class="w-75 pl-4 my-3">
-            <div class="d-flex align-items-center">
-              <p>{{list.reserveDate}}</p>
-              <p>{{list.fromTime}}</p>
+          <div class="w-75 pl-4">
+            <div class="mx-2 my-2">
+              <div class="d-flex align-items-center">
+                <div class="position-relative" [style.width]="dateTimeWidth" >
+                  <img src="/assets/icons/ic_datepicker.png" class="position-absolute icon-datepicker" alt="datepicker" />
+                  <div class="date-list text-center">
+                    {{list.reserveDate}}
+                  </div>
+                </div>
+                <span class="mx-2" >|</span>
+                <div class="position-relative">
+                  <div type="text" class="date-list text-center timer-picker pr-3">
+                    {{list.fromTime}}
+                  </div>
+                </div>
+                <div class="position-relative">
+                  <div type="text" class="date-list text-center timer-picker pr-3">
+                    {{list.toTime}}
+                  </div>
+                </div>
+              </div>
             </div>
-            <p>{{list.toTime}}</p>
           </div>
         </div>
       </div>
-      <div class="w-100 border d-flex flex-wrap flex-row">
-        <div class="w-25 my-3 border-right">
+    </div>
+
+    <div class="d-flex flex-wrap flex-row px-4 py-3">
+      <div class="w-100 border border-radius-custom d-flex flex-wrap flex-row">
+        <div class="w-25 my-2 border-right">
           <div class="mx-3 my-2">
             <label for="modality_label">Modality <sup class="text-required">*</sup></label>
             <div class="input-group">
@@ -202,7 +221,7 @@
             </div>
           </div>
 
-          <div class="mx-3 my-3">
+          <div class="mx-3 my-2">
             <label for="examination">Jenis Pemeriksaan <sup class="text-required">*</sup></label>
             <div class="input-group">
               <select [disabled]="isExaminationButtonClicked"
@@ -233,39 +252,50 @@
           </div>
         </div>
 
-        <div class="w-75 pl-4">
-          <div class="mx-2 my-3">
+        <div class="w-75 pl-2 my-2">
+          <div class="mx-3 my-2">
             <label for="">Tanggal dan Waktu</label>
             <div class="d-flex align-items-center">
+              <div alt="datepicker">
+                <i class="fa fa-calendar-o mx-2"></i>
+              </div>
               <app-date-picker
-                format="dddd, DD MMMM YYYY" hideIcon=true noBorder=true
-                width="160px"
+                format="dddd, DD MMMM YYYY" hideIcon=true [noBorder]=true
+                [isModalLarge]=true
+                width="230px"
                 [(value)]="viewCurrentDate"
                 [onChange]="onChangeDate">
               </app-date-picker>
-              <span class="mx-2" >|</span>
+              <div class="ml-2" alt="datepicker">
+                <i class="fa fa-clock-o mx-2"></i>
+              </div>
               <app-time-picker
+                [isModalLarge]=true
+                [noBorder]=true
                 [(value)]="selectedModality.fromTime"
                 useMinute="true" >
               </app-time-picker>&nbsp;
+              <span class="mr-2 ml-1" >-</span>
               <app-time-picker
+                [isModalLarge]=true
+                [noBorder]=true
                 [(value)]="selectedModality.toTime"
                 useMinute="true" >
               </app-time-picker>&nbsp;
             </div>
           </div>
 
-          <div class="mx-2 my-3">
+          <div class="mx-3 my-2">
             <label for="appointment_notes">Catatan</label>
             <div>
-              <textarea [(ngModel)]="selectedModality.notes" rows="5" class="form-control" placeholder="Catatan Pasien"></textarea>
+              <textarea [(ngModel)]="selectedModality.notes" rows="5" class="form-control rounded" placeholder="Catatan Pasien"></textarea>
             </div>
           </div>
         </div>
 
-        <div *ngIf="showModalityList" class="d-flex justify-content-end w-100 p-0">
-          <button class="btn btn-secondary text-primary">Batal</button>
-          <button (click)="addModalityToList()" class="btn btn-primary">Simpan</button>
+        <div *ngIf="showModalityList" class="d-flex justify-content-end w-100 p-0 mb-3 mr-3">
+          <button (click)="cancelModality()" class="btn btn-secondary text-primary" style="width: 7%;">Batal</button>
+          <button (click)="addModalityToList()" class="btn btn-primary ml-3" style="width: 7%;">Simpan</button>
         </div>
       </div>
       <div class="d-flex justify-content-end w-100 pt-3 pb-5">
@@ -275,7 +305,7 @@
   </div>
   <div class="modal-footer">
     <div class="d-flex flex-row justify-content-end">
-      <button (click)="createAppointment()" class="btn btn-success ml-2">Jadwalkan Pasien</button>
+      <button (click)="onCreateAppointment()" class="btn btn-success ml-2">Jadwalkan Pasien</button>
     </div>
   </div>
 </div>

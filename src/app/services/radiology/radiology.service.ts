@@ -14,6 +14,10 @@ import ModalityListResponse from '../../models/modality-response';
 import ModalityHospitalListResponse from '../../models/radiology/responses/modality-hospital-response';
 import {ModalityHospitalRequest} from '../../models/radiology/radiology';
 import { AppointmentRadiologyHistoryResponse } from 'src/app/models/appointments/appointment-radiology-history';
+import {DeleteModalitySlotRequest} from '../../models/radiology/request/delete-modality-slot-request';
+import {DeleteAppointmentResponse} from '../../models/radiology/responses/delete-appointment-response';
+import {ModalityExaminationResponse} from '../../models/radiology/responses/modality-examination-response';
+import {RadiologyAppointmentUpdateRequest} from '../../models/radiology/requests/radiology-appointment-update-request';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +30,11 @@ export class RadiologyService {
   private readonly hospitalOperational = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting/hospital';
   private readonly schedule = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting';
   private readonly operationalSchedule = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting/schedules';
+  private readonly radiologyCCUrl = environment.CALL_CENTER_SERVICE + '/radiology';
   private readonly modalityHospital = environment.OPADMIN_SERVICE + '/radiology/modality-hospital';
+  private readonly appointment = this.radiologyCCUrl + '/modality-slot';
+  private readonly modalityExamination = this.radiologyUrl + '/modality-examination';
+  private readonly appointmentCCUrl = environment.CALL_CENTER_SERVICE + '/appointments';
 
   private key: any = JSON.parse(localStorage.getItem('key')!)
   private  user = {
@@ -35,8 +43,6 @@ export class RadiologyService {
     source: 'OpAdmin',
   };
 
-  private readonly radiologyCCUrl = environment.CALL_CENTER_SERVICE + '/radiology';
-  private readonly appointmentCCUrl = environment.CALL_CENTER_SERVICE + '/appointments';
   
   getModalitySlots(modalityHospitalId: string, reserveDate: string): Observable<ModalitySlotListResponse> {
     const url = `${this.radiologyCCUrl}/modality-slot?reserveDate=${reserveDate}&modalityHospitalId=${modalityHospitalId}`;
@@ -113,6 +119,23 @@ export class RadiologyService {
   getAppRadiologyHistory(appointmentId : string): Observable<AppointmentRadiologyHistoryResponse> {
     const url = `${this.appointmentCCUrl}/radiology-history/${appointmentId}`;
     return this.client.get<AppointmentRadiologyHistoryResponse>(url, httpOptions);
+  }
+
+  deleteAppointment(modalitySlotId: string, payload: DeleteModalitySlotRequest): Observable<DeleteAppointmentResponse> {
+    const url = `${this.appointment}/${modalitySlotId}`;
+    return this.client.request<DeleteAppointmentResponse>('delete', url, {
+      ...httpOptions,
+      body: payload
+    });
+  }
+
+  getModalityExaminations(modalityHospitalId: any): Observable<ModalityExaminationResponse> {
+    const url = `${this.modalityExamination}?modalityHospitalId=${modalityHospitalId}`;
+    return this.client.get<ModalityExaminationResponse>(url, httpOptions);
+  }
+
+  putAppointment(request: RadiologyAppointmentUpdateRequest): Observable<BaseResponse> {
+    return this.client.put<BaseResponse>(`${this.appointment}/${request.modalitySlotId}`, request, httpOptions);
   }
 
 }
