@@ -15,6 +15,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
+  <form [formGroup]="updateAppointmentForm" novalidate>
   <div class="modal-body px-0">
     <div class="formclass">
       <div class="mb-3 d-flex align-items-center justify-content-between px-3">
@@ -87,13 +88,11 @@
           <div class="">
             <p>BPJS</p>
             <div class="form-check form-check-inline pr-3">
-              <input class="form-check-input" type="radio" [(ngModel)]="isBpjs" name="bpjsRadio" id="bpjsRadio" value=false
-              [checked]="isBpjs == true" (change)="onChangeBpjsResult($event)">
+              <input class="form-check-input" type="radio" formControlName="is_bpjs" name="is_bpjs" [value]=false >
               <label class="form-check-label" for="bpjsRadio">Non BPJS</label>
             </div>
             <div class="form-check form-check-inline">
-              <input [(ngModel)]="isBpjs" class="form-check-input" type="radio" name="bpjsRadio" id="bpjsRadio2" value=true
-              [checked]="isBpjs == false" (change)="onChangeBpjsResult($event)">
+              <input class="form-check-input" type="radio" formControlName="is_bpjs" name="is_bpjs" [value]=true>
               <label class="form-check-label" for="bpjsRadio">BPJS</label>
             </div>
           </div>
@@ -101,7 +100,7 @@
         <div class="mb-3 w-50">
           <label for="">Tindakan <sup class="text-required">*</sup></label>
           <div class="">
-            <select [(ngModel)]="modalityExaminationId" id="title" class="form-control" name="dropDownRoom">
+            <select id="title" class="form-control" name="dropDownRoom" formControlName="modalityExaminationId">
               <option *ngFor="let examination of examinations" value="{{examination.modality_examination_id}}"
               [selected]="examination.modality_examination_id === data.examination_id"
               >
@@ -114,12 +113,11 @@
           <div class="">
             <p>Anastesi</p>
             <div class="form-check form-check-inline pr-3">
-              <input [(ngModel)]="isAnesthesia"  class="form-check-input" type="radio" name="anastesiRadio" id="anastesiRadio" value=false 
-              [checked]="isAnesthesia === false">
+              <input class="form-check-input" type="radio" name="is_anesthesia" formControlName="is_anesthesia" [value]=false >
               <label class="form-check-label" for="anastesiRadio">Tidak</label>
             </div>
             <div class="form-check form-check-inline">
-              <input [(ngModel)]="isAnesthesia"  class="form-check-input" type="radio" name="anastesiRadio" id="anastesiRadio2" value=true
+              <input class="form-check-input" type="radio" name="is_anesthesia" formControlName="is_anesthesia" [value]=true
               [checked]="data.is_anesthesia === true">
               <label class="form-check-label" for="anastesiRadio">Ya</label>
             </div>
@@ -130,12 +128,13 @@
         <div class="mb-3 w-100">
           <label for="">Note</label>
           <div>
-            <textarea [(ngModel)]="note" rows="3" class="form-control" placeholder="Catatan Pasien"></textarea>
+            <textarea rows="3" class="form-control" placeholder="Catatan Pasien" name="note" formControlName="note"></textarea>
           </div>
         </div>
       </div>
     </div>
   </div>
+  </form>
   <div class="modal-footer d-flex align-items-center justify-content-between">
       <div>
         <span class="text-muted" >Local Updated by </span><br/>

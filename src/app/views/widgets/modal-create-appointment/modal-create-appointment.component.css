@@ -27,3 +27,41 @@ select {
 ::-ms-input-placeholder { /* Microsoft Edge */
   color: rgba(34, 47, 62, 0.38);
 }
+
+.icon-datepicker {
+  top: 6px;
+  left: 5px;
+}
+
+.date-list {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.35rem 0.75rem 0 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+}
+
+.timer-picker {
+  font-size: 14px;
+}
+
+.border-radius-custom {
+  border-radius: 8px;
+}
+
+.modal-body {
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.tbody-custom {
+  overflow-y: auto;
+}
+
+.fa.fa-calendar-o, .fa.fa-clock-o {
+  color: rgba(34, 47, 62, 0.54);
+  font-size: 18px;
+}

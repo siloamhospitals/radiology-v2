@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ModalDetailScheduleComponent } from './modal-detail-schedule.component';
 import { DatepickerModule } from '../date-picker/date-picker.module';
 import { TimepickerModule } from '../time-picker/time-picker.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ModalDetailScheduleComponent],
@@ -11,7 +11,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     DatepickerModule,
     TimepickerModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ModalDetailScheduleModule { }

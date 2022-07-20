@@ -17,6 +17,8 @@ export class TimepickerComponent implements OnInit {
   minutes : string[];
   isShow : boolean;
   @Input() useMinute : boolean;
+  @Input() noBorder: boolean = false;
+  @Input() isModalLarge: boolean = false;
 
   @Output() valueChange = new EventEmitter()
 
@@ -38,6 +40,14 @@ export class TimepickerComponent implements OnInit {
     ev.stopImmediatePropagation()
     ev.stopPropagation()
     ev.preventDefault()
+  }
+
+  onClickDropdown(ev: Event) {
+    if (!this.isShow) {
+      this.onShowSelect()
+    } else {
+      this.onHideSelect(ev)
+    }
   }
 
   onSelectHour(hour : string) {

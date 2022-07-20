@@ -44,11 +44,18 @@ export class TableListDailyComponent implements OnInit {
     }
   }
 
-  createAppointment() {
-    const m = this.modalService.open(ModalCreateAppointmentComponent, { windowClass: 'fo_modal_confirmation', centered: true, size: 'lg'})
-    m.result.then((result: any) => {
-      console.log('modal is closed', {result})
-    })
+  createAppointment(schedule?: any) {
+    const m = this.modalService.open(ModalCreateAppointmentComponent, { keyboard: false });
+    console.log(this.sectionSelected, '=================section selected')
+    const payload = {
+      ...schedule,
+      reserveDate: this.dateSelected,
+    }
+    console.log(schedule, '=========== schedule')
+    m.componentInstance.selectedAppointment = payload;
+    // m.result.then((result: any) => {
+    //   console.log('modal is closed', {result})
+    // })
   }
 
   detailSchedule(item: any) {
@@ -168,10 +175,30 @@ export class TableListDailyComponent implements OnInit {
           dob: slot.patient_dob,
           localMrNo: slot.local_mr_no,
           examination: slot.modality_examination_name,
+          examination_id: slot.modality_examination_id,
           note: slot.notes,
           status: slot.status,
-          rowSpan: 1
-        };
+          rowSpan: 1,
+          modality_slot_id: slot.modality_slot_id,
+          reserve_date: slot.reserve_date,
+          email: slot.email,
+          identity_type_id: slot.identity_type_id,
+          identity_number: slot.identity_number,
+          is_bpjs: slot.is_bpjs,
+          is_anesthesia: slot.is_anesthesia,
+          modality_hospital_id: slot.modality_hospital_id,
+          modality_name: slot.modality_name,
+          modality_operational_id: slot.modality_operational_id,
+          modality_queue_id: slot.modality_queue_id,
+          mapping_room_id: slot.mapping_room_id,
+          contact_id: slot.contact_id,
+          room_id: slot.room_id,
+          room_name: slot.room_name,
+          admission_no: slot.admission_no,
+          patient_phone_number_1: slot.patient_phone_number_1,
+          patient_phone_number_2: slot.patient_phone_number_2,
+          operational_type: slot.operational_type
+        }
 
         if (slot.patient_name && slot.patient_name === lastCaptureSlot.patient) {
           lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
@@ -198,13 +225,13 @@ export class TableListDailyComponent implements OnInit {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue)) 
+    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue))
       || this.sectionSelected.modality_hospital_id) {
       await this.getModalitySlots()
       await this.getSchedules()
     }
-  
-    if((changes.fromTimeRange && changes.fromTimeRange.currentValue) 
+
+    if((changes.fromTimeRange && changes.fromTimeRange.currentValue)
       || (changes.toTimeRange && changes.toTimeRange.currentValue)) {
         if(this.fromTimeRange === '00:00' && this.toTimeRange === '00:00') {
           this.scheduleList = this.scheduleListBk.slice()
@@ -212,7 +239,7 @@ export class TableListDailyComponent implements OnInit {
           const momentFromTime = moment(this.fromTimeRange, 'hh:mm')
           const momentToTime = moment(this.toTimeRange, 'hh:mm')
           this.scheduleList = this.scheduleListBk.filter(sc => {
-            return sc.items.find((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm')) 
+            return sc.items.find((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
                 && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) )
           })
         }
