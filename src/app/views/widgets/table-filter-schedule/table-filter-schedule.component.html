@@ -1,0 +1,37 @@
+<div class="d-flex justify-content-start">
+  <button class="btn btn-secondary" (click)="resetFilter()"><i class="fa fa-times-circle mr-2"></i>Reset Filter</button>
+</div>
+<table class="table table-bordered mt-3 table-list-radiology">
+  <thead class="border-0 bg-secondary">
+    <tr>
+      <td colspan="2" class="py-3 border-0">Appointment</td>
+      <td class="py-3 border-0">Patient</td>
+      <td class="py-3 border-0">DoB</td>
+      <td class="py-3 border-0">Local MR No</td>
+      <td class="py-3 border-0">Examination</td>
+      <td class="py-3 border-0">Note</td>
+      <td class="py-3 border-0">Status</td>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="!(filterList && filterList.length)">
+      <tr>
+        <td colspan="100%" class="text-center p-3">Data currently does not exist</td>
+      </tr>
+    </ng-container>
+    <tr *ngFor="let item of filterList; let i=index"
+      (click)="itemSelected(item)">
+      <td>{{i}}</td>
+      <td>{{item.from_time}} - {{item.to_time}}</td>
+      <td>{{item.patient_name}}</td>
+      <td>{{item.patient_dob}}</td>
+      <td>{{item.local_mr_no}}</td>
+      <td>{{item.modality_examination_name}}</td>
+      <td>{{item.notes}}</td>
+      <td>
+        <span *ngIf="scheduleStatus[item.status]" [ngClass]="'table-status status-' + scheduleStatus[item.status].toLowerCase() ">
+          {{ scheduleStatus[item.status] }}
+        </span>
+    </tr>
+  </tbody>
+</table>
