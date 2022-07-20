@@ -172,7 +172,7 @@ export class TableListDailyComponent implements OnInit {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue)) 
+    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue))
       || this.sectionSelected.modality_hospital_id) {
       await this.getModalitySlots()
       await this.getSchedules()

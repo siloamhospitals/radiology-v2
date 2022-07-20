@@ -13,6 +13,7 @@ import {BaseStoreRequestOperational} from '../../models/radiology/requests/base-
 import ModalityListResponse from '../../models/modality-response';
 import ModalityHospitalListResponse from '../../models/radiology/responses/modality-hospital-response';
 import {ModalityHospitalRequest} from '../../models/radiology/radiology';
+import { AppointmentRadiologyHistoryResponse } from 'src/app/models/appointments/appointment-radiology-history';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,7 @@ export class RadiologyService {
   };
 
   private readonly radiologyCCUrl = environment.CALL_CENTER_SERVICE + '/radiology';
+  private readonly appointmentCCUrl = environment.CALL_CENTER_SERVICE + '/appointments';
   
   getModalitySlots(modalityHospitalId: string, reserveDate: string): Observable<ModalitySlotListResponse> {
     const url = `${this.radiologyCCUrl}/modality-slot?reserveDate=${reserveDate}&modalityHospitalId=${modalityHospitalId}`;
@@ -107,6 +109,10 @@ export class RadiologyService {
   putModalityHospital(body: ModalityHospitalRequest, modalityHospitalId: any) {
     const url = `${this.radiologyUrl}/modality-hospital/${modalityHospitalId}`;
     return this.client.put(url, body, httpOptions);
+  }
+  getAppRadiologyHistory(appointmentId : string): Observable<AppointmentRadiologyHistoryResponse> {
+    const url = `${this.appointmentCCUrl}/radiology-history/${appointmentId}`;
+    return this.client.get<AppointmentRadiologyHistoryResponse>(url, httpOptions);
   }
 
 }

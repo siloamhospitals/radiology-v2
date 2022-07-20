@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search-patient-hope-grouped-request';
 import * as moment from 'moment';
+import { pick } from 'lodash';
 // import { isOk } from '../../../utils/response.util';
 // import { Subscription } from 'rxjs';
 
@@ -59,13 +60,16 @@ export class ModalCreateAppointmentComponent implements OnInit {
   public examinationsList: any = [];
   public viewCurrentDate: any = moment();
   public modalityHospitalList: any = [];
+  public modalityAppointmentList: any = [];
   public viewFromTime: any = '';
   public showPatientTable = '0';
+  public selectedInput: any = {};
 
   // buttons
   public isSubmitting = false;
   public isExaminationButtonClicked: boolean = true;
   public isSelectedPatient: any;
+  public showModalityList: boolean = false;
 
   ngOnInit() {
     this.getNationalityIdType();
@@ -168,9 +172,8 @@ export class ModalCreateAppointmentComponent implements OnInit {
     await this.getModalityHospitalList();
   }
 
-  onChangeModality(e?:any) {
-    console.log(this.isSelectedPatient,'============= is selected patient')
-    this.selectedModality.modalityHospitalId = e.target.value;
+  onChangeModality() {
+    this.selectedModality.modalityHospitalId = this.selectedInput.modality_hospital_id;
     this.isExaminationButtonClicked = false;
     this.getModalityExamination(this.selectedModality.modalityHospitalId)
   }
@@ -237,5 +240,19 @@ export class ModalCreateAppointmentComponent implements OnInit {
 
   filteredPhoneNumber(phoneNumber: string) {
     return phoneNumber.replace(/_/gi, '');
+  }
+
+  onAddedModality() {
+    this.showModalityList = true;
+  }
+
+  addModalityToList() {
+    console.log(this.viewCurrentDate, '========== this viewCurrentDate')
+    const objModality = pick(this.selectedInput, ['modality_label', 'room_name'])
+    const payloadAddedModal = {
+      ...objModality,
+      ...this.selectedModality,
+    }
+    this.modalityAppointmentList.push(payloadAddedModal);
   }
 }

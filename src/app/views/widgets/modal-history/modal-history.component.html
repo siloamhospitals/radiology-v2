@@ -9,40 +9,35 @@
   </div>
   <div class="modal-body">
     <ul class="timeline">
-      <li>
-         <!-- begin timeline-time -->
+      <li *ngFor="let his of history; let i = index" >
          <div class="timeline-time">
-            <span class="lastupdate">Last Updated</span>
-            <span class="time">12/06/2022</span>
-            <span class="time">04:20</span>
+            <span *ngIf="i === 0" class="lastupdate">Last Updated</span>
+            <span class="time">{{ his.created_at | date: 'dd/mm/yyyy' }}</span>
+            <span class="time">{{ his.created_at | date: 'HH:mm' }}</span>
          </div>
-         <!-- end timeline-time -->
-         <!-- begin timeline-icon -->
+         
          <div class="timeline-icon">
             <a href="javascript:;">&nbsp;</a>
          </div>
-         <!-- end timeline-icon -->
-         <!-- begin timeline-body -->
+         
          <div class="timeline-body">
             <div class="timeline-header">
-               <span class="username"><a href="javascript:;">John Smith</a> <small></small></span>
-               <span class="pull-right text-muted">By Admin Fo-2</span>
+               <span class="username"><a href="javascript:;">{{ his.status }}</a> <small></small></span>
+               <span class="pull-right text-muted">By {{ his.created_by }}</span>
             </div>
             <div class="timeline-content">
                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc faucibus turpis quis tincidunt luctus.
-                  Nam sagittis dui in nunc consequat, in imperdiet nunc sagittis.
+                  {{ his.content }}
                </p>
             </div>
 
          </div>
-         <!-- end timeline-body -->
       </li>
    </ul>
   </div>
   <div class="modal-footer">
     <div class="d-flex flex-row justify-content-end">
-      <button class="btn btn-primary ml-2">Tutup</button>
+      <button class="btn btn-primary ml-2" (click)="close()" >Tutup</button>
     </div>
   </div>
 </div>
