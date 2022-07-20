@@ -1,16 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ModalityHospital } from 'src/app/models/radiology/radiology';
 import { RadiologyService } from 'src/app/services/radiology/radiology.service';
 import { ScheduleStatus } from 'src/app/variables/common.variable';
-import { TableListDailyComponent } from '../table-list-daily/table-list-daily.component';
+import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
 
 @Component({
   selector: 'app-table-filter-schedule',
   templateUrl: './table-filter-schedule.component.html',
   styleUrls: ['./table-filter-schedule.component.css']
 })
-export class TableFilterScheduleComponent implements OnInit {
+export class TableFilterScheduleComponent implements OnInit, OnChanges {
 
   @Input() dateSelected: moment.Moment;
   @Input() sectionSelected: ModalityHospital;
@@ -21,24 +22,26 @@ export class TableFilterScheduleComponent implements OnInit {
   slotData: any[] = []
   filterList: any[] = []
   filterShow: boolean = false
+  isLoading: boolean = false
+  fetchDataDebounce: any = null
 
   public scheduleStatus = ScheduleStatus
 
   constructor(
     private radiologyService: RadiologyService,
-    private scheduleComponent: TableListDailyComponent,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
   }
 
   ngOnChanges(_changes: SimpleChanges) {
-    console.log('filterischanges', _changes)
     this.refresh()
   }
 
   refresh() {
-    this.setFilter(this.filter)
+    if (this.fetchDataDebounce) { clearTimeout(this.fetchDataDebounce) }
+    this.fetchDataDebounce = setTimeout(() => { this.setFilter(this.filter) }, 500)
   }
 
   async fetchSlotData() {
@@ -47,13 +50,14 @@ export class TableFilterScheduleComponent implements OnInit {
     if (reserveDate && sectionId) {
       reserveDate = moment(reserveDate).format('YYYY-MM-DD')
       const responseSlots = await this.radiologyService.getModalitySlots(sectionId, reserveDate).toPromise()
-      this.slotData = responseSlots.data || [];
+      this.slotData = responseSlots.data || []
     }
   }
 
   async setFilter(obj: any) {
     const { localMrNo, name: patientName } = obj
     try {
+      this.isLoading = true
       await this.fetchSlotData()
       this.filterList = (this.slotData || []).filter((item: any) => {
         if (obj.localMrNo && obj.localMrNo.length > 0) {
@@ -61,10 +65,13 @@ export class TableFilterScheduleComponent implements OnInit {
         }
         return String(item.patient_name).toLowerCase().includes(patientName.toLowerCase())
       })
-      this.filterShow = true
-      if (this.filterList && this.filterList.length > 0) { this.filterShow = false }
-      this.isFilterShow.emit(this.filterShow)
-    } catch (e) { }
+      this.filterShow = this.filterList && this.filterList.length > 0
+      // this.isFilterShow.emit(this.filterShow)
+    } catch (e) {
+      console.log('FILTER_DATA_ERROR', e)
+    } finally {
+      this.isLoading = false
+    }
   }
 
   resetFilter() {
@@ -73,8 +80,19 @@ export class TableFilterScheduleComponent implements OnInit {
     this.isFilterShow.emit(this.filterShow)
   }
 
+  detailSchedule(item: any) {
+    const payload = item;
+    const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
+    m.componentInstance.data = payload;
+    m.result.then((result: any) => {
+      if (result) {
+        // this.showSuccessAlert(`Success`);
+      }
+    })
+  }
+
   itemSelected(item: any) {
-    this.scheduleComponent.detailSchedule(item)
+    this.detailSchedule(item)
   }
 
 }
