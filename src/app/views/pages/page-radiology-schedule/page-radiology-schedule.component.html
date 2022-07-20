@@ -120,6 +120,7 @@
         </ng-container>
         <ng-template #tableFilter>
           <app-table-filter-schedule
+            [tableViewActive]="tableViewActive"
             [sectionSelected]="sectionSelected"
             [dateSelected]="tableViewCurrentDate"
             [filter]="filter"
