@@ -28,7 +28,7 @@
       <tr *ngFor="let item of filterList; let i=index"
         (click)="itemSelected(item)"
         class="cursor-pointer item-hover">
-        <td>{{i}}</td>
+        <td>{{i+1}}</td>
         <td *ngIf="tableViewActive==1">{{item.reserve_date}}</td>
         <td>{{item.from_time}} - {{item.to_time}}</td>
         <td>{{item.patient_name}}</td>
