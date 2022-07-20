@@ -218,14 +218,23 @@
       <div class="w-100 border border-radius-custom d-flex flex-wrap flex-row">
         <div class="w-25 my-2 border-right">
           <div class="mx-3 my-2">
-            <label for="modality_label">Modality <sup class="text-required">*</sup></label>
+            <label for="modality_label">Modality<sup class="text-required">*</sup></label>
             <div class="input-group">
               <select
+                *ngIf="!onEdit"
                 [(ngModel)]="selectedInput" (ngModelChange)="onChangeModality($event)"
                 placeholder="ID Number" name="national-type" class="form-control national-type-id"
                 >
-                <option class="text-muted" value="" selected hidden>Pilih Modality</option>
                 <option *ngFor="let type of modalityHospitalList" [ngValue]="type">{{type.modality_label}} - ROOM {{type.room_name}}</option>
+                [selected]="type.modality_hospital_id === edittedModality.modalityHospitalId"
+              </select>
+              <select
+                *ngIf="onEdit"
+                [(ngModel)]="edittedModality.modalityHospitalId"
+                placeholder="ID Number" name="national-type" class="form-control national-type-id"
+                >
+                <option *ngFor="let type of modalityHospitalList" [value]="type.modality_hospital_id">{{type.modality_label}} - ROOM {{type.room_name}}</option>
+                [selected]="type.modality_hospital_id === edittedModality.modalityHospitalId"
               </select>
             </div>
           </div>
@@ -240,6 +249,7 @@
                 [(ngModel)]="selectedModality.modalityExaminationId">
                 <option class="text-muted" value="" selected hidden>Pilih jenis pemeriksaan</option>
                 <option *ngFor="let type of examinationsList"
+                  [selected]="type.modality_examination_id === edittedModality.modalityExaminationId"
                   value="{{type.modality_examination_id}}"
                   >
                   {{type.name}}

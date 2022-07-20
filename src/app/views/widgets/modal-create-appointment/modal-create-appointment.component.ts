@@ -279,6 +279,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
     let payloadAddedModal = {
       ...objModality,
       ...this.selectedModality,
+      ...this.isSelectedPatient,
     }
     payloadAddedModal.reserveDate = this.viewCurrentDate.format('dddd, DD MMMM YYYY');
     this.modalityAppointmentList.push(payloadAddedModal);
@@ -300,7 +301,9 @@ export class ModalCreateAppointmentComponent implements OnInit {
 
   onEditModality(list: any, index: any) {
     this.onEdit = true;
-    this.edittedModality = list;
-    this.edittedModality.index = index;
+    console.log(list, 'list')
+    // this.edittedModality = list;
+    this.edittedModality = this.modalityAppointmentList[index];
+    console.log(this.edittedModality, '============== this editted modality')
   }
 }
