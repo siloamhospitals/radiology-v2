@@ -285,13 +285,20 @@ export class ModalCreateAppointmentComponent implements OnInit {
     this.modalityAppointmentList.push(payloadAddedModal);
   }
 
+  editModalityToList() {
+    const modalityAppointmentList = this.modalityAppointmentList.slice()
+    const modality = this.modalityHospitalList.find((md :any) => md.modality_hospital_id === this.edittedModality.modalityHospitalId )
+    modalityAppointmentList[this.edittedModality.index] = { ...this.edittedModality, ...modality }
+    this.modalityAppointmentList = modalityAppointmentList;
+  }
+
   onChangeDefaultSelected() {
     this.selectedModality.fromTime = this.selectedAppointment.fromTime;
     this.selectedModality.toTime = this.selectedAppointment.toTime;
   }
 
   cancelModality() {
-    console.log('cancel ya')
+    this.edittedModality = {}
   }
 
   onDeleteModality(val: any) {
@@ -304,6 +311,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
     console.log(list, 'list')
     // this.edittedModality = list;
     this.edittedModality = this.modalityAppointmentList[index];
+    this.edittedModality.index = index;
     console.log(this.edittedModality, '============== this editted modality')
   }
 }

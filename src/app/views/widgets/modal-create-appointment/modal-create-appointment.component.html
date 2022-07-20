@@ -221,7 +221,7 @@
             <label for="modality_label">Modality<sup class="text-required">*</sup></label>
             <div class="input-group">
               <select
-                *ngIf="!onEdit"
+                *ngIf="!edittedModality.modalityHospitalId"
                 [(ngModel)]="selectedInput" (ngModelChange)="onChangeModality($event)"
                 placeholder="ID Number" name="national-type" class="form-control national-type-id"
                 >
@@ -229,7 +229,7 @@
                 [selected]="type.modality_hospital_id === edittedModality.modalityHospitalId"
               </select>
               <select
-                *ngIf="onEdit"
+                *ngIf="edittedModality.modalityHospitalId"
                 [(ngModel)]="edittedModality.modalityHospitalId"
                 placeholder="ID Number" name="national-type" class="form-control national-type-id"
                 >
@@ -314,7 +314,8 @@
 
         <div *ngIf="showModalityList" class="d-flex justify-content-end w-100 p-0 mb-3 mr-3">
           <button (click)="cancelModality()" class="btn btn-secondary text-primary" style="width: 7%;">Batal</button>
-          <button (click)="addModalityToList()" class="btn btn-primary ml-3" style="width: 7%;">Simpan</button>
+          <button *ngIf="!edittedModality.modalityHospitalId" (click)="addModalityToList()" class="btn btn-primary ml-3" style="width: 7%;">Simpan</button>
+          <button *ngIf="edittedModality.modalityHospitalId" (click)="editModalityToList()" class="btn btn-primary ml-3" style="width: 7%;">Ubah</button>
         </div>
       </div>
       <div class="d-flex justify-content-end w-100 pt-3 pb-5">
