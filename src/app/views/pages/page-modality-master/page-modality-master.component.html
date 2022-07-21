@@ -29,7 +29,7 @@
               <span class="fa fa-search position-absolute"></span>
             </div>
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
-              <ng-multiselect-dropdown-angular7
+              <ng-multiselect-dropdown
                 [placeholder]="'Semua Modality'"
                 [data]="this.modalityOptions"
                 [(ngModel)]="selectedItemsModality"
@@ -40,10 +40,10 @@
                 (onDeSelectAll)="onItemDeSelect($event, true, 'modality')"
                 
               >
-              </ng-multiselect-dropdown-angular7>
+              </ng-multiselect-dropdown>
             </div>
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
-              <ng-multiselect-dropdown-angular7
+              <ng-multiselect-dropdown
                 [placeholder]="'Schdule Type'"
                 [data]="dropdownListSchduleType"
                 [(ngModel)]="selectedItemsSchdule"
@@ -53,10 +53,10 @@
                 (onDeSelect)="onItemDeSelect($event)"
                 (onDeSelectAll)="onItemDeSelect($event, true, 'operational_type')"
               >
-              </ng-multiselect-dropdown-angular7>
+              </ng-multiselect-dropdown>
             </div>
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
-              <ng-multiselect-dropdown-angular7
+              <ng-multiselect-dropdown
                 [placeholder]="'Floor'"
                 [data]="this.roomOptions"
                 [(ngModel)]="selectedItemsFloor"
@@ -66,10 +66,10 @@
                 (onDeSelect)="onItemDeSelect($event)"
                 (onDeSelectAll)="onItemDeSelect($event, true, 'floor')"
               >
-              </ng-multiselect-dropdown-angular7>
+              </ng-multiselect-dropdown>
             </div>
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
-              <ng-multiselect-dropdown-angular7
+              <ng-multiselect-dropdown
                 [placeholder]="'Status'"
                 [data]="dropdownListStatus"
                 [(ngModel)]="selectedItemsStatus"
@@ -79,7 +79,7 @@
                 (onDeSelect)="onItemDeSelect($event)"
                 (onDeSelectAll)="onItemDeSelect($event, true, 'status')"
               >
-              </ng-multiselect-dropdown-angular7>
+              </ng-multiselect-dropdown>
           </div>
             
           </div>
