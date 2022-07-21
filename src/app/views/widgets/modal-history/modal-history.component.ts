@@ -2,8 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Alert } from '../../../models/alerts/alert';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { appInfo, AppointmentStatusEnum } from '../../../variables/common.variable';
-import { RadiologyService } from 'src/app/services/radiology/radiology.service';
-import { AppointmentRadiologyHistory } from 'src/app/models/appointments/appointment-radiology-history';
+import { RadiologyService } from '../../../services/radiology/radiology.service';
+import { AppointmentRadiologyHistory } from '../../../models/appointments/appointment-radiology-history';
 
 @Component({
   selector: 'app-modal-history',

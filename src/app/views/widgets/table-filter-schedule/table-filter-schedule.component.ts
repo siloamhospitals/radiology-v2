@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
-import { ModalityHospital } from 'src/app/models/radiology/radiology';
-import { RadiologyService } from 'src/app/services/radiology/radiology.service';
-import { ScheduleStatus } from 'src/app/variables/common.variable';
+import { ModalityHospital } from '../../../models/radiology/radiology';
+import { RadiologyService } from '../../../services/radiology/radiology.service';
+import { ScheduleStatus } from '../../../variables/common.variable';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
 
 @Component({

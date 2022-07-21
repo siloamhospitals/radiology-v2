@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
+import { ModalitySlot } from '../../../models/radiology/modality-slot';
 
 import * as moment from 'moment';
-import { RadiologyService } from 'src/app/services/radiology/radiology.service';
+import { RadiologyService } from '../../../services/radiology/radiology.service';
 import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
