@@ -81,6 +81,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
   public showModalityList: boolean = false;
   public dateTimeWidth: string = '160px';
   public onEdit: boolean = false;
+  public isLoadingPatientTable : boolean;
 
   ngOnInit() {
     this.onChangeDefaultSelected();
@@ -96,40 +97,21 @@ export class ModalCreateAppointmentComponent implements OnInit {
     this.activeModal.close();
   }
 
-  onNameAndDobSearchButtonClicked() {
-    // if (isEmpty(this.searchKeywords.patientName)
-    //   || isEmpty(this.searchKeywords.birthDate)) {
-    //     this.showErrorAlert('Name and DOB is required.', 2000);
-    //   return;
-    // }
+  getSearchedPatientSubmit(ev : Event) {
+    ev.preventDefault()
 
     const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
     this.getSearchedPatient({
-      patientName: this.search.patientName,
+      ...this.search,
       birthDate: formattedDob,
     });
   }
 
-  onIdNumberSearchButtonClicked() {
-    // if (isEmpty(this.searchKeywords.nationalIdTypeId)
-    //   || isEmpty(this.searchKeywords.idNumber)) {
-    //     this.showErrorAlert('National type id and id number is required.', 3000);
-    //   return;
-    // }
-    this.getSearchedPatient({
-      idNumber: this.search.idNumber,
-      nationalIdTypeId: this.search.nationalIdTypeId
-    });
-  }
 
-  onLocalMrSearchButtonClicked() {
-      this.getSearchedPatient({
-        mrLocalNo: this.search.mrLocalNo,
-      });
-    }
 
 
   getSearchedPatient(request: SearchPatientHopeGroupedRequest) {
+    this.isLoadingPatientTable = true
     this.patientService.searchPatientHopeGroup({
       ...request,
       hospitalId: this.hospital.id,
@@ -140,6 +122,9 @@ export class ModalCreateAppointmentComponent implements OnInit {
       } else {
         this.showPatientTable = '1';
       }
+      this.isLoadingPatientTable = false
+    }, () => {
+      this.isLoadingPatientTable = false
     });
   }
 
@@ -184,7 +169,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
     await this.getModalityHospitalList();
   }
 
-  onChangeModality() {
+  onChangeModality(_evt: any = null) {
     this.selectedModality.modalityHospitalId = this.selectedInput.modality_hospital_id;
     this.isExaminationButtonClicked = false;
     this.getModalityExamination(this.selectedModality.modalityHospitalId)
@@ -192,9 +177,9 @@ export class ModalCreateAppointmentComponent implements OnInit {
 
   public onCreateAppointment() {
     this.isSubmitting = true;
-
+    // halo halo mas agung di sini mas untuk yg create appointment,note  di generatepayload itu blm kusesuaikan dengan payload appointmentnya
     if (this.modalityAppointmentList.length > 0) {
-      this.modalityAppointmentList.array.forEach((element: any) => {
+      this.modalityAppointmentList.forEach((element: any) => {
         const payload = this.generatePayload(element, this.choosedPatient);
         this.modalityService.postAppointment(payload)
           .subscribe((response) => {
@@ -205,7 +190,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
             this.isSubmitting = false;
           }, (error: any) => {
             this.isSubmitting = false;
-            this.alertService.error(error.message, false, 3000);
+            this.alertService.error(error && error.message, false, 3000);
           });
       });
     } else {
@@ -240,7 +225,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   public generatePayload(model: any, choosedPatient: any) {
-    const { patientName, phoneNumber, address, note } = model;
+    const { mobileNo1: phoneNumber, address, notes } = model;
     const dob = model.birthDate.split('-');
     const birthDate = dob[2] + '-' + dob[1] + '-' + dob[0];
     const patientHopeId = choosedPatient ? choosedPatient.patientId : null;
@@ -248,15 +233,15 @@ export class ModalCreateAppointmentComponent implements OnInit {
       modalityExaminationId: model.modalityExaminationId,
       modalityHospitalId: model.modalityHospitalId,
       modalityOperationalId: model.modalityOperationalId,
-      reserveDate: model.date,
+      reserveDate: model.reserveDate,
       fromTime: model.fromTime,
       toTime: model.toTime,
       patientHopeId,
-      name: patientName,
+      name: model.name,
       birthDate,
       phoneNumber1: this.filteredPhoneNumber(phoneNumber),
       addressLine1: address,
-      notes: note,
+      notes: notes,
       channelId: channelId.FRONT_OFFICE,
       userId: this.userId,
       userName: this.userName,
@@ -290,6 +275,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
     const modality = this.modalityHospitalList.find((md :any) => md.modality_hospital_id === this.edittedModality.modalityHospitalId )
     modalityAppointmentList[this.edittedModality.index] = { ...this.edittedModality, ...modality }
     this.modalityAppointmentList = modalityAppointmentList;
+    this.edittedModality = {};
   }
 
   onChangeDefaultSelected() {
@@ -309,7 +295,6 @@ export class ModalCreateAppointmentComponent implements OnInit {
   onEditModality(list: any, index: any) {
     this.onEdit = true;
     console.log(list, 'list')
-    // this.edittedModality = list;
     this.edittedModality = this.modalityAppointmentList[index];
     this.edittedModality.index = index;
     console.log(this.edittedModality, '============== this editted modality')

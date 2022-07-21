@@ -112,7 +112,7 @@
           <div class="">
             <select id="title" class="form-control" name="dropDownRoom" formControlName="modalityExaminationId">
               <option *ngFor="let examination of examinations" value="{{examination.modality_examination_id}}"
-              [selected]="examination.modality_examination_id === selectedAppointment.examination_id"
+              [selected]="examination.modality_examination_id == selectedAppointment.modality_examination_id"
               >
                 {{examination.name}}
               </option>
