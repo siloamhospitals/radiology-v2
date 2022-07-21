@@ -188,8 +188,8 @@ export class TableListWeeklyComponent implements OnInit {
 
     let temp: any[] = []
     let startIndex = 0
-    const perBlock = this.sectionSelected && this.sectionSelected.duration 
-      ? this.sectionSelected.duration 
+    const perBlock = this.sectionSelected && this.sectionSelected.duration
+      ? this.sectionSelected.duration
       : this.slotConfigDuration
     this.slotConfigIntervalBlock = Math.ceil(60 / perBlock)
     let block = Math.ceil(24*60/perBlock)
@@ -268,7 +268,7 @@ export class TableListWeeklyComponent implements OnInit {
 
   createAppointment (date: any = null) {
     console.log('SELECTED_DATE', date)
-    const m = this.modalService.open(ModalCreateAppointmentComponent, { windowClass: 'fo_modal_confirmation', centered: true, size: 'lg'})
+    const m = this.modalService.open(ModalCreateAppointmentComponent, { windowClass: 'fo_modal_confirmation' })
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
