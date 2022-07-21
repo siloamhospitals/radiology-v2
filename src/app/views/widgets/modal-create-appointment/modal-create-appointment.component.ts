@@ -192,7 +192,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
 
   public onCreateAppointment() {
     this.isSubmitting = true;
-
+    // halo halo mas agung di sini mas untuk yg create appointment,note  di generatepayload itu blm kusesuaikan dengan payload appointmentnya
     if (this.modalityAppointmentList.length > 0) {
       this.modalityAppointmentList.array.forEach((element: any) => {
         const payload = this.generatePayload(element, this.choosedPatient);
@@ -290,6 +290,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
     const modality = this.modalityHospitalList.find((md :any) => md.modality_hospital_id === this.edittedModality.modalityHospitalId )
     modalityAppointmentList[this.edittedModality.index] = { ...this.edittedModality, ...modality }
     this.modalityAppointmentList = modalityAppointmentList;
+    this.edittedModality = {};
   }
 
   onChangeDefaultSelected() {
@@ -309,7 +310,6 @@ export class ModalCreateAppointmentComponent implements OnInit {
   onEditModality(list: any, index: any) {
     this.onEdit = true;
     console.log(list, 'list')
-    // this.edittedModality = list;
     this.edittedModality = this.modalityAppointmentList[index];
     this.edittedModality.index = index;
     console.log(this.edittedModality, '============== this editted modality')

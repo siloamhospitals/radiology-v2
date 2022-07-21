@@ -200,7 +200,7 @@
                   <span class="mr-2 ml-1" >-</span>
                   <div class="position-relative" style="width: 74px;">
                     <div class="modality-form text-left text-muted text-custom">
-                      {{list.fromTime}}
+                      {{list.toTime}}
                     </div>
                   </div>
                 </div>
@@ -243,14 +243,28 @@
             <label for="examination">Jenis Pemeriksaan <sup class="text-required">*</sup></label>
             <div class="input-group">
               <select [disabled]="isExaminationButtonClicked"
+                *ngIf="!edittedModality.modalityHospitalId"
                 placeholder="ID Number"
                 name="national-type"
                 class="form-control national-type-id"
                 [(ngModel)]="selectedModality.modalityExaminationId">
                 <option class="text-muted" value="" selected hidden>Pilih jenis pemeriksaan</option>
                 <option *ngFor="let type of examinationsList"
-                  [selected]="type.modality_examination_id === edittedModality.modalityExaminationId"
                   value="{{type.modality_examination_id}}"
+                  >
+                  {{type.name}}
+                </option>
+              </select>
+               <select [disabled]="isExaminationButtonClicked"
+                *ngIf="edittedModality.modalityHospitalId"
+                placeholder="ID Number"
+                name="national-type"
+                class="form-control national-type-id"
+                [(ngModel)]="edittedModality.modalityExaminationId">
+                <option class="text-muted" value="" selected hidden>Pilih jenis pemeriksaan</option>
+                <option *ngFor="let type of examinationsList"
+                  [selected]="type.modality_examination_id === edittedModality.modalityExaminationId"
+                  [value]="type.modality_examination_id"
                   >
                   {{type.name}}
                 </option>
@@ -261,11 +275,13 @@
           <div class="mx-3 my-2">
             <p>Anestesi</p>
             <div class="form-check form-check-inline pr-3">
-              <input [(ngModel)]="selectedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa" [value]=false>
+              <input *ngIf="!edittedModality.modalityHospitalId" [(ngModel)]="selectedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa" [value]=false>
+              <input *ngIf="edittedModality.modalityHospitalId" [(ngModel)]="edittedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa" [value]=false>
               <label class="form-check-label" for="anesthesa">Tidak</label>
             </div>
             <div class="form-check form-check-inline">
-              <input [(ngModel)]="selectedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa2" [value]=true>
+              <input *ngIf="!edittedModality.modalityHospitalId" [(ngModel)]="selectedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa" [value]=true>
+              <input *ngIf="edittedModality.modalityHospitalId" [(ngModel)]="edittedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa" [value]=true>
               <label class="form-check-label" for="anesthesa">Ya</label>
             </div>
           </div>
@@ -289,16 +305,32 @@
                 <i class="fa fa-clock-o mx-2"></i>
               </div>
               <app-time-picker
+                *ngIf="!edittedModality.modalityHospitalId"
                 [isModalLarge]=true
                 [noBorder]=true
                 [(value)]="selectedModality.fromTime"
                 useMinute="true" >
+              </app-time-picker>
+              <app-time-picker
+                *ngIf="edittedModality.modalityHospitalId"
+                [isModalLarge]=true
+                [noBorder]=true
+                [(value)]="edittedModality.fromTime"
+                useMinute="true" >
               </app-time-picker>&nbsp;
               <span class="mr-2 ml-1" >-</span>
               <app-time-picker
+                *ngIf="!edittedModality.modalityHospitalId"
                 [isModalLarge]=true
                 [noBorder]=true
                 [(value)]="selectedModality.toTime"
+                useMinute="true" >
+              </app-time-picker>
+              <app-time-picker
+                *ngIf="edittedModality.modalityHospitalId"
+                [isModalLarge]=true
+                [noBorder]=true
+                [(value)]="edittedModality.toTime"
                 useMinute="true" >
               </app-time-picker>&nbsp;
             </div>
@@ -307,7 +339,8 @@
           <div class="mx-3 my-2">
             <label for="appointment_notes">Catatan</label>
             <div>
-              <textarea [(ngModel)]="selectedModality.notes" rows="5" class="form-control rounded" placeholder="Catatan Pasien"></textarea>
+              <textarea *ngIf="!edittedModality.modalityHospitalId" [(ngModel)]="selectedModality.notes" rows="5" class="form-control rounded" placeholder="Catatan Pasien"></textarea>
+              <textarea *ngIf="edittedModality.modalityHospitalId" [(ngModel)]="edittedModality.notes" rows="5" class="form-control rounded" placeholder="Catatan Pasien"></textarea>
             </div>
           </div>
         </div>
