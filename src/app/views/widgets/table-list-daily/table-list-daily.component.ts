@@ -22,7 +22,7 @@ export class TableListDailyComponent implements OnInit {
   @Input() fromTimeRange: string;
   @Input() toTimeRange: string;
 
-  public scheduleStatus = ScheduleStatus
+  public scheduleStatus: any = ScheduleStatus
   public scheduleList: any[] = []
   public scheduleListBk: any[] = []
 
