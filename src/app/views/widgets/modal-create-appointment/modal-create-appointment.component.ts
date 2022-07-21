@@ -5,12 +5,12 @@ import { ModalityService } from './../../../services/modality.service';
 import { GeneralService } from './../../../services/general.service';
 import { NewPatientHope, PatientHope } from './../../../models/patients/patient-hope';
 import { PatientService } from './../../../services/patient.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search-patient-hope-grouped-request';
 import * as moment from 'moment';
 import { pick } from 'lodash';
-import { isOk } from 'src/app/utils/response.util';
+import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 // import { isOk } from '../../../utils/response.util';
 // import { Subscription } from 'rxjs';
 
@@ -19,15 +19,17 @@ import { isOk } from 'src/app/utils/response.util';
   templateUrl: './modal-create-appointment.component.html',
   styleUrls: ['./modal-create-appointment.component.css']
 })
-export class ModalCreateAppointmentComponent implements OnInit {
+export class ModalCreateAppointmentComponent extends WidgetBaseComponent implements OnInit, OnDestroy {
 
   constructor(
     private activeModal: NgbActiveModal,
     private patientService: PatientService,
     private generalService: GeneralService,
     private modalityService: ModalityService,
-    private alertService: AlertService,
-  ) { }
+    alertService: AlertService,
+  ) {
+    super(alertService, 'modal-search-patient-main-alert');
+  }
 
   @Input() selectedAppointment: any;
   public key: any = JSON.parse(localStorage.getItem('key') || '{}');
@@ -38,7 +40,6 @@ export class ModalCreateAppointmentComponent implements OnInit {
   public source: string = sourceApps;
   public patientHope: NewPatientHope[];
   public choosedPatient: PatientHope;
-  public model: any = {};
   public search: any = {
     birthDate: '',
     patientName: '',
@@ -46,7 +47,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
     idNumber: '',
     nationalIdTypeId: '',
   }
-  // private postAppointmentSubscription: Subscription;
+
   public selectedModality: any = {
     modalityHospitalId: '',
     modalityExaminationId: '',
@@ -67,7 +68,6 @@ export class ModalCreateAppointmentComponent implements OnInit {
 
   public nationalTypeIds: any = [];
   public examinationsList: any = [];
-  public viewCurrentDate: any = moment();
   public modalityHospitalList: any = [];
   public modalityAppointmentList: any = [];
   public viewFromTime: any = '';
@@ -80,7 +80,6 @@ export class ModalCreateAppointmentComponent implements OnInit {
   public isSelectedPatient: any;
   public showModalityList: boolean = false;
   public dateTimeWidth: string = '160px';
-  public onEdit: boolean = false;
 
   ngOnInit() {
     this.onChangeDefaultSelected();
@@ -97,11 +96,11 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   onNameAndDobSearchButtonClicked() {
-    // if (isEmpty(this.searchKeywords.patientName)
-    //   || isEmpty(this.searchKeywords.birthDate)) {
-    //     this.showErrorAlert('Name and DOB is required.', 2000);
-    //   return;
-    // }
+    if (!this.search.patientName
+      || !this.search.birthDate) {
+        this.showErrorAlert('Nama and Tanggal Lahir Dibutuhkan.', 2000);
+      return;
+    }
 
     const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
     this.getSearchedPatient({
@@ -111,11 +110,10 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   onIdNumberSearchButtonClicked() {
-    // if (isEmpty(this.searchKeywords.nationalIdTypeId)
-    //   || isEmpty(this.searchKeywords.idNumber)) {
-    //     this.showErrorAlert('National type id and id number is required.', 3000);
-    //   return;
-    // }
+    if (!this.search.idNumber) {
+      this.showErrorAlert('No. Identitas Pasien Dibutuhkan', 2000);
+      return;
+    }
     this.getSearchedPatient({
       idNumber: this.search.idNumber,
       nationalIdTypeId: this.search.nationalIdTypeId
@@ -123,10 +121,14 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   onLocalMrSearchButtonClicked() {
-      this.getSearchedPatient({
-        mrLocalNo: this.search.mrLocalNo,
-      });
+    if (!this.search.mrLocalNo) {
+      this.showErrorAlert('No. MR Lokal Pasien Dibutuhkan', 2000);
+      return;
     }
+    this.getSearchedPatient({
+      mrLocalNo: this.search.mrLocalNo,
+    });
+  }
 
 
   getSearchedPatient(request: SearchPatientHopeGroupedRequest) {
@@ -162,8 +164,8 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   getModalityHospitalList() {
-    if(this.viewCurrentDate) {
-      const dateString = this.viewCurrentDate.format('YYYY-MM-DD')
+    if(this.selectedModality.reserveDate) {
+      const dateString = this.selectedModality.reserveDate.format('YYYY-MM-DD')
       this.modalityService.getModalityHospital(this.hospital.id, dateString, dateString)
         .subscribe(res => {
           const activeModalityHospital = res.data.map((eachModality: any) => {
@@ -180,53 +182,22 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   onChangeDate = async () => {
-    this.selectedModality.reserveDate = this.viewCurrentDate.format('YYYY-MM-DD');
     await this.getModalityHospitalList();
   }
 
   onChangeModality() {
-    this.selectedModality.modalityHospitalId = this.selectedInput.modality_hospital_id;
     this.isExaminationButtonClicked = false;
-    this.getModalityExamination(this.selectedModality.modalityHospitalId)
+    if (this.edittedModality.hospitalId) {
+      this.getModalityExamination(this.edittedModality.modalityHospitalId);
+    } else {
+      this.selectedModality.modalityHospitalId = this.selectedInput.modality_hospital_id;
+      this.getModalityExamination(this.selectedModality.modalityHospitalId);
+    }
+
   }
 
   public onCreateAppointment() {
     this.isSubmitting = true;
-    // halo halo mas agung di sini mas untuk yg create appointment,note  di generatepayload itu blm kusesuaikan dengan payload appointmentnya
-    if (this.modalityAppointmentList.length > 0) {
-      this.modalityAppointmentList.array.forEach((element: any) => {
-        const payload = this.generatePayload(element, this.choosedPatient);
-        this.modalityService.postAppointment(payload)
-          .subscribe((response) => {
-            if (isOk(response)) {
-              response.data.local_mr_no = this.model.localMrNo;
-              this.actionSuccess();
-            }
-            this.isSubmitting = false;
-          }, (error: any) => {
-            this.isSubmitting = false;
-            this.alertService.error(error.message, false, 3000);
-          });
-      });
-    } else {
-      const payload = this.generatePayload(this.selectedModality, this.choosedPatient);
-      this.modalityService.postAppointment(payload)
-          .subscribe((response) => {
-            if (isOk(response)) {
-              response.data.local_mr_no = this.model.localMrNo;
-              this.actionSuccess();
-            }
-            this.isSubmitting = false;
-          }, (error: any) => {
-            this.isSubmitting = false;
-            this.alertService.error(error.message, false, 3000);
-          });
-    }
-    // const isValidForm = this.validateCreateAppointment();
-    // if (isValidForm === false) {
-    //   this.isSubmitting = false;
-    //   return false;
-    // }
     return;
   }
 
@@ -275,13 +246,13 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   addModalityToList() {
-    const objModality = pick(this.selectedInput, ['modality_label', 'room_name', 'modality_hospital_id'])
+    const objModality = pick(this.selectedInput, ['modality_label', 'room_name'])
     let payloadAddedModal = {
       ...objModality,
       ...this.selectedModality,
       ...this.isSelectedPatient,
     }
-    payloadAddedModal.reserveDate = this.viewCurrentDate.format('dddd, DD MMMM YYYY');
+    payloadAddedModal.reserveDate = this.selectedModality.reserveDate.format('dddd, DD MMMM YYYY')
     this.modalityAppointmentList.push(payloadAddedModal);
   }
 
@@ -290,16 +261,22 @@ export class ModalCreateAppointmentComponent implements OnInit {
     const modality = this.modalityHospitalList.find((md :any) => md.modality_hospital_id === this.edittedModality.modalityHospitalId )
     modalityAppointmentList[this.edittedModality.index] = { ...this.edittedModality, ...modality }
     this.modalityAppointmentList = modalityAppointmentList;
-    this.edittedModality = {};
+    this.onReset();
   }
 
   onChangeDefaultSelected() {
-    this.selectedModality.fromTime = this.selectedAppointment.fromTime;
-    this.selectedModality.toTime = this.selectedAppointment.toTime;
+    const { modalityHospitalId, fromTime, toTime, reserveDate } = this.selectedAppointment;
+    this.selectedModality = {
+      ...this.selectedModality,
+      fromTime,
+      toTime,
+      modalityHospitalId,
+      reserveDate
+    }
   }
 
   cancelModality() {
-    this.edittedModality = {}
+    this.onReset();
   }
 
   onDeleteModality(val: any) {
@@ -308,10 +285,26 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   onEditModality(list: any, index: any) {
-    this.onEdit = true;
     console.log(list, 'list')
     this.edittedModality = this.modalityAppointmentList[index];
     this.edittedModality.index = index;
-    console.log(this.edittedModality, '============== this editted modality')
+    this.getModalityExamination(this.edittedModality.modalityHospitalId);
+  }
+
+  onReset() {
+    console.log(this.selectedAppointment, '=========== selected appointment')
+    this.edittedModality = {};
+    const { fromTime, toTime, reserveDate, modalityHospitalId } =  this.selectedAppointment;
+    this.selectedModality = {
+      modalityHospitalId,
+      modalityExaminationId: '',
+      reserveDate,
+      notes: '',
+      isBpjs: false,
+      isAnesthesia: false,
+      fromTime,
+      toTime,
+    };
+    this.examinationsList = [];
   }
 }

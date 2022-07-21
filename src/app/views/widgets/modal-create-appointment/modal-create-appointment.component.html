@@ -12,6 +12,12 @@
     </div>
   </div>
   <div class="modal-body p-0">
+    <div>
+      <div *ngFor="let alert of alertMap[defaultAlertKey]">
+        <ngb-alert class="alert-message" *ngIf="alert" type="{{alert.typeName}}" (close)="removeAlert(alert)">{{ alert.message }}
+        </ngb-alert>
+      </div>
+    </div>
     <div class="px-4 py-3">
       <h5 class="mb-3">Data Pasien</h5>
       <p>BPJS</p>
@@ -206,9 +212,11 @@
                 </div>
               </div>
             </div>
-          <div class="w-25 justify-content-end">
-            <button (click)="onEditModality(list, i)" class="btn text-primary">Edit</button>
-            <button (click)="onDeleteModality(list)" class="btn text-primary">Hapus</button>
+          <div class="w-25">
+            <div class="d-flex justify-content-end mr-2">
+              <button (click)="onEditModality(list, i)" class="btn text-primary">Edit</button>
+              <button (click)="onDeleteModality(list)" class="btn text-primary">Hapus</button>
+            </div>
           </div>
         </div>
       </div>
@@ -223,15 +231,14 @@
               <select
                 *ngIf="!edittedModality.modalityHospitalId"
                 [(ngModel)]="selectedInput" (ngModelChange)="onChangeModality($event)"
-                placeholder="ID Number" name="national-type" class="form-control national-type-id"
+                name="selected-modality-hospital" class="form-control"
                 >
                 <option *ngFor="let type of modalityHospitalList" [ngValue]="type">{{type.modality_label}} - ROOM {{type.room_name}}</option>
-                [selected]="type.modality_hospital_id === edittedModality.modalityHospitalId"
               </select>
               <select
                 *ngIf="edittedModality.modalityHospitalId"
-                [(ngModel)]="edittedModality.modalityHospitalId"
-                placeholder="ID Number" name="national-type" class="form-control national-type-id"
+                [(ngModel)]="edittedModality.modalityHospitalId" (ngModelChange)="onChangeModality($event)"
+                name="editted-modality-hospital" class="form-control national-type-id"
                 >
                 <option *ngFor="let type of modalityHospitalList" [value]="type.modality_hospital_id">{{type.modality_label}} - ROOM {{type.room_name}}</option>
                 [selected]="type.modality_hospital_id === edittedModality.modalityHospitalId"
@@ -250,7 +257,7 @@
                 [(ngModel)]="selectedModality.modalityExaminationId">
                 <option class="text-muted" value="" selected hidden>Pilih jenis pemeriksaan</option>
                 <option *ngFor="let type of examinationsList"
-                  value="{{type.modality_examination_id}}"
+                  [value]="type.modality_examination_id"
                   >
                   {{type.name}}
                 </option>
@@ -261,7 +268,6 @@
                 name="national-type"
                 class="form-control national-type-id"
                 [(ngModel)]="edittedModality.modalityExaminationId">
-                <option class="text-muted" value="" selected hidden>Pilih jenis pemeriksaan</option>
                 <option *ngFor="let type of examinationsList"
                   [selected]="type.modality_examination_id === edittedModality.modalityExaminationId"
                   [value]="type.modality_examination_id"
@@ -298,7 +304,7 @@
                 format="dddd, DD MMMM YYYY" hideIcon=true [noBorder]=true
                 [isModalLarge]=true
                 width="230px"
-                [(value)]="viewCurrentDate"
+                [(value)]="selectedModality.reserveDate"
                 [onChange]="onChangeDate">
               </app-date-picker>
               <div class="ml-2" alt="datepicker">
