@@ -1,3 +1,4 @@
+import { AddedModality } from '../../../models/radiology/created-appointment-modality';
 import { channelId, sourceApps } from './../../../variables/common.variable';
 import { RadiologyAppointmentRequest } from './../../../models/radiology/request/radiology-appointment-request';
 import { AlertService } from './../../../services/alert.service';
@@ -49,14 +50,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     nationalIdTypeId: '',
   }
 
-  public selectedModality: any = {
-    modalityHospitalId: '',
-    modalityExaminationId: '',
-    reserveDate: moment().format('YYYY-MM-DD'),
-    notes: '',
-    isBpjs: false,
-    isAnesthesia: false,
-  };
+  public selectedModality: AddedModality;
   public edittedModality: any = {
     index: '',
     modalityHospitalId: '',
@@ -84,10 +78,12 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   public isLoadingPatientTable : boolean;
   public model: any;
   public selectedDateTime: any;
+  public isAddedModality: boolean = false;
   public viewDate: any = moment();
+  public isSelectedExaminationValid: boolean = true;
 
   ngOnInit() {
-    this.onChangeDefaultSelected();
+    this.onDefaultSelected();
     this.getModalityHospitalList();
     this.getNationalityIdType();
   }
@@ -271,6 +267,8 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
 
   validateCreateAppointment() {
     let isValid = true;
+    if (!this.selectedModality.modalityHospitalId) isValid = false;
+    if (!this.selectedModality.modalityExaminationId) isValid = false;
     return isValid;
   }
 
@@ -318,6 +316,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     }
     payloadAddedModal.reserveDate = this.selectedModality.reserveDate.format('dddd, DD MMMM YYYY')
     this.modalityAppointmentList.push(payloadAddedModal);
+    this.isSelectedExaminationValid = true;
   }
 
   editModalityToList() {
@@ -329,7 +328,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     this.onReset();
   }
 
-  onChangeDefaultSelected() {
+  onDefaultSelected() {
     const { modalityHospitalId, fromTime, toTime, reserveDate, modality_label, room_name } = this.selectedAppointment;
     this.selectedModality = {
       ...this.selectedModality,
@@ -370,6 +369,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
 
   onReset() {
     this.edittedModality = {};
-    this.onChangeDefaultSelected();
+    this.onDefaultSelected();
   }
 }
+
