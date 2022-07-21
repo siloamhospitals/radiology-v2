@@ -19,21 +19,31 @@
   <div class="modal-body px-0">
     <div class="formclass">
       <div class="mb-3 d-flex align-items-center justify-content-between px-3">
-        <h4>{{data.modality_name}} - {{data.room_name}}</h4>
+        <h4>{{selectedAppointment.modality_name}} - {{selectedAppointment.room_name}}</h4>
         <span class="badge badge-primary p-2 rounded-pill">
           <h6 class="mb-0" >Terjadwal</h6>
         </span>
       </div>
-      <div class="mb-3 px-3" *ngIf="data.operational_type == 3">
+      <div class="mb-3 px-3" *ngIf="selectedAppointment.operational_type == 3">
         <label for="">Tanggal dan Waktu</label>
         <div class="d-flex align-items-center" >
           <app-date-picker format="dddd, DD MMMM YYYY" width="160px" hideIcon="true" ></app-date-picker>
           <span class="mx-2" >|</span>
-          <app-time-picker useMinute="true" [value]="data.fromTime" ></app-time-picker>&nbsp;
-          <app-time-picker useMinute="true" [value]="data.toTime" ></app-time-picker>
+          <app-time-picker
+            [isModalLarge]=true
+            [noBorder]=true
+            [(value)]="selectedAppointment.from_time"
+            useMinute="true" >
+          </app-time-picker>&nbsp;
+          <app-time-picker
+            [isModalLarge]=true
+            [noBorder]=true
+            [(value)]="selectedAppointment.to_time"
+            useMinute="true" >
+          </app-time-picker>
         </div>
       </div>
-      <div class="mb-3 px-3" *ngIf="data.operational_type == 1">
+      <div class="mb-3 px-3" *ngIf="selectedAppointment.operational_type == 1">
         <label for="">Tanggal dan Waktu</label>
         <div class="d-flex align-items-center" >
           <app-date-picker format="dddd, DD MMMM YYYY" width="160px" hideIcon="true" ></app-date-picker>
@@ -43,45 +53,45 @@
         <div class="w-50">
           <label for="" class="text-muted">Local MR Number</label>
           <div>
-            <span class="form-label">{{data.localMrNo ? data.localMrNo : '-'}}</span>
+            <span class="form-label">{{selectedAppointment.localMrNo ? selectedAppointment.localMrNo : '-'}}</span>
           </div>
         </div>
         <div class="w-50 pl-3">
           <label for="" class="text-muted">Admission Number</label>
           <div>
-            <span class="form-label">{{data.admission_no ? data.admission_no : '-'}}</span>
+            <span class="form-label">{{selectedAppointment.admission_no ? selectedAppointment.admission_no : '-'}}</span>
           </div>
         </div>
       </div>
       <div class="mb-3 px-3">
         <label for="" class="text-muted">Nama Lengkap</label>
         <div>
-          <span class="form-label">{{data.patient}}</span>
+          <span class="form-label">{{selectedAppointment.patient}}</span>
         </div>
       </div>
       <div class="d-flex flex-wrap flex-row px-3">
         <div class="mb-3 w-50">
           <label for="" class="text-muted">Date of Birth</label>
           <div>
-            <span class="form-label">{{data.dob}}</span>
+            <span class="form-label">{{selectedAppointment.dob}}</span>
           </div>
         </div>
         <div class="mb-3 w-50 pl-3">
           <label for="" class="text-muted">ID Number</label>
           <div>
-            <span class="form-label">{{data.identity_type_id == 1 ? 'KTP' : 'Passport' }} - {{data.identity_number}}</span>
+            <span class="form-label">{{selectedAppointment.identity_type_id == 1 ? 'KTP' : 'Passport' }} - {{selectedAppointment.identity_number}}</span>
           </div>
         </div>
         <div class="mb-3 w-50">
           <label for="" class="text-muted">Mobile Phone</label>
           <div>
-            <span class="form-label">{{data.patient_phone_number_1 ? data.patient_phone_number_1 : data.patient_phone_number_2}}</span>
+            <span class="form-label">{{selectedAppointment.patient_phone_number_1 ? selectedAppointment.patient_phone_number_1 : selectedAppointment.patient_phone_number_2}}</span>
           </div>
         </div>
         <div class="mb-3 w-50 pl-3">
           <label for="" class="text-muted">Email</label>
           <div>
-            <span class="form-label">{{data.email}}</span>
+            <span class="form-label">{{selectedAppointment.email}}</span>
           </div>
         </div>
         <div class="mb-3 w-100">
@@ -102,7 +112,7 @@
           <div class="">
             <select id="title" class="form-control" name="dropDownRoom" formControlName="modalityExaminationId">
               <option *ngFor="let examination of examinations" value="{{examination.modality_examination_id}}"
-              [selected]="examination.modality_examination_id === data.examination_id"
+              [selected]="examination.modality_examination_id == selectedAppointment.modality_examination_id"
               >
                 {{examination.name}}
               </option>
@@ -118,7 +128,7 @@
             </div>
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="is_anesthesia" formControlName="is_anesthesia" [value]=true
-              [checked]="data.is_anesthesia === true">
+              [checked]="selectedAppointment.is_anesthesia === true">
               <label class="form-check-label" for="anastesiRadio">Ya</label>
             </div>
           </div>

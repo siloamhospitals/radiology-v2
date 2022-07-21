@@ -19,6 +19,7 @@ export class TimepickerComponent implements OnInit {
   @Input() useMinute : boolean;
   @Input() noBorder: boolean = false;
   @Input() isModalLarge: boolean = false;
+  @Input() readonly: boolean = false;
 
   @Output() valueChange = new EventEmitter()
 

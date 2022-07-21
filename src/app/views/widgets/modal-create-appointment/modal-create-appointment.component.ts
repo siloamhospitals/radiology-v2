@@ -11,6 +11,7 @@ import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search
 import * as moment from 'moment';
 import { pick } from 'lodash';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
+import { isOk } from 'src/app/utils/response.util';
 // import { isOk } from '../../../utils/response.util';
 // import { Subscription } from 'rxjs';
 
@@ -80,6 +81,8 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   public isSelectedPatient: any;
   public showModalityList: boolean = false;
   public dateTimeWidth: string = '160px';
+  public isLoadingPatientTable : boolean;
+  public model: any;
 
   ngOnInit() {
     this.onChangeDefaultSelected();
@@ -95,43 +98,29 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     this.activeModal.close();
   }
 
-  onNameAndDobSearchButtonClicked() {
-    if (!this.search.patientName
-      || !this.search.birthDate) {
-        this.showErrorAlert('Nama and Tanggal Lahir Dibutuhkan.', 2000);
-      return;
-    }
+  getSearchedPatientSubmit(ev : Event) {
+    ev.preventDefault()
+
+    // if ((!this.search.idNumber
+    //   || !this.search.nationalIdTypeId)) {
+    //     this.showErrorAlert('Nomor Identitas Dibutuhkan.', 2000);
+    //   return;
+    // }
+
+    // if (!this.search.mrLocalNo) {
+    //     this.showErrorAlert('Nomor MR Lokal Dibutuhkan.', 2000);
+    //   return;
+    // }
 
     const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
     this.getSearchedPatient({
-      patientName: this.search.patientName,
+      ...this.search,
       birthDate: formattedDob,
     });
   }
 
-  onIdNumberSearchButtonClicked() {
-    if (!this.search.idNumber) {
-      this.showErrorAlert('No. Identitas Pasien Dibutuhkan', 2000);
-      return;
-    }
-    this.getSearchedPatient({
-      idNumber: this.search.idNumber,
-      nationalIdTypeId: this.search.nationalIdTypeId
-    });
-  }
-
-  onLocalMrSearchButtonClicked() {
-    if (!this.search.mrLocalNo) {
-      this.showErrorAlert('No. MR Lokal Pasien Dibutuhkan', 2000);
-      return;
-    }
-    this.getSearchedPatient({
-      mrLocalNo: this.search.mrLocalNo,
-    });
-  }
-
-
   getSearchedPatient(request: SearchPatientHopeGroupedRequest) {
+    this.isLoadingPatientTable = true
     this.patientService.searchPatientHopeGroup({
       ...request,
       hospitalId: this.hospital.id,
@@ -142,6 +131,9 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       } else {
         this.showPatientTable = '1';
       }
+      this.isLoadingPatientTable = false
+    }, () => {
+      this.isLoadingPatientTable = false
     });
   }
 
@@ -198,6 +190,40 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
 
   public onCreateAppointment() {
     this.isSubmitting = true;
+    if (this.modalityAppointmentList.length > 0) {
+      this.modalityAppointmentList.forEach((element: any) => {
+        const payload = this.generatePayload(element, this.choosedPatient);
+        this.modalityService.postAppointment(payload)
+          .subscribe((response) => {
+            if (isOk(response)) {
+              response.data.local_mr_no = this.model.localMrNo;
+              this.actionSuccess();
+            }
+            this.isSubmitting = false;
+          }, (error: any) => {
+            this.isSubmitting = false;
+            this.alertService.error(error && error.message, false, 3000);
+          });
+      });
+    } else {
+      const payload = this.generatePayload(this.selectedModality, this.choosedPatient);
+      this.modalityService.postAppointment(payload)
+          .subscribe((response) => {
+            if (isOk(response)) {
+              response.data.local_mr_no = this.model.localMrNo;
+              this.actionSuccess();
+            }
+            this.isSubmitting = false;
+          }, (error: any) => {
+            this.isSubmitting = false;
+            this.alertService.error(error.message, false, 3000);
+          });
+    }
+    // const isValidForm = this.validateCreateAppointment();
+    // if (isValidForm === false) {
+    //   this.isSubmitting = false;
+    //   return false;
+    // }
     return;
   }
 
@@ -211,7 +237,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   public generatePayload(model: any, choosedPatient: any) {
-    const { patientName, phoneNumber, address, note } = model;
+    const { mobileNo1: phoneNumber, address, notes } = model;
     const dob = model.birthDate.split('-');
     const birthDate = dob[2] + '-' + dob[1] + '-' + dob[0];
     const patientHopeId = choosedPatient ? choosedPatient.patientId : null;
@@ -219,15 +245,15 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       modalityExaminationId: model.modalityExaminationId,
       modalityHospitalId: model.modalityHospitalId,
       modalityOperationalId: model.modalityOperationalId,
-      reserveDate: model.date,
+      reserveDate: model.reserveDate,
       fromTime: model.fromTime,
       toTime: model.toTime,
       patientHopeId,
-      name: patientName,
+      name: model.name,
       birthDate,
       phoneNumber1: this.filteredPhoneNumber(phoneNumber),
       addressLine1: address,
-      notes: note,
+      notes: notes,
       channelId: channelId.FRONT_OFFICE,
       userId: this.userId,
       userName: this.userName,
