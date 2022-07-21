@@ -18,6 +18,7 @@ export class DatepickerComponent implements OnInit {
   @Input() isModalLarge: boolean = false;
   @Input() noBorder: boolean = false;
   @Input() onChange : Function;
+  @Input() readonly: boolean = false;
 
   @Output() valueChange = new EventEmitter();
 
