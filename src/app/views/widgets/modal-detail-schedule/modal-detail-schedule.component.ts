@@ -62,7 +62,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   ngOnInit() {
     console.log(this.selectedAppointment)
     this.updateAppointmentForm = this._fb.group({
-      modalityExaminationId: [{value: this.selectedAppointment.examination_id, disabled: false}, [Validators.required]],
+      modalityExaminationId: [{value: this.selectedAppointment.modality_examination_id, disabled: false}, [Validators.required]],
       is_bpjs: [{value: this.selectedAppointment.is_bpjs, disabled: false}, [Validators.required]],
       is_anesthesia: [{value: this.selectedAppointment.is_anesthesia, disabled: false}, [Validators.required]],
       note: [{value: this.selectedAppointment.note, disabled: false}],
