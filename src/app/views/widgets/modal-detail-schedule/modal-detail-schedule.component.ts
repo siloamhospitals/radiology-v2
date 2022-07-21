@@ -19,20 +19,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./modal-detail-schedule.component.css']
 })
 export class ModalDetailScheduleComponent implements OnInit {
-  @Input() data: any
+  @Input() selectedAppointment: any
   public examinations: Examination[] = [];
   public key: any = JSON.parse(localStorage.getItem('key')!);
   public hospital = this.key.hospital;
   public user = this.key.user;
   public userId: string = this.user.id;
-  private userName: string = this.user.fullname;
   public source: string = 'Front Office';
   public isBpjs: false;
   public modalityExaminationId: any;
   public isAnesthesia: false;
   public note: any;
-  public bpjsValue: any = '';
-  public anastesiValue: any = '';
   public getUserPayload(): BasicRequest {
     const key: any = JSON.parse(localStorage.getItem('key')!);
     const user = key.user;
@@ -42,6 +39,9 @@ export class ModalDetailScheduleComponent implements OnInit {
       source: sourceApps
     };
   }
+  private userName: string = this.user.fullname;
+  public fromTime: any;
+  public toTime: any;
   public updateAppointmentForm:any = FormGroup;
   
 
@@ -60,16 +60,15 @@ export class ModalDetailScheduleComponent implements OnInit {
   date : any = moment()
 
   ngOnInit() {
-    this.fillExaminations(this.data.modality_hospital_id);
+    console.log(this.selectedAppointment)
     this.updateAppointmentForm = this._fb.group({
-      modalityExaminationId: [{value: this.data.examination_id, disabled: false}, [Validators.required]],
-      is_bpjs: [{value: false, disabled: false}, [Validators.required]],
-      is_anesthesia: [{value: this.data.is_anesthesia, disabled: false}, [Validators.required]],
-      note: [{value: this.data.note, disabled: false}],
+      modalityExaminationId: [{value: this.selectedAppointment.examination_id, disabled: false}, [Validators.required]],
+      is_bpjs: [{value: this.selectedAppointment.is_bpjs, disabled: false}, [Validators.required]],
+      is_anesthesia: [{value: this.selectedAppointment.is_anesthesia, disabled: false}, [Validators.required]],
+      note: [{value: this.selectedAppointment.note, disabled: false}],
     });
-    this.note = this.data.note
-    this.isBpjs = this.data.isBpjs
-    this.modalityExaminationId = this.data.modality_examination_id
+    this.onChangeDefaultSelected();
+    this.fillExaminations(this.selectedAppointment.modality_hospital_id);
   }
 
   close() {
@@ -100,7 +99,7 @@ export class ModalDetailScheduleComponent implements OnInit {
       });
   }
 
-  cancelAppointment(item: any = this.data) {
+  cancelAppointment(item: any = this.selectedAppointment) {
     console.log(item)
     const m = this.modalService.open(ModalCancelAppointmentComponent, { windowClass: 'modal_cancel_appointment' })
     m.result.then((result: any) => {if (result.result === 'OK') {
@@ -121,34 +120,51 @@ export class ModalDetailScheduleComponent implements OnInit {
 }
 
   public updateAppointment() {
-   
-    const payload = {
-      modalityExaminationId: this.updateAppointmentForm.controls.modalityExaminationId.value,
-      modalityHospitalId: this.data.modality_hospital_id,
-      modalityOperationalId: this.data.modality_operational_id,
-      modalitySlotId: this.data.modality_slot_id,
-      channelId: '2',
-      notes: this.updateAppointmentForm.controls.note.value,
-      isBpjs: this.updateAppointmentForm.controls.is_bpjs.value,
-      isAnesthesia: this.updateAppointmentForm.controls.is_anesthesia.value,
-      userId: this.userId,
-      userName: this.userName,
-      source: this.source,
-    };
-    
+  const payload = {
+    modalityExaminationId: this.updateAppointmentForm.controls.modalityExaminationId.value,
+    modalityHospitalId: this.selectedAppointment.modality_hospital_id,
+    modalityOperationalId: this.selectedAppointment.modality_operational_id,
+    modalitySlotId: this.selectedAppointment.modality_slot_id,
+    channelId: '2',
+    isWaitingList: false,
+    fromTime: this.selectedAppointment.from_time,
+    toTime: this.selectedAppointment.to_time,
+    notes: this.updateAppointmentForm.controls.note.value,
+    isBpjs: this.updateAppointmentForm.controls.is_bpjs.value,
+    isAnesthesia: this.updateAppointmentForm.controls.is_anesthesia.value,
+    userId: this.userId,
+    userName: this.userName,
+    source: this.source,
+    reserveDate: this.selectedAppointment.reserve_date
+  };
+  if(payload.fromTime === this.fromTime && payload.toTime === this.toTime) {
     this.radiologyService.putAppointment(payload)
-      .subscribe((response) => {
-        if (isOk(response)) {
-          this.showSuccessAlert(response.message);
-        }
-        location.reload();
-      }, () => {
-        this.showErrorAlert('Update gagal');
-      });
+    .subscribe((response) => {
+      if (isOk(response)) {
+        this.showSuccessAlert(response.message);
+        this.activeModal.close('success');
+      }
+      // location.reload();
+    }, () => {
+      this.showErrorAlert('Update gagal');
+    });
+  }else{
+    this.radiologyService.reschedule(payload)
+    .subscribe((response) => {
+      if (isOk(response)) {
+        this.showSuccessAlert(response.message);
+      }
+      // location.reload();
+    }, () => {
+      this.showErrorAlert('Update gagal');
+    });
+  }
+  
   }
 
-  async onChangeBpjsResult(event: any) {
-    this.isBpjs = event.target.value;
+  onChangeDefaultSelected() {
+    this.fromTime = this.selectedAppointment.from_time;
+    this.toTime = this.selectedAppointment.to_time;
   }
   public showSuccessAlert(message: string) {
     Swal.fire({

@@ -56,17 +56,24 @@
             </label>
           </div>
         </div>
-        <div class="px-3 border-bottom">
+        <div *ngIf="[0,1].includes(tableViewActive)"
+          class="px-3 border-bottom">
           <div class="row">
             <div class="col-md-3 position-relative pr-0 border-right">
               <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari Nama Pasien"
-                title="Find patients" />
-              <span class="fa fa-search position-absolute"></span>
+                title="Find patients"
+                [(ngModel)]="filterName"
+                (keyup)="setFilterName($event)"
+                (blur)="setFilterName($event)" />
+              <span class="fa fa-search position-absolute" style="font-size: 16px; bottom: 15px;"></span>
             </div>
             <div class="col-md-3 position-relative pr-0 border-right">
               <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari Local MR"
-                title="Find local MR" />
-              <span class="fa fa-search position-absolute"></span>
+                title="Find local MR"
+                [(ngModel)]="filterLocalMrNo"
+                (keyup)="setFilterLocalMrNo($event)"
+                (blur)="setFilterLocalMrNo($event)" />
+              <span class="fa fa-search position-absolute" style="font-size: 16px; bottom: 15px;"></span>
             </div>
             <div class="col-md-2 pr-0 d-flex flex-column border-right pb-2">
               <small>Time Range</small>
@@ -88,28 +95,37 @@
       </section> -->
 
       <section class="px-3 my-3 pb-3">
-        <div *ngIf="tableViewActive===2" class="no-sticky">
-          <app-table-list-monthly
-            (itemClick)="toDaily($event)"
+        <ng-container *ngIf="!showFilterTable; else tableFilter">
+          <div *ngIf="tableViewActive===2" class="no-sticky">
+            <app-table-list-monthly
+              (itemClick)="toDaily($event)"
+              [sectionSelected]="sectionSelected"
+              [dateSelected]="tableViewCurrentDate"
+              [data]="scheduleList"></app-table-list-monthly>
+          </div>
+          <div *ngIf="tableViewActive===1" class="table-head-sticky">
+            <app-table-list-weekly
+              (itemClick)="toDaily($event)"
+              [sectionSelected]="sectionSelected"
+              [dateSelected]="tableViewCurrentDate"></app-table-list-weekly>
+          </div>
+          <div *ngIf="tableViewActive===0" class="table-head-sticky">
+            <app-table-list-daily
+              [sectionSelected]="sectionSelected"
+              [dateSelected]="tableViewCurrentDate"
+              [fromTimeRange]="fromTimeRange"
+              [toTimeRange]="toTimeRange"
+              ></app-table-list-daily>
+          </div>
+        </ng-container>
+        <ng-template #tableFilter>
+          <app-table-filter-schedule
+            [tableViewActive]="tableViewActive"
             [sectionSelected]="sectionSelected"
             [dateSelected]="tableViewCurrentDate"
-            [data]="scheduleList"></app-table-list-monthly>
-        </div>
-        <div *ngIf="tableViewActive===1" class="table-head-sticky">
-          <app-table-list-weekly
-            (itemClick)="toDaily($event)"
-            [sectionSelected]="sectionSelected"
-            [dateSelected]="tableViewCurrentDate"
-            [modalitySlots]="modalitySlots"></app-table-list-weekly>
-        </div>
-        <div *ngIf="tableViewActive===0" class="table-head-sticky">
-          <app-table-list-daily
-            [sectionSelected]="sectionSelected"
-            [dateSelected]="tableViewCurrentDate"
-            [fromTimeRange]="fromTimeRange"
-            [toTimeRange]="toTimeRange"
-            ></app-table-list-daily>
-        </div>
+            [filter]="filter"
+            (isFilterShow)="resetFilter($event, false)"></app-table-filter-schedule>
+        </ng-template>
       </section>
 
       <!-- Modal Section -->

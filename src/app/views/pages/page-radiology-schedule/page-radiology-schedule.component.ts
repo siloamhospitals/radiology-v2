@@ -67,6 +67,11 @@ export class PageRadiologyScheduleComponent implements OnInit {
   sectionSelected: ModalityHospital = new ModalityHospital();
   sectionSelectedCanMultiple: Boolean = false
 
+  showFilterTable: boolean = false
+  filterName: any = null
+  filterLocalMrNo: any = null
+  filter: any = {name: null, localMrNo: null, showFilter: false}
+
   fromTimeRange: string = "00:00";
   toTimeRange: string = "00:00";
 
@@ -200,5 +205,34 @@ export class PageRadiologyScheduleComponent implements OnInit {
   async setSelectedSection (modalityHospital: ModalityHospital) {
     this.sectionSelected = modalityHospital
     this.changeTableDate(this.tableViewCurrentDate.toDate())
+  }
+
+
+  setFilter (obj: any) {
+    this.filter = {...obj}
+    this.showFilterTable = true
+  }
+
+  setFilterName (v: any) {
+    this.filterLocalMrNo = null
+    const value = v.target.value
+    if (((v.type === 'keyup' && v.which === 13) || v.type === 'blur') && value && value.length > 2) {
+      this.setFilter({name: value, localMrNo: null})
+    }
+  }
+
+  setFilterLocalMrNo (v: any) {
+    this.filterName = null
+    const value = v.target.value
+    if (((v.type === 'keyup' && v.which === 13) || v.type === 'blur') && value && value.length > 2) {
+      this.setFilter({name: null, localMrNo: value})
+    }
+  }
+
+  resetFilter (isReset: boolean = false, _isResetField: boolean = false) {
+    this.showFilterTable = isReset
+    if (isReset) { return }
+    this.filterName = null
+    this.filterLocalMrNo = null
   }
 }
