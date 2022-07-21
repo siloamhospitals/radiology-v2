@@ -26,7 +26,7 @@ export class TableFilterScheduleComponent implements OnInit, OnChanges {
   isLoading: boolean = false
   fetchDataDebounce: any = null
 
-  public scheduleStatus = ScheduleStatus
+  public scheduleStatus: any = ScheduleStatus
 
   constructor(
     private radiologyService: RadiologyService,

@@ -25,12 +25,13 @@
       </div>
     </div>
 
-    <div class="d-flex flex-wrap flex-row border px-3">
+    <form class="d-flex flex-wrap flex-row border px-3" (submit)="getSearchedPatientSubmit($event)">
       <div class="w-34">
-        <div class="d-flex flex-wrap py-3 flex-row border-right mr-3">
+        <div class="d-flex flex-wrap py-3 flex-row border-right mr-3" >
           <div class="w-25">
             <label class="pl-1" for="patient-dob-search">Tanggal Lahir</label>
             <input
+              name="birth-date"
               class="form-control border-0 pl-1"
               id="patient-dob-search"
               placeholder="DD-MM-YYYY"
@@ -45,6 +46,7 @@
             <label class="pl-1" for="patient-name-search">Nama Pasien</label>
             <div class="d-flex flex-row">
               <input
+              name="patient-name"
               [(ngModel)]="search.patientName"
               class="form-control border-0 pl-1 w-75"
               id="patient-name-search"
@@ -52,7 +54,7 @@
               type="text"
               >
               <div class="w-25 align-self-center text-right">
-                <button class="btn border-0" (click)="onNameAndDobSearchButtonClicked()">
+                <button class="btn border-0" type="submit">
                   <span class="fa fa-lg fa-search text-muted"></span>
                 </button>
               </div>
@@ -67,14 +69,15 @@
             <label class="pl-1" for="local-mr-search">Nomor MR Local</label>
             <div class="d-flex flex-row">
               <input
+              name="mrLocalNo"
               [(ngModel)]="search.mrLocalNo"
               class="form-control border-0 pl-1 w-75"
               id="patient-dob-field"
               placeholder="Cari No. MR lokal pasien"
-              type="text"
+              type="number"
               >
               <div class="w-25 align-self-center text-right">
-                <button class="btn border-0" (click)="onLocalMrSearchButtonClicked()">
+                <button class="btn border-0" type="submit">
                   <span class="fa fa-lg fa-search text-muted"></span>
                 </button>
               </div>
@@ -105,7 +108,7 @@
                 />
               </div>
               <div class="w-25 align-self-center text-right">
-                <button class="btn border-0" (click)="onIdNumberSearchButtonClicked()">
+                <button class="btn border-0" type="submit">
                   <span class="fa fa-lg fa-search text-muted"></span>
                 </button>
               </div>
@@ -114,7 +117,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </form>
 
     <div class="px-4 py-2 table-responsive">
       <table class="table borderless mt-3 table-list-radiology">
@@ -132,7 +135,7 @@
         </thead>
 
         <tbody class="tbody-custom">
-          <ng-container *ngIf="showPatientTable === '2'">
+          <ng-container *ngIf="!isLoadingPatientTable && showPatientTable === '2'">
             <tr *ngFor="let patient of patientHope; let i = index;"
               class="item-hover"
               [ngClass]="{'bg-primary' : isSelectedPatient === patient, '': isSelectedPatient !== patient}"
@@ -155,10 +158,13 @@
         </ng-container>
         </tbody>
       </table>
-      <div *ngIf="showPatientTable === '0'" class="text-center">
+      <div *ngIf="isLoadingPatientTable" class="text-center">
+        <p class="text-muted">Memuat ..</p>
+      </div>
+      <div *ngIf="!isLoadingPatientTable && showPatientTable === '0'" class="text-center">
         <p class="text-muted">Belum ada Data Pasien untuk ditampilkan.</p>
       </div>
-      <div *ngIf="showPatientTable === '1'" class="text-center">
+      <div *ngIf="!isLoadingPatientTable && showPatientTable === '1'" class="text-center">
         <img src="/assets/icons/ic_file_img.svg" alt="image">
         <p class="text-muted">Data Pasien tidak ditemukan periksa kembali data yang anda masukkan atau,</p>
         <button class="btn btn-primary"><span class="fa fa-plus"></span> Daftar Sebagai Pasien Baru</button>
@@ -174,32 +180,41 @@
     <div class="d-flex flex-wrap flex-row px-4">
       <h5 class="w-100">Modality</h5>
       <div class="w-100" *ngIf="showModalityList">
-        <div class="w-100 border border-radius-custom d-flex flex-wrap flex-row" *ngFor="let list of modalityAppointmentList" >
-          <div class="w-25 my-3 border-right">
-            <p class="mx-3">{{list.modality_label}} - ROOM {{list.room_name}}</p>
+        <div class="border border-radius-custom d-flex flex-wrap align-items-center mb-3" *ngFor="let list of modalityAppointmentList; index as i" >
+          <div class="w-25 border-right">
+            <div class="mx-3 my-2">{{list.modality_label}} - ROOM {{list.room_name}}</div>
           </div>
-          <div class="w-75 pl-4">
-            <div class="mx-2 my-2">
-              <div class="d-flex align-items-center">
-                <div class="position-relative" [style.width]="dateTimeWidth" >
-                  <img src="/assets/icons/ic_datepicker.png" class="position-absolute icon-datepicker" alt="datepicker" />
-                  <div class="date-list text-center">
-                    {{list.reserveDate}}
+            <div class="w-50 pl-2 my-2">
+              <div class="mx-3 my-2">
+                <div class="d-flex align-items-center">
+                  <div alt="datepicker">
+                    <i class="fa fa-calendar-o mx-2"></i>
                   </div>
-                </div>
-                <span class="mx-2" >|</span>
-                <div class="position-relative">
-                  <div type="text" class="date-list text-center timer-picker pr-3">
-                    {{list.fromTime}}
+                  <div class="position-relative" style="width: 230px;">
+                    <div class="modality-form text-left text-muted text-custom pl-2 border-right">
+                      {{list.reserveDate}}
+                    </div>
                   </div>
-                </div>
-                <div class="position-relative">
-                  <div type="text" class="date-list text-center timer-picker pr-3">
-                    {{list.toTime}}
+                  <div class="ml-2" alt="datepicker">
+                    <i class="fa fa-clock-o mx-2"></i>
+                  </div>
+                  <div class="position-relative" style="width: 74px;">
+                    <div class="modality-form text-left text-muted text-custom">
+                      {{list.fromTime}}
+                    </div>
+                  </div>
+                  <span class="mr-2 ml-1" >-</span>
+                  <div class="position-relative" style="width: 74px;">
+                    <div class="modality-form text-left text-muted text-custom">
+                      {{list.toTime}}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          <div class="w-25 justify-content-end">
+            <button (click)="onEditModality(list, i)" class="btn text-primary">Edit</button>
+            <button (click)="onDeleteModality(list)" class="btn text-primary">Hapus</button>
           </div>
         </div>
       </div>
@@ -209,14 +224,23 @@
       <div class="w-100 border border-radius-custom d-flex flex-wrap flex-row">
         <div class="w-25 my-2 border-right">
           <div class="mx-3 my-2">
-            <label for="modality_label">Modality <sup class="text-required">*</sup></label>
+            <label for="modality_label">Modality<sup class="text-required">*</sup></label>
             <div class="input-group">
               <select
+                *ngIf="!edittedModality.modalityHospitalId"
                 [(ngModel)]="selectedInput" (ngModelChange)="onChangeModality($event)"
                 placeholder="ID Number" name="national-type" class="form-control national-type-id"
                 >
-                <option class="text-muted" value="" selected hidden>Pilih Modality</option>
                 <option *ngFor="let type of modalityHospitalList" [ngValue]="type">{{type.modality_label}} - ROOM {{type.room_name}}</option>
+                [selected]="type.modality_hospital_id === edittedModality.modalityHospitalId"
+              </select>
+              <select
+                *ngIf="edittedModality.modalityHospitalId"
+                [(ngModel)]="edittedModality.modalityHospitalId"
+                placeholder="ID Number" name="national-type" class="form-control national-type-id"
+                >
+                <option *ngFor="let type of modalityHospitalList" [value]="type.modality_hospital_id">{{type.modality_label}} - ROOM {{type.room_name}}</option>
+                [selected]="type.modality_hospital_id === edittedModality.modalityHospitalId"
               </select>
             </div>
           </div>
@@ -225,6 +249,7 @@
             <label for="examination">Jenis Pemeriksaan <sup class="text-required">*</sup></label>
             <div class="input-group">
               <select [disabled]="isExaminationButtonClicked"
+                *ngIf="!edittedModality.modalityHospitalId"
                 placeholder="ID Number"
                 name="national-type"
                 class="form-control national-type-id"
@@ -236,17 +261,33 @@
                   {{type.name}}
                 </option>
               </select>
+               <select [disabled]="isExaminationButtonClicked"
+                *ngIf="edittedModality.modalityHospitalId"
+                placeholder="ID Number"
+                name="national-type"
+                class="form-control national-type-id"
+                [(ngModel)]="edittedModality.modalityExaminationId">
+                <option class="text-muted" value="" selected hidden>Pilih jenis pemeriksaan</option>
+                <option *ngFor="let type of examinationsList"
+                  [selected]="type.modality_examination_id === edittedModality.modalityExaminationId"
+                  [value]="type.modality_examination_id"
+                  >
+                  {{type.name}}
+                </option>
+              </select>
             </div>
           </div>
 
           <div class="mx-3 my-2">
             <p>Anestesi</p>
             <div class="form-check form-check-inline pr-3">
-              <input [(ngModel)]="selectedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa" [value]=false>
+              <input *ngIf="!edittedModality.modalityHospitalId" [(ngModel)]="selectedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa" [value]=false>
+              <input *ngIf="edittedModality.modalityHospitalId" [(ngModel)]="edittedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa" [value]=false>
               <label class="form-check-label" for="anesthesa">Tidak</label>
             </div>
             <div class="form-check form-check-inline">
-              <input [(ngModel)]="selectedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa2" [value]=true>
+              <input *ngIf="!edittedModality.modalityHospitalId" [(ngModel)]="selectedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa" [value]=true>
+              <input *ngIf="edittedModality.modalityHospitalId" [(ngModel)]="edittedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa" [value]=true>
               <label class="form-check-label" for="anesthesa">Ya</label>
             </div>
           </div>
@@ -270,16 +311,32 @@
                 <i class="fa fa-clock-o mx-2"></i>
               </div>
               <app-time-picker
+                *ngIf="!edittedModality.modalityHospitalId"
                 [isModalLarge]=true
                 [noBorder]=true
                 [(value)]="selectedModality.fromTime"
                 useMinute="true" >
+              </app-time-picker>
+              <app-time-picker
+                *ngIf="edittedModality.modalityHospitalId"
+                [isModalLarge]=true
+                [noBorder]=true
+                [(value)]="edittedModality.fromTime"
+                useMinute="true" >
               </app-time-picker>&nbsp;
               <span class="mr-2 ml-1" >-</span>
               <app-time-picker
+                *ngIf="!edittedModality.modalityHospitalId"
                 [isModalLarge]=true
                 [noBorder]=true
                 [(value)]="selectedModality.toTime"
+                useMinute="true" >
+              </app-time-picker>
+              <app-time-picker
+                *ngIf="edittedModality.modalityHospitalId"
+                [isModalLarge]=true
+                [noBorder]=true
+                [(value)]="edittedModality.toTime"
                 useMinute="true" >
               </app-time-picker>&nbsp;
             </div>
@@ -288,14 +345,16 @@
           <div class="mx-3 my-2">
             <label for="appointment_notes">Catatan</label>
             <div>
-              <textarea [(ngModel)]="selectedModality.notes" rows="5" class="form-control rounded" placeholder="Catatan Pasien"></textarea>
+              <textarea *ngIf="!edittedModality.modalityHospitalId" [(ngModel)]="selectedModality.notes" rows="5" class="form-control rounded" placeholder="Catatan Pasien"></textarea>
+              <textarea *ngIf="edittedModality.modalityHospitalId" [(ngModel)]="edittedModality.notes" rows="5" class="form-control rounded" placeholder="Catatan Pasien"></textarea>
             </div>
           </div>
         </div>
 
         <div *ngIf="showModalityList" class="d-flex justify-content-end w-100 p-0 mb-3 mr-3">
           <button (click)="cancelModality()" class="btn btn-secondary text-primary" style="width: 7%;">Batal</button>
-          <button (click)="addModalityToList()" class="btn btn-primary ml-3" style="width: 7%;">Simpan</button>
+          <button *ngIf="!edittedModality.modalityHospitalId" (click)="addModalityToList()" class="btn btn-primary ml-3" style="width: 7%;">Simpan</button>
+          <button *ngIf="edittedModality.modalityHospitalId" (click)="editModalityToList()" class="btn btn-primary ml-3" style="width: 7%;">Ubah</button>
         </div>
       </div>
       <div class="d-flex justify-content-end w-100 pt-3 pb-5">
@@ -305,7 +364,7 @@
   </div>
   <div class="modal-footer">
     <div class="d-flex flex-row justify-content-end">
-      <button (click)="onCreateAppointment()" class="btn btn-success ml-2">Jadwalkan Pasien</button>
+      <button (click)="onCreateAppointment()" class="btn btn-success ml-2" [disabled]="isSubmitting" >Jadwalkan Pasien</button>
     </div>
   </div>
 </div>
