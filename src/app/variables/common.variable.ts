@@ -90,9 +90,8 @@ export enum AppointmentStatusEnum {
   'Aktif' = 1,
   'Non Aktif' = 2,
   'Dijadwalkan ulang' = 3,
-  // there are 4-5 status in database but backend only have 1-3 status  
-  'status 4' = 4,
-  'status 5' = 5
+  'Terdaftar' = 4,
+  'Telah diubah' = 5
 };
 
 export const mobileStatus = {
