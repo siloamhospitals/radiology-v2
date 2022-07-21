@@ -169,7 +169,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
     await this.getModalityHospitalList();
   }
 
-  onChangeModality() {
+  onChangeModality(_evt: any = null) {
     this.selectedModality.modalityHospitalId = this.selectedInput.modality_hospital_id;
     this.isExaminationButtonClicked = false;
     this.getModalityExamination(this.selectedModality.modalityHospitalId)
