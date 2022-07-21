@@ -64,7 +64,6 @@ export abstract class WidgetBaseComponent implements OnDestroy {
   showErrorAlert(data: string | HttpErrorResponse, duration: number = 3000) {
     let message;
     if (data instanceof HttpErrorResponse) {
-      console.log(data, '=======data')
       message = `${data.error.message}`;
     } else {
       message = data;

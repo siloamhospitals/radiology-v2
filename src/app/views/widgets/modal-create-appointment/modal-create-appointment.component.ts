@@ -76,7 +76,9 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   public showModalityList: boolean = false;
   public dateTimeWidth: string = '160px';
   public isLoadingPatientTable : boolean;
-  public model: any;
+  public model: any = {
+    localMrNo: ''
+  };
   public selectedDateTime: any;
   public isAddedModality: boolean = false;
   public viewDate: any = moment();
@@ -226,31 +228,36 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     this.isSubmitting = true;
     if (this.modalityAppointmentList.length > 0) {
       this.modalityAppointmentList.forEach((element: any) => {
-        const payload = this.generatePayload(element, this.choosedPatient);
+        const payload = this.generatePayload(element);
         this.modalityService.postAppointment(payload)
           .subscribe((response) => {
             if (isOk(response)) {
               response.data.local_mr_no = this.model.localMrNo;
-              this.actionSuccess();
+              this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
             }
             this.isSubmitting = false;
           }, (error: any) => {
             this.isSubmitting = false;
-            this.alertService.error(error && error.message, false, 3000);
+            this.showErrorAlert(error.error.message, 2000);
           });
       });
     } else {
-      const payload = this.generatePayload(this.selectedModality, this.choosedPatient);
+      const model = {
+        ...this.selectedModality,
+        ...this.isSelectedPatient,
+      };
+      const payload = this.generatePayload(model);
       this.modalityService.postAppointment(payload)
           .subscribe((response) => {
             if (isOk(response)) {
               response.data.local_mr_no = this.model.localMrNo;
-              this.actionSuccess();
+              this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
             }
             this.isSubmitting = false;
           }, (error: any) => {
+            console.log(error, '=========error')
             this.isSubmitting = false;
-            this.alertService.error(error.message, false, 3000);
+            this.showErrorAlert(error.error.message, 2000);
           });
     }
     // const isValidForm = this.validateCreateAppointment();
@@ -261,10 +268,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     return;
   }
 
-  public actionSuccess() {
-    this.alertService.success('Success to create appointment', false, 3000);
-  }
-
   validateCreateAppointment() {
     let isValid = true;
     if (!this.selectedModality.modalityHospitalId) isValid = false;
@@ -272,35 +275,34 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     return isValid;
   }
 
-  public generatePayload(model: any, choosedPatient: any) {
-    const { mobileNo1: phoneNumber, address, notes } = model;
-    const dob = model.birthDate.split('-');
-    const birthDate = dob[2] + '-' + dob[1] + '-' + dob[0];
-    const patientHopeId = choosedPatient ? choosedPatient.patientId : null;
+  public generatePayload(model: any) {
+    const {
+      mobileNo1: phoneNumber, address, notes, emailAddress
+    } = model;
+    const patientHopeId = model ? model.patientId : null;
+    const reserveDate = moment(model.reserveDate).format('YYYY-MM-DD')
     const payload: RadiologyAppointmentRequest = {
-      modalityExaminationId: model.modalityExaminationId,
       modalityHospitalId: model.modalityHospitalId,
-      modalityOperationalId: model.modalityOperationalId,
-      reserveDate: model.reserveDate,
+      contactId: model.contactId,
+      modalityExaminationId: model.modalityExaminationId,
+      reserveDate,
+      userId: this.userId,
       fromTime: model.fromTime,
       toTime: model.toTime,
-      patientHopeId,
       name: model.name,
-      birthDate,
-      phoneNumber1: this.filteredPhoneNumber(phoneNumber),
+      birthDate: model.birthDate,
+      phoneNumber1: phoneNumber,
       addressLine1: address,
       notes: notes,
+      emailAddress,
+      isWaitingList: false,
+      patientHopeId,
       channelId: channelId.FRONT_OFFICE,
-      userId: this.userId,
       userName: this.userName,
       source: this.source,
-      isWaitingList: false
     };
+    console.log(payload, '==========payload')
     return payload;
-  }
-
-  filteredPhoneNumber(phoneNumber: string) {
-    return phoneNumber.replace(/_/gi, '');
   }
 
   onAddedModality() {
@@ -332,6 +334,8 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     const { modalityHospitalId, fromTime, toTime, reserveDate, modality_label, room_name } = this.selectedAppointment;
     this.selectedModality = {
       ...this.selectedModality,
+      isBpjs: false,
+      isAnesthesia: false,
       fromTime,
       toTime,
       modalityHospitalId,
