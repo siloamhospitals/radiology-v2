@@ -207,38 +207,38 @@
       <div class="d-flex flex-wrap flex-row px-4">
         <h5 class="w-100">Modality</h5>
         <div class="w-100" *ngIf="showModalityList">
-          <div class="border border-radius-custom d-flex flex-wrap align-items-center mb-3" *ngFor="let list of modalityAppointmentList; index as i" >
+          <div [ngClass]="edittedModality.modalityHospitalId === list.modalityHospitalId ? 'bg-secondary' : ''" class="border border-radius-custom d-flex flex-wrap align-items-center mb-3" *ngFor="let list of modalityAppointmentList; index as i" >
             <div class="w-25 border-right">
               <div class="mx-3 my-2">{{list.modality_label}} - ROOM {{list.room_name}}</div>
             </div>
-              <div class="w-50 pl-2 my-2">
-                <div class="mx-3 my-2">
-                  <div class="d-flex align-items-center">
-                    <div alt="datepicker">
-                      <i class="fa fa-calendar-o mx-2"></i>
+            <div class="w-50 pl-2 my-2">
+              <div class="mx-3 my-2">
+                <div class="d-flex align-items-center">
+                  <div alt="datepicker">
+                    <i class="fa fa-calendar-o mx-2"></i>
+                  </div>
+                  <div class="position-relative" style="width: 230px;">
+                    <div class="modality-form text-left text-muted text-custom pl-2 border-right">
+                      {{list.reserveDate}}
                     </div>
-                    <div class="position-relative" style="width: 230px;">
-                      <div class="modality-form text-left text-muted text-custom pl-2 border-right">
-                        {{list.reserveDate}}
-                      </div>
+                  </div>
+                  <div class="ml-2" alt="datepicker">
+                    <i class="fa fa-clock-o mx-2"></i>
+                  </div>
+                  <div class="position-relative" style="width: 50px;">
+                    <div class="modality-form text-left text-muted text-custom">
+                      {{list.fromTime}}&nbsp;
                     </div>
-                    <div class="ml-2" alt="datepicker">
-                      <i class="fa fa-clock-o mx-2"></i>
-                    </div>
-                    <div class="position-relative" style="width: 50px;">
-                      <div class="modality-form text-left text-muted text-custom">
-                        {{list.fromTime}}&nbsp;
-                      </div>
-                    </div>
-                    <span class="mx-2" >-</span>
-                    <div class="position-relative" style="width: 50px;">
-                      <div class="modality-form text-left text-muted text-custom">
-                        {{list.toTime}}&nbsp;
-                      </div>
+                  </div>
+                  <span class="mx-2" >-</span>
+                  <div class="position-relative" style="width: 50px;">
+                    <div class="modality-form text-left text-muted text-custom">
+                      {{list.toTime}}&nbsp;
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
             <div class="w-25">
               <div class="d-flex justify-content-end mr-2">
                 <button type="button" (click)="onEditModality(i)" class="btn text-primary text-custom">Edit</button>
@@ -409,7 +409,7 @@
           </div>
         </div>
         <div class="d-flex justify-content-end w-100">
-          <button type="button" (click)="onAddedModality()" class="btn text-primary font-weight-bold" [disabled]="!isSelectedPatient">+ Tambah Modality</button>
+          <button type="button" (click)="onAddedModality()" class="btn text-primary font-weight-bold pt-3 pb-4" [disabled]="!isSelectedPatient">+ Tambah Modality</button>
         </div>
       </div>
     </div>

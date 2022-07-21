@@ -83,6 +83,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   public isAddedModality: boolean = false;
   public viewDate: any = moment();
   public isSelectedExaminationValid: boolean = true;
+  public isEdited: boolean = false;
 
   ngOnInit() {
     this.onDefaultSelected();
@@ -364,6 +365,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   onEditModality(index: any) {
+    this.isEdited = true;
     this.edittedModality = this.modalityAppointmentList[index];
     this.edittedModality.index = index;
     this.selectedDateTime = clone(this.edittedModality);
