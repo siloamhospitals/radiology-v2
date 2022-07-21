@@ -6,8 +6,8 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 import * as moment from 'moment';
-import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
-import { ModalityHospital } from 'src/app/models/radiology/modality-hospital';
+import { ModalitySlot } from '../../../models/radiology/modality-slot';
+import { ModalityHospital } from '../../../models/radiology/modality-hospital';
 
 // import * as moment from 'moment';
 

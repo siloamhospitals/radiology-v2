@@ -1,15 +1,14 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
-import { ScheduleStatus } from 'src/app/variables/common.variable';
-import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
+import { ScheduleStatus } from '../../../variables/common.variable';
+import { ModalitySlot } from '../../../models/radiology/modality-slot';
 import * as moment from 'moment'
 import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
 import * as _ from 'lodash'
 import Swal from 'sweetalert2';
-import { RadiologyService } from 'src/app/services/radiology/radiology.service';
-import { ModalityHospital } from 'src/app/models/radiology/modality-hospital';
-
+import { RadiologyService } from '../../../services/radiology/radiology.service';
+import { ModalityHospital } from '../../../models/radiology/modality-hospital';
 @Component({
   selector: 'app-table-list-daily',
   templateUrl: './table-list-daily.component.html',
@@ -23,7 +22,7 @@ export class TableListDailyComponent implements OnInit {
   @Input() fromTimeRange: string;
   @Input() toTimeRange: string;
 
-  public scheduleStatus = ScheduleStatus
+  public scheduleStatus: any = ScheduleStatus
   public scheduleList: any[] = []
   public scheduleListBk: any[] = []
 
@@ -212,10 +211,16 @@ export class TableListDailyComponent implements OnInit {
         }else {
           const momentFromTime = moment(this.fromTimeRange, 'hh:mm')
           const momentToTime = moment(this.toTimeRange, 'hh:mm')
-          this.scheduleList = this.scheduleListBk.filter(sc => {
-            return sc.items.find((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
-                && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) )
-          })
+          this.scheduleList = this.scheduleListBk.reduce((acc, sc) => {
+            const items = sc.items.filter((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
+                && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) );
+
+            if(items.length) {
+              sc.items = items
+              acc.push(sc)
+            }
+            return acc
+          }, [])
         }
       }
   }

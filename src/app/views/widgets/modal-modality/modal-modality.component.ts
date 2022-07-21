@@ -13,7 +13,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { RoomMappingService } from '../../../services/room-mapping.service';
 import { RoomMapping } from '../../../models/room-mapping';
-import { RadiologyService } from 'src/app/services/radiology/radiology.service';
+import { RadiologyService } from '../../../services/radiology/radiology.service';
 import RadiologyItem from '../../../models/radiology/radiology-item';
 import { ModalConfirmDeleteComponent } from '../modal-confirm-delete/modal-confirm-delete.component';
 import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';

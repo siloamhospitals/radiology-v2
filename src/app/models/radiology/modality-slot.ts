@@ -52,6 +52,7 @@ export interface ModalitySlot extends Slot {
   is_rescheduled?: boolean;
   is_bpjs: boolean;
   is_anesthesia: boolean;
+  operational_type?: string;
 }
 
 export class SlotList {

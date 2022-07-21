@@ -13,7 +13,7 @@ export class ModalConfirmDeleteComponent implements OnInit {
   @Input() service: any;
   
   constructor(
-    private activeModal: NgbActiveModal,
+    public activeModal: NgbActiveModal,
   ) { }
 
   public selectedText: string = '';
