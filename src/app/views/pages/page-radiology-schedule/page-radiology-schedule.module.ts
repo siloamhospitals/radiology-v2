@@ -24,6 +24,8 @@ import { DropdownExaminationModule } from '../../widgets/dropdown-examination/dr
 import { ModalCreateAppointmentModule } from '../../widgets/modal-create-appointment/modal-create-appointment.module';
 import { ModalCreateAppointmentComponent } from '../../widgets/modal-create-appointment/modal-create-appointment.component';
 import { TableFilterScheduleModule } from '../../widgets/table-filter-schedule/table-filter-schedule.module';
+import { LoadingModule } from '../../widgets/widget-loading/widget-loading.module';
+import { LoadingComponent } from '../../widgets/widget-loading/widget-loading.component';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -48,6 +50,7 @@ import { TableFilterScheduleModule } from '../../widgets/table-filter-schedule/t
     TableFilterScheduleModule,
     DropdownExaminationModule,
     ModalCreateAppointmentModule,
+    LoadingModule
   ],
   exports: [
     PageRadiologyScheduleComponent
@@ -58,6 +61,7 @@ import { TableFilterScheduleModule } from '../../widgets/table-filter-schedule/t
     ModalCreateAdmissionComponent,
     ModalDetailScheduleComponent,
     ModalCreateAppointmentComponent,
+    LoadingComponent
   ],
 })
 export class PageRadiologyScheduleModule {}
