@@ -80,12 +80,19 @@ export const channelId = {
 };
 
 export const appointmentStatusId = {
-  1: 'Aktif',
-  2: 'Non Aktif',
-  3: 'Dijadwal ulang',
+  ACTIVE: '1',
+  INACTIVE: '2',
+  RESCHEDULED: '3'
+};
+
+
+export enum AppointmentStatusEnum {
+  'Aktif' = 1,
+  'Non Aktif' = 2,
+  'Dijadwalkan ulang' = 3,
   // there are 4-5 status in database but backend only have 1-3 status  
-  4: '-', 
-  5: '-'
+  'status 4' = 4,
+  'status 5' = 5
 };
 
 export const mobileStatus = {
