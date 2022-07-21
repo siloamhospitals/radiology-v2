@@ -330,7 +330,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   onChangeDefaultSelected() {
-    const { modalityHospitalId, fromTime, toTime, reserveDate } = this.selectedAppointment;
+    const { modalityHospitalId, fromTime, toTime, reserveDate, modality_label, room_name } = this.selectedAppointment;
     this.selectedModality = {
       ...this.selectedModality,
       fromTime,
@@ -338,9 +338,14 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       modalityHospitalId,
       reserveDate
     }
+
     if (this.selectedModality.modalityHospitalId) {
       this.isExaminationButtonDisabled = false;
-      this.selectedInput.modality_hospital_id = modalityHospitalId;
+      this.selectedInput = {
+        modality_hospital_id : modalityHospitalId,
+        modality_label,
+        room_name
+      }
       this.getModalityExamination(this.selectedModality.modalityHospitalId);
     }
   }
@@ -365,17 +370,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
 
   onReset() {
     this.edittedModality = {};
-    const { fromTime, toTime, reserveDate, modalityHospitalId } =  this.selectedAppointment;
-    this.selectedModality = {
-      modalityHospitalId,
-      modalityExaminationId: '',
-      reserveDate,
-      notes: '',
-      isBpjs: false,
-      isAnesthesia: false,
-      fromTime,
-      toTime,
-    };
-    this.examinationsList = [];
+    this.onChangeDefaultSelected();
   }
 }

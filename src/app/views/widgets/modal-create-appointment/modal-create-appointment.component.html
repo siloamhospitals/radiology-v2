@@ -240,8 +240,8 @@
 
     <div class="d-flex flex-wrap flex-row px-4 py-3">
       <div class="w-100 border border-radius-custom d-flex flex-wrap flex-row">
-        <div class="w-25 my-2 border-right">
-          <div class="mx-3 my-2">
+        <div class="w-25 my-3 border-right">
+          <div class="mx-3 mb-3">
             <label for="modality_label">Modality <sup class="text-required">*</sup></label>
             <div class="input-group">
               <select
@@ -258,7 +258,7 @@
               <select
                 *ngIf="edittedModality.modalityHospitalId"
                 [(ngModel)]="edittedModality.modalityHospitalId" (ngModelChange)="onChangeModality($event)"
-                name="editted-modality-hospital" class="form-control national-type-id"
+                name="editted-modality-hospital" class="form-control"
                 >
                 <option *ngFor="let type of modalityHospitalList" [value]="type.modality_hospital_id">{{type.modality_label}} - ROOM {{type.room_name}}</option>
                 [selected]="type.modality_hospital_id === edittedModality.modalityHospitalId"
@@ -266,7 +266,7 @@
             </div>
           </div>
 
-          <div class="mx-3 my-2">
+          <div class="mx-3 my-3">
             <label for="examination">Jenis Pemeriksaan <sup class="text-required">*</sup></label>
             <div class="input-group">
               <select [disabled]="isExaminationButtonDisabled"
@@ -298,7 +298,7 @@
             </div>
           </div>
 
-          <div class="mx-3 my-2">
+          <div class="mx-3 my-3">
             <p>Anestesi</p>
             <div class="form-check form-check-inline pr-3">
               <input *ngIf="!edittedModality.modalityHospitalId" [(ngModel)]="selectedModality.isAnesthesia" class="form-check-input" type="radio" name="anesthesa" id="anesthesa" [value]=false>
@@ -313,8 +313,8 @@
           </div>
         </div>
 
-        <div class="w-75 pl-2 my-2">
-          <div class="mx-3 my-2">
+        <div class="w-75 pl-2 my-3">
+          <div class="mx-3 mb-2 ">
             <label for="">Tanggal dan Waktu</label>
             <div class="d-flex align-items-center">
               <div alt="datepicker">

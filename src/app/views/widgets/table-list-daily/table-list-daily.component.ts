@@ -47,13 +47,15 @@ export class TableListDailyComponent implements OnInit {
 
   createAppointment(schedule?: any) {
     const m = this.modalService.open(ModalCreateAppointmentComponent, { keyboard: false });
-    const { modality_hospital_id: modalityHospitalId } = this.sectionSelected;
+    const { modality_hospital_id: modalityHospitalId, modality_label, room_name } = this.sectionSelected;
     const { fromTime, toTime } = schedule;
     const payload = {
       fromTime,
       toTime,
       modalityHospitalId,
       reserveDate: this.dateSelected,
+      modality_label,
+      room_name
     }
     m.componentInstance.selectedAppointment = payload;
     m.result.then((result: any) => {
