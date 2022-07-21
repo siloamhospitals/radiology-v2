@@ -4,6 +4,7 @@
     ngxDaterangepickerMd
     [locale]="locale"
     [value]="value.format(format)"
+    [readonly]="readonly ? 'readonly' : ''"
     (change)="changeSelected($event)"
     [singleDatePicker]="true"
     [autoApply]="true"

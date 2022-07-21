@@ -85,6 +85,15 @@ export const appointmentStatusId = {
   RESCHEDULED: '3'
 };
 
+
+export enum AppointmentStatusEnum {
+  'Aktif' = 1,
+  'Non Aktif' = 2,
+  'Dijadwalkan ulang' = 3,
+  'Terdaftar' = 4,
+  'Telah diubah' = 5
+};
+
 export const mobileStatus = {
   ACTIVE: 'ACTIVE',
   ACCESSED: 'MR-ACCESSED',
