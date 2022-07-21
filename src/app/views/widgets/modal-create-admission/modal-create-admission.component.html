@@ -1,5 +1,5 @@
-<div class="modal-content modal-custom-size">
-  <div class="modal-header-custom border-0 px-0 px-4">
+<div class="modal-content modal-extralarge-size">
+  <div class="modal-header-custom border-0 border-bottom px-0 px-4">
     <div class="d-flex flex-wrap justify-content-between">
       <div class="align-self-center">
         <h5 class="m-0">Create Admission</h5>
@@ -11,108 +11,136 @@
       </div>
     </div>
   </div>
-  <div class="modal-body p-0 mt-3">
-    <div class="mb-3 d-flex align-items-center justify-content-between px-4">
-      <h4>CT Scan - Room 1</h4>
-      <span class="badge badge-primary p-2 rounded-pill">
-        <h6 class="mb-0" >Scheduled</h6>
-      </span>
-    </div>
-    <div class="mb-4 px-4">
-      <label for="">Date and Time</label>
-      <div class="d-flex align-items-center" >
-        <app-date-picker format="dddd, DD MMMM YYYY" width="160px" hideIcon="true" ></app-date-picker>
-        <span class="mx-2" >|</span>
-        <app-time-picker useMinute="true" ></app-time-picker>&nbsp;
-        <app-time-picker useMinute="true" ></app-time-picker>
-      </div>
-    </div>
-    <div class="d-flex flex-wrap flex-row py-4 px-4 bg-secondary">
-      <div class="w-50">
-        <label for="" class="text-muted">Local MR Number</label>
-        <div>
-          <span class="form-label">4757323</span>
+  <div class="modal-body p-0">
+    <!-- Content Data -->
+    <ng-container>
+      <div class="p-2">
+        <!-- Header Information -->
+        <div class="d-flex flex-row justify-content-start mb-3 px-3">
+          <div class="p-2 rounded text-muted btn btn-secondary"><span>Tanggal Admission:</span><b class="pl-2">{{model.reserve_date || '-'}}</b></div>
+          <div class="ml-2 p-2 rounded text-muted btn btn-secondary"><span>Nomor MR Lokal:</span><b class="pl-2">{{model.local_mr_no || '-'}}</b></div>
         </div>
-      </div>
-      <div class="w-50 pl-4">
-        <label for="" class="text-muted">Admission Number</label>
-        <div>
-          <span class="form-label">-</span>
-        </div>
-      </div>
-    </div>
-    <div class="d-flex flex-wrap flex-row my-4 px-4">
-      <div class="mb-4 pb-2 w-50">
-        <label for="" class="text-muted">Patient's Name</label>
-        <div>
-          <span class="form-label">Michael Angelo</span>
-        </div>
-      </div>
-      <div class="mb-4 pb-2 w-50 pl-4">
-        <label for="" class="text-muted">DOB</label>
-        <div>
-          <span class="form-label">12-08-1991</span>
-        </div>
-      </div>
-      <div class="mb-4 pb-2 w-50">
-        <label for="" class="text-muted">Mobile Phone</label>
-        <div>
-          <span class="form-label">081234567890</span>
-        </div>
-      </div>
-      <div class="mb-4 pb-2 w-50 pl-4">
-        <label for="" class="text-muted">Email</label>
-        <div>
-          <span class="form-label">-</span>
-        </div>
-      </div>
-      <div class="mb-4 w-50 pb-2">
-        <label for="">ID Number <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <div class="id-type" >
-            <select placeholder="ID Number" name="national-type" class="form-control national-type-id" [(ngModel)]="model.nationalIdTypeId">
-              <option value="undefined" disabled selected hidden>Select</option>
-              <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.key}}</option>
-            </select>
+        <!-- Patient Information -->
+        <section class="mb-3">
+          <h4 class="mb-2 px-3">Data Pasien</h4>
+          <div class="px-0">
+            <div class="row mx-0">
+              <div class="col col-12 mb-3">
+                <label class="form-label text-muted">Nama Pasien</label>
+                <div class="form-label">{{model.patient_name || '-'}}</div>
+              </div>
+              <div class="col col-4 mb-3">
+                <label class="form-label text-muted">Tanggal Lahir</label>
+                <div class="form-label">{{model.patient_dob || '-'}}</div>
+              </div>
+              <div class="col col-4 mb-3">
+                <label class="form-label text-muted">Nomor Identitas</label>
+                <div class="form-label">
+                  <span>{{nationalIdTypeName[model.identity_type_id] || '-'}}</span>
+                  <span class="mx-2">-</span>
+                  <span>{{model.identity_number || '-'}}</span>
+                </div>
+              </div>
+              <div class="col col-4 mb-3">
+                <label class="form-label text-muted">Nomor Telepon</label>
+                <div class="form-label">{{model.patient_phone_number_1 || model.patient_phone_number_2 || '-'}}</div>
+              </div>
+              <div class="col col-12 mb-3">
+                <label class="form-label text-muted">Alamat</label>
+                <div class="form-label">{{'-'}}</div>
+              </div>
+            </div>
           </div>
-          <input
-            name="id-number"
-            id="id-number-field"
-            type="text"
-            class="form-control"
-            placeholder="ID Number"
-            [(ngModel)]="model.idNumber"
-          />
-        </div>
-        <div class="mt-1 text-muted">Validasi identitas pasien</div>
+        </section>
+        <hr>
+        <!-- Admission Data -->
+        <section class="mb-3">
+          <h4 class="mb-2 px-3">Data Admission</h4>
+          <div class="px-0">
+            <div class="row mx-0">
+              <div class="col col-4 mb-3">
+                <label class="form-label">Jenis Rujukan</label>
+                <div>
+                  <select formControlName="referralType" class="form-control" placeholder="Jenis Rujukan">
+                    <option value="" disabled>Pilih Jenis Rujukan</option>
+                    <option *ngFor="let item of referralTypes" [value]="item.value">{{item.description}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="w-100"></div>
+              <div class="col col-4 mb-3">
+                <label class="form-label text-muted">Nama Pembayar</label>
+                <div class="form-label">-</div>
+              </div>
+              <div class="col col-8 mb-3">
+                <label class="form-label text-muted">Nomor Pembayaran</label>
+                <div class="form-label">-</div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <hr>
+        <!-- Patient Type Form -->
+        <section>
+          <div class="px-0">
+            <div class="row mx-0">
+              <div class="col col-4 mb-3">
+                <label class="form-label">Tipe Pasien</label>
+                <div>
+                  <select formControlName="patientType" class="form-control" placeholder="Jenis Rujukan">
+                    <option *ngFor="let item of payerTypesList" [value]="item.value">{{item.description}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col col-4 mb-3">
+                <label class="form-label">Ruangan / Lokasi</label>
+                <div>
+                  <select formControlName="roomSelect" class="form-control" placeholder="Pilih Ruangan / Lokasi">
+                    <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Email Form -->
+        <section>
+          <div class="px-0">
+            <div class="row mx-0">
+              <div class="col col-4 mb-3">
+                <label class="form-label">Jenis Email</label>
+                <div>
+                  <select formControlName="emailType" class="form-control" placeholder="Jenis Email">
+                    <option *ngFor="let item of emailTypes" [value]="item.value">{{item.description}}</option>
+                    <!-- <option value="" disabled>Pilih Jenis Rujukan</option> -->
+                  </select>
+                </div>
+              </div>
+              <div class="col col-4 mb-3">
+                <label class="form-label">Email</label>
+                <div>
+                  <input [ngModel]="txtEmail" class="form-control" placeholder="Email Isian" />
+                </div>
+              </div>
+              <div class="col col-4 mb-3">
+                <label class="form-label">Catatan</label>
+                <div>
+                  <input [ngModel]="txtNote" class="form-control" placeholder="Masukkan Catatan" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-      <div class="mb-4 w-50 pl-4">
-      </div>
-      <div class="mb-1 w-50">
-        <label for="">Examination <sup class="text-required">*</sup></label>
-        <div class="">
-          <select id="title" class="form-control" name="dropDownRoom" (change)="changeExamination($event)">
-            <option *ngFor="let examination of examinationsList" [value]="examination.value">
-              {{examination.description}}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="mb-1 w-50 pl-4">
-        <label for="">Payer Type</label>
-        <div class="">
-          <select id="title" class="form-control" name="dropDownRoom" (change)="changeExamination($event)">
-            <option *ngFor="let type of payerTypesList" [value]="type.value">
-              {{type.description}}
-            </option>
-          </select>
-        </div>
-      </div>
-    </div>
+    </ng-container>
   </div>
   <div class="modal-footer">
-    <div class="d-flex flex-row justify-content-end">
-      <button (click)="close()" class="btn btn-success ml-2">Create Admission</button>
+    <div class="w-100 d-flex flex-row justify-content-between px-1 align-items-center">
+      <div class="d-flex flex-row align-items-center pl-4 ml-1">
+        <input type="checkbox" name="formSigned" id="formSigned" class="form-check-input">
+        <label class="form-check-label pl-2" for="formSigned" style="position: relative; top: 2px;">Formulir Ditandatangani</label>
+      </div>
+      <button (click)="createAdmission()" class="btn btn-success ml-2">Buat Admission</button>
     </div>
   </div>
 </div>
