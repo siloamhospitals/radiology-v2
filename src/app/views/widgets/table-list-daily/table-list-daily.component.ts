@@ -58,10 +58,13 @@ export class TableListDailyComponent implements OnInit {
     // })
   }
 
-  detailSchedule(item: any) {
-    const payload = item;
+  detailSchedule(schedule?: any) {
+    const payload =  {
+      ...schedule,
+      reserveDate: this.dateSelected,
+    }
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
-    m.componentInstance.data = payload;
+    m.componentInstance.selectedAppointment = payload;
     m.result.then((result: any) => {
       if (result) {
         this.showSuccessAlert(`Success`);
@@ -104,6 +107,8 @@ export class TableListDailyComponent implements OnInit {
         const patient = {
           fromTime: fromTime,
           toTime: toTime,
+          from_time: slot.from_time,
+          to_time: slot.to_time,
           patient: slot.patient_name,
           dob: slot.patient_dob,
           localMrNo: slot.local_mr_no,
@@ -171,6 +176,8 @@ export class TableListDailyComponent implements OnInit {
         const patient = {
           fromTime: fromTime,
           toTime: toTime,
+          from_time: moment(slot.from_time, 'hh:mm').format('hh:mm'),
+          to_time: moment(slot.to_time, 'hh:mm').format('hh:mm'),
           patient: slot.patient_name,
           dob: slot.patient_dob,
           localMrNo: slot.local_mr_no,
@@ -200,7 +207,7 @@ export class TableListDailyComponent implements OnInit {
           operational_type: slot.operational_type
         }
 
-        if (slot.patient_name && slot.patient_name === lastCaptureSlot.patient) {
+        if (slot.modality_slot_id && slot.modality_slot_id === lastCaptureSlot.modality_slot_id) {
           lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
           patient.rowSpan = 0;
         } else {
