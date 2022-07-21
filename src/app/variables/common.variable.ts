@@ -85,6 +85,16 @@ export const appointmentStatusId = {
   RESCHEDULED: '3'
 };
 
+
+export enum AppointmentStatusEnum {
+  'Aktif' = 1,
+  'Non Aktif' = 2,
+  'Dijadwalkan ulang' = 3,
+  // there are 4-5 status in database but backend only have 1-3 status  
+  'status 4' = 4,
+  'status 5' = 5
+};
+
 export const mobileStatus = {
   ACTIVE: 'ACTIVE',
   ACCESSED: 'MR-ACCESSED',

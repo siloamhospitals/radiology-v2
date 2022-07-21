@@ -35,7 +35,6 @@ export class RadiologyService {
   private readonly modalityHospital = environment.OPADMIN_SERVICE + '/radiology/modality-hospital';
   private readonly appointment = this.radiologyCCUrl + '/modality-slot';
   private readonly modalityExamination = this.radiologyUrl + '/modality-examination';
-  private readonly appointmentCCUrl = environment.CALL_CENTER_SERVICE + '/appointments';
 
   private key: any = JSON.parse(localStorage.getItem('key')!)
   private  user = {
@@ -122,8 +121,9 @@ export class RadiologyService {
     const url = `${this.radiologyUrl}/modality-hospital/${modalityHospitalId}`;
     return this.client.put(url, body, httpOptions);
   }
-  getAppRadiologyHistory(appointmentId : string): Observable<AppointmentRadiologyHistoryResponse> {
-    const url = `${this.appointmentCCUrl}/radiology-history/${appointmentId}`;
+
+  getAppRadiologyHistory(modalitySlotId : string): Observable<AppointmentRadiologyHistoryResponse> {
+    const url = `${this.appointment}/histories/${modalitySlotId}`;
     return this.client.get<AppointmentRadiologyHistoryResponse>(url, httpOptions);
   }
 
