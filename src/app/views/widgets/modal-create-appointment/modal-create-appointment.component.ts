@@ -9,7 +9,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search-patient-hope-grouped-request';
 import * as moment from 'moment';
-import { pick } from 'lodash';
+import { clone, pick } from 'lodash';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 import { isOk } from 'src/app/utils/response.util';
 // import { isOk } from '../../../utils/response.util';
@@ -77,12 +77,14 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
 
   // buttons
   public isSubmitting: boolean = false;
-  public isExaminationButtonClicked: boolean = true;
+  public isExaminationButtonDisabled: boolean = true;
   public isSelectedPatient: any;
   public showModalityList: boolean = false;
   public dateTimeWidth: string = '160px';
   public isLoadingPatientTable : boolean;
   public model: any;
+  public selectedDateTime: any;
+  public viewDate: any = moment();
 
   ngOnInit() {
     this.onChangeDefaultSelected();
@@ -98,19 +100,45 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     this.activeModal.close();
   }
 
-  getSearchedPatientSubmit(ev : Event) {
+  getSearchedNameDob(ev : Event) {
     ev.preventDefault()
 
-    // if ((!this.search.idNumber
-    //   || !this.search.nationalIdTypeId)) {
-    //     this.showErrorAlert('Nomor Identitas Dibutuhkan.', 2000);
-    //   return;
-    // }
+    if ((!this.search.patientName
+      || !this.search.birthDate)) {
+        this.showErrorAlert('Nama dan Tanggal Lahir Dibutuhkan.', 2000);
+      return;
+    }
 
-    // if (!this.search.mrLocalNo) {
-    //     this.showErrorAlert('Nomor MR Lokal Dibutuhkan.', 2000);
-    //   return;
-    // }
+    const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
+    this.getSearchedPatient({
+      ...this.search,
+      birthDate: formattedDob,
+    });
+  }
+
+  getSearchedMrLocal(ev : Event) {
+    ev.preventDefault()
+
+    if (!this.search.mrLocalNo) {
+        this.showErrorAlert('Nomor MR Lokal Dibutuhkan.', 2000);
+      return;
+    }
+
+    const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
+    this.getSearchedPatient({
+      ...this.search,
+      birthDate: formattedDob,
+    });
+  }
+
+  getSearchedIdNumber(ev : Event) {
+    ev.preventDefault()
+
+    if ((!this.search.idNumber
+      || !this.search.nationalIdTypeId)) {
+        this.showErrorAlert('Nomor Identitas Dibutuhkan.', 2000);
+      return;
+    }
 
     const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
     this.getSearchedPatient({
@@ -126,6 +154,12 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       hospitalId: this.hospital.id,
     }).subscribe(res => {
       this.patientHope = res.data;
+      const patientHospital = this.patientHope.map( patient => {
+          patient.patientHospitals = patient.patientHospitals.filter( hospital => hospital.hospitalId === this.hospital.id );
+          return patient;
+        }
+      )
+      this.patientHope = patientHospital;
       if(this.patientHope.length > 0) {
         this.showPatientTable = '2';
       } else {
@@ -178,14 +212,18 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   onChangeModality() {
-    this.isExaminationButtonClicked = false;
-    if (this.edittedModality.hospitalId) {
+    this.isExaminationButtonDisabled = false;
+    if (this.edittedModality.modalityHospitalId) {
       this.getModalityExamination(this.edittedModality.modalityHospitalId);
     } else {
       this.selectedModality.modalityHospitalId = this.selectedInput.modality_hospital_id;
       this.getModalityExamination(this.selectedModality.modalityHospitalId);
     }
 
+  }
+
+  compareByModalityHospital(itemOne?: any, itemTwo?: any) {
+    return itemOne && itemTwo && itemOne.modality_hospital_id == itemTwo.modality_hospital_id;
   }
 
   public onCreateAppointment() {
@@ -285,7 +323,8 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   editModalityToList() {
     const modalityAppointmentList = this.modalityAppointmentList.slice()
     const modality = this.modalityHospitalList.find((md :any) => md.modality_hospital_id === this.edittedModality.modalityHospitalId )
-    modalityAppointmentList[this.edittedModality.index] = { ...this.edittedModality, ...modality }
+    const { fromTime, toTime, reserveDate } = this.selectedDateTime;
+    modalityAppointmentList[this.edittedModality.index] = { ...this.edittedModality, ...modality, fromTime, toTime, reserveDate: reserveDate.format('dddd, DD MMMM YYYY')}
     this.modalityAppointmentList = modalityAppointmentList;
     this.onReset();
   }
@@ -299,6 +338,11 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       modalityHospitalId,
       reserveDate
     }
+    if (this.selectedModality.modalityHospitalId) {
+      this.isExaminationButtonDisabled = false;
+      this.selectedInput.modality_hospital_id = modalityHospitalId;
+      this.getModalityExamination(this.selectedModality.modalityHospitalId);
+    }
   }
 
   cancelModality() {
@@ -308,17 +352,18 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   onDeleteModality(val: any) {
     const filtered = this.modalityAppointmentList.filter((list: any) => list !== val );
     this.modalityAppointmentList = filtered;
+    this.edittedModality = {};
   }
 
-  onEditModality(list: any, index: any) {
-    console.log(list, 'list')
+  onEditModality(index: any) {
     this.edittedModality = this.modalityAppointmentList[index];
     this.edittedModality.index = index;
+    this.selectedDateTime = clone(this.edittedModality);
+    this.selectedDateTime.reserveDate = moment(this.selectedDateTime.reserveDate);
     this.getModalityExamination(this.edittedModality.modalityHospitalId);
   }
 
   onReset() {
-    console.log(this.selectedAppointment, '=========== selected appointment')
     this.edittedModality = {};
     const { fromTime, toTime, reserveDate, modalityHospitalId } =  this.selectedAppointment;
     this.selectedModality = {

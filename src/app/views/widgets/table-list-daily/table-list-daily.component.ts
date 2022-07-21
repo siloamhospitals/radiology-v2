@@ -55,11 +55,10 @@ export class TableListDailyComponent implements OnInit {
       modalityHospitalId,
       reserveDate: this.dateSelected,
     }
-    console.log(payload, '========payload')
     m.componentInstance.selectedAppointment = payload;
-    // m.result.then((result: any) => {
-    //   console.log('modal is closed', {result})
-    // })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
   }
 
   detailSchedule(schedule?: any) {
