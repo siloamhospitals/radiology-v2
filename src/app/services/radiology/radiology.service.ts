@@ -18,6 +18,7 @@ import {DeleteModalitySlotRequest} from '../../models/radiology/request/delete-m
 import {DeleteAppointmentResponse} from '../../models/radiology/responses/delete-appointment-response';
 import {ModalityExaminationResponse} from '../../models/radiology/responses/modality-examination-response';
 import {RadiologyAppointmentUpdateRequest} from '../../models/radiology/requests/radiology-appointment-update-request';
+import RadiologySchedulesResponse from '../../models/radiology/responses/radiology-schedule-response';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +73,11 @@ export class RadiologyService {
   updateOperational(payload: OperationalStoreRequest): Observable<OperationalStoreResponse> {
     const url = `${this.schedule}/${payload.modalityOperationalId}`;
     return this.client.put<OperationalStoreResponse>(url, payload, httpOptions);
+  }
+
+  reschedule(request: any): Observable<RadiologySchedulesResponse> {
+    const url = `${this.radiologyCCUrl}/modality-slot/reschedule`;
+    return this.client.post<RadiologySchedulesResponse>(url, request, httpOptions);
   }
 
   getOperationalSchedule(modalityHospitalId: string): Observable<OperationalSchedulesResponse> {

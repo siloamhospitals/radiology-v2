@@ -3,6 +3,7 @@
     [ngClass]="isModalLarge ? 'text-left text-custom text-muted' : 'text-center'"
     [style.width]="width"
     [placeholder]="placeholder"
+    [readonly]="readonly ? 'readonly' : ''"
     (focus)="onShowSelect()"
     (focusout)="onHideSelect($event)"
     [value]="value"
