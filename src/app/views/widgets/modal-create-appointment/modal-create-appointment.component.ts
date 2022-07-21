@@ -10,7 +10,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search-patient-hope-grouped-request';
 import * as moment from 'moment';
 import { pick } from 'lodash';
-import { isOk } from 'src/app/utils/response.util';
+import { isOk } from '../../../utils/response.util';
 // import { isOk } from '../../../utils/response.util';
 // import { Subscription } from 'rxjs';
 
@@ -108,7 +108,7 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
 
- 
+
 
   getSearchedPatient(request: SearchPatientHopeGroupedRequest) {
     this.isLoadingPatientTable = true

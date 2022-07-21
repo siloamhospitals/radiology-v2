@@ -21,7 +21,7 @@ import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modal
     PageModalityMasterComponent
   ],
   imports: [
-    NgMultiSelectDropDownModule.forRoot(),
+    //NgMultiSelectDropDownModule.forRoot(),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

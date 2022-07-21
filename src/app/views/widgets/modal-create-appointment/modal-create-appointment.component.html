@@ -256,6 +256,7 @@
                 [(ngModel)]="selectedModality.modalityExaminationId">
                 <option class="text-muted" value="" selected hidden>Pilih jenis pemeriksaan</option>
                 <option *ngFor="let type of examinationsList"
+                  [selected]="type.modality_examination_id === edittedModality.modalityExaminationId"
                   value="{{type.modality_examination_id}}"
                   >
                   {{type.name}}
