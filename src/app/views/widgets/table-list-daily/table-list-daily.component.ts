@@ -207,10 +207,16 @@ export class TableListDailyComponent implements OnInit {
         }else {
           const momentFromTime = moment(this.fromTimeRange, 'hh:mm')
           const momentToTime = moment(this.toTimeRange, 'hh:mm')
-          this.scheduleList = this.scheduleListBk.filter(sc => {
-            return sc.items.find((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
-                && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) )
-          })
+          this.scheduleList = this.scheduleListBk.reduce((acc, sc) => {
+            const items = sc.items.filter((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
+                && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) );
+            
+            if(items.length) {
+              sc.items = items
+              acc.push(sc)
+            }
+            return acc
+          }, [])
         }
       }
   }

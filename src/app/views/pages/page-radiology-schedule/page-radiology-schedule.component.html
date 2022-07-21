@@ -78,10 +78,14 @@
             <div class="col-md-2 pr-0 d-flex flex-column border-right pb-2">
               <small>Time Range</small>
               <div class="d-flex align-items-center">
-                <app-time-picker placeholder="23:00" [(value)]="fromTimeRange" ></app-time-picker>
+                <app-time-picker 
+                  [(value)]="fromTimeRange" 
+                  [duration]="sectionSelected.duration" ></app-time-picker>
                 <b class="mx-2" >-</b>
-                <app-time-picker placeholder="23:00" [(value)]="toTimeRange" ></app-time-picker>
-              </div>
+                <app-time-picker 
+                  [(value)]="toTimeRange" 
+                  [duration]="sectionSelected.duration" ></app-time-picker>
+              </div> 
             </div>
           </div>
         </div>
