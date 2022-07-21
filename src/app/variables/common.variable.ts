@@ -80,9 +80,12 @@ export const channelId = {
 };
 
 export const appointmentStatusId = {
-  ACTIVE: '1',
-  INACTIVE: '2',
-  RESCHEDULED: '3'
+  1: 'Aktif',
+  2: 'Non Aktif',
+  3: 'Dijadwal ulang',
+  // there are 4-5 status in database but backend only have 1-3 status  
+  4: '-', 
+  5: '-'
 };
 
 export const mobileStatus = {
