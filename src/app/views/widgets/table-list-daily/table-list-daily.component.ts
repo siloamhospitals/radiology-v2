@@ -63,6 +63,8 @@ export class TableListDailyComponent implements OnInit {
       ...schedule,
       reserveDate: this.dateSelected,
     }
+    payload.from_time = moment(payload.from_time, 'hh:mm').format('hh:mm')
+    payload.to_time = moment(payload.to_time, 'hh:mm').format('hh:mm')
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
     m.componentInstance.selectedAppointment = payload;
     m.result.then((result: any) => {
@@ -107,38 +109,18 @@ export class TableListDailyComponent implements OnInit {
         const patient = {
           fromTime: fromTime,
           toTime: toTime,
-          from_time: slot.from_time,
-          to_time: slot.to_time,
           patient: slot.patient_name,
           dob: slot.patient_dob,
           localMrNo: slot.local_mr_no,
           examination: slot.modality_examination_name,
-          examination_id: slot.modality_examination_id,
           note: slot.notes,
           status: slot.status,
-          rowSpan: 1,
           modality_slot_id: slot.modality_slot_id,
-          reserve_date: slot.reserve_date,
-          email: slot.email,
-          identity_type_id: slot.identity_type_id,
-          identity_number: slot.identity_number,
-          is_bpjs: slot.is_bpjs,
-          is_anesthesia: slot.is_anesthesia,
-          modality_hospital_id: slot.modality_hospital_id,
-          modality_name: slot.modality_name,
-          modality_operational_id: slot.modality_operational_id,
-          modality_queue_id: slot.modality_queue_id,
-          mapping_room_id: slot.mapping_room_id,
-          contact_id: slot.contact_id,
-          room_id: slot.room_id,
-          room_name: slot.room_name,
-          admission_no: slot.admission_no,
-          patient_phone_number_1: slot.patient_phone_number_1,
-          patient_phone_number_2: slot.patient_phone_number_2,
-          operational_type: slot.operational_type
+          rowSpan: 1,
+          ...slot
         }
 
-        if (slot.patient_name && slot.patient_name === lastCaptureSlot.patient) {
+        if (slot.modality_slot_id && slot.modality_slot_id === lastCaptureSlot.modality_slot_id) {
           lastCaptureSlot.rowSpan = Number(lastCaptureSlot.rowSpan) + 1;
           patient.rowSpan = 0;
         } else {
@@ -176,35 +158,15 @@ export class TableListDailyComponent implements OnInit {
         const patient = {
           fromTime: fromTime,
           toTime: toTime,
-          from_time: moment(slot.from_time, 'hh:mm').format('hh:mm'),
-          to_time: moment(slot.to_time, 'hh:mm').format('hh:mm'),
           patient: slot.patient_name,
           dob: slot.patient_dob,
           localMrNo: slot.local_mr_no,
           examination: slot.modality_examination_name,
-          examination_id: slot.modality_examination_id,
           note: slot.notes,
           status: slot.status,
-          rowSpan: 1,
           modality_slot_id: slot.modality_slot_id,
-          reserve_date: slot.reserve_date,
-          email: slot.email,
-          identity_type_id: slot.identity_type_id,
-          identity_number: slot.identity_number,
-          is_bpjs: slot.is_bpjs,
-          is_anesthesia: slot.is_anesthesia,
-          modality_hospital_id: slot.modality_hospital_id,
-          modality_name: slot.modality_name,
-          modality_operational_id: slot.modality_operational_id,
-          modality_queue_id: slot.modality_queue_id,
-          mapping_room_id: slot.mapping_room_id,
-          contact_id: slot.contact_id,
-          room_id: slot.room_id,
-          room_name: slot.room_name,
-          admission_no: slot.admission_no,
-          patient_phone_number_1: slot.patient_phone_number_1,
-          patient_phone_number_2: slot.patient_phone_number_2,
-          operational_type: slot.operational_type
+          rowSpan: 1,
+          ...slot
         }
 
         if (slot.modality_slot_id && slot.modality_slot_id === lastCaptureSlot.modality_slot_id) {
