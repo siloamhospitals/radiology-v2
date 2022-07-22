@@ -1,3 +1,4 @@
+import { AddedModality } from '../../../models/radiology/created-appointment-modality';
 import { channelId, sourceApps } from './../../../variables/common.variable';
 import { RadiologyAppointmentRequest } from './../../../models/radiology/request/radiology-appointment-request';
 import { AlertService } from './../../../services/alert.service';
@@ -5,13 +6,14 @@ import { ModalityService } from './../../../services/modality.service';
 import { GeneralService } from './../../../services/general.service';
 import { NewPatientHope, PatientHope } from './../../../models/patients/patient-hope';
 import { PatientService } from './../../../services/patient.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search-patient-hope-grouped-request';
 import * as moment from 'moment';
-import { pick } from 'lodash';
+import { clone, pick } from 'lodash';
+import { WidgetBaseComponent } from '../widget-base/widget-base.component';
+//import { isOk } from '../.../..//utils/response.util';
 import { isOk } from '../../../utils/response.util';
-// import { isOk } from '../../../utils/response.util';
 // import { Subscription } from 'rxjs';
 
 @Component({
@@ -19,15 +21,17 @@ import { isOk } from '../../../utils/response.util';
   templateUrl: './modal-create-appointment.component.html',
   styleUrls: ['./modal-create-appointment.component.css']
 })
-export class ModalCreateAppointmentComponent implements OnInit {
+export class ModalCreateAppointmentComponent extends WidgetBaseComponent implements OnInit, OnDestroy {
 
   constructor(
     private activeModal: NgbActiveModal,
     private patientService: PatientService,
     private generalService: GeneralService,
     private modalityService: ModalityService,
-    private alertService: AlertService,
-  ) { }
+    alertService: AlertService,
+  ) {
+    super(alertService, 'modal-search-patient-main-alert');
+  }
 
   @Input() selectedAppointment: any;
   public key: any = JSON.parse(localStorage.getItem('key') || '{}');
@@ -38,7 +42,6 @@ export class ModalCreateAppointmentComponent implements OnInit {
   public source: string = sourceApps;
   public patientHope: NewPatientHope[];
   public choosedPatient: PatientHope;
-  public model: any = {};
   public search: any = {
     birthDate: '',
     patientName: '',
@@ -46,15 +49,8 @@ export class ModalCreateAppointmentComponent implements OnInit {
     idNumber: '',
     nationalIdTypeId: '',
   }
-  // private postAppointmentSubscription: Subscription;
-  public selectedModality: any = {
-    modalityHospitalId: '',
-    modalityExaminationId: '',
-    reserveDate: moment().format('YYYY-MM-DD'),
-    notes: '',
-    isBpjs: false,
-    isAnesthesia: false,
-  };
+
+  public selectedModality: AddedModality;
   public edittedModality: any = {
     index: '',
     modalityHospitalId: '',
@@ -63,11 +59,13 @@ export class ModalCreateAppointmentComponent implements OnInit {
     notes: '',
     isBpjs: false,
     isAnesthesia: false,
+    duration: 0,
+    modality_label: '',
+    room_name: ''
   };
 
   public nationalTypeIds: any = [];
   public examinationsList: any = [];
-  public viewCurrentDate: any = moment();
   public modalityHospitalList: any = [];
   public modalityAppointmentList: any = [];
   public viewFromTime: any = '';
@@ -76,15 +74,22 @@ export class ModalCreateAppointmentComponent implements OnInit {
 
   // buttons
   public isSubmitting: boolean = false;
-  public isExaminationButtonClicked: boolean = true;
+  public isExaminationButtonDisabled: boolean = true;
   public isSelectedPatient: any;
   public showModalityList: boolean = false;
   public dateTimeWidth: string = '160px';
-  public onEdit: boolean = false;
   public isLoadingPatientTable : boolean;
+  public model: any = {
+    localMrNo: ''
+  };
+  public selectedDateTime: any;
+  public isAddedModality: boolean = false;
+  public viewDate: any = moment();
+  public isSelectedExaminationValid: boolean = true;
+  public isEdited: boolean = false;
 
   ngOnInit() {
-    this.onChangeDefaultSelected();
+    this.onDefaultSelected();
     this.getModalityHospitalList();
     this.getNationalityIdType();
   }
@@ -97,8 +102,14 @@ export class ModalCreateAppointmentComponent implements OnInit {
     this.activeModal.close();
   }
 
-  getSearchedPatientSubmit(ev : Event) {
+  getSearchedNameDob(ev : Event) {
     ev.preventDefault()
+
+    if ((!this.search.patientName
+      || !this.search.birthDate)) {
+        this.showErrorAlert('Nama dan Tanggal Lahir Dibutuhkan.', 2000);
+      return;
+    }
 
     const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
     this.getSearchedPatient({
@@ -107,8 +118,36 @@ export class ModalCreateAppointmentComponent implements OnInit {
     });
   }
 
+  getSearchedMrLocal(ev : Event) {
+    ev.preventDefault()
 
+    if (!this.search.mrLocalNo) {
+        this.showErrorAlert('Nomor MR Lokal Dibutuhkan.', 2000);
+      return;
+    }
 
+    const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
+    this.getSearchedPatient({
+      ...this.search,
+      birthDate: formattedDob,
+    });
+  }
+
+  getSearchedIdNumber(ev : Event) {
+    ev.preventDefault()
+
+    if ((!this.search.idNumber
+      || !this.search.nationalIdTypeId)) {
+        this.showErrorAlert('Nomor Identitas Dibutuhkan.', 2000);
+      return;
+    }
+
+    const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
+    this.getSearchedPatient({
+      ...this.search,
+      birthDate: formattedDob,
+    });
+  }
 
   getSearchedPatient(request: SearchPatientHopeGroupedRequest) {
     this.isLoadingPatientTable = true
@@ -117,6 +156,12 @@ export class ModalCreateAppointmentComponent implements OnInit {
       hospitalId: this.hospital.id,
     }).subscribe(res => {
       this.patientHope = res.data;
+      const patientHospital = this.patientHope.map( patient => {
+          patient.patientHospitals = patient.patientHospitals.filter( hospital => hospital.hospitalId === this.hospital.id );
+          return patient;
+        }
+      )
+      this.patientHope = patientHospital;
       if(this.patientHope.length > 0) {
         this.showPatientTable = '2';
       } else {
@@ -147,8 +192,8 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   getModalityHospitalList() {
-    if(this.viewCurrentDate) {
-      const dateString = this.viewCurrentDate.format('YYYY-MM-DD')
+    if(this.selectedModality.reserveDate) {
+      const dateString = this.selectedModality.reserveDate.format('YYYY-MM-DD')
       this.modalityService.getModalityHospital(this.hospital.id, dateString, dateString)
         .subscribe(res => {
           const activeModalityHospital = res.data.map((eachModality: any) => {
@@ -165,94 +210,104 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   onChangeDate = async () => {
-    this.selectedModality.reserveDate = this.viewCurrentDate.format('YYYY-MM-DD');
     await this.getModalityHospitalList();
   }
 
-  onChangeModality(_evt: any = null) {
-    this.selectedModality.modalityHospitalId = this.selectedInput.modality_hospital_id;
-    this.isExaminationButtonClicked = false;
-    this.getModalityExamination(this.selectedModality.modalityHospitalId)
+  onChangeModality() {
+    this.isExaminationButtonDisabled = false;
+    if (this.edittedModality.modalityHospitalId) {
+      this.getModalityExamination(this.edittedModality.modalityHospitalId);
+    } else {
+      this.getModalityExamination(this.selectedModality.modalityHospitalId);
+    }
+
+  }
+
+  compareByModalityHospital(itemOne?: any, itemTwo?: any) {
+    return itemOne && itemTwo && itemOne.modality_hospital_id == itemTwo.modality_hospital_id;
   }
 
   public onCreateAppointment() {
     this.isSubmitting = true;
-    // halo halo mas agung di sini mas untuk yg create appointment,note  di generatepayload itu blm kusesuaikan dengan payload appointmentnya
     if (this.modalityAppointmentList.length > 0) {
       this.modalityAppointmentList.forEach((element: any) => {
-        const payload = this.generatePayload(element, this.choosedPatient);
+        if(element.isSuccess){
+          return;
+        }
+        const payload = this.generatePayload(element);
+        element.isLoading = true
         this.modalityService.postAppointment(payload)
           .subscribe((response) => {
             if (isOk(response)) {
-              response.data.local_mr_no = this.model.localMrNo;
-              this.actionSuccess();
+              this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
             }
             this.isSubmitting = false;
+            element.isSuccess = true
+            element.messageError = null
+            element.isLoading = false
+            this.cancelModality()
           }, (error: any) => {
-            this.isSubmitting = false;
-            this.alertService.error(error && error.message, false, 3000);
+            this.isSubmitting = false;            
+            element.isSuccess = false
+            element.messageError = (error.error && error.error.message) || error.message  
+            element.isLoading = false          
           });
       });
     } else {
-      const payload = this.generatePayload(this.selectedModality, this.choosedPatient);
+      const model = {
+        ...this.selectedModality,
+        ...this.isSelectedPatient,
+      };
+      const payload = this.generatePayload(model);
       this.modalityService.postAppointment(payload)
           .subscribe((response) => {
             if (isOk(response)) {
-              response.data.local_mr_no = this.model.localMrNo;
-              this.actionSuccess();
+              this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
             }
             this.isSubmitting = false;
           }, (error: any) => {
+            console.log(error, '=========error')
             this.isSubmitting = false;
-            this.alertService.error(error.message, false, 3000);
+            this.showErrorAlert(error.error.message, 2000);
           });
     }
-    // const isValidForm = this.validateCreateAppointment();
-    // if (isValidForm === false) {
-    //   this.isSubmitting = false;
-    //   return false;
-    // }
     return;
-  }
-
-  public actionSuccess() {
-    this.alertService.success('Success to create appointment', false, 3000);
   }
 
   validateCreateAppointment() {
     let isValid = true;
+    if (!this.selectedModality.modalityHospitalId) isValid = false;
+    if (!this.selectedModality.modalityExaminationId) isValid = false;
     return isValid;
   }
 
-  public generatePayload(model: any, choosedPatient: any) {
-    const { mobileNo1: phoneNumber, address, notes } = model;
-    const dob = model.birthDate.split('-');
-    const birthDate = dob[2] + '-' + dob[1] + '-' + dob[0];
-    const patientHopeId = choosedPatient ? choosedPatient.patientId : null;
+  public generatePayload(model: any) {
+    const {
+      mobileNo1: phoneNumber, address, notes, emailAddress
+    } = model;
+    const patientHopeId = model ? model.patientId : null;
+    const reserveDate = moment(model.reserveDate).format('YYYY-MM-DD')
     const payload: RadiologyAppointmentRequest = {
-      modalityExaminationId: model.modalityExaminationId,
       modalityHospitalId: model.modalityHospitalId,
-      modalityOperationalId: model.modalityOperationalId,
-      reserveDate: model.reserveDate,
+      contactId: model.contactId,
+      modalityExaminationId: model.modalityExaminationId,
+      reserveDate,
+      userId: this.userId,
       fromTime: model.fromTime,
       toTime: model.toTime,
-      patientHopeId,
       name: model.name,
-      birthDate,
-      phoneNumber1: this.filteredPhoneNumber(phoneNumber),
+      birthDate: model.birthDate,
+      phoneNumber1: phoneNumber,
       addressLine1: address,
       notes: notes,
+      emailAddress,
+      isWaitingList: false,
+      patientHopeId,
       channelId: channelId.FRONT_OFFICE,
-      userId: this.userId,
       userName: this.userName,
       source: this.source,
-      isWaitingList: false
     };
     return payload;
-  }
-
-  filteredPhoneNumber(phoneNumber: string) {
-    return phoneNumber.replace(/_/gi, '');
   }
 
   onAddedModality() {
@@ -260,43 +315,74 @@ export class ModalCreateAppointmentComponent implements OnInit {
   }
 
   addModalityToList() {
-    const objModality = pick(this.selectedInput, ['modality_label', 'room_name', 'modality_hospital_id'])
+    const objModality = pick(this.selectedInput, ['modality_label', 'room_name'])
     let payloadAddedModal = {
       ...objModality,
       ...this.selectedModality,
       ...this.isSelectedPatient,
     }
-    payloadAddedModal.reserveDate = this.viewCurrentDate.format('dddd, DD MMMM YYYY');
+    payloadAddedModal.reserveDate = this.selectedModality.reserveDate.format('dddd, DD MMMM YYYY')
     this.modalityAppointmentList.push(payloadAddedModal);
+    this.isSelectedExaminationValid = true;
   }
 
   editModalityToList() {
     const modalityAppointmentList = this.modalityAppointmentList.slice()
     const modality = this.modalityHospitalList.find((md :any) => md.modality_hospital_id === this.edittedModality.modalityHospitalId )
-    modalityAppointmentList[this.edittedModality.index] = { ...this.edittedModality, ...modality }
+    const { fromTime, toTime, reserveDate } = this.edittedModality;
+    modalityAppointmentList[this.edittedModality.index] = { 
+      ...this.edittedModality, 
+      ...modality, 
+      fromTime, toTime, 
+      reserveDate: reserveDate.format('dddd, DD MMMM YYYY')
+    }
     this.modalityAppointmentList = modalityAppointmentList;
-    this.edittedModality = {};
+    this.onReset();
   }
 
-  onChangeDefaultSelected() {
-    this.selectedModality.fromTime = this.selectedAppointment.fromTime;
-    this.selectedModality.toTime = this.selectedAppointment.toTime;
+  onDefaultSelected() {
+    const { modalityHospitalId, fromTime, toTime, reserveDate, modality_label, room_name, duration } = this.selectedAppointment;
+    this.selectedModality = {
+      ...this.selectedModality,
+      isBpjs: false,
+      isAnesthesia: false,
+      fromTime,
+      toTime,
+      modalityHospitalId,
+      reserveDate,
+      duration,
+      modality_label,
+      room_name
+    }
+
+    if (this.selectedModality.modalityHospitalId) {
+      this.isExaminationButtonDisabled = false;
+      this.getModalityExamination(this.selectedModality.modalityHospitalId);
+    }
   }
 
   cancelModality() {
-    this.edittedModality = {}
+    this.onReset();
   }
 
   onDeleteModality(val: any) {
     const filtered = this.modalityAppointmentList.filter((list: any) => list !== val );
     this.modalityAppointmentList = filtered;
+    this.edittedModality = {};
   }
 
-  onEditModality(list: any, index: any) {
-    this.onEdit = true;
-    console.log(list, 'list')
+  onEditModality(index: any) {
+    this.isEdited = true;
     this.edittedModality = this.modalityAppointmentList[index];
     this.edittedModality.index = index;
-    console.log(this.edittedModality, '============== this editted modality')
+    this.selectedDateTime = clone(this.edittedModality);
+    this.selectedDateTime.reserveDate = moment(this.selectedDateTime.reserveDate);
+    this.getModalityExamination(this.edittedModality.modalityHospitalId);
+  }
+
+  onReset() {
+    this.edittedModality = {};
+    this.onDefaultSelected();
   }
 }
+

@@ -51,16 +51,21 @@ export class TableListDailyComponent implements OnInit {
 
   createAppointment(schedule?: any) {
     const m = this.modalService.open(ModalCreateAppointmentComponent, { keyboard: false });
-    console.log(this.sectionSelected, '=================section selected')
+    const { modality_hospital_id: modalityHospitalId, modality_label, room_name, duration } = this.sectionSelected;
+    const { fromTime, toTime } = schedule;
     const payload = {
-      ...schedule,
+      fromTime,
+      toTime,
+      modalityHospitalId,
       reserveDate: this.dateSelected,
+      modality_label,
+      room_name,
+      duration
     }
-    console.log(schedule, '=========== schedule')
     m.componentInstance.selectedAppointment = payload;
-    // m.result.then((result: any) => {
-    //   console.log('modal is closed', {result})
-    // })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
   }
 
   detailSchedule(schedule?: any) {
@@ -216,10 +221,16 @@ export class TableListDailyComponent implements OnInit {
         }else {
           const momentFromTime = moment(this.fromTimeRange, 'hh:mm')
           const momentToTime = moment(this.toTimeRange, 'hh:mm')
-          this.scheduleList = this.scheduleListBk.filter(sc => {
-            return sc.items.find((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
-                && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) )
-          })
+          this.scheduleList = this.scheduleListBk.reduce((acc, sc) => {
+            const items = sc.items.filter((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
+                && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) );
+            
+            if(items.length) {
+              sc.items = items
+              acc.push(sc)
+            }
+            return acc
+          }, [])
         }
       }
   }

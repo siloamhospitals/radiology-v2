@@ -19,6 +19,7 @@ export class ModalityService {
   private appointment = environment.CALL_CENTER_SERVICE + '/radiology/modality-slot';
 
   getModalityHospital(hospitalId: string, fromDate: any, toDate: any): Observable<any> {
+    // const query = `?fromDate=${fromDate}&toDate=${toDate}&hospitalId=${hospitalId}&operationalType='1'`;
     const query = `?fromDate=${fromDate}&toDate=${toDate}&hospitalId=${hospitalId}`;
     const url = this.modalityHospital + query;
     return this.http.get<any[]>(url, httpOptions);
