@@ -266,9 +266,21 @@ export class TableListWeeklyComponent implements OnInit {
     this.getSchedules()
   }
 
-  createAppointment (date: any = null) {
-    console.log('SELECTED_DATE', date)
-    const m = this.modalService.open(ModalCreateAppointmentComponent, { windowClass: 'fo_modal_confirmation' })
+
+  createAppointment(schedule?: any) {
+    const m = this.modalService.open(ModalCreateAppointmentComponent, { keyboard: false });
+    const { modality_hospital_id: modalityHospitalId, modality_label, room_name, duration } = this.sectionSelected;
+    const { fromTime, toTime, date } = schedule;
+    const payload = {
+      fromTime,
+      toTime,
+      modalityHospitalId,
+      reserveDate: moment(date),
+      modality_label,
+      room_name,
+      duration
+    }
+    m.componentInstance.selectedAppointment = payload;
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
