@@ -207,7 +207,7 @@
       <div class="d-flex flex-wrap flex-row px-4">
         <h5 class="w-100">Modality</h5>
         <div class="w-100" *ngIf="showModalityList">
-          <div *ngFor="let list of modalityAppointmentList; index as i" 
+          <div *ngFor="let list of modalityAppointmentList; index as i"
             [attr.class]="list.isSuccess ? 'alert alert-success border border-radius-custom mb-3 p-0' : 'border border-radius-custom mb-3'">
             <div class="d-flex flex-wrap align-items-center" >
               <div class="w-25 border-right">
@@ -264,7 +264,7 @@
               <div class="input-group">
                 <select
                   *ngIf="!edittedModality.modalityHospitalId"
-                  [(ngModel)]="selectedModality.modalityHospitalId" (ngModelChange)="onChangeModality($event)"
+                  [(ngModel)]="selectedModality.modalityHospitalId" (ngModelChange)="onChangeModality()"
                   class="form-control"
                   [compareWith]="compareByModalityHospital"
                   required
@@ -277,12 +277,12 @@
                 </select>
                 <select
                   *ngIf="edittedModality.modalityHospitalId"
-                  [(ngModel)]="edittedModality.modalityHospitalId" (ngModelChange)="onChangeModality($event)"
+                  [(ngModel)]="edittedModality.modalityHospitalId" (ngModelChange)="onChangeModality()"
                    class="form-control"
                   required
                   name="edittedModalityHospitalId"
                   >
-                  <option *ngFor="let type of modalityHospitalList" [value]="type.modality_hospital_id">{{type.modality_label}} - ROOM {{type.room_name}}</option>                  
+                  <option *ngFor="let type of modalityHospitalList" [value]="type.modality_hospital_id">{{type.modality_label}} - ROOM {{type.room_name}}</option>
                 </select>
               </div>
             </div>
