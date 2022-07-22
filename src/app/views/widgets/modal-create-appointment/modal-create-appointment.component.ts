@@ -4,13 +4,12 @@ import { RadiologyAppointmentRequest } from './../../../models/radiology/request
 import { AlertService } from './../../../services/alert.service';
 import { ModalityService } from './../../../services/modality.service';
 import { GeneralService } from './../../../services/general.service';
-import { NewPatientHope, PatientHope } from './../../../models/patients/patient-hope';
+import { NewPatientHope } from './../../../models/patients/patient-hope';
 import { PatientService } from './../../../services/patient.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search-patient-hope-grouped-request';
 import * as moment from 'moment';
-import { clone, pick } from 'lodash';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 import { isOk } from 'src/app/utils/response.util';
 // import { isOk } from '../../../utils/response.util';
@@ -41,7 +40,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   private userName: string = this.user.fullname;
   public source: string = sourceApps;
   public patientHope: NewPatientHope[];
-  public choosedPatient: PatientHope;
   public search: any = {
     birthDate: '',
     patientName: '',
@@ -70,7 +68,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   public modalityAppointmentList: any = [];
   public viewFromTime: any = '';
   public showPatientTable = '0';
-  public selectedInput: any = {};
 
   // buttons
   public isSubmitting: boolean = false;
@@ -82,7 +79,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   public model: any = {
     localMrNo: ''
   };
-  public selectedDateTime: any;
   public isAddedModality: boolean = false;
   public viewDate: any = moment();
   public isSelectedExaminationValid: boolean = true;
@@ -315,10 +311,10 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   addModalityToList() {
-    const objModality = pick(this.selectedInput, ['modality_label', 'room_name'])
+    const objModality = this.modalityHospitalList.find((md :any) => md.modality_hospital_id === this.selectedModality.modalityHospitalId )
     let payloadAddedModal = {
-      ...objModality,
       ...this.selectedModality,
+      ...objModality,
       ...this.isSelectedPatient,
     }
     payloadAddedModal.reserveDate = this.selectedModality.reserveDate.format('dddd, DD MMMM YYYY')
@@ -373,10 +369,9 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
 
   onEditModality(index: any) {
     this.isEdited = true;
-    this.edittedModality = this.modalityAppointmentList[index];
+    this.edittedModality = { ...this.modalityAppointmentList[index] }
     this.edittedModality.index = index;
-    this.selectedDateTime = clone(this.edittedModality);
-    this.selectedDateTime.reserveDate = moment(this.selectedDateTime.reserveDate);
+    this.edittedModality.reserveDate = moment(this.edittedModality.reserveDate, 'dddd, DD MMMM YYYY');
     this.getModalityExamination(this.edittedModality.modalityHospitalId);
   }
 
