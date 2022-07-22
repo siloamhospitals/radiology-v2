@@ -66,6 +66,45 @@
                   </select>
                 </div>
               </div>
+              <!-- ReferralType: Internal Doctor Referral -->
+              <ng-container *ngIf="referralType.value === '2'">
+                <div class="col col-4 mb-3">
+                  <label class="form-label text-muted">Dokter Internal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div>
+                    <input class="form-control" placeholder="Masukkan Dokter Internal yang Dirujuk" />
+                  </div>
+                </div>
+                <div class="col col-4 mb-3">
+                  <label class="form-label text-muted">Nomor  Admission yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div>
+                    <input class="form-control" placeholder="Masukkan Admission yang Dirujuk" />
+                  </div>
+                </div>
+              </ng-container>
+              <!-- ReferralType: External Doctor Referral -->
+              <ng-container *ngIf="referralType.value === '5'">
+                <div class="col col-4 mb-3">
+                  <label class="form-label text-muted">Dokter Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div>
+                    <input class="form-control" placeholder="Masukkan Dokter Eksternal yang Dirujuk" />
+                  </div>
+                </div>
+              </ng-container>
+              <!-- ReferralType: Internal Doctor Referral -->
+              <ng-container *ngIf="referralType.value === '5'">
+                <div class="col col-4 mb-3">
+                  <label class="form-label text-muted">Nama<sup class="text-required">*</sup></label>
+                  <div>
+                    <input class="form-control" placeholder="Masukkan Nama" />
+                  </div>
+                </div>
+                <div class="col col-4 mb-3">
+                  <label class="form-label text-muted">Nomor Telepon<sup class="text-required">*</sup></label>
+                  <div>
+                    <input class="form-control" placeholder="Masukkan Nomor Telepon*" />
+                  </div>
+                </div>
+              </ng-container>
               <div class="w-100"></div>
               <div class="col col-4 mb-3">
                 <label class="form-label text-muted">Nama Pembayar</label>
@@ -91,7 +130,7 @@
                   </select>
                 </div>
               </div>
-              <div class="col col-4 mb-3">
+              <div class="col-8 mb-3">
                 <label class="form-label">Ruangan / Lokasi</label>
                 <div>
                   <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
@@ -99,6 +138,65 @@
                   </select>
                 </div>
               </div>
+              <!-- PatientType: Payer -->
+              <ng-container *ngIf="patientType.value === '2'">
+                <div class="col-4 mb-3">
+                  <label class="form-label">Pembayar</label>
+                  <div>
+                    <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
+                      <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
+                    </select>
+                  </div>
+                </div>
+                <div class="col-4 mb-3">
+                  <label class="form-label">Nomor Pembayar</label>
+                  <div>
+                    <input class="form-control" placeholder="Masukkan Nomor Pembayar" />
+                  </div>
+                </div>
+                <div class="col-4 mb-3">
+                  <label class="form-label">Nomor Kelayakan Pembayar</label>
+                  <div>
+                    <input class="form-control" placeholder="Masukkan Nomor Kelayakan Pembayar" />
+                  </div>
+                </div>
+                <div class="col-4 mb-3">
+                  <label class="form-label">Sumber Rujukan</label>
+                  <div>
+                    <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
+                      <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
+                    </select>
+                  </div>
+                </div>
+                <div class="col-4 mb-3">
+                  <label class="form-label">Nomor Rujukan</label>
+                  <div>
+                    <input class="form-control" placeholder="Masukkan Nomor Rujukan" />
+                  </div>
+                </div>
+                <div class="col-4 mb-3">
+                  <label class="form-label">Tanggal Rujukan</label>
+                  <div>
+                    <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
+                      <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
+                    </select>
+                  </div>
+                </div>
+                <div class="col-4 mb-3">
+                  <label class="form-label">Diagnosa</label>
+                  <div>
+                    <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
+                      <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
+                    </select>
+                  </div>
+                </div>
+                <div class="col-8 mb-3">
+                  <label class="form-label">Catatan Pembayar</label>
+                  <div>
+                    <input class="form-control" placeholder="Masukkan Catatan Pembayar" />
+                  </div>
+                </div>
+              </ng-container>
             </div>
           </div>
         </section>

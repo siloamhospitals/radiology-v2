@@ -106,9 +106,9 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   setDefaultValues () {
     // this.nationalType = this.nationalTypes[0]
-    this.patientType = this.patientTypes[0]
-    this.emailType = this.emailTypes[0]
-    this.referralType = this.referralTypes[0]
+    this.patientType = this.patientTypes.find((x: General) => x.value === '1')
+    this.emailType = this.emailTypes.find((x: General) => x.value === '1')
+    this.referralType = this.referralTypes.find((x: General) => x.value === '1')
   }
 
   fetchInitialValues () {
