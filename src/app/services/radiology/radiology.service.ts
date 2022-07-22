@@ -19,6 +19,11 @@ import {DeleteAppointmentResponse} from '../../models/radiology/responses/delete
 import {ModalityExaminationResponse} from '../../models/radiology/responses/modality-examination-response';
 import {RadiologyAppointmentUpdateRequest} from '../../models/radiology/requests/radiology-appointment-update-request';
 import RadiologySchedulesResponse from '../../models/radiology/responses/radiology-schedule-response';
+import { RadiologyAdmissionRequest } from 'src/app/models/radiology/request/radiology-admission-request';
+import { ModalityAdmissionResponse } from 'src/app/models/radiology/responses/modality-admission-response';
+import { RadiologyActiveAdmissionResponse } from 'src/app/models/radiology/responses/radiology-active-admission-response';
+import { PatientLabelResponse } from 'src/app/models/radiology/responses/patient-label-response';
+import { LateResponse } from 'src/app/models/radiology/responses/late-response';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +33,7 @@ export class RadiologyService {
   constructor(public client: HttpClient) {}
 
   private readonly radiologyUrl = environment.OPADMIN_SERVICE + '/radiology';
+  private readonly radiologyFOUrl = environment.FRONT_OFFICE_SERVICE + '/radiology';
   private readonly hospitalOperational = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting/hospital';
   private readonly schedule = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting';
   private readonly operationalSchedule = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting/schedules';
@@ -142,6 +148,27 @@ export class RadiologyService {
 
   putAppointment(request: RadiologyAppointmentUpdateRequest): Observable<BaseResponse> {
     return this.client.put<BaseResponse>(`${this.appointment}/${request.modalitySlotId}`, request, httpOptions);
+  }
+
+  // Admission
+  createAdmission(request: RadiologyAdmissionRequest): Observable<ModalityAdmissionResponse> {
+    const url = `${this.radiologyFOUrl}/admission`;
+    return this.client.post<ModalityAdmissionResponse>(url, request, httpOptions);
+  }
+
+  getActiveAdmission(patientHopeId: number): Observable<RadiologyActiveAdmissionResponse> {
+    const url = `${this.radiologyFOUrl}/admission/active/${patientHopeId}`;
+    return this.client.get<RadiologyActiveAdmissionResponse>(url, httpOptions);
+  }
+
+  getPatientLabel(modalitySlotId: string): Observable<PatientLabelResponse> {
+    const url = `${this.radiologyFOUrl}/admission/label/${modalitySlotId}`;
+    return this.client.get<PatientLabelResponse>(url, httpOptions);
+  }
+
+  isLate(modalitySlotId: string): Observable<LateResponse> {
+    const url = `${this.radiologyFOUrl}/modality-slot/late/${modalitySlotId}`;
+    return this.client.get<LateResponse>(url, httpOptions);
   }
 
 }

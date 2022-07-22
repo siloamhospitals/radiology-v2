@@ -2,9 +2,11 @@ import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { General } from 'src/app/models/generals/general';
-import { AdmissionService } from 'src/app/services/admission.service';
+import { RadiologyAdmissionRequest } from 'src/app/models/radiology/request/radiology-admission-request';
+// import { AdmissionService } from 'src/app/services/admission.service';
 import { GeneralService } from 'src/app/services/general.service';
-// import { RadiologyService } from 'src/app/services/radiology.service';
+import { PatientService } from 'src/app/services/patient.service';
+import { RadiologyService } from 'src/app/services/radiology/radiology.service';
 // import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
 import { nationalTypeIdNames, sourceApps } from 'src/app/variables/common.variable';
 
@@ -36,18 +38,26 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   nationalIdTypeName: any = nationalTypeIdNames
 
-  // model to send
+  // Model Information
+  contactId: string
+  contactData: any = {}
+
+  // Input to Send AdmissionModel
   referralType: any = 1
   patientType: any = 1
   roomSelect: any = null
   emailType: any = 1
   txtEmail: any = null
   txtNote: any = null
+  isAdmissionEmailDisabled: boolean = true
+
+  isLoading: boolean = false
 
   constructor(
     private activeModal: NgbActiveModal,
     private generalService: GeneralService,
-    private admissionService: AdmissionService,
+    private radiologyService: RadiologyService,
+    private patientService: PatientService,
   ) { }
 
   ngOnChanges(_changes: SimpleChanges) {
@@ -56,9 +66,11 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   async ngOnInit() {
     console.log('nginit selectedModel', this.selectedModel)
+    this.refresh()
     await this.fetchInitialValues()
     this.setDefaultValues()
-    this.refresh()
+    await this.fetchData()
+    this.setDefaultData()
   }
 
   refresh () {
@@ -79,28 +91,39 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   createAdmission (evt: any = null) {
     evt.preventDefault()
-    console.log('createAdmission')
-    // const body: RadiologyAdmissionRequest = {
-    //   modalitySlotId: this.data.modalitySlot.modality_slot_id,
-    //   organizationId: Number(this.hospital.orgId),
-    //   patientTypeId: Number(this.patientType.value),
-    //   admissionTypeId: this.selectedAdmissionType.value,
-    //   ...this.generatePayerPayload(this.payerData),
-    //   userId: this.user.id,
-    //   source: sourceApps,
-    //   userName: this.user.fullname,
-    // };
-    const body = {}
+    this.processCreateAdmission()
+  }
+
+  processCreateAdmission () {
+    // @todo: add editEmailAndNote
+    const body: RadiologyAdmissionRequest = {
+      modalitySlotId: this.model.modality_slot_id,
+      organizationId: Number(this.hospital.orgId),
+      patientTypeId: Number(this.patientType.value),
+      admissionTypeId: '1', // Outpatient
+      // ...this.generatePayerPayload(this.payerData),
+      userId: this.user.id,
+      source: sourceApps,
+      userName: this.user.fullname,
+      payerId: null,
+      payerNo: '',
+      payerEligibility: ''
+    }
+    // const body = {}
+    console.log('createAdmission', body)
 
     const isSuccess = (res: any) => {
+      this.isLoading = false
       console.log('ADMISSION_CREATE_SUCCESS', res)
     }
 
     const isError = (e: any) => {
+      this.isLoading = false
       console.log('ADMISSION_CREATE_ERROR', e)
     }
 
-    this.admissionService.createAdmission(body)
+    this.isLoading = true
+    this.radiologyService.createAdmission(body)
       .subscribe(isSuccess, isError)
   }
 
@@ -109,6 +132,11 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     this.patientType = this.patientTypes.find((x: General) => x.value === '1')
     this.emailType = this.emailTypes.find((x: General) => x.value === '1')
     this.referralType = this.referralTypes.find((x: General) => x.value === '1')
+
+    // to Model
+    if (this.model && this.model.modality_slot_id) {
+      this.contactId = this.model.contact_id
+    }
   }
 
   fetchInitialValues () {
@@ -138,5 +166,33 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   async fetchNationalTypes () {
     this.nationalTypes = await this.generalService.getNationalityIdType().toPromise()
       .then((res: any) => res.data || [])
+  }
+
+  async fetchData () {
+    return Promise.all([
+      this.fetchContactData()
+    ])
+  }
+
+  async fetchContactData () {
+    if (!this.contactId) { return }
+    this.contactData = await this.patientService.getContact(this.contactId).toPromise()
+      .then((res: any) => res.data || {})
+  }
+
+  setDefaultData () {
+    this.changeEmailType()
+    this.txtNote = this.model.note
+  }
+  
+  changeEmailType () {
+    const v = this.emailType
+    switch (v.value) {
+      case '1': this.txtEmail = this.contactData.email_address; this.isAdmissionEmailDisabled = true; break;
+      case '2': this.txtEmail = this.contactData.email_address; this.isAdmissionEmailDisabled = true; break;
+      case '3': this.isAdmissionEmailDisabled = false; break;
+      case '4': this.txtEmail = 'noemail@email.com'; this.isAdmissionEmailDisabled = true;
+      default: break;
+    }
   }
 }

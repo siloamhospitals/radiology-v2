@@ -91,7 +91,7 @@
                 </div>
               </ng-container>
               <!-- ReferralType: Internal Doctor Referral -->
-              <ng-container *ngIf="referralType.value === '5'">
+              <ng-container *ngIf="referralType.value === '6'">
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Nama<sup class="text-required">*</sup></label>
                   <div>
@@ -138,6 +138,10 @@
                   </select>
                 </div>
               </div>
+              <!-- PatientType: Private -->
+              <ng-container *ngIf="patientType.value === '2'">
+                <div class="w-100" style="height: 200px;"></div>
+              </ng-container>
               <!-- PatientType: Payer -->
               <ng-container *ngIf="patientType.value === '2'">
                 <div class="col-4 mb-3">
@@ -207,7 +211,10 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Jenis Email</label>
                 <div>
-                  <select [(ngModel)]="emailType" class="x-form-control" placeholder="Pilih Jenis Email">
+                  <select [(ngModel)]="emailType"
+                    class="x-form-control" 
+                    placeholder="Pilih Jenis Email"
+                    (change)="changeEmailType()">
                     <option *ngFor="let item of emailTypes" [ngValue]="item">{{item.description}}</option>
                     <!-- <option value="" disabled>Pilih Jenis Rujukan</option> -->
                   </select>
@@ -216,7 +223,7 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Email</label>
                 <div>
-                  <input [ngModel]="txtEmail" class="form-control" placeholder="Email Isian" />
+                  <input [ngModel]="txtEmail" [disabled]="isAdmissionEmailDisabled" class="form-control" placeholder="Email Isian" />
                 </div>
               </div>
               <div class="col col-4 mb-3">
@@ -227,6 +234,11 @@
               </div>
             </div>
           </div>
+        </section>
+
+        <!-- Utility -->
+        <section>
+          <div *ngIf="isLoading" class="bg-secondary p-2 rounded my-1">Create Admission is Process... Please Wait...</div>
         </section>
       </div>
     </ng-container>
