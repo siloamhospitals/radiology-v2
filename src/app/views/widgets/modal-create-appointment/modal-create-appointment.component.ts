@@ -378,5 +378,9 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     this.edittedModality = {};
     this.onDefaultSelected();
   }
+
+  selectPatientRow (v: any) {
+    v.click()
+  }
 }
 
