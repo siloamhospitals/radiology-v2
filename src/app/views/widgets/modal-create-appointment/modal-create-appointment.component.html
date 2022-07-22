@@ -1,25 +1,27 @@
 <div class="modal-content modal-extralarge-size">
-  <div class="modal-header-custom px-0 px-4">
-    <div class="d-flex flex-wrap justify-content-between">
+  <div class="modal-header-custom px-0">
+    <div class="d-flex flex-wrap justify-content-between px-4">
       <div class="align-self-center">
         <h4 class="m-0 font-weight-bold">Jadwalkan Pasien</h4>
       </div>
       <div>
-        <button #close_button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
+        <button type="button" #close_button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
           <span class="back-button" aria-hidden="true">&times;</span>
         </button>
       </div>
     </div>
   </div>
-  <form (ngSubmit)="onCreateAppointment()" #modalityForm="ngForm">
-    <div class="modal-body p-0">
-      <div>
-        <div *ngFor="let alert of alertMap[defaultAlertKey]">
-          <ngb-alert class="alert-message" *ngIf="alert" type="{{alert.typeName}}" (close)="removeAlert(alert)">{{ alert.message }}
-          </ngb-alert>
-        </div>
-      </div>
 
+  <div class="modal-header-custom px-0 py-0 border-bottom-0 border-0">
+    <div *ngIf="alertMap[defaultAlertKey]" class="modal-header-custom px-0">
+      <div *ngFor="let alert of alertMap[defaultAlertKey]">
+        <ngb-alert class="alert-message" *ngIf="alert" type="{{alert.typeName}}" (close)="removeAlert(alert)">{{ alert.message }}
+        </ngb-alert>
+      </div>
+    </div>
+  </div>
+  <form (submit)="onCreateAppointment()" #modalityForm="ngForm">
+    <div class="modal-body p-0">
       <div class="px-4 py-3">
         <h5 class="mb-3">Data Pasien</h5>
         <p>BPJS</p>
@@ -60,15 +62,18 @@
                   minlength="3"
                   name="patient-name-search"
                   [(ngModel)]="search.patientName"
-                  class="form-control border-0 pl-1 w-75"
+                  [style.width]="'80%'"
+                  class="form-control border-0 pl-1"
                   id="patient-name-search"
                   placeholder="Nama Pasien"
                   type="text"
                   >
-                  <div class="w-25 align-self-center text-right">
+                  <div [style.width]="'15%'" class="align-self-center text-right">
                     <button class="btn border-0" type="submit">
                       <span class="fa fa-lg fa-search text-muted"></span>
                     </button>
+                  </div>
+                   <div [style.width]="'5%'">
                   </div>
                 </div>
 
@@ -86,16 +91,18 @@
                   <input
                   name="local-mr-search"
                   [(ngModel)]="search.mrLocalNo"
-                  class="form-control border-0 pl-1 w-75"
+                  [style.width]="'83%'"
+                  class="form-control border-0 pl-1"
                   id="patient-localmr-field"
                   placeholder="Cari No. MR lokal pasien"
                   type="number"
                   >
-                  <div class="w-25 align-self-center text-right">
+                  <div [style.width]="'12%'" class="align-self-center text-right">
                     <button class="btn border-0" type="submit">
                       <span class="fa fa-lg fa-search text-muted"></span>
                     </button>
                   </div>
+                  <div [style.width]="'5%'"></div>
                 </div>
 
               </div>
@@ -109,7 +116,7 @@
               <div class="w-100">
                 <label for="identity_no_search" class="pl-1">Nomor Identitas</label>
                 <div class="d-flex flex-row">
-                  <div class="input-group">
+                  <div class="input-group" [style.width]="'80%'">
                     <div class="id-type" >
                       <select placeholder="ID Number" name="national-type" class="form-control national-type-id border-0 pl-1" [(ngModel)]="search.nationalIdTypeId">
                         <option class="text-muted" value="" selected hidden>Jenis</option>
@@ -125,11 +132,12 @@
                       [(ngModel)]="search.idNumber"
                     />
                   </div>
-                  <div class="w-25 align-self-center text-right">
+                  <div [style.width]="'15%'" class="align-self-center text-right">
                     <button class="btn border-0" type="submit">
                       <span class="fa fa-lg fa-search text-muted"></span>
                     </button>
                   </div>
+                  <div [style.width]="'5%'"></div>
                 </div>
 
               </div>
@@ -186,7 +194,7 @@
         <div *ngIf="!isLoadingPatientTable && showPatientTable === '1'" class="text-center">
           <img src="/assets/icons/ic_file_img.svg" alt="image">
           <p class="text-muted">Data Pasien tidak ditemukan periksa kembali data yang anda masukkan atau,</p>
-          <button class="btn btn-primary"><span class="fa fa-plus"></span> Daftar Sebagai Pasien Baru</button>
+          <button type="button" class="btn btn-primary"><span class="fa fa-plus"></span> Daftar Sebagai Pasien Baru</button>
         </div>
       </div>
 
@@ -280,9 +288,6 @@
             </div>
 
             <div class="mx-3 my-3">
-              <div [ngClass]="[isAddedModality && !this.selectedModality.modalityExaminationId && !this.edittedModality.modalityHospitalId ? 'form-error' : '']">
-                <label for="examination">error <sup class="text-required">*</sup></label>
-              </div>
               <label for="examination">Jenis Pemeriksaan <sup class="text-required">*</sup></label>
               <div class="input-group">
                 <select [disabled]="isExaminationButtonDisabled"
