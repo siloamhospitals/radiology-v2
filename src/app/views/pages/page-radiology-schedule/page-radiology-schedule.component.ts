@@ -75,6 +75,8 @@ export class PageRadiologyScheduleComponent implements OnInit {
   fromTimeRange: string = "00:00";
   toTimeRange: string = "00:00";
 
+  isLoadingSection: boolean = false
+
   ngOnInit() {
     // this.getModalitySlots()
     this.getModalityHospitalList()
@@ -115,6 +117,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   getModalityHospitalList() {
     if(this.tableViewCurrentDate) {
       const dateString = this.tableViewCurrentDate.format('YYYY-MM-DD')
+      this.isLoadingSection = true
       this.modalityService.getModalityHospital(this.hospital.id, dateString, dateString)
         .subscribe(res => {
           const activeModalityHospital = res.data.map((eachModality: any) => {
@@ -124,6 +127,8 @@ export class PageRadiologyScheduleComponent implements OnInit {
           this.sections = activeModalityHospital;
         }, () => {
           this.sections = [];
+        }, () => {
+          this.isLoadingSection = false
         });
     } else {
       this.sections = [];
