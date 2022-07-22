@@ -4,6 +4,7 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import '../node_modules/angular-archwizard/archwizard.css';
 @import url('https://fonts.googleapis.com/css2?family=Mulish&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap');
+@import "~@ng-select/ng-select/themes/default.theme.css";
 
 *{
   font-family: 'Mulish', 'Robot', sans-serif;

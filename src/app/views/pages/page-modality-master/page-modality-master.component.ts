@@ -21,11 +21,11 @@ export class PageModalityMasterComponent implements OnInit {
 
   @Input() responseData: any;
   public modalityOptions: Modality[];
-  selectedItemsSchdule: any;
-  selectedItemsFloor:any;
-  selectedItemsStatus: any;
-  selectedItemsModality: any;
-  selectedModalityLabel: any;
+  selectedItemsSchdule:any  = [];
+  selectedItemsFloor:any = [];
+  selectedItemsStatus: any = [];
+  selectedItemsModality: any = [];
+  selectedModalityLabel: any = [];
   public strKey = localStorage.getItem('key') || '{}';
   public localKey = JSON.parse(this.strKey);
   public hospitalId = this.localKey.hospital.id;
@@ -134,6 +134,14 @@ export class PageModalityMasterComponent implements OnInit {
       });
   }
 
+  selectAll() {
+    this.selectedItemsModality = this.modalityOptions.map(x => x.name);
+}
+
+unselectAll() {
+    this.selectedItemsModality = [];
+}
+
   getRooms() {
     const key = JSON.parse(this.strKey);
     const hospitalId = key.hospital.id
@@ -184,54 +192,15 @@ export class PageModalityMasterComponent implements OnInit {
     });
   }
 
-  async onItemSelect(items?: any, searchAll?: boolean, query?: any) {
-    let selectedFloor = null;
-    let selectedSchedule = null;
-    let selectedStatus = null;
-    let selectedModality = null;
+  async onItemSelect() {
     let selectedModalityLabelItem = null;
-
-    selectedFloor = !isEmpty(this.selectedItemsFloor) ? 
-    this.selectedItemsFloor.map((item: any) => item['floor_id']) : null;
-
     selectedModalityLabelItem = !isEmpty(this.selectedModalityLabel) ? this.selectedModalityLabel : null;
-
-    const allSelectedFloor = searchAll === true && query == 'floor' ? 
-    items.map((item: any) => item['floor_id']) : ''
-    
-    selectedSchedule = !isEmpty(this.selectedItemsSchdule) ? 
-    this.selectedItemsSchdule.map((item: any) => item['operational_type']) : null;
-
-    const allSelectedSchedule = searchAll === true && query == 'operational_type' ? 
-    items.map((item: any) => item['operational_type']) : ''
-    
-    selectedStatus = !isEmpty(this.selectedItemsStatus) ? 
-    this.selectedItemsStatus.map((item: any) => item['status']) : null;
-
-    const allSelectedStatus = searchAll === true && query == 'status' ? 
-    items.map((item: any) => item['status']) : ''
-    
-    selectedModality = !isEmpty(this.selectedItemsModality) ? 
-    this.selectedItemsModality.map((item: any) => item['modality_id']) : null;
-
-    const allSelectedModality = searchAll === true && query == 'modality' ? 
-    items.map((item: any) => item['modality_id']) : ''
-
-    if(!isEmpty(allSelectedFloor)){
-      selectedFloor = allSelectedFloor
-    }
-    if(!isEmpty(allSelectedSchedule)){
-      selectedSchedule = allSelectedSchedule
-    }
-    if(!isEmpty(allSelectedStatus)){
-      selectedStatus = allSelectedStatus
-    }
-    if(!isEmpty(allSelectedModality)){
-      selectedModality = allSelectedModality
-    }
-
-    if (selectedFloor || selectedSchedule || selectedStatus || selectedModality || selectedModalityLabelItem) {
-      this.fillOperationals(selectedFloor, selectedSchedule, selectedStatus, selectedModality, selectedModalityLabelItem);
+    console.log(this.selectedItemsStatus)
+    console.log(this.selectedItemsModality)
+    console.log(this.selectedItemsFloor)
+    console.log(this.selectedItemsSchdule)
+    if (this.selectedItemsFloor || this.selectedItemsSchdule || this.selectedItemsStatus || this.selectedItemsModality || selectedModalityLabelItem) {
+      this.fillOperationals(this.selectedItemsFloor, this.selectedItemsSchdule, this.selectedItemsStatus, this.selectedItemsModality, selectedModalityLabelItem);
     } else {
       this.fillOperationals();
     }

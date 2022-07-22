@@ -11,17 +11,16 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { NgbAlertModule, NgbPopoverModule, NgbProgressbarModule, NgbModalModule, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
-/* import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown-angular7'; */
 import { RouterModule } from '@angular/router';
 import { ModalModalityentModule } from '../../widgets/modal-modality/modal-modality.module';
 import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modality.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
     PageModalityMasterComponent
   ],
   imports: [
-    //NgMultiSelectDropDownModule.forRoot(),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -38,7 +37,8 @@ import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modal
     NguiAutoCompleteModule,
     ModalModalityentModule,
     RouterModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
+    NgSelectModule
   ],
   exports: [
     PageModalityMasterComponent
