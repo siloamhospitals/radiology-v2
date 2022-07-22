@@ -52,8 +52,12 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   isAdmissionEmailDisabled: boolean = true
 
   isLoading: boolean = false
+  isError: boolean = false
+
+  errorMessage: any = null
 
   @ViewChild('admissionDetail') modalAdmissionDetail: ElementRef
+  @ViewChild('loadingIndicatorModal') modalLoadingIndicator: ElementRef
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -123,10 +127,14 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
     const isError = (e: any) => {
       this.isLoading = false
+      this.isError = true
+      this.errorMessage = e.error && e.error.message ? e.error.message : e.message
       console.log('ADMISSION_CREATE_ERROR', e)
     }
 
     this.isLoading = true
+    this.isError = false
+    this.errorMessage = null
     this.radiologyService.createAdmission(body)
       .subscribe(isSuccess, isError)
   }
@@ -204,6 +212,13 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     const content = this.modalAdmissionDetail
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((_result) => {
     }, (_reason) => {
-    });
+    })
+  }
+
+  openLoadingIndicator () {
+    const content = this.modalLoadingIndicator
+    this.modalService.open(content, {centered: true}).result.then((_result) => {
+    }, (_reason) => {
+    })
   }
 }

@@ -90,8 +90,8 @@
                   </div>
                 </div>
               </ng-container>
-              <!-- ReferralType: Internal Doctor Referral -->
-              <ng-container *ngIf="referralType.value === '6'">
+              <!-- ReferralType: External Doctor Referral - Unlisted -->
+              <ng-container *ngIf="referralType.value === '4'">
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Nama<sup class="text-required">*</sup></label>
                   <div>
@@ -250,7 +250,11 @@
         <input type="checkbox" name="formSigned" id="formSigned" class="form-check-input">
         <label class="form-check-label pl-2" for="formSigned" style="position: relative; top: 2px;">Formulir Ditandatangani</label>
       </div>
-      <button (click)="createAdmission($event)" class="btn btn-success ml-2">Buat Admission</button>
+      <button (click)="createAdmission($event)" [disabled]="isLoading" class="btn btn-success ml-2">Buat Admission</button>
+    </div>
+    
+    <div *ngIf="isError" class="w-100 mt-3">
+      <ngb-alert type="danger" (close)="isError = false">{{errorMessage}}</ngb-alert>
     </div>
   </div>
 </div>
@@ -320,6 +324,17 @@
       <div class="w-100 d-flex flex-row justify-content-end px-1 align-items-center">
         <button (click)="createAdmission($event)" class="btn btn-primary"><b class="fa fa-print mr-2"></b>Cetak Label</button>
         <button (click)="createAdmission($event)" class="btn btn-success ml-2">Check in Pasien</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loadingIndicatorModal let-modal>
+  <div class="modal-content modal-custom-size">
+    <div class="modal-body p-4">
+      <div class="d-flex flex-row align-items-center justify-content-center p-3">
+        <div></div>
+        <div>Proses sedang berjalan... Mohon menunggu...</div>
       </div>
     </div>
   </div>
