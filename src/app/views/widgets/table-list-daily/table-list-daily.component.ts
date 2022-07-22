@@ -28,6 +28,7 @@ export class TableListDailyComponent implements OnInit {
   public scheduleListBk: any[] = []
 
   isLoadingSection: boolean = false
+  debounceLoadData: any = null
 
   constructor(
     private modalService: NgbModal,
@@ -247,10 +248,13 @@ export class TableListDailyComponent implements OnInit {
   }
 
   async refresh (reinit: boolean = false) {
-    if (reinit) { this.isLoadingSection = true }
-    await this.getModalitySlots()
-    await this.getSchedules()
-    if (reinit) { this.isLoadingSection = false }
+    if (this.debounceLoadData) { clearTimeout(this.debounceLoadData) }
+    this.debounceLoadData = setTimeout(async () => {
+      if (reinit) { this.isLoadingSection = true }
+      await this.getModalitySlots()
+      await this.getSchedules()
+      if (reinit) { this.isLoadingSection = false }
+    }, 800)
   }
 
 }
