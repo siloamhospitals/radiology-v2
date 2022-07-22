@@ -261,11 +261,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
             this.showErrorAlert(error.error.message, 2000);
           });
     }
-    // const isValidForm = this.validateCreateAppointment();
-    // if (isValidForm === false) {
-    //   this.isSubmitting = false;
-    //   return false;
-    // }
     return;
   }
 
@@ -302,7 +297,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       userName: this.userName,
       source: this.source,
     };
-    console.log(payload, '==========payload')
     return payload;
   }
 
