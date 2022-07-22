@@ -1424,10 +1424,7 @@ section .form-control:focus {
   align-items: center;
 }
 
-.ng-select .ng-select-container {
-  background-color: #fff !important;
-  border-radius: 4px;
-  border: 1px solid #fff !important;
-  min-height: 36px;
-  align-items: center;
+.ng-dropdown-panel.ng-select-bottom .ng-dropdown-panel-items .ng-option:last-child {
+  border-bottom-right-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
 }
