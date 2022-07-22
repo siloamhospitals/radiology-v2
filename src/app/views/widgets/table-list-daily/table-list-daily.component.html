@@ -1,3 +1,4 @@
+
 <table class="table table-bordered mt-3 table-list-radiology">
   <thead class="border-0 bg-secondary">
     <tr>
@@ -11,11 +12,15 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngIf="!(scheduleList && scheduleList.length)">
+    <ng-container *ngIf="!(scheduleList && scheduleList.length) && !ShowLoadDialy" >
       <tr>
         <td colspan="100%" class="text-center p-3">No data from this section</td>
       </tr>
     </ng-container>
+
+    <app-loading
+      width="10px" [showLoad]=ShowLoadDialy>
+    </app-loading>
 
     <ng-container *ngFor="let item of scheduleList; let i=index" >
       <tr *ngFor="let schedule of item.items; let j = index;" class="item-hover" >
