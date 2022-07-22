@@ -1423,3 +1423,11 @@ section .form-control:focus {
   min-height: 36px;
   align-items: center;
 }
+
+.ng-select .ng-select-container {
+  background-color: #fff !important;
+  border-radius: 4px;
+  border: 1px solid #fff !important;
+  min-height: 36px;
+  align-items: center;
+}
