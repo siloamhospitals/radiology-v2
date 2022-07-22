@@ -59,6 +59,9 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     notes: '',
     isBpjs: false,
     isAnesthesia: false,
+    duration: 0,
+    modality_label: '',
+    room_name: ''
   };
 
   public nationalTypeIds: any = [];
@@ -212,7 +215,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     if (this.edittedModality.modalityHospitalId) {
       this.getModalityExamination(this.edittedModality.modalityHospitalId);
     } else {
-      this.selectedModality.modalityHospitalId = this.selectedInput.modality_hospital_id;
       this.getModalityExamination(this.selectedModality.modalityHospitalId);
     }
 
@@ -226,17 +228,26 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     this.isSubmitting = true;
     if (this.modalityAppointmentList.length > 0) {
       this.modalityAppointmentList.forEach((element: any) => {
+        if(element.isSuccess){
+          return;
+        }
         const payload = this.generatePayload(element, this.choosedPatient);
+        element.isLoading = true
         this.modalityService.postAppointment(payload)
           .subscribe((response) => {
             if (isOk(response)) {
-              response.data.local_mr_no = this.model.localMrNo;
               this.actionSuccess();
             }
             this.isSubmitting = false;
+            element.isSuccess = true
+            element.messageError = null
+            element.isLoading = false
+            this.cancelModality()
           }, (error: any) => {
-            this.isSubmitting = false;
-            this.alertService.error(error && error.message, false, 3000);
+            this.isSubmitting = false;            
+            element.isSuccess = false
+            element.messageError = (error.error && error.error.message) || error.message  
+            element.isLoading = false          
           });
       });
     } else {
@@ -244,7 +255,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       this.modalityService.postAppointment(payload)
           .subscribe((response) => {
             if (isOk(response)) {
-              response.data.local_mr_no = this.model.localMrNo;
               this.actionSuccess();
             }
             this.isSubmitting = false;
@@ -322,29 +332,32 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   editModalityToList() {
     const modalityAppointmentList = this.modalityAppointmentList.slice()
     const modality = this.modalityHospitalList.find((md :any) => md.modality_hospital_id === this.edittedModality.modalityHospitalId )
-    const { fromTime, toTime, reserveDate } = this.selectedDateTime;
-    modalityAppointmentList[this.edittedModality.index] = { ...this.edittedModality, ...modality, fromTime, toTime, reserveDate: reserveDate.format('dddd, DD MMMM YYYY')}
+    const { fromTime, toTime, reserveDate } = this.edittedModality;
+    modalityAppointmentList[this.edittedModality.index] = { 
+      ...this.edittedModality, 
+      ...modality, 
+      fromTime, toTime, 
+      reserveDate: reserveDate.format('dddd, DD MMMM YYYY')
+    }
     this.modalityAppointmentList = modalityAppointmentList;
     this.onReset();
   }
 
   onDefaultSelected() {
-    const { modalityHospitalId, fromTime, toTime, reserveDate, modality_label, room_name } = this.selectedAppointment;
+    const { modalityHospitalId, fromTime, toTime, reserveDate, modality_label, room_name, duration } = this.selectedAppointment;
     this.selectedModality = {
       ...this.selectedModality,
       fromTime,
       toTime,
       modalityHospitalId,
-      reserveDate
+      reserveDate,
+      duration,
+      modality_label,
+      room_name
     }
 
     if (this.selectedModality.modalityHospitalId) {
       this.isExaminationButtonDisabled = false;
-      this.selectedInput = {
-        modality_hospital_id : modalityHospitalId,
-        modality_label,
-        room_name
-      }
       this.getModalityExamination(this.selectedModality.modalityHospitalId);
     }
   }

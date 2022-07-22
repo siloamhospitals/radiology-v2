@@ -7,6 +7,9 @@ export class AddedModality {
   isAnesthesia?: boolean;
   fromTime?: string;
   toTime: string;
+  duration: number;
+  modality_label : string;
+  room_name: string;
 }
 
 export class EditedModality {
