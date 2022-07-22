@@ -214,6 +214,8 @@ export class TableListWeeklyComponent implements OnInit {
         day.fromTime = model.fromTime
         day.toTime = model.toTime
         day.date = _n.date
+        day.isPast = moment().isAfter(_n.date, 'days')
+        day.dateTitle = `${moment(day.date).format('dddd, DD-MM-YYYY')} / ${day.fromTime} - ${day.toTime}`
         day.rowSpan = 1
         const seekForItem = data[j].find((_k: any) => {
           return (
@@ -301,6 +303,8 @@ class SlotWeeklyItem {
   fromTime: any;
   toTime: any;
   date: Date;
+  isPast: boolean;
+  dateTitle: string;
   patientName: any
   patientDob: any
   patientLocalMrNo: any

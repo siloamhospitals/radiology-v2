@@ -14,7 +14,7 @@
   </thead>
   <tbody>
     <ng-container *ngIf="isLoading; else showData">
-      <tr class="bg-secondary"><td colspan="100%" class="text-center p-3">Please wait ...</td></tr>
+      <tr><td colspan="100%" class="text-center p-3"><div class="px-4 py-2 bg-secondary rounded">Load Data... Please wait...</div></td></tr>
     </ng-container>
     <ng-template #showData>
       <ng-container *ngIf="!(list && list.length)">
@@ -28,15 +28,20 @@
         </td>
         <td style="width: 100px; vertical-align: middle;">{{ item.fromTime + ' - ' + item.toTime }}</td>
         <ng-container *ngFor="let day of item.days; let j=index" >
-          <td *ngIf="!day.patientName"
-            title="{{day.date}}"
+          <td *ngIf="!day.patientName && !day.isPast"
+            title="{{day.dateTitle}}"
             class="cursor-pointer item-hover"
             (click)="createAppointment(day)">
             <span class="text-success">Available</span>
           </td>
+          <td *ngIf="!day.patientName && day.isPast"
+            title="{{day.dateTitle}}"
+            class="item-hover">
+            <span class="text-danger" style="cursor: default;">Not Available</span>
+          </td>
           <td *ngIf="day.patientName && day.rowSpan > 0"
             [attr.rowspan]="day.rowSpan"
-            title="{{day.date}}"
+            title="{{day.dateTitle}}"
             class="cursor-pointer item-hover table-td table-td-scheduled item-indicator-primary"
             style="vertical-align: top !important; width: 12.5%;"
             (click)="detailSchedule(null)">
