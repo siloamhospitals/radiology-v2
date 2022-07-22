@@ -50,7 +50,7 @@
         </div>
         <div class="p-3 border-bottom">
           <ng-container *ngIf="!isLoadingSection; else sectionLoading">
-            <div class="btn-group-toggle" data-toggle="buttons" style="max-height: 150px; overflow: auto;">
+            <div class="btn-group-toggle" data-toggle="buttons" style="max-height: 100px; overflow: auto;">
               <label *ngFor="let item of sections"
                 class="btn btn-light text-muted mb-2 rounded-8 room px-3 py-2 border {{item.modality_hospital_id === sectionSelected.modality_hospital_id ?'active':''}}">
                 <input [attr.type]="sectionSelectedCanMultiple ? 'checkbox' : 'radio'" [value]="item.modality_hospital_id" (click)="setSelectedSection(item)"><span>{{item.modality_label + ' - Room ' + item.room_name }}</span>
@@ -65,7 +65,7 @@
           class="px-3 border-bottom">
           <div class="row">
             <div class="col-md-3 position-relative pr-0 border-right">
-              <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari Nama Pasien"
+              <input class="form-control pt-3 input-filter pr-5" type="text" placeholder="Cari Nama Pasien"
                 title="Find patients"
                 [(ngModel)]="filterName"
                 (keyup)="setFilterName($event)"
@@ -73,7 +73,7 @@
               <span class="fa fa-search position-absolute" style="font-size: 16px; bottom: 15px;"></span>
             </div>
             <div class="col-md-3 position-relative pr-0 border-right">
-              <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari Local MR"
+              <input class="form-control pt-3 input-filter pr-5" type="text" placeholder="Cari Local MR"
                 title="Find local MR"
                 [(ngModel)]="filterLocalMrNo"
                 (keyup)="setFilterLocalMrNo($event)"
