@@ -2,6 +2,8 @@ export class ModalityHospital {
   modality_hospital_id: string;
   modality_id: string;
   modality_name: string;
+  modality_label?: string;
+  room_name?: string;
   hospital_id: string;
   room_id: string;
   duration: number;

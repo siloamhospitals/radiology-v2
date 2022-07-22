@@ -13,7 +13,7 @@ import {BaseStoreRequestOperational} from '../../models/radiology/requests/base-
 import ModalityListResponse from '../../models/modality-response';
 import ModalityHospitalListResponse from '../../models/radiology/responses/modality-hospital-response';
 import {ModalityHospitalRequest} from '../../models/radiology/radiology';
-import { AppointmentRadiologyHistoryResponse } from 'src/app/models/appointments/appointment-radiology-history';
+import { AppointmentRadiologyHistoryResponse } from '../../models/appointments/appointment-radiology-history';
 import {DeleteModalitySlotRequest} from '../../models/radiology/request/delete-modality-slot-request';
 import {DeleteAppointmentResponse} from '../../models/radiology/responses/delete-appointment-response';
 import {ModalityExaminationResponse} from '../../models/radiology/responses/modality-examination-response';

@@ -4,7 +4,7 @@ import * as moment from 'moment'
 import { ModalCancelAppointmentComponent } from '../modal-cancel-appointment/modal-cancel-appointment.component';
 import { ModalCreateAdmissionComponent } from '../modal-create-admission/modal-create-admission.component';
 import { ModalHistoryComponent } from '../modal-history/modal-history.component';
-import { RadiologyService } from 'src/app/services/radiology/radiology.service';
+import { RadiologyService } from '../../../services/radiology/radiology.service';
 import {Examination} from '../../../models/radiology/examination';
 import {sourceApps} from '../../../variables/common.variable';
 import {isOk} from '../../../utils/response.util';

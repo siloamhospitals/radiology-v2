@@ -8,8 +8,7 @@ import { ModalModalityComponent } from './modal-modality.component';
 
 @NgModule({
   declarations: [
-    ModalModalityComponent,
-    ModalConfirmDeleteComponent
+    ModalModalityComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +19,6 @@ import { ModalModalityComponent } from './modal-modality.component';
   ],
   exports: [
     ModalModalityComponent,
-    ModalConfirmDeleteComponent
   ],
   entryComponents: [ModalModalityComponent,
     ModalConfirmDeleteComponent]

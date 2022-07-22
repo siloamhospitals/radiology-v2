@@ -12,10 +12,10 @@ export class AlertService {
   private keepAfterRouteChange = false;
   private duration = new Subject<number>();
 
-  constructor(private router: Router) {
+  constructor(router: Router) {
       // clear alert messages on route change unless 'keepAfterRouteChange' flag is true
 
-      this.router.events.subscribe(event => {
+      router.events.subscribe(event => {
         if (event instanceof NavigationStart) {
           if (this.keepAfterRouteChange) {
             // only keep for a single route change
@@ -31,7 +31,7 @@ export class AlertService {
         if (d) {
           this.subject.pipe(
             debounceTime(d)
-          ).subscribe(_x => this.clear());
+          ).subscribe((_) => this.clear());
         }
       });
   }
@@ -60,9 +60,76 @@ export class AlertService {
     if (duration) {
       this.duration.next(duration);
     }
-
     this.keepAfterRouteChange = keepAfterRouteChange;
     this.subject.next({ type, message } as Alert);
+  }
+
+  baseSuccess(message: string, destination: string = '', duration: number = 2000) {
+    this.baseAlert({
+      type: AlertType.Success,
+      message,
+      destination,
+      duration,
+      keepAfterRouteChange: false,
+    });
+  }
+
+  baseInfo(message: string, destination: string = '', duration: number = 2000) {
+    this.baseAlert({
+      type: AlertType.Info,
+      message,
+      destination,
+      duration,
+      keepAfterRouteChange: false,
+    });
+  }
+
+  baseWarn(message: string, destination: string = '', duration: number = 2000) {
+    this.baseAlert({
+      type: AlertType.Warning,
+      message,
+      destination,
+      duration,
+      keepAfterRouteChange: false,
+    });
+  }
+
+  baseError(message: string, destination: string = '', duration: number = 2000) {
+    this.baseAlert({
+      type: AlertType.Error,
+      message,
+      destination,
+      duration,
+      keepAfterRouteChange: false,
+    });
+  }
+
+  baseAlert(alert: Alert) {
+    if (alert.duration) {
+      this.duration.next(alert.duration);
+    }
+    this.keepAfterRouteChange = alert.keepAfterRouteChange;
+    this.subject.next({
+      ...alert,
+      typeName: this.cssAlertType(alert),
+    });
+  }
+
+  cssAlertType(alert: Alert) {
+    if (!alert) {
+      return;
+    }
+
+    switch (alert.type) {
+      case AlertType.Success:
+        return 'success';
+      case AlertType.Error:
+        return 'danger';
+      case AlertType.Info:
+        return 'info';
+      case AlertType.Warning:
+        return 'warning';
+    }
   }
 
   clear() {

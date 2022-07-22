@@ -1,14 +1,14 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
-import { ScheduleStatus } from 'src/app/variables/common.variable';
-import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
+import { ScheduleStatus } from '../../../variables/common.variable';
+import { ModalitySlot } from '../../../models/radiology/modality-slot';
 import * as moment from 'moment'
 import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
 import * as _ from 'lodash'
 import Swal from 'sweetalert2';
-import { RadiologyService } from 'src/app/services/radiology/radiology.service';
-import { ModalityHospital } from 'src/app/models/radiology/modality-hospital';
+import { RadiologyService } from '../../../services/radiology/radiology.service';
+import { ModalityHospital } from '../../../models/radiology/modality-hospital';
 @Component({
   selector: 'app-table-list-daily',
   templateUrl: './table-list-daily.component.html',
@@ -46,16 +46,20 @@ export class TableListDailyComponent implements OnInit {
 
   createAppointment(schedule?: any) {
     const m = this.modalService.open(ModalCreateAppointmentComponent, { keyboard: false });
-    console.log(this.sectionSelected, '=================section selected')
+    const { modality_hospital_id: modalityHospitalId, modality_label, room_name } = this.sectionSelected;
+    const { fromTime, toTime } = schedule;
     const payload = {
-      ...schedule,
+      fromTime,
+      toTime,
+      modalityHospitalId,
       reserveDate: this.dateSelected,
+      modality_label,
+      room_name
     }
-    console.log(schedule, '=========== schedule')
     m.componentInstance.selectedAppointment = payload;
-    // m.result.then((result: any) => {
-    //   console.log('modal is closed', {result})
-    // })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
   }
 
   detailSchedule(schedule?: any) {

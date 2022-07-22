@@ -53,7 +53,7 @@
     "mydatepicker": "^2.6.6",
     "mydaterangepicker": "^4.2.1",
     "ng-multiselect-dropdown": "^0.3.8",
-    "ngx-daterangepicker-material": "^2.4.2",
+    "ngx-daterangepicker-material": "~2.0.2",
     "ngx-mask": "^8.1.6",
     "pdfmake": "^0.1.56",
     "rxjs": "~6.3.3",
