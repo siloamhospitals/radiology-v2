@@ -12,4 +12,14 @@ select.x-form-control {
   border-radius: 4px;
   display: block;
   width: 100%;
+  color: rgba(34, 47, 62, 0.87);
+}
+
+select.x-form-control::placeholder {
+  color: rgba(34, 47, 62, 0.38) !important;
+}
+
+select.x-form-control:focus {
+  outline: none;
+  box-shadow: none;
 }

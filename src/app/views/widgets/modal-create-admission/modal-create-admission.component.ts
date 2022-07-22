@@ -51,10 +51,13 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   txtNote: any = null
   isAdmissionEmailDisabled: boolean = true
 
+  isLoadingFetch: boolean = false
   isLoading: boolean = false
   isError: boolean = false
 
   errorMessage: any = null
+
+  modalCreateAdmissionLoading: any = null
 
   @ViewChild('admissionDetail') modalAdmissionDetail: ElementRef
   @ViewChild('loadingIndicatorModal') modalLoadingIndicator: ElementRef
@@ -72,12 +75,14 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   }
 
   async ngOnInit() {
-    console.log('nginit selectedModel', this.selectedModel)
+    // console.log('nginit selectedModel', this.selectedModel)
+    this.isLoadingFetch = true
     this.refresh()
     await this.fetchInitialValues()
     this.setDefaultValues()
     await this.fetchData()
     this.setDefaultData()
+    this.isLoadingFetch = false
   }
 
   refresh () {
@@ -121,6 +126,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
     const isSuccess = (res: any) => {
       this.isLoading = false
+      this.modalCreateAdmissionLoading.close()
       this.openAdmissionTicket()
       console.log('ADMISSION_CREATE_SUCCESS', res)
     }
@@ -129,12 +135,14 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
       this.isLoading = false
       this.isError = true
       this.errorMessage = e.error && e.error.message ? e.error.message : e.message
+      setTimeout(() => { this.isError = false }, 8000)
       console.log('ADMISSION_CREATE_ERROR', e)
     }
 
     this.isLoading = true
     this.isError = false
     this.errorMessage = null
+    this.openLoadingIndicator()
     this.radiologyService.createAdmission(body)
       .subscribe(isSuccess, isError)
   }
@@ -217,7 +225,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   openLoadingIndicator () {
     const content = this.modalLoadingIndicator
-    this.modalService.open(content, {centered: true}).result.then((_result) => {
+    this.modalCreateAdmissionLoading = this.modalService.open(content, {centered: true}).result.then((_result) => {
     }, (_reason) => {
     })
   }
