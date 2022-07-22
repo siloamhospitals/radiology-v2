@@ -1,8 +1,8 @@
 <div class="modal-content modal-extralarge-size">
-  <div class="modal-header-custom border-0 border-bottom px-0 px-4">
+  <div class="modal-header-custom px-0 px-4">
     <div class="d-flex flex-wrap justify-content-between">
       <div class="align-self-center">
-        <h5 class="m-0">Create Admission</h5>
+        <h3 class="m-0 text-bold">Admission Pasien</h3>
       </div>
       <div>
         <button #close_button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
@@ -17,8 +17,8 @@
       <div class="p-2">
         <!-- Header Information -->
         <div class="d-flex flex-row justify-content-start mb-3 px-3">
-          <div class="p-2 rounded text-muted btn btn-secondary"><span>Tanggal Admission:</span><b class="pl-2">{{model.reserve_date || '-'}}</b></div>
-          <div class="ml-2 p-2 rounded text-muted btn btn-secondary"><span>Nomor MR Lokal:</span><b class="pl-2">{{model.local_mr_no || '-'}}</b></div>
+          <div class="py-1 px-3 rounded text-muted badge-local-secondary"><span>Tanggal Admission:</span><b class="pl-2">{{model.reserve_date || '-'}}</b></div>
+          <div class="ml-3 py-1 px-3 rounded text-muted badge-local-secondary"><span>Nomor MR Lokal:</span><b class="pl-2">{{model.local_mr_no || '-'}}</b></div>
         </div>
         <!-- Patient Information -->
         <section class="mb-3">
@@ -61,9 +61,8 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Jenis Rujukan</label>
                 <div>
-                  <select formControlName="referralType" class="form-control" placeholder="Jenis Rujukan">
-                    <option value="" disabled>Pilih Jenis Rujukan</option>
-                    <option *ngFor="let item of referralTypes" [value]="item.value">{{item.description}}</option>
+                  <select [(ngModel)]="referralType" class="x-form-control" placeholder="Pilih Jenis Rujukan">
+                    <option *ngFor="let item of referralTypes" [ngValue]="item">{{item.description}}</option>
                   </select>
                 </div>
               </div>
@@ -87,15 +86,15 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Tipe Pasien</label>
                 <div>
-                  <select formControlName="patientType" class="form-control" placeholder="Jenis Rujukan">
-                    <option *ngFor="let item of payerTypesList" [value]="item.value">{{item.description}}</option>
+                  <select [(ngModel)]="patientType" class="x-form-control" placeholder="Pilih Tipe Pasien">
+                    <option *ngFor="let item of patientTypes" [ngValue]="item">{{item.description}}</option>
                   </select>
                 </div>
               </div>
               <div class="col col-4 mb-3">
                 <label class="form-label">Ruangan / Lokasi</label>
                 <div>
-                  <select formControlName="roomSelect" class="form-control" placeholder="Pilih Ruangan / Lokasi">
+                  <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
                     <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
                   </select>
                 </div>
@@ -110,8 +109,8 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Jenis Email</label>
                 <div>
-                  <select formControlName="emailType" class="form-control" placeholder="Jenis Email">
-                    <option *ngFor="let item of emailTypes" [value]="item.value">{{item.description}}</option>
+                  <select [(ngModel)]="emailType" class="x-form-control" placeholder="Pilih Jenis Email">
+                    <option *ngFor="let item of emailTypes" [ngValue]="item">{{item.description}}</option>
                     <!-- <option value="" disabled>Pilih Jenis Rujukan</option> -->
                   </select>
                 </div>
@@ -140,7 +139,7 @@
         <input type="checkbox" name="formSigned" id="formSigned" class="form-check-input">
         <label class="form-check-label pl-2" for="formSigned" style="position: relative; top: 2px;">Formulir Ditandatangani</label>
       </div>
-      <button (click)="createAdmission()" class="btn btn-success ml-2">Buat Admission</button>
+      <button (click)="createAdmission($event)" class="btn btn-success ml-2">Buat Admission</button>
     </div>
   </div>
 </div>

@@ -60,7 +60,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   date : any = moment()
 
   ngOnInit() {
-    console.log(this.selectedAppointment)
+    // console.log(this.selectedAppointment)
     this.updateAppointmentForm = this._fb.group({
       modalityExaminationId: [{value: this.selectedAppointment.modality_examination_id, disabled: false}, [Validators.required]],
       is_bpjs: [{value: this.selectedAppointment.is_bpjs, disabled: false}, [Validators.required]],
@@ -76,7 +76,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   createAdmission() {
-    this.close()
+    // this.close()
     const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission' })
     m.componentInstance.modelId = this.selectedAppointment && this.selectedAppointment.modality_slot_id ? this.selectedAppointment.modality_slot_id : null
     m.componentInstance.selectedModel = this.selectedAppointment 

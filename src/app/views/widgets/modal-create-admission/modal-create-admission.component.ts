@@ -1,8 +1,12 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
+import { General } from 'src/app/models/generals/general';
+import { AdmissionService } from 'src/app/services/admission.service';
+import { GeneralService } from 'src/app/services/general.service';
+// import { RadiologyService } from 'src/app/services/radiology.service';
 // import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
-import { nationalTypeIdNames } from 'src/app/variables/common.variable';
+import { nationalTypeIdNames, sourceApps } from 'src/app/variables/common.variable';
 
 @Component({
   selector: 'app-modal-create-admission',
@@ -11,67 +15,49 @@ import { nationalTypeIdNames } from 'src/app/variables/common.variable';
 })
 
 export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
+  // User-System Define
+  public key: any = JSON.parse(localStorage.getItem('key') || '{}');
+  public hospital = this.key.hospital
+  public user = this.key.user
+  public readonly userPayload = {
+    userId: this.user.id,
+    source: sourceApps,
+    userName: this.user.fullname,
+  }
+
   public model: any = {}
   public selectedModel: any = {}
   public modelId: any = null
-
-  // note to self those are dummy data, erase them after integration with API
-  public examinationsList: any = [{
-    value: '01',
-    description: 'CT HEAD NON CONTRAST'
-  },{
-    value: '02',
-    description: 'LOREM IPSUM'
-  }]
-
-  public payerTypesList: any = [{
-    value: '01',
-    description: 'Private'
-  },{
-    value: '02',
-    description: 'Public'
-  }]
-
-  public status: string = 'Scheduled';
-
-  public nationalTypeIds: any = [
-    {
-      value: '01',
-      key: 'KTP',
-    },{
-      value: '02',
-      key: 'PASSPORT',
-    }
-  ];
-
-  referralTypes: any[] = [
-    {value: '1', description: 'Self Referral'},
-  ]
-
-  emailTypes: any[] = [
-    {value: '1', description: 'Primary'},
-  ]
+  
+  nationalTypes: General[] = []
+  patientTypes: General[] = []
+  referralTypes: General[] = []
+  emailTypes: General[] = []
 
   nationalIdTypeName: any = nationalTypeIdNames
 
   // model to send
-  referralType: any = null
-  patientType: any = null
-    roomSelect: any = null
-  emailType: any = null
+  referralType: any = 1
+  patientType: any = 1
+  roomSelect: any = null
+  emailType: any = 1
   txtEmail: any = null
   txtNote: any = null
 
   constructor(
     private activeModal: NgbActiveModal,
+    private generalService: GeneralService,
+    private admissionService: AdmissionService,
   ) { }
 
   ngOnChanges(_changes: SimpleChanges) {
     console.log('changes', _changes)
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     console.log('nginit selectedModel', this.selectedModel)
+    await this.fetchInitialValues()
+    this.setDefaultValues()
     this.refresh()
   }
 
@@ -91,7 +77,66 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     console.log(e.target.value);
   }
 
-  createAdmission () {
-    console.log('WIP')
+  createAdmission (evt: any = null) {
+    evt.preventDefault()
+    console.log('createAdmission')
+    // const body: RadiologyAdmissionRequest = {
+    //   modalitySlotId: this.data.modalitySlot.modality_slot_id,
+    //   organizationId: Number(this.hospital.orgId),
+    //   patientTypeId: Number(this.patientType.value),
+    //   admissionTypeId: this.selectedAdmissionType.value,
+    //   ...this.generatePayerPayload(this.payerData),
+    //   userId: this.user.id,
+    //   source: sourceApps,
+    //   userName: this.user.fullname,
+    // };
+    const body = {}
+
+    const isSuccess = (res: any) => {
+      console.log('ADMISSION_CREATE_SUCCESS', res)
+    }
+
+    const isError = (e: any) => {
+      console.log('ADMISSION_CREATE_ERROR', e)
+    }
+
+    this.admissionService.createAdmission(body)
+      .subscribe(isSuccess, isError)
+  }
+
+  setDefaultValues () {
+    // this.nationalType = this.nationalTypes[0]
+    this.patientType = this.patientTypes[0]
+    this.emailType = this.emailTypes[0]
+    this.referralType = this.referralTypes[0]
+  }
+
+  fetchInitialValues () {
+    return Promise.all([
+      this.fetchNationalTypes(),
+      this.fetchReferralTypes(),
+      this.fetchPatientTypes(),
+      this.fetchEmailTypes(),
+    ])
+  }
+
+  async fetchReferralTypes () {
+    this.referralTypes = await this.generalService.getReferralType().toPromise()
+      .then((res: any) => res.data || [])
+  }
+
+  async fetchPatientTypes () {
+    this.patientTypes = await this.generalService.getPatientType().toPromise()
+      .then((res: any) => res.data || [])
+  }
+
+  async fetchEmailTypes () {
+    this.emailTypes = await this.generalService.getAdmissionEmailType().toPromise()
+      .then((res: any) => res.data || [])
+  }
+
+  async fetchNationalTypes () {
+    this.nationalTypes = await this.generalService.getNationalityIdType().toPromise()
+      .then((res: any) => res.data || [])
   }
 }
