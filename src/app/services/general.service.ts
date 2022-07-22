@@ -84,6 +84,11 @@ export class GeneralService {
     return this.http.get<General[]>(this.generalUrl + uri, httpOptions);
   }
 
+  getAdmissionEmailType(): Observable<any> {
+    const uri = 'email-types';
+    return this.http.get<General[]>(this.generalUrl + uri, httpOptions);
+  }
+
   getCountry(): Observable<any> {
     const uri = 'countries';
     return this.http.get<Country[]>(this.generalUrl + uri, httpOptions);
