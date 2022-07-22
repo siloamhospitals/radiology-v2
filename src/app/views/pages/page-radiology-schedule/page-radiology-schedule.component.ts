@@ -35,9 +35,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
     //     console.log('router', val)
     //   }
     // })
-    this.route.queryParams.subscribe(p => {
-      this.initView(p.view, p.value)
-    })
+    // this.route.queryParams.subscribe(p => {
+    //   this.initView(p.view, p.value, p.section)
+    // })
   }
 
   public tableViewCurrentDate: moment.Moment = moment();
@@ -76,12 +76,17 @@ export class PageRadiologyScheduleComponent implements OnInit {
   toTimeRange: string = "00:00";
 
   isLoadingSection: boolean = false
+  // changeTableViewDebounce: any = null
 
   ngOnInit() {
     // this.getModalitySlots()
     this.getModalityHospitalList()
-    // this.initTodayView();
-
+      .then(() => {
+        this.route.queryParams.subscribe(p => {
+          this.initView(p.view, p.value, p.section)
+        })
+      })
+    this.initTodayView()
   }
 
 
@@ -115,24 +120,27 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   getModalityHospitalList() {
-    if(this.tableViewCurrentDate) {
-      const dateString = this.tableViewCurrentDate.format('YYYY-MM-DD')
-      this.isLoadingSection = true
-      this.modalityService.getModalityHospital(this.hospital.id, dateString, dateString)
-        .subscribe(res => {
-          const activeModalityHospital = res.data.map((eachModality: any) => {
-              if (eachModality.status === '1') return eachModality;
-            }
-          );
-          this.sections = activeModalityHospital;
-        }, () => {
-          this.sections = [];
-        }, () => {
-          this.isLoadingSection = false
-        });
-    } else {
-      this.sections = [];
-    }
+    return new Promise((resolve: any) => {
+      if(this.tableViewCurrentDate) {
+        const dateString = this.tableViewCurrentDate.format('YYYY-MM-DD')
+        this.isLoadingSection = true
+        this.modalityService.getModalityHospital(this.hospital.id, dateString, dateString)
+          .subscribe(res => {
+            const activeModalityHospital = res.data.map((eachModality: any) => {
+                if (eachModality.status === '1') return eachModality;
+              }
+            );
+            this.sections = activeModalityHospital;
+          }, () => {
+            this.sections = [];
+          }, () => {
+            this.isLoadingSection = false
+            resolve(this.sections)
+          });
+      } else {
+        this.sections = [];
+      }
+    })
   }
 
   changeTableDate (date: Date) {
@@ -162,12 +170,19 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
   changeTableView (val?: any) {
-    // console.log('view table is changed', val)
+    // console.log('view table is changed', val)\
+    // if (this.changeTableViewDebounce) { clearTimeout(this.changeTableViewDebounce) }
+    // this.changeTableViewDebounce = setTimeout(() => {
     if (!(val && val instanceof Date && val.getTime())) {
       val = this.tableViewCurrentDate
     }
-    this.setRouterViewValue({view: this.tableViewActive, value: val.toISOString()})
+    this.setRouterViewValue({
+      view: this.tableViewActive,
+      value: val ? val.toISOString().split('T')[0] : undefined,
+      section: this.sectionSelected ? this.sectionSelected.modality_hospital_id : undefined
+    })
     this.changeTableDate(val || new Date())
+    // }, 800)
   }
 
   toDaily (val?: any) {
@@ -193,23 +208,26 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
     this.changeTableView(this.tableViewCurrentDate.toDate())
   }
-  setRouterViewValue (item: Object) {
 
+  setRouterViewValue (item: Object) {
     this.router.navigate(
       ['.'],
       {relativeTo: this.route, queryParams: {...item}}
     )
   }
 
-  async initView (viewId: number, dateVal: Date) {
+  async initView (viewId: number, dateVal: Date, sectionId: any = null) {
     dateVal = new Date(dateVal)
     this.tableViewActive = !isNaN(Number(viewId)) ? Number(viewId) : 0
     this.changeTableDate(dateVal)
+    if (sectionId && this.sections && this.sections.length > 0) {
+      this.sectionSelected = this.sections.find((x: any) => x.modality_hospital_id === sectionId)
+    }
   }
 
   async setSelectedSection (modalityHospital: ModalityHospital) {
     this.sectionSelected = modalityHospital
-    this.changeTableDate(this.tableViewCurrentDate.toDate())
+    this.changeTableView(this.tableViewCurrentDate.toDate())
   }
 
 
