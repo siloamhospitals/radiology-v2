@@ -63,8 +63,9 @@ export class TableListDailyComponent implements OnInit {
       duration
     }
     m.componentInstance.selectedAppointment = payload;
-    m.result.then((result: any) => {
-      console.log('modal is closed', {result})
+    m.result.then((_result: any) => {
+      // console.log('modal is closed', {result})
+      this.refresh()
     })
   }
 
@@ -242,6 +243,11 @@ export class TableListDailyComponent implements OnInit {
       text: message,
       timer: 1500
     });
+  }
+
+  async refresh () {
+    await this.getModalitySlots()
+    await this.getSchedules()
   }
 
 }
