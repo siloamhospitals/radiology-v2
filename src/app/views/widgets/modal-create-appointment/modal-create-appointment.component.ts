@@ -6,14 +6,12 @@ import { ModalityService } from './../../../services/modality.service';
 import { GeneralService } from './../../../services/general.service';
 import { NewPatientHope } from './../../../models/patients/patient-hope';
 import { PatientService } from './../../../services/patient.service';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search-patient-hope-grouped-request';
 import * as moment from 'moment';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 import { isOk } from 'src/app/utils/response.util';
-// import { isOk } from '../../../utils/response.util';
-// import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-modal-create-appointment',
@@ -66,7 +64,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   public examinationsList: any = [];
   public modalityHospitalList: any = [];
   public modalityAppointmentList: any = [];
-  public viewFromTime: any = '';
   public showPatientTable = '0';
 
   // buttons
@@ -74,20 +71,14 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   public isExaminationButtonDisabled: boolean = true;
   public isSelectedPatient: any;
   public showModalityList: boolean = false;
-  public dateTimeWidth: string = '160px';
   public isLoadingPatientTable : boolean;
-  public model: any = {
-    localMrNo: ''
-  };
-  public isAddedModality: boolean = false;
-  public viewDate: any = moment();
-  public isSelectedExaminationValid: boolean = true;
-  public isEdited: boolean = false;
+  @ViewChild('birthDate') birthDate: ElementRef
 
   ngOnInit() {
     this.onDefaultSelected();
     this.getModalityHospitalList();
     this.getNationalityIdType();
+    this.birthDate.nativeElement.focus()
   }
 
   ngOnChanges() {
@@ -212,8 +203,10 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   onChangeModality() {
     this.isExaminationButtonDisabled = false;
     if (this.edittedModality.modalityHospitalId) {
+      this.edittedModality.modalityExaminationId = ''
       this.getModalityExamination(this.edittedModality.modalityHospitalId);
     } else {
+      this.selectedModality.modalityExaminationId = ''
       this.getModalityExamination(this.selectedModality.modalityHospitalId);
     }
 
@@ -319,7 +312,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     }
     payloadAddedModal.reserveDate = this.selectedModality.reserveDate.format('dddd, DD MMMM YYYY')
     this.modalityAppointmentList.push(payloadAddedModal);
-    this.isSelectedExaminationValid = true;
   }
 
   editModalityToList() {
@@ -368,7 +360,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   onEditModality(index: any) {
-    this.isEdited = true;
     this.edittedModality = { ...this.modalityAppointmentList[index] }
     this.edittedModality.index = index;
     this.edittedModality.reserveDate = moment(this.edittedModality.reserveDate, 'dddd, DD MMMM YYYY');
@@ -379,5 +370,13 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     this.edittedModality = {};
     this.onDefaultSelected();
   }
+
+  isEditing() {
+    return !!this.edittedModality.modalityHospitalId
+  }
+
+  
+
+
 }
 

@@ -52,6 +52,7 @@
                   mask="00-00-0000"
                   [(ngModel)]="search.birthDate"
                   [dropSpecialCharacters]="false"
+                  #birthDate
                 >
               </div>
 
@@ -321,6 +322,8 @@
                   </option>
                 </select>
               </div>
+              <div *ngIf="isEditing() ? !edittedModality.modalityExaminationId : !selectedModality.modalityExaminationId "  
+                    class="form-text text-danger">Harus diisi</div>
             </div>
 
             <div class="mx-3 my-3">
@@ -397,6 +400,7 @@
                   [duration]="edittedModality.duration" >
                 </app-time-picker>&nbsp;
               </div>
+              <div class="text-danger" >Waktu mulai tidak sesuai denga waktu selesai.</div>
             </div>
 
             <div class="mx-3 my-2">
