@@ -238,6 +238,7 @@
 
         <!-- Utility -->
         <section>
+          <!-- <div><button (click)="openAdmissionTicket()">Admisison Detail</button></div> -->
           <div *ngIf="isLoading" class="bg-secondary p-2 rounded my-1">Create Admission is Process... Please Wait...</div>
         </section>
       </div>
@@ -253,3 +254,73 @@
     </div>
   </div>
 </div>
+
+<ng-template #admissionDetail let-modal>
+  <div class="modal-content modal-custom-size">
+    <div class="modal-header-custom px-0 px-4">
+      <div class="d-flex flex-wrap justify-content-between">
+        <div class="align-self-center">
+          <h3 class="m-0 text-bold">Admission Berhasil</h3>
+        </div>
+        <div>
+          <button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="modal.dismiss()">
+            <span class="back-button" aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body p-0">
+      <!-- Content Data -->
+      <ng-container>
+        <div class="py-2">
+          <!-- Patient Information -->
+          <section class="mb-3">
+            <div class="px-0">
+              <div class="row mx-0">
+                <div class="col-6 mb-3 py-3 bg-secondary">
+                  <label class="form-label text-muted">No. MR Lokal</label>
+                  <div class="form-label">{{model.local_mr_no || '-'}}</div>
+                </div>
+                <div class="col-6 mb-3 py-3 bg-secondary">
+                  <label class="form-label text-muted">Nomor Admission</label>
+                  <div class="form-label">{{'-'}}</div>
+                </div>
+                <div class="w-100"></div>
+                <div class="col-12 mb-3">
+                  <label class="form-label text-muted">Nama Pasien</label>
+                  <div class="form-label">{{model.patient_name || '-'}}</div>
+                </div>
+                <div class="col-6 mb-3">
+                  <label class="form-label text-muted">Tanggal Lahir</label>
+                  <div class="form-label">{{model.patient_dob || '-'}}</div>
+                </div>
+                <div class="col-6 mb-3">
+                  <label class="form-label text-muted">Nomor Identitas</label>
+                  <div class="form-label">
+                    <span>{{nationalIdTypeName[model.identity_type_id] || '-'}}</span>
+                    <span class="mx-2">-</span>
+                    <span>{{model.identity_number || '-'}}</span>
+                  </div>
+                </div>
+                <div class="col-6 mb-3">
+                  <label class="form-label text-muted">Nomor Telepon</label>
+                  <div class="form-label">{{model.patient_phone_number_1 || model.patient_phone_number_2 || '-'}}</div>
+                </div>
+                <div class="col-6 mb-3">
+                  <label class="form-label text-muted">Email</label>
+                  <div class="form-label">{{model.email || '-'}}</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <div class="w-100 d-flex flex-row justify-content-end px-1 align-items-center">
+        <button (click)="createAdmission($event)" class="btn btn-primary"><b class="fa fa-print mr-2"></b>Cetak Label</button>
+        <button (click)="createAdmission($event)" class="btn btn-success ml-2">Check in Pasien</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

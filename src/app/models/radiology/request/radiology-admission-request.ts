@@ -7,7 +7,7 @@ export interface RadiologyAdmissionRequest extends BasicRequest {
   readonly patientTypeId: number;
   readonly admissionTypeId: string;
   readonly payerId: any;
-  readonly payerNo: string;
-  readonly payerEligibility: string;
+  readonly payerNo: any;
+  readonly payerEligibility: any;
 
 }

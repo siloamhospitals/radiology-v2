@@ -1,5 +1,5 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { General } from 'src/app/models/generals/general';
 import { RadiologyAdmissionRequest } from 'src/app/models/radiology/request/radiology-admission-request';
@@ -53,8 +53,11 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   isLoading: boolean = false
 
+  @ViewChild('admissionDetail') modalAdmissionDetail: ElementRef
+
   constructor(
     private activeModal: NgbActiveModal,
+    private modalService: NgbModal,
     private generalService: GeneralService,
     private radiologyService: RadiologyService,
     private patientService: PatientService,
@@ -106,14 +109,15 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
       source: sourceApps,
       userName: this.user.fullname,
       payerId: null,
-      payerNo: '',
-      payerEligibility: ''
+      payerNo: null,
+      payerEligibility: null
     }
     // const body = {}
     console.log('createAdmission', body)
 
     const isSuccess = (res: any) => {
       this.isLoading = false
+      this.openAdmissionTicket()
       console.log('ADMISSION_CREATE_SUCCESS', res)
     }
 
@@ -190,9 +194,16 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     switch (v.value) {
       case '1': this.txtEmail = this.contactData.email_address; this.isAdmissionEmailDisabled = true; break;
       case '2': this.txtEmail = this.contactData.email_address; this.isAdmissionEmailDisabled = true; break;
-      case '3': this.isAdmissionEmailDisabled = false; break;
+      case '3': this.txtEmail = null; this.isAdmissionEmailDisabled = false; break;
       case '4': this.txtEmail = 'noemail@email.com'; this.isAdmissionEmailDisabled = true;
       default: break;
     }
+  }
+
+  openAdmissionTicket () {
+    const content = this.modalAdmissionDetail
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((_result) => {
+    }, (_reason) => {
+    });
   }
 }
