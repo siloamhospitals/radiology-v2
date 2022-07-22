@@ -12,7 +12,11 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngIf="!(scheduleList && scheduleList.length) && !ShowLoadDialy" >
+    <ng-container *ngIf="isLoadingSection; else showList">
+      <tr><td colspan="100%" class="text-center p-3">Load Data... Please Wait...</td></tr>
+    </ng-container>
+
+    <ng-container *ngIf="!(scheduleList && scheduleList.length) && !ShowLoadDialy && !isLoadingSection" >
       <tr>
         <td colspan="100%" class="text-center p-3">No data from this section</td>
       </tr>
@@ -22,6 +26,7 @@
       width="10px" [showLoad]=ShowLoadDialy>
     </app-loading>
 
+    <ng-template #showList>
     <ng-container *ngFor="let item of scheduleList; let i=index" >
       <tr *ngFor="let schedule of item.items; let j = index;" class="item-hover" >
         <td *ngIf="j % item.rowSpan == 0" [attr.rowspan]="item.rowSpan" style="vertical-align: middle; width: 25px; background: #fff !important;" class="text-right">
@@ -48,6 +53,7 @@
         </ng-container>
       </tr>
     </ng-container>
+    </ng-template>
 
   </tbody>
 </table>

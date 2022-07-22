@@ -27,6 +27,8 @@ export class TableListDailyComponent implements OnInit {
   public scheduleList: any[] = []
   public scheduleListBk: any[] = []
 
+  isLoadingSection: boolean = false
+
   constructor(
     private modalService: NgbModal,
     private radiologyService : RadiologyService,
@@ -210,8 +212,7 @@ export class TableListDailyComponent implements OnInit {
   async ngOnChanges(changes: SimpleChanges) {
     if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue))
       || this.sectionSelected.modality_hospital_id) {
-      await this.getModalitySlots()
-      await this.getSchedules()
+      this.refresh(true)
     }
 
     
@@ -245,9 +246,11 @@ export class TableListDailyComponent implements OnInit {
     });
   }
 
-  async refresh () {
+  async refresh (reinit: boolean = false) {
+    if (reinit) { this.isLoadingSection = true }
     await this.getModalitySlots()
     await this.getSchedules()
+    if (reinit) { this.isLoadingSection = false }
   }
 
 }
