@@ -247,10 +247,10 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
             element.isLoading = false
             this.cancelModality()
           }, (error: any) => {
-            this.isSubmitting = false;            
+            this.isSubmitting = false;
             element.isSuccess = false
-            element.messageError = (error.error && error.error.message) || error.message  
-            element.isLoading = false          
+            element.messageError = (error.error && error.error.message) || error.message
+            element.isLoading = false
           });
       });
     } else {
@@ -266,7 +266,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
             }
             this.isSubmitting = false;
           }, (error: any) => {
-            console.log(error, '=========error')
             this.isSubmitting = false;
             this.showErrorAlert(error.error.message, 2000);
           });
@@ -330,10 +329,10 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     const modalityAppointmentList = this.modalityAppointmentList.slice()
     const modality = this.modalityHospitalList.find((md :any) => md.modality_hospital_id === this.edittedModality.modalityHospitalId )
     const { fromTime, toTime, reserveDate } = this.edittedModality;
-    modalityAppointmentList[this.edittedModality.index] = { 
-      ...this.edittedModality, 
-      ...modality, 
-      fromTime, toTime, 
+    modalityAppointmentList[this.edittedModality.index] = {
+      ...this.edittedModality,
+      ...modality,
+      fromTime, toTime,
       reserveDate: reserveDate.format('dddd, DD MMMM YYYY')
     }
     this.modalityAppointmentList = modalityAppointmentList;
