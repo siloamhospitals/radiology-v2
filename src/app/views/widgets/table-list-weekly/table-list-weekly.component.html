@@ -44,7 +44,7 @@
             title="{{day.dateTitle}}"
             class="cursor-pointer item-hover table-td table-td-scheduled item-indicator-primary"
             style="vertical-align: top !important; width: 12.5%;"
-            (click)="detailSchedule(null)">
+            (click)="detailSchedule(day.slot)">
             <div style="line-height: 1.4;">
               <div style="font-size: 12px;"><b>{{day.patientName}}</b></div>
               <ng-container *ngIf="day.rowSpan > 1">
