@@ -375,14 +375,16 @@
                       [isModalLarge]=true
                       [noBorder]=true
                       [(value)]="selectedModality.fromTime"
-                      [duration]="selectedModality.duration" >
+                      [duration]="selectedModality.duration"
+                      [onChange]="onChangeTimer" >
                     </app-time-picker>
                     <app-time-picker
                       *ngIf="edittedModality.modalityHospitalId"
                       [isModalLarge]=true
                       [noBorder]=true
                       [(value)]="edittedModality.fromTime"
-                      [duration]="edittedModality.duration" >
+                      [duration]="edittedModality.duration"
+                      [onChange]="onChangeTimer" >
                     </app-time-picker>&nbsp;
 
                     <span class="mr-2 ml-1" >-</span>
@@ -391,17 +393,19 @@
                       [isModalLarge]=true
                       [noBorder]=true
                       [(value)]="selectedModality.toTime"
-                      [duration]="selectedModality.duration" >
+                      [duration]="selectedModality.duration" 
+                      [onChange]="onChangeTimer" >
                     </app-time-picker>
                     <app-time-picker
                       *ngIf="edittedModality.modalityHospitalId"
                       [isModalLarge]=true
                       [noBorder]=true
                       [(value)]="edittedModality.toTime"
-                      [duration]="edittedModality.duration" >
+                      [duration]="edittedModality.duration" 
+                      [onChange]="onChangeTimer" >
                     </app-time-picker>&nbsp;
                   </div>
-                  <div class="text-danger" >Waktu mulai tidak sesuai denga waktu selesai.</div>
+                  <div class="text-danger ml-2" *ngIf="isErrorTimer" >Waktu mulai tidak sesuai denga waktu selesai.</div>
                 </div>
                 
               </div>
@@ -418,8 +422,8 @@
 
           <div *ngIf="showModalityList" class="d-flex justify-content-end w-100 p-0 mb-3 mr-3">
             <button (click)="cancelModality()" class="btn btn-secondary text-primary" type="reset" style="width: 7%;">Batal</button>
-            <button *ngIf="!edittedModality.modalityHospitalId" (click)="addModalityToList()" class="btn btn-primary ml-3" type="button" style="width: 7%;">Simpan</button>
-            <button *ngIf="edittedModality.modalityHospitalId" (click)="editModalityToList()" class="btn btn-primary ml-3" type="button" style="width: 7%;">Ubah</button>
+            <button *ngIf="!edittedModality.modalityHospitalId" (click)="addModalityToList()" class="btn btn-primary ml-3" type="button" style="width: 7%;" [disabled]="validasiFormModality()" >Simpan</button>
+            <button *ngIf="edittedModality.modalityHospitalId" (click)="editModalityToList()" class="btn btn-primary ml-3" type="button" style="width: 7%;" [disabled]="validasiFormModality()" >Ubah</button>
           </div>
         </div>
         <div class="d-flex justify-content-end w-100 pt-3 pb-5">

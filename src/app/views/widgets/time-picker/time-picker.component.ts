@@ -21,6 +21,7 @@ export class TimepickerComponent implements OnInit {
   @Input() isModalLarge: boolean = false;
   @Input() readonly: boolean = false;
   @Input() duration: number;
+  @Input() onChange : Function;
 
   @Output() valueChange = new EventEmitter()
 
@@ -95,6 +96,7 @@ export class TimepickerComponent implements OnInit {
     }
 
     this.valueChange.emit(this.value)
+    this.onChange && this.onChange()
   }
 
   onSelectMinute(minute : string) {
@@ -102,6 +104,7 @@ export class TimepickerComponent implements OnInit {
     this.value = hour + ':' + minute;
 
     this.valueChange.emit(this.value)
+    this.onChange && this.onChange()
   }
 
   slice2Digit = (num : number) => ('0' + num).slice(-2);

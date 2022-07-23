@@ -73,6 +73,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   public showModalityList: boolean = false;
   public isLoadingPatientTable : boolean;
   @ViewChild('birthDate') birthDate: ElementRef
+  public isErrorTimer : boolean;
 
   ngOnInit() {
     this.onDefaultSelected();
@@ -374,8 +375,33 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     return !!this.edittedModality.modalityHospitalId
   }
 
-  
+  onChangeTimer = () => {
+    if(this.isEditing()) {
+      const toTime = moment(this.edittedModality.toTime, 'HH:mm')
+      const fromTime = moment(this.edittedModality.fromTime, 'HH:mm')
+      if(toTime.isSameOrBefore(fromTime)){
+        this.isErrorTimer = true
+      }else {
+        this.isErrorTimer = false
+      }
+    }else {
+      const toTime = moment(this.selectedModality.toTime, 'HH:mm')
+      const fromTime = moment(this.selectedModality.fromTime, 'HH:mm')
+      if(toTime.isSameOrBefore(fromTime)){
+        this.isErrorTimer = true
+      }else {
+        this.isErrorTimer = false
+      }
+    }
+  }
 
+  validasiFormModality() {
+    if(this.isEditing()){
+      return this.isErrorTimer || !this.edittedModality.modalityExaminationId
+    }else {
+      return this.isErrorTimer || !this.selectedModality.modalityExaminationId
+    }
+  }
 
 }
 
