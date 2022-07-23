@@ -1,0 +1,8 @@
+.modal-confirm-admission {
+  width: 550px;
+  /* transform: translateX(3.5%); */
+}
+
+.modal-content:has(.modal-confirm-admission) {
+  left: 10%;
+}

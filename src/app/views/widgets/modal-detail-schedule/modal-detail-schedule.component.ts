@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { NgbActiveModal, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment'
 import { ModalCancelAppointmentComponent } from '../modal-cancel-appointment/modal-cancel-appointment.component';
@@ -43,7 +43,12 @@ export class ModalDetailScheduleComponent implements OnInit {
   public fromTime: any;
   public toTime: any;
   public updateAppointmentForm:any = FormGroup;
-  
+
+  admissionLateTime: any = null
+  admissionIsNotToday: boolean = null
+
+  @ViewChild('modalConfirmPatient') modalConfirmPatientData: ElementRef
+  @ViewChild('modalConfirmAdmission') modalConfirmAdmission: ElementRef
 
   constructor(
     private activeModal: NgbActiveModal,
@@ -76,14 +81,40 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   createAdmission() {
-    // this.close()
-    const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission' })
-    m.componentInstance.modelId = this.selectedAppointment && this.selectedAppointment.modality_slot_id ? this.selectedAppointment.modality_slot_id : null
-    m.componentInstance.selectedModel = this.selectedAppointment 
-    // console.log('selectedModel', this.selectedAppointment, m.componentInstance.selectedModel)
-    m.result.then((result: any) => {
-      console.log('modal is closed', {result})
-    })
+    const openModalAdmission = () => {
+      // Open Modal Admission
+      // this.close()
+      const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission' })
+      m.componentInstance.modelId = this.selectedAppointment && this.selectedAppointment.modality_slot_id ? this.selectedAppointment.modality_slot_id : null
+      m.componentInstance.selectedModel = this.selectedAppointment 
+      // console.log('selectedModel', this.selectedAppointment, m.componentInstance.selectedModel)
+      m.result.then((result: any) => {
+        console.log('modal is closed', {result})
+      })
+    }
+    const {
+      local_mr_no: localMrNo,
+      to_time: toTime,
+      reserve_date: reserveDate}
+    = this.selectedAppointment
+    // Check Patient Data is Complete
+    if (!localMrNo) {
+      this.modalService.open(this.modalConfirmPatientData, { centered: true })
+      return
+    }
+    // Check On Late
+    const lastTime = moment(`${reserveDate} ${toTime}`, 'YYYY-MM-DD HH:mm')
+    const diffTime = moment().diff(lastTime)
+    if (diffTime > 0) {
+      this.admissionLateTime = moment.utc(diffTime).format('HH [jam] mm [menit] ss [detik]')
+      this.admissionIsNotToday = moment().isAfter(lastTime, 'days')
+      const c = this.modalService.open(this.modalConfirmAdmission, { centered: true })
+      c.result.then((_result: any) => {
+        openModalAdmission()
+      })
+    } else {
+      openModalAdmission()
+    }
   }
 
   showHistoryModal() {
