@@ -25,62 +25,76 @@
           <div class="row border-bottom mb-5" style="height: 52px;;" >
             <div class="col-md-3 position-relative mt-3 pr-0 mb-2 border-right">
               <input class="form-control pt-3 input-filter pr-4" type="text" placeholder="Cari Label"
-                title="Find patients" [(ngModel)]="selectedModalityLabel" (change)="onItemSelect($event)"/>
+                title="Find patients" [(ngModel)]="selectedModalityLabel" (change)="onItemSelect()"/>
               <span class="fa fa-search position-absolute"></span>
             </div>
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
-              <ng-multiselect-dropdown
-                [placeholder]="'Semua Modality'"
-                [data]="this.modalityOptions"
+              <ng-select
+                [multiple]="true"
+                [items]="modalityOptions"
+                [closeOnSelect]="false"
+                [searchable]="true"
                 [(ngModel)]="selectedItemsModality"
-                [settings]="modalityDropdownSettings"
-                (onSelect)="onItemSelect(true)"
-                (onSelectAll)="onItemSelect($event, true, 'modality')"
-                (onDeSelect)="onItemDeSelect($event)"
-                (onDeSelectAll)="onItemDeSelect($event, true, 'modality')"
-                
-              >
-              </ng-multiselect-dropdown>
+                placeholder="Pilih Modality"
+                bindLabel="name"
+                (change)="onItemSelect()"
+                bindValue="modality_id">
+            </ng-select>
             </div>
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
-              <ng-multiselect-dropdown
-                [placeholder]="'Schdule Type'"
-                [data]="dropdownListSchduleType"
+              <ng-select
+                [multiple]="true"
+                [items]="dropdownListSchduleType"
                 [(ngModel)]="selectedItemsSchdule"
-                [settings]="scheduleDropdownSetting"
-                (onSelect)="onItemSelect(true)"
-                (onSelectAll)="onItemSelect($event, true, 'operational_type')"
-                (onDeSelect)="onItemDeSelect($event)"
-                (onDeSelectAll)="onItemDeSelect($event, true, 'operational_type')"
-              >
-              </ng-multiselect-dropdown>
+                placeholder="Jenis Penjadwalan"
+                (change)="onItemSelect()"
+                bindLabel="item_text"
+                bindValue="operational_type">
+            <!-- <ng-template ng-header-tmp>
+                <button (click)="selectAll()" class="btn btn-sm btn-secondary">Select all</button>
+                <button (click)="unselectAll()" class="btn btn-sm btn-secondary">Unselect all</button>
+            </ng-template> -->
+            <!-- <ng-template ng-footer-tmp>
+                Selected count: {{selectedPeople.length}}
+            </ng-template> -->
+            </ng-select>
             </div>
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
-              <ng-multiselect-dropdown
-                [placeholder]="'Floor'"
-                [data]="this.roomOptions"
+              <ng-select
+                [multiple]="true"
+                [items]="roomOptions"
                 [(ngModel)]="selectedItemsFloor"
-                [settings]="floorDropdownSettings"
-                (onSelect)="onItemSelect(true)"
-                (onSelectAll)="onItemSelect($event, true, 'floor')"
-                (onDeSelect)="onItemDeSelect($event)"
-                (onDeSelectAll)="onItemDeSelect($event, true, 'floor')"
-              >
-              </ng-multiselect-dropdown>
+                placeholder="Pilih Lantai"
+                (change)="onItemSelect()"
+                bindLabel="floor_name"
+                bindValue="floor_id">
+            <!-- <ng-template ng-header-tmp>
+                <button (click)="selectAll()" class="btn btn-sm btn-secondary">Select all</button>
+                <button (click)="unselectAll()" class="btn btn-sm btn-secondary">Unselect all</button>
+            </ng-template> -->
+            <!-- <ng-template ng-footer-tmp>
+                Selected count: {{selectedPeople.length}}
+            </ng-template> -->
+            </ng-select>
             </div>
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
-              <ng-multiselect-dropdown
-                [placeholder]="'Status'"
-                [data]="dropdownListStatus"
-                [(ngModel)]="selectedItemsStatus"
-                [settings]="statusDropdownSetting"
-                (onSelect)="onItemSelect($event)"
-                (onSelectAll)="onItemSelect($event, true, 'status')"
-                (onDeSelect)="onItemDeSelect($event)"
-                (onDeSelectAll)="onItemDeSelect($event, true, 'status')"
-              >
-              </ng-multiselect-dropdown>
-          </div>
+              <ng-select
+                [multiple]="true"
+                [items]="dropdownListStatus"
+                [(ngModel)]="this.selectedItemsStatus"
+                placeholder="Pilih Status"
+                bindLabel="item_text"
+                (change)="onItemSelect()"
+                bindValue="status">
+            <!-- <ng-template ng-header-tmp>
+                <button (click)="selectAll()" class="btn btn-sm btn-secondary">Select all</button>
+                <button (click)="unselectAll()" class="btn btn-sm btn-secondary">Unselect all</button>
+            </ng-template> -->
+            <!-- <ng-template ng-footer-tmp>
+                Selected count: {{selectedPeople.length}}
+            </ng-template> -->
+            </ng-select>
+            </div>
             
           </div>
           <div class="table-head-sticky">

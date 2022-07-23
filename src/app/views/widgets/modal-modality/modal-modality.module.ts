@@ -8,7 +8,7 @@ import { ModalModalityComponent } from './modal-modality.component';
 
 @NgModule({
   declarations: [
-    ModalModalityComponent
+    ModalModalityComponent,
   ],
   imports: [
     CommonModule,
@@ -16,11 +16,14 @@ import { ModalModalityComponent } from './modal-modality.component';
     ReactiveFormsModule,
     NgbAlertModule,
     NgbModalModule,
+    
   ],
   exports: [
     ModalModalityComponent,
   ],
-  entryComponents: [ModalModalityComponent,
-    ModalConfirmDeleteComponent]
+  entryComponents: [
+    ModalModalityComponent,
+    ModalConfirmDeleteComponent
+    ]
 })
-export class ModalModalityentModule { }
+export class ModalModalityModule { }

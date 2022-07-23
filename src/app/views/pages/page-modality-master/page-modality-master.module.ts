@@ -12,15 +12,17 @@ import { NgbAlertModule, NgbPopoverModule, NgbProgressbarModule, NgbModalModule,
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 import { RouterModule } from '@angular/router';
-import { ModalModalityentModule } from '../../widgets/modal-modality/modal-modality.module';
+import { ModalModalityModule } from '../../widgets/modal-modality/modal-modality.module';
 import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modality.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ModalConfirmDeleteComponent } from '../../widgets/modal-confirm-delete/modal-confirm-delete.component';
+import { ModalConfirmDeleteModule } from '../../widgets/modal-confirm-delete/modal-confirm-delete.module';
 
 @NgModule({
   declarations: [
     PageModalityMasterComponent
   ],
   imports: [
-    //NgMultiSelectDropDownModule.forRoot(),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -35,15 +37,18 @@ import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modal
     NgbModalModule,
     AutocompleteLibModule,
     NguiAutoCompleteModule,
-    ModalModalityentModule,
+    ModalModalityModule,
     RouterModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
+    NgSelectModule,
+    ModalConfirmDeleteModule
   ],
   exports: [
     PageModalityMasterComponent
   ],
   entryComponents: [
-    ModalModalityComponent
+    ModalModalityComponent,
+    ModalConfirmDeleteComponent
   ],
   bootstrap: [PageModalityMasterComponent]
 })

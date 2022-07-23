@@ -21,6 +21,7 @@ export class TableListDailyComponent implements OnInit {
   @Input() sectionSelected: ModalityHospital;
   @Input() fromTimeRange: string;
   @Input() toTimeRange: string;
+  @Input() ShowLoadDialy: boolean = true;
 
   public scheduleStatus: any = ScheduleStatus
   public scheduleList: any[] = []
@@ -32,7 +33,9 @@ export class TableListDailyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+    setTimeout(()=>{                           //<<<---using ()=> syntax
+      this.ShowLoadDialy = false;
+    }, 5000);
   }
 
   async getModalitySlots() {
@@ -42,6 +45,8 @@ export class TableListDailyComponent implements OnInit {
       const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
       this.modalitySlots = responseSlots.data || [];
     }
+
+
   }
 
   createAppointment(schedule?: any) {
@@ -82,6 +87,7 @@ export class TableListDailyComponent implements OnInit {
   setToTime2Digit = (time : number) => ('0' + time).slice(-2);
 
   async getSchedules() {
+   
     const slots = this.modalitySlots
 
     let lastCaptureSlot : any = {};
@@ -92,6 +98,8 @@ export class TableListDailyComponent implements OnInit {
     }
 
     this.scheduleListBk = this.scheduleList.slice()
+
+    this.ShowLoadDialy = false;
   }
 
   private createTimeSlotInDurationHour(slots: ModalitySlot[], lastCaptureSlot: any) {
@@ -205,6 +213,7 @@ export class TableListDailyComponent implements OnInit {
       await this.getSchedules()
     }
 
+    
     if((changes.fromTimeRange && changes.fromTimeRange.currentValue)
       || (changes.toTimeRange && changes.toTimeRange.currentValue)) {
         if(this.fromTimeRange === '00:00' && this.toTimeRange === '00:00') {

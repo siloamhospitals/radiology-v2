@@ -364,43 +364,47 @@
                   [(value)]="edittedModality.reserveDate"
                   [onChange]="onChangeDate">
                 </app-date-picker>
+                
+                <div>
+                  <div class="d-flex align-items-center" >
+                    <div class="ml-2" alt="datepicker">
+                      <i class="fa fa-clock-o mx-2"></i>
+                    </div>
+                    <app-time-picker
+                      *ngIf="!edittedModality.modalityHospitalId"
+                      [isModalLarge]=true
+                      [noBorder]=true
+                      [(value)]="selectedModality.fromTime"
+                      [duration]="selectedModality.duration" >
+                    </app-time-picker>
+                    <app-time-picker
+                      *ngIf="edittedModality.modalityHospitalId"
+                      [isModalLarge]=true
+                      [noBorder]=true
+                      [(value)]="edittedModality.fromTime"
+                      [duration]="edittedModality.duration" >
+                    </app-time-picker>&nbsp;
 
-                <div class="ml-2" alt="datepicker">
-                  <i class="fa fa-clock-o mx-2"></i>
+                    <span class="mr-2 ml-1" >-</span>
+                    <app-time-picker
+                      *ngIf="!edittedModality.modalityHospitalId"
+                      [isModalLarge]=true
+                      [noBorder]=true
+                      [(value)]="selectedModality.toTime"
+                      [duration]="selectedModality.duration" >
+                    </app-time-picker>
+                    <app-time-picker
+                      *ngIf="edittedModality.modalityHospitalId"
+                      [isModalLarge]=true
+                      [noBorder]=true
+                      [(value)]="edittedModality.toTime"
+                      [duration]="edittedModality.duration" >
+                    </app-time-picker>&nbsp;
+                  </div>
+                  <div class="text-danger" >Waktu mulai tidak sesuai denga waktu selesai.</div>
                 </div>
-
-                <app-time-picker
-                  *ngIf="!edittedModality.modalityHospitalId"
-                  [isModalLarge]=true
-                  [noBorder]=true
-                  [(value)]="selectedModality.fromTime"
-                  [duration]="selectedModality.duration" >
-                </app-time-picker>
-                <app-time-picker
-                  *ngIf="edittedModality.modalityHospitalId"
-                  [isModalLarge]=true
-                  [noBorder]=true
-                  [(value)]="edittedModality.fromTime"
-                  [duration]="edittedModality.duration" >
-                </app-time-picker>&nbsp;
-
-                <span class="mr-2 ml-1" >-</span>
-                <app-time-picker
-                  *ngIf="!edittedModality.modalityHospitalId"
-                  [isModalLarge]=true
-                  [noBorder]=true
-                  [(value)]="selectedModality.toTime"
-                  [duration]="selectedModality.duration" >
-                </app-time-picker>
-                <app-time-picker
-                  *ngIf="edittedModality.modalityHospitalId"
-                  [isModalLarge]=true
-                  [noBorder]=true
-                  [(value)]="edittedModality.toTime"
-                  [duration]="edittedModality.duration" >
-                </app-time-picker>&nbsp;
+                
               </div>
-              <div class="text-danger" >Waktu mulai tidak sesuai denga waktu selesai.</div>
             </div>
 
             <div class="mx-3 my-2">

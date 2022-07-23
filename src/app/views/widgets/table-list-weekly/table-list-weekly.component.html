@@ -29,14 +29,14 @@
         <td style="width: 100px; vertical-align: middle;">{{ item.fromTime + ' - ' + item.toTime }}</td>
         <ng-container *ngFor="let day of item.days; let j=index" >
           <td *ngIf="!day.patientName"
-            title="{{day.date}}"  
+            title="{{day.date}}"
             class="cursor-pointer item-hover"
-            (click)="createAppointment(day.date)">
+            (click)="createAppointment(day)">
             <span class="text-success">Available</span>
           </td>
           <td *ngIf="day.patientName && day.rowSpan > 0"
             [attr.rowspan]="day.rowSpan"
-            title="{{day.date}}"  
+            title="{{day.date}}"
             class="cursor-pointer item-hover table-td table-td-scheduled item-indicator-primary"
             style="vertical-align: top !important; width: 12.5%;"
             (click)="detailSchedule(null)">
