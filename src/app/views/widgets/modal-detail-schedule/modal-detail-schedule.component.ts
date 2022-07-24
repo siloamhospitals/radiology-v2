@@ -1,8 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment'
+import { AlertService } from '../../../services/alert.service';
 import { ModalCancelAppointmentComponent } from '../modal-cancel-appointment/modal-cancel-appointment.component';
 import { ModalCreateAdmissionComponent } from '../modal-create-admission/modal-create-admission.component';
+import { ModalQueueNumberComponent } from '../modal-queue-number/modal-queue-number.component';
 import { ModalHistoryComponent } from '../modal-history/modal-history.component';
 import { RadiologyService } from '../../../services/radiology/radiology.service';
 import {Examination} from '../../../models/radiology/examination';
@@ -46,6 +48,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   
 
   constructor(
+    public alertService: AlertService,
     private activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private radiologyService : RadiologyService,
@@ -60,7 +63,6 @@ export class ModalDetailScheduleComponent implements OnInit {
   date : any = moment()
 
   ngOnInit() {
-    console.log(this.selectedAppointment)
     this.updateAppointmentForm = this._fb.group({
       modalityExaminationId: [{value: this.selectedAppointment.modality_examination_id, disabled: false}, [Validators.required]],
       is_bpjs: [{value: this.selectedAppointment.is_bpjs, disabled: false}, [Validators.required]],
@@ -77,6 +79,14 @@ export class ModalDetailScheduleComponent implements OnInit {
 
   createAdmission() {
     const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission' })
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+
+  inputQueueNumber() {
+    const m = this.modalService.open(ModalQueueNumberComponent, { windowClass: 'modal_queue_number' })
+    m.componentInstance.data = this.selectedAppointment;
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
@@ -120,6 +130,8 @@ export class ModalDetailScheduleComponent implements OnInit {
 }
 
   public updateAppointment() {
+    let params = { valid: true, msg: '' };
+
   const payload = {
     modalityExaminationId: this.updateAppointmentForm.controls.modalityExaminationId.value,
     modalityHospitalId: this.selectedAppointment.modality_hospital_id,
@@ -137,6 +149,13 @@ export class ModalDetailScheduleComponent implements OnInit {
     source: this.source,
     reserveDate: this.selectedAppointment.reserve_date
   };
+  if(moment(payload.fromTime, 'hh:mm').isSameOrAfter(moment(payload.toTime, 'hh:mm'))) { 
+    this.showErrorAlert('Jam mulai harus lebih kecil dari pada jam selesai')
+  }
+  if(moment(payload.toTime, 'hh:mm').isSameOrBefore(moment(payload.fromTime, 'hh:mm'))){
+    this.showErrorAlert('Jam selesai harus lebih besar dari pada jam mulai')
+  }
+
   if(payload.fromTime === this.fromTime && payload.toTime === this.toTime) {
     this.radiologyService.putAppointment(payload)
     .subscribe((response) => {
@@ -171,7 +190,7 @@ export class ModalDetailScheduleComponent implements OnInit {
       type: 'success',
       title: 'Success',
       text: message,
-      timer: 1500
+      timer: 3000
     });
   }
 
@@ -180,7 +199,7 @@ export class ModalDetailScheduleComponent implements OnInit {
       type: 'error',
       title: 'Oops...',
       text: message,
-      timer: 1500
+      timer: 3000
     });
   }
 }
