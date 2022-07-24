@@ -4,17 +4,14 @@ import { RadiologyAppointmentRequest } from './../../../models/radiology/request
 import { AlertService } from './../../../services/alert.service';
 import { ModalityService } from './../../../services/modality.service';
 import { GeneralService } from './../../../services/general.service';
-import { NewPatientHope, PatientHope } from './../../../models/patients/patient-hope';
+import { NewPatientHope } from './../../../models/patients/patient-hope';
 import { PatientService } from './../../../services/patient.service';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search-patient-hope-grouped-request';
 import * as moment from 'moment';
-import { clone, pick } from 'lodash';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
-//import { isOk } from '../.../..//utils/response.util';
-import { isOk } from '../../../utils/response.util';
-// import { Subscription } from 'rxjs';
+import { isOk } from 'src/app/utils/response.util';
 
 @Component({
   selector: 'app-modal-create-appointment',
@@ -41,7 +38,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   private userName: string = this.user.fullname;
   public source: string = sourceApps;
   public patientHope: NewPatientHope[];
-  public choosedPatient: PatientHope;
   public search: any = {
     birthDate: '',
     patientName: '',
@@ -68,30 +64,22 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   public examinationsList: any = [];
   public modalityHospitalList: any = [];
   public modalityAppointmentList: any = [];
-  public viewFromTime: any = '';
   public showPatientTable = '0';
-  public selectedInput: any = {};
 
   // buttons
   public isSubmitting: boolean = false;
   public isExaminationButtonDisabled: boolean = true;
   public isSelectedPatient: any;
   public showModalityList: boolean = false;
-  public dateTimeWidth: string = '160px';
   public isLoadingPatientTable : boolean;
-  public model: any = {
-    localMrNo: ''
-  };
-  public selectedDateTime: any;
-  public isAddedModality: boolean = false;
-  public viewDate: any = moment();
-  public isSelectedExaminationValid: boolean = true;
-  public isEdited: boolean = false;
+  @ViewChild('birthDate') birthDate: ElementRef
+  public isErrorTimer : boolean;
 
   ngOnInit() {
     this.onDefaultSelected();
     this.getModalityHospitalList();
     this.getNationalityIdType();
+    this.birthDate.nativeElement.focus()
   }
 
   ngOnChanges() {
@@ -99,6 +87,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   close() {
+    this.selectedAppointment.refreshTableDaily()
     this.activeModal.close();
   }
 
@@ -126,7 +115,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       return;
     }
 
-    const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
+    const formattedDob = this.search.birthDate ? moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD') : '';
     this.getSearchedPatient({
       ...this.search,
       birthDate: formattedDob,
@@ -142,7 +131,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       return;
     }
 
-    const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
+    const formattedDob = this.search.birthDate ? moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD') : '';
     this.getSearchedPatient({
       ...this.search,
       birthDate: formattedDob,
@@ -153,15 +142,21 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     this.isLoadingPatientTable = true
     this.patientService.searchPatientHopeGroup({
       ...request,
+      nationalIdTypeId: request.idNumber ? request.nationalIdTypeId : '',
       hospitalId: this.hospital.id,
-    }).subscribe(res => {
-      this.patientHope = res.data;
-      const patientHospital = this.patientHope.map( patient => {
+    }).subscribe(({ data = [] }) => {
+      const patientHospital = data.map((patient : NewPatientHope) => {
           patient.patientHospitals = patient.patientHospitals.filter( hospital => hospital.hospitalId === this.hospital.id );
           return patient;
         }
       )
-      this.patientHope = patientHospital;
+      if(request.idNumber && request.patientName && request.birthDate) {
+        this.patientHope = patientHospital.filter((pt : NewPatientHope) => {          
+          return request.patientName && request.patientName.includes(pt.name) && pt.birthDate === request.birthDate
+        })
+      }else {
+        this.patientHope = patientHospital;
+      }
       if(this.patientHope.length > 0) {
         this.showPatientTable = '2';
       } else {
@@ -216,8 +211,10 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   onChangeModality() {
     this.isExaminationButtonDisabled = false;
     if (this.edittedModality.modalityHospitalId) {
+      this.edittedModality.modalityExaminationId = ''
       this.getModalityExamination(this.edittedModality.modalityHospitalId);
     } else {
+      this.selectedModality.modalityExaminationId = ''
       this.getModalityExamination(this.selectedModality.modalityHospitalId);
     }
 
@@ -314,15 +311,15 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   addModalityToList() {
-    const objModality = pick(this.selectedInput, ['modality_label', 'room_name'])
+    const objModality = this.modalityHospitalList.find((md :any) => md.modality_hospital_id === this.selectedModality.modalityHospitalId )
     let payloadAddedModal = {
-      ...objModality,
       ...this.selectedModality,
+      ...objModality,
       ...this.isSelectedPatient,
     }
     payloadAddedModal.reserveDate = this.selectedModality.reserveDate.format('dddd, DD MMMM YYYY')
     this.modalityAppointmentList.push(payloadAddedModal);
-    this.isSelectedExaminationValid = true;
+    this.onReset()
   }
 
   editModalityToList() {
@@ -351,7 +348,9 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       reserveDate,
       duration,
       modality_label,
-      room_name
+      room_name,
+      notes: '',
+      modalityExaminationId: ''
     }
 
     if (this.selectedModality.modalityHospitalId) {
@@ -371,11 +370,9 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   onEditModality(index: any) {
-    this.isEdited = true;
-    this.edittedModality = this.modalityAppointmentList[index];
+    this.edittedModality = { ...this.modalityAppointmentList[index] }
     this.edittedModality.index = index;
-    this.selectedDateTime = clone(this.edittedModality);
-    this.selectedDateTime.reserveDate = moment(this.selectedDateTime.reserveDate);
+    this.edittedModality.reserveDate = moment(this.edittedModality.reserveDate, 'dddd, DD MMMM YYYY');
     this.getModalityExamination(this.edittedModality.modalityHospitalId);
   }
 
@@ -383,5 +380,38 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     this.edittedModality = {};
     this.onDefaultSelected();
   }
+
+  isEditing() {
+    return !!this.edittedModality.modalityHospitalId
+  }
+
+  onChangeTimer = () => {
+    if(this.isEditing()) {
+      const toTime = moment(this.edittedModality.toTime, 'HH:mm')
+      const fromTime = moment(this.edittedModality.fromTime, 'HH:mm')
+      if(toTime.isSameOrBefore(fromTime)){
+        this.isErrorTimer = true
+      }else {
+        this.isErrorTimer = false
+      }
+    }else {
+      const toTime = moment(this.selectedModality.toTime, 'HH:mm')
+      const fromTime = moment(this.selectedModality.fromTime, 'HH:mm')
+      if(toTime.isSameOrBefore(fromTime)){
+        this.isErrorTimer = true
+      }else {
+        this.isErrorTimer = false
+      }
+    }
+  }
+
+  validasiFormModality() {
+    if(this.isEditing()){
+      return this.isErrorTimer || !this.edittedModality.modalityExaminationId
+    }else {
+      return this.isErrorTimer || !this.selectedModality.modalityExaminationId
+    }
+  }
+
 }
 
