@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
 import { ScheduleStatus } from '../../../variables/common.variable';
@@ -14,29 +14,23 @@ import { ModalityHospital } from '../../../models/radiology/modality-hospital';
   templateUrl: './table-list-daily.component.html',
   styleUrls: ['./table-list-daily.component.css']
 })
-export class TableListDailyComponent implements OnInit {
+export class TableListDailyComponent {
 
   modalitySlots: ModalitySlot[];
   @Input() dateSelected: moment.Moment;
   @Input() sectionSelected: ModalityHospital;
   @Input() fromTimeRange: string;
   @Input() toTimeRange: string;
-  @Input() ShowLoadDialy: boolean = true;
 
   public scheduleStatus: any = ScheduleStatus
   public scheduleList: any[] = []
   public scheduleListBk: any[] = []
+  public isLoading: boolean;
 
   constructor(
     private modalService: NgbModal,
     private radiologyService : RadiologyService,
   ) { }
-
-  ngOnInit(): void {
-    setTimeout(()=>{                           //<<<---using ()=> syntax
-      this.ShowLoadDialy = false;
-    }, 5000);
-  }
 
   async getModalitySlots() {
     if(this.sectionSelected.modality_hospital_id) {
@@ -47,6 +41,14 @@ export class TableListDailyComponent implements OnInit {
     }
 
 
+  }
+
+  refreshData = async () => {
+    this.isLoading = true
+    this.scheduleList = []
+    await this.getModalitySlots()
+    await this.getSchedules()
+    this.isLoading = false
   }
 
   createAppointment(schedule?: any) {
@@ -60,7 +62,8 @@ export class TableListDailyComponent implements OnInit {
       reserveDate: this.dateSelected,
       modality_label,
       room_name,
-      duration
+      duration,
+      refreshTableDaily: this.refreshData
     }
     m.componentInstance.selectedAppointment = payload;
     m.result.then((result: any) => {
@@ -99,7 +102,6 @@ export class TableListDailyComponent implements OnInit {
 
     this.scheduleListBk = this.scheduleList.slice()
 
-    this.ShowLoadDialy = false;
   }
 
   private createTimeSlotInDurationHour(slots: ModalitySlot[], lastCaptureSlot: any) {
@@ -209,8 +211,7 @@ export class TableListDailyComponent implements OnInit {
   async ngOnChanges(changes: SimpleChanges) {
     if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue))
       || this.sectionSelected.modality_hospital_id) {
-      await this.getModalitySlots()
-      await this.getSchedules()
+      await this.refreshData()
     }
 
     

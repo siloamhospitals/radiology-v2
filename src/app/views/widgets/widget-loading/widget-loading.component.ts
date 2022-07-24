@@ -1,5 +1,4 @@
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-loading',
@@ -7,25 +6,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./widget-loading.component.css']
 })
 
-export class LoadingComponent implements OnInit {
+export class LoadingComponent {
   @Input() showLoad: boolean;
-  constructor(
-    public activeModal: NgbActiveModal,
-  ) { }
-
-  ngOnInit() {
-    // /setTimeout(this.setShowLoad, 5000)
-  }
-
-  public setShowLoad(){
-    this.showLoad = false
-  }
-
-  public deleteData() {
-    this.activeModal.close('OK');
-  }
-
-  public test() {
-    this.activeModal.close('clear');
-  }
+  @Input() width: number = 80;
+  @Input() class: string = '';
 }

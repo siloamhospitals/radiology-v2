@@ -87,6 +87,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   close() {
+    this.selectedAppointment.refreshTableDaily()
     this.activeModal.close();
   }
 
@@ -318,6 +319,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     }
     payloadAddedModal.reserveDate = this.selectedModality.reserveDate.format('dddd, DD MMMM YYYY')
     this.modalityAppointmentList.push(payloadAddedModal);
+    this.onReset()
   }
 
   editModalityToList() {
@@ -346,7 +348,9 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       reserveDate,
       duration,
       modality_label,
-      room_name
+      room_name,
+      notes: '',
+      modalityExaminationId: ''
     }
 
     if (this.selectedModality.modalityHospitalId) {

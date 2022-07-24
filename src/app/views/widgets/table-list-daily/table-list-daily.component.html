@@ -12,15 +12,13 @@
     </tr>
   </thead>
   <tbody>
-    <ng-container *ngIf="!(scheduleList && scheduleList.length) && !ShowLoadDialy" >
+    <ng-container *ngIf="!(scheduleList && scheduleList.length) && !isLoading" >
       <tr>
         <td colspan="100%" class="text-center p-3">No data from this section</td>
       </tr>
     </ng-container>
 
-    <app-loading
-      width="10px" [showLoad]=ShowLoadDialy>
-    </app-loading>
+    <app-loading [showLoad]="isLoading" ></app-loading>
 
     <ng-container *ngFor="let item of scheduleList; let i=index" >
       <tr *ngFor="let schedule of item.items; let j = index;" class="item-hover" >
