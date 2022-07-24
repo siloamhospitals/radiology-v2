@@ -6,6 +6,7 @@ import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 import { ModalHistoryComponent } from '../../widgets/modal-history/modal-history.component';
 import * as moment from 'moment';
+import * as lodash from 'lodash';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
 import { ModalityHospital } from '../../../models/radiology/modality-hospital';
 
@@ -131,6 +132,10 @@ export class PageRadiologyScheduleComponent implements OnInit {
               }
             );
             this.sections = activeModalityHospital;
+            if (this.sections && this.sections.length > 0) {
+              this.sections = lodash.orderBy(this.sections,
+                ['modality_label', 'room_name'], ['asc', 'asc'])
+            }
           }, () => {
             this.sections = [];
           }, () => {
