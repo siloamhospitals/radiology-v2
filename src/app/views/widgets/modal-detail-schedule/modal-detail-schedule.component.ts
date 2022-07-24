@@ -45,7 +45,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   public updateAppointmentForm:any = FormGroup;
 
   admissionLateTime: any = null
-  admissionIsNotToday: boolean = null
+  admissionIsNotToday: boolean = false
 
   @ViewChild('modalConfirmPatient') modalConfirmPatientData: ElementRef
   @ViewChild('modalConfirmAdmission') modalConfirmAdmission: ElementRef

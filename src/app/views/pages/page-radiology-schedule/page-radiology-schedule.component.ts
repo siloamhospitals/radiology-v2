@@ -221,7 +221,8 @@ export class PageRadiologyScheduleComponent implements OnInit {
     this.tableViewActive = !isNaN(Number(viewId)) ? Number(viewId) : 0
     this.changeTableDate(dateVal)
     if (sectionId && this.sections && this.sections.length > 0) {
-      this.sectionSelected = this.sections.find((x: any) => x.modality_hospital_id === sectionId)
+      const seekSection = this.sections.find((x: any) => x.modality_hospital_id === sectionId)
+      this.sectionSelected = seekSection ? seekSection : new ModalityHospital
     }
   }
 
