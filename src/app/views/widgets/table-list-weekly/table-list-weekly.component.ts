@@ -152,7 +152,11 @@ export class TableListWeeklyComponent implements OnInit {
 
   generateDayLabel () {
     const now = moment(this.dateSelected)
-    const minDay = now.clone().weekday(0)
+    let minDay = now.clone().weekday(0)
+    // Adjusttment if today is Sunday, back to one week
+    if (now.format('E') === '7') {
+      minDay = now.clone().subtract(1, 'weeks').weekday(0)
+    }
     const weeks = []
     for(let d = Number(minDay.format('d')); d<8; d++) {
       const current = minDay.clone().add(d, 'days')
