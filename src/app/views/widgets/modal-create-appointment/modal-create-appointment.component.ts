@@ -114,7 +114,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       return;
     }
 
-    const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
+    const formattedDob = this.search.birthDate ? moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD') : '';
     this.getSearchedPatient({
       ...this.search,
       birthDate: formattedDob,
@@ -130,7 +130,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       return;
     }
 
-    const formattedDob = moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD')
+    const formattedDob = this.search.birthDate ? moment(this.search.birthDate, 'DD-MM-YYYY').format('YYYY-MM-DD') : '';
     this.getSearchedPatient({
       ...this.search,
       birthDate: formattedDob,
@@ -141,15 +141,21 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     this.isLoadingPatientTable = true
     this.patientService.searchPatientHopeGroup({
       ...request,
+      nationalIdTypeId: request.idNumber ? request.nationalIdTypeId : '',
       hospitalId: this.hospital.id,
-    }).subscribe(res => {
-      this.patientHope = res.data;
-      const patientHospital = this.patientHope.map( patient => {
+    }).subscribe(({ data = [] }) => {
+      const patientHospital = data.map((patient : NewPatientHope) => {
           patient.patientHospitals = patient.patientHospitals.filter( hospital => hospital.hospitalId === this.hospital.id );
           return patient;
         }
       )
-      this.patientHope = patientHospital;
+      if(request.idNumber && request.patientName && request.birthDate) {
+        this.patientHope = patientHospital.filter((pt : NewPatientHope) => {          
+          return request.patientName && request.patientName.includes(pt.name) && pt.birthDate === request.birthDate
+        })
+      }else {
+        this.patientHope = patientHospital;
+      }
       if(this.patientHope.length > 0) {
         this.showPatientTable = '2';
       } else {

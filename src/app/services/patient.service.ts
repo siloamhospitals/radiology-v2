@@ -225,7 +225,6 @@ export class PatientService {
   }
 
   searchPatientHopeGroup(request: SearchPatientHopeGroupedRequest) {
-    console.log()
     const newRequest: any = request.hospitalId && request.mrLocalNo ? {
       hospitalId: request.hospitalId,
       mrLocalNo: request.mrLocalNo,
