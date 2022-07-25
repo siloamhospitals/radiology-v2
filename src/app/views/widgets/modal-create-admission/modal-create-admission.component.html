@@ -351,6 +351,10 @@
               <button class="btn btn-primary ml-3" (click)="modal.close()">Cek Ulang Data</button>
             </div>
           </ng-container>
+          <ng-container *ngIf="isSuccess">
+            <div>Admission Berhasil</div>
+            <button #btnCloseAdmissionSuccess class="btn btn-text text-secondary px-4 w-50 mt-2" (click)="modal.close()">Tutup</button>
+          </ng-container>
         </div>
       </div>
     </div>

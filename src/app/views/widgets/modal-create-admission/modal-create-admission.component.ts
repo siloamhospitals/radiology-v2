@@ -54,6 +54,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   isLoadingFetch: boolean = false
   isLoading: boolean = false
   isError: boolean = false
+  isSuccess: boolean = false
 
   errorMessage: any = null
 
@@ -126,8 +127,9 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
     const isSuccess = (res: any) => {
       this.isLoading = false
+      this.isSuccess = true
       this.activeModal.close()
-      this.modalCreateAdmissionLoading.close()
+      // this.modalCreateAdmissionLoading.close()
       setTimeout(() => { this.openAdmissionTicket() }, 500)
       console.log('ADMISSION_CREATE_SUCCESS', res)
     }
@@ -135,6 +137,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     const isError = (e: any) => {
       this.isLoading = false
       this.isError = true
+      this.isSuccess = false
       this.errorMessage = e.error && e.error.message ? e.error.message : e.message
       setTimeout(() => { this.isError = false }, 8000)
       console.log('ADMISSION_CREATE_ERROR', e)
@@ -219,8 +222,11 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   openAdmissionTicket () {
     const content = this.modalAdmissionDetail
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((_result) => {
-    }, (_reason) => {
+    const m = this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', centered: true})
+    m.result.then((_result) => {
+      // if modal check admission ticket is close
+    }).catch((e) => {
+      console.log('MODAL_ERR', e)
     })
   }
 
