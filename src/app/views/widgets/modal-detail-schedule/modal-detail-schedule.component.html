@@ -30,7 +30,11 @@
       <div class="mb-3 px-3" *ngIf="selectedAppointment.operational_type == 3">
         <label for="">Tanggal dan Waktu</label>
         <div class="d-flex align-items-center" >
-          <app-date-picker format="dddd, DD MMMM YYYY" width="160px" hideIcon="true" ></app-date-picker>
+          <app-date-picker format="dddd, DD MMMM YYYY" hideIcon=true [noBorder]=true
+          [isModalLarge]=true
+          width="230px"
+          [(value)]="selectedAppointment.reserveDate"
+          [onChange]="onChangeDate" ></app-date-picker>
           <span class="mx-2" >|</span>
           <app-time-picker
             [isModalLarge]=true
