@@ -236,4 +236,6 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     }, (_reason) => {
     })
   }
+
+  // @todo: referral-type functions
 }
