@@ -130,8 +130,6 @@ export class ModalDetailScheduleComponent implements OnInit {
 }
 
   public updateAppointment() {
-    let params = { valid: true, msg: '' };
-
   const payload = {
     modalityExaminationId: this.updateAppointmentForm.controls.modalityExaminationId.value,
     modalityHospitalId: this.selectedAppointment.modality_hospital_id,

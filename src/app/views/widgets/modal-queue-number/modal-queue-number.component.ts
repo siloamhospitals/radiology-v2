@@ -1,4 +1,4 @@
-import { channelId, sourceApps } from './../../../variables/common.variable';
+import { sourceApps } from './../../../variables/common.variable';
 import { AlertService } from './../../../services/alert.service';
 import { ModalityService } from './../../../services/modality.service';
 import { GeneralService } from './../../../services/general.service';
@@ -6,7 +6,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {Alert, AlertType} from '../../../models/alerts/alert';
 import * as moment from 'moment';
-import { isOk } from '../../../utils/response.util';
 
 @Component({
   selector: 'app-modal-queue-number',
@@ -19,15 +18,12 @@ export class ModalQueueNumberComponent implements OnInit {
 
   constructor(
     private activeModal: NgbActiveModal,
-    private generalService: GeneralService,
-    private modalityService: ModalityService,
     private alertService: AlertService,
   ) { }
   public key: any = JSON.parse(localStorage.getItem('key') || '{}');
   public hospital = this.key.hospital;
   public user = this.key.user;
   public userId: string = this.user.id;
-  private userName: string = this.user.fullname;
   public source: string = sourceApps;
   public visitId = '';
   

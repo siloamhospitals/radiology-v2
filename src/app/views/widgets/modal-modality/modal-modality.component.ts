@@ -17,7 +17,6 @@ import { RadiologyService } from '../../../services/radiology/radiology.service'
 import RadiologyItem from '../../../models/radiology/radiology-item';
 import { ModalConfirmDeleteComponent } from '../modal-confirm-delete/modal-confirm-delete.component';
 import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modal-modality',
@@ -79,7 +78,6 @@ export class ModalModalityComponent implements OnInit {
   public statusTextArea: boolean = false  
 
   constructor(
-    private router: Router,
     public modalService: NgbModal,
     private service: RadiologyService,
     public activeModal: NgbActiveModal,
