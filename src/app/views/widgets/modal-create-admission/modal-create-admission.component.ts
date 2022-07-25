@@ -126,8 +126,9 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
     const isSuccess = (res: any) => {
       this.isLoading = false
+      this.activeModal.close()
       this.modalCreateAdmissionLoading.close()
-      this.openAdmissionTicket()
+      setTimeout(() => { this.openAdmissionTicket() }, 500)
       console.log('ADMISSION_CREATE_SUCCESS', res)
     }
 

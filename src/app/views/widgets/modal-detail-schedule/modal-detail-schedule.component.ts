@@ -89,7 +89,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   createAdmission() {
     const openModalAdmission = () => {
       // Open Modal Admission
-      // this.close()
+      this.close()
       const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission' })
       m.componentInstance.modelId = this.selectedAppointment && this.selectedAppointment.modality_slot_id ? this.selectedAppointment.modality_slot_id : null
       m.componentInstance.selectedModel = this.selectedAppointment
