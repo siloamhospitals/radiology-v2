@@ -7,11 +7,12 @@ import { GeneralService } from './../../../services/general.service';
 import { NewPatientHope } from './../../../models/patients/patient-hope';
 import { PatientService } from './../../../services/patient.service';
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search-patient-hope-grouped-request';
 import * as moment from 'moment';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 import { isOk } from 'src/app/utils/response.util';
+import { ModalNewPatientComponent } from '../modal-new-patient/modal-new-patient.component';
 
 @Component({
   selector: 'app-modal-create-appointment',
@@ -25,6 +26,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     private patientService: PatientService,
     private generalService: GeneralService,
     private modalityService: ModalityService,
+    private modalService: NgbModal,
     alertService: AlertService,
   ) {
     super(alertService, 'modal-search-patient-main-alert');
@@ -79,7 +81,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     this.onDefaultSelected();
     this.getModalityHospitalList();
     this.getNationalityIdType();
-    this.birthDate.nativeElement.focus()
+    this.birthDate.nativeElement.focus();
   }
 
   ngOnChanges() {
@@ -151,7 +153,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
         }
       )
       if(request.idNumber && request.patientName && request.birthDate) {
-        this.patientHope = patientHospital.filter((pt : NewPatientHope) => {          
+        this.patientHope = patientHospital.filter((pt : NewPatientHope) => {
           return request.patientName && request.patientName.includes(pt.name) && pt.birthDate === request.birthDate
         })
       }else {
@@ -217,7 +219,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       this.selectedModality.modalityExaminationId = ''
       this.getModalityExamination(this.selectedModality.modalityHospitalId);
     }
-
   }
 
   compareByModalityHospital(itemOne?: any, itemTwo?: any) {
@@ -359,6 +360,24 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     }
   }
 
+  onResettedSelected() {
+    const { fromTime, toTime, reserveDate, duration } = this.selectedAppointment;
+    this.selectedModality = {
+      ...this.selectedModality,
+      isBpjs: false,
+      isAnesthesia: false,
+      fromTime,
+      toTime,
+      modalityHospitalId: '',
+      reserveDate,
+      duration,
+      modality_label: '',
+      room_name: '',
+      notes: '',
+      modalityExaminationId: ''
+    }
+  }
+
   cancelModality() {
     this.onReset();
   }
@@ -378,7 +397,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
 
   onReset() {
     this.edittedModality = {};
-    this.onDefaultSelected();
+    this.onResettedSelected();
   }
 
   isEditing() {
@@ -413,5 +432,24 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     }
   }
 
+  createNewPatient() {
+    const modal = this.modalService.open(ModalNewPatientComponent, { keyboard: false, centered: true, size: 'lg' });
+    const {
+      modalityHospitalId, modality_label: modalityLabel, room_name: roomName, duration,
+      fromTime, toTime, reserveDate, refreshTableDaily,
+    } = this.selectedAppointment;
+    const payload = {
+      fromTime,
+      toTime,
+      modalityHospitalId,
+      reserveDate,
+      modalityLabel,
+      roomName,
+      duration,
+      refreshTableDaily,
+      ...this.search
+    }
+    modal.componentInstance.selectedAppointment = payload;
+  }
 }
 
