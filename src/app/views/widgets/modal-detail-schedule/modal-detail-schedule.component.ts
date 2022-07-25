@@ -117,6 +117,8 @@ export class ModalDetailScheduleComponent implements OnInit {
       const c = this.modalService.open(this.modalConfirmAdmission, { centered: true })
       c.result.then((_result: any) => {
         openModalAdmission()
+      }).catch((_e) => {
+        console.log('MODAL_CLOSE', _e)
       })
     } else {
       openModalAdmission()
