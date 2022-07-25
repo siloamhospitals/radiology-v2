@@ -1,7 +1,5 @@
 import { sourceApps } from './../../../variables/common.variable';
 import { AlertService } from './../../../services/alert.service';
-import { ModalityService } from './../../../services/modality.service';
-import { GeneralService } from './../../../services/general.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {Alert, AlertType} from '../../../models/alerts/alert';
