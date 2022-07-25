@@ -280,7 +280,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
 
   public generatePayload(model: any) {
     const {
-      mobileNo1: phoneNumber, address, notes, emailAddress
+      mobileNo1: phoneNumber, address, notes, emailAddress, isBpjs, isAnesthesia
     } = model;
     const patientHopeId = model ? model.patientId : null;
     const reserveDate = moment(model.reserveDate).format('YYYY-MM-DD')
@@ -300,6 +300,8 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       emailAddress,
       isWaitingList: false,
       patientHopeId,
+      isBpjs,
+      isAnesthesia,
       channelId: channelId.FRONT_OFFICE,
       userName: this.userName,
       source: this.source,

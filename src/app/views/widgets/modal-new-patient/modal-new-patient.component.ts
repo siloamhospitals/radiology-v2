@@ -304,7 +304,7 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
 
   generatePayload(model: any) {
     const {
-      phoneNumber1, address, notes, emailAddress
+      phoneNumber1, address, notes, emailAddress, isBpjs, isAnesthesia
     } = model;
     console.log(model, '===========model')
     console.log(phoneNumber1, '===========phoneNumber 1')
@@ -325,6 +325,8 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
       emailAddress,
       isWaitingList: false,
       patientHopeId,
+      isBpjs,
+      isAnesthesia,
       channelId: channelId.FRONT_OFFICE,
       userName: this.userName,
       source: this.source,
