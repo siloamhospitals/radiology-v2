@@ -16,6 +16,8 @@ import { ModalCancelAppointmentComponent } from '../../widgets/modal-cancel-appo
 import { ModalCreateAdmissionComponent } from '../../widgets/modal-create-admission/modal-create-admission.component';
 import { ModalCreateAdmissionModule } from '../../widgets/modal-create-admission/modal-create-admission.module';
 import { ModalDetailScheduleModule } from '../../widgets/modal-detail-schedule/modal-detail-schedule.module';
+import { ModalQueueNumberModule } from '../../widgets/modal-queue-number/modal-queue-number.module';
+import { ModalQueueNumberComponent } from '../../widgets/modal-queue-number/modal-queue-number.component'
 import { ModalDetailScheduleComponent } from '../../widgets/modal-detail-schedule/modal-detail-schedule.component';
 import { TableListWeeklyModule } from '../../widgets/table-list-weekly/table-list-weekly.module';
 import { TableListMonthlyModule } from '../../widgets/table-list-monthly/table-list-monthly.module';
@@ -50,6 +52,7 @@ import { LoadingComponent } from '../../widgets/widget-loading/widget-loading.co
     TableFilterScheduleModule,
     DropdownExaminationModule,
     ModalCreateAppointmentModule,
+    ModalQueueNumberModule,
     LoadingModule
   ],
   exports: [
@@ -61,7 +64,8 @@ import { LoadingComponent } from '../../widgets/widget-loading/widget-loading.co
     ModalCreateAdmissionComponent,
     ModalDetailScheduleComponent,
     ModalCreateAppointmentComponent,
-    LoadingComponent
+    LoadingComponent,
+    ModalQueueNumberComponent
   ],
 })
 export class PageRadiologyScheduleModule {}

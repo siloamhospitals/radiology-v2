@@ -22,9 +22,7 @@
       </tr>
     </ng-container>
 
-    <app-loading
-      width="10px" [showLoad]=ShowLoadDialy>
-    </app-loading>
+    <app-loading [showLoad]="isLoading" ></app-loading>
 
     <ng-template #showList>
     <ng-container *ngFor="let item of scheduleList; let i=index" >

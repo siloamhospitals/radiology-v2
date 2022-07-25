@@ -2,13 +2,16 @@
   <div class="modal-header border-bottom-0">
     <div class="header">
       <button class="btn border-0" (click)="cancelAppointment()">
-        <span class="fa fa-lg fa-trash-o text-muted"></span>
+        <span class="fa fa-lg fa-trash-o " style="color: #341F97"></span>
       </button>
       <button class="btn border-0" (click)="showHistoryModal()">
-        <span class="fa fa-lg fa-history text-muted"></span>
+        <span class="fa fa-lg fa-history " style="color: #341F97"></span>
       </button>
-      <button class="btn border-0" (click)="createAdmission()">
-        <span class="fa fa-lg fa-check text-muted"></span>
+      <button class="btn border-0" *ngIf="!selectedAppointment.admission_id" (click)="createAdmission()">
+        <span class="fa fa-lg fa-check" style="color: #341F97"></span>
+      </button>
+      <button class="btn border-0"*ngIf="selectedAppointment.admission_id" (click)="inputQueueNumber()">
+        <img src="/assets/icons/ic_usercheck.svg" class="icon-usercheck" alt="usercheck" />
       </button>
     </div>
     <button #close_button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
@@ -27,21 +30,28 @@
       <div class="mb-3 px-3" *ngIf="selectedAppointment.operational_type == 3">
         <label for="">Tanggal dan Waktu</label>
         <div class="d-flex align-items-center" >
-          <app-date-picker format="dddd, DD MMMM YYYY" width="160px" hideIcon="true" ></app-date-picker>
+          <app-date-picker format="dddd, DD MMMM YYYY" hideIcon=true [noBorder]=true
+          [isModalLarge]=true
+          width="230px"
+          [(value)]="selectedAppointment.reserveDate"
+          [onChange]="onChangeDate" ></app-date-picker>
           <span class="mx-2" >|</span>
           <app-time-picker
             [isModalLarge]=true
             [noBorder]=true
             [(value)]="selectedAppointment.from_time"
-            useMinute="true" >
+            [duration]="selectedAppointment.duration"
+            [onChange]="onChangeTimer" >
           </app-time-picker>&nbsp;
           <app-time-picker
             [isModalLarge]=true
             [noBorder]=true
             [(value)]="selectedAppointment.to_time"
-            useMinute="true" >
-          </app-time-picker>
+            [duration]="selectedAppointment.duration"
+            [onChange]="onChangeTimer" >
+        </app-time-picker>
         </div>
+        <div class="text-danger ml-2" *ngIf="errorTimer" >{{errorMsg}}</div>
       </div>
       <div class="mb-3 px-3" *ngIf="selectedAppointment.operational_type == 1">
         <label for="">Tanggal dan Waktu</label>
@@ -150,7 +160,7 @@
         <span class="text-muted" >Local Updated by </span><br/>
         <h5 class="text-primary">Admin FO 2</h5>
       </div>
-      <button class="btn btn-success ml-2" (click)="updateAppointment()">Save Changes</button>
+      <button class="btn btn-success ml-2" (click)="updateAppointment()" [disabled]="validateForm()">Save Changes</button>
   </div>
 </div>
 

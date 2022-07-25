@@ -6,3 +6,8 @@
 .modal-content:has(.modal-confirm-admission) {
   left: 10%;
 }
+
+.icon-usercheck {
+    top: 5px;
+    left: 5px;
+  }

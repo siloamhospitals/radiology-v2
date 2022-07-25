@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { NgbActiveModal, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment'
+import { AlertService } from '../../../services/alert.service';
 import { ModalCancelAppointmentComponent } from '../modal-cancel-appointment/modal-cancel-appointment.component';
 import { ModalCreateAdmissionComponent } from '../modal-create-admission/modal-create-admission.component';
+import { ModalQueueNumberComponent } from '../modal-queue-number/modal-queue-number.component';
 import { ModalHistoryComponent } from '../modal-history/modal-history.component';
 import { RadiologyService } from '../../../services/radiology/radiology.service';
 import {Examination} from '../../../models/radiology/examination';
@@ -43,6 +45,9 @@ export class ModalDetailScheduleComponent implements OnInit {
   public fromTime: any;
   public toTime: any;
   public updateAppointmentForm:any = FormGroup;
+  public errorTimer: boolean;
+  public errorMsg: string;
+
 
   admissionLateTime: any = null
   admissionIsNotToday: boolean = false
@@ -51,6 +56,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   @ViewChild('modalConfirmAdmission') modalConfirmAdmission: ElementRef
 
   constructor(
+    public alertService: AlertService,
     private activeModal: NgbActiveModal,
     private modalService: NgbModal,
     private radiologyService : RadiologyService,
@@ -65,7 +71,6 @@ export class ModalDetailScheduleComponent implements OnInit {
   date : any = moment()
 
   ngOnInit() {
-    // console.log(this.selectedAppointment)
     this.updateAppointmentForm = this._fb.group({
       modalityExaminationId: [{value: this.selectedAppointment.modality_examination_id, disabled: false}, [Validators.required]],
       is_bpjs: [{value: this.selectedAppointment.is_bpjs, disabled: false}, [Validators.required]],
@@ -77,6 +82,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   close() {
+    // this.selectedAppointment.refreshTableDaily();
     this.activeModal.close();
   }
 
@@ -86,7 +92,7 @@ export class ModalDetailScheduleComponent implements OnInit {
       // this.close()
       const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission' })
       m.componentInstance.modelId = this.selectedAppointment && this.selectedAppointment.modality_slot_id ? this.selectedAppointment.modality_slot_id : null
-      m.componentInstance.selectedModel = this.selectedAppointment 
+      m.componentInstance.selectedModel = this.selectedAppointment
       // console.log('selectedModel', this.selectedAppointment, m.componentInstance.selectedModel)
       m.result.then((result: any) => {
         console.log('modal is closed', {result})
@@ -117,6 +123,14 @@ export class ModalDetailScheduleComponent implements OnInit {
     }
   }
 
+  inputQueueNumber() {
+    const m = this.modalService.open(ModalQueueNumberComponent, { windowClass: 'modal_queue_number' })
+    m.componentInstance.data = this.selectedAppointment;
+    m.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
+  }
+
   showHistoryModal() {
     const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_history' })
     m.result.then((result: any) => {
@@ -135,7 +149,6 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   cancelAppointment(item: any = this.selectedAppointment) {
-    console.log(item)
     const m = this.modalService.open(ModalCancelAppointmentComponent, { windowClass: 'modal_cancel_appointment' })
     m.result.then((result: any) => {if (result.result === 'OK') {
       this.radiologyService.deleteAppointment(item.modality_slot_id, {
@@ -145,7 +158,7 @@ export class ModalDetailScheduleComponent implements OnInit {
         .subscribe((res) => {
           if (isOk(res)) {
             this.showSuccessAlert(res.message);
-            location.reload();
+            this.close();
           } else {
             this.showErrorAlert('Delete failed');
           }
@@ -155,58 +168,88 @@ export class ModalDetailScheduleComponent implements OnInit {
 }
 
   public updateAppointment() {
-  const payload = {
-    modalityExaminationId: this.updateAppointmentForm.controls.modalityExaminationId.value,
-    modalityHospitalId: this.selectedAppointment.modality_hospital_id,
-    modalityOperationalId: this.selectedAppointment.modality_operational_id,
-    modalitySlotId: this.selectedAppointment.modality_slot_id,
-    channelId: '2',
-    isWaitingList: false,
-    fromTime: this.selectedAppointment.from_time,
-    toTime: this.selectedAppointment.to_time,
-    notes: this.updateAppointmentForm.controls.note.value,
-    isBpjs: this.updateAppointmentForm.controls.is_bpjs.value,
-    isAnesthesia: this.updateAppointmentForm.controls.is_anesthesia.value,
-    userId: this.userId,
-    userName: this.userName,
-    source: this.source,
-    reserveDate: this.selectedAppointment.reserve_date
-  };
-  if(payload.fromTime === this.fromTime && payload.toTime === this.toTime) {
-    this.radiologyService.putAppointment(payload)
-    .subscribe((response) => {
-      if (isOk(response)) {
-        this.showSuccessAlert(response.message);
-        this.activeModal.close('success');
-      }
-      // location.reload();
-    }, () => {
-      this.showErrorAlert('Update gagal');
-    });
-  }else{
-    this.radiologyService.reschedule(payload)
-    .subscribe((response) => {
-      if (isOk(response)) {
-        this.showSuccessAlert(response.message);
-      }
-      // location.reload();
-    }, () => {
-      this.showErrorAlert('Update gagal');
-    });
+    const payload = {
+      modalityExaminationId: this.updateAppointmentForm.controls.modalityExaminationId.value,
+      modalityHospitalId: this.selectedAppointment.modality_hospital_id,
+      modalityOperationalId: this.selectedAppointment.modality_operational_id,
+      modalitySlotId: this.selectedAppointment.modality_slot_id,
+      channelId: '2',
+      isWaitingList: false,
+      fromTime: this.selectedAppointment.from_time,
+      toTime: this.selectedAppointment.to_time,
+      notes: this.updateAppointmentForm.controls.note.value,
+      isBpjs: this.updateAppointmentForm.controls.is_bpjs.value,
+      isAnesthesia: this.updateAppointmentForm.controls.is_anesthesia.value,
+      userId: this.userId,
+      userName: this.userName,
+      source: this.source,
+      reserveDate: this.selectedAppointment.reserve_date
+    };
+    if(moment(payload.fromTime, 'hh:mm').isSameOrAfter(moment(payload.toTime, 'hh:mm'))) {
+      this.showErrorAlert('Jam mulai harus lebih kecil dari pada jam selesai')
+    }
+    if(moment(payload.toTime, 'hh:mm').isSameOrBefore(moment(payload.fromTime, 'hh:mm'))){
+      this.showErrorAlert('Jam selesai harus lebih besar dari pada jam mulai')
+    }
+
+    if(payload.fromTime === this.fromTime && payload.toTime === this.toTime) {
+      this.radiologyService.putAppointment(payload)
+      .subscribe((response) => {
+        if (isOk(response)) {
+          this.showSuccessAlert(response.message);
+          this.close()
+        }
+      }, () => {
+        this.showErrorAlert('Update gagal');
+      });
+    }else{
+      this.radiologyService.reschedule(payload)
+      .subscribe((response) => {
+        if (isOk(response)) {
+          this.showSuccessAlert(response.message);
+          this.close()
+        }
+        // location.reload();
+      }, () => {
+        this.showErrorAlert('Update gagal');
+      });
+    }
   }
-  
+
+  onChangeTimer = () => {
+    const toTime = moment(this.selectedAppointment.to_time, 'HH:mm')
+    const fromTime = moment(this.selectedAppointment.from_time, 'HH:mm')
+    if(toTime.isSameOrBefore(fromTime)){
+      this.errorTimer = true
+      this.errorMsg = 'Jam selesai harus lebih besar dari pada jam mulai'
+    }else if(fromTime.isSameOrAfter(toTime)){
+      this.errorTimer = true
+      this.errorMsg = 'Jam mulai harus lebih kecil dari pada jam selesai'
+    }else {
+      this.errorTimer = false
+    }
+  }
+
+
+  onChangeDate = () => {
+    this.selectedAppointment.reserve_date = this.selectedAppointment.reserveDate.format('YYYY-MM-DD');
   }
 
   onChangeDefaultSelected() {
     this.fromTime = this.selectedAppointment.from_time;
     this.toTime = this.selectedAppointment.to_time;
   }
+
+  validateForm() {
+    return this.errorTimer
+  }
+
   public showSuccessAlert(message: string) {
     Swal.fire({
       type: 'success',
       title: 'Success',
       text: message,
-      timer: 1500
+      timer: 3000
     });
   }
 
@@ -215,7 +258,7 @@ export class ModalDetailScheduleComponent implements OnInit {
       type: 'error',
       title: 'Oops...',
       text: message,
-      timer: 1500
+      timer: 3000
     });
   }
 }

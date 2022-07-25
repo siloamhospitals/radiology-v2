@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
 import { ScheduleStatus } from '../../../variables/common.variable';
@@ -14,18 +14,18 @@ import { ModalityHospital } from '../../../models/radiology/modality-hospital';
   templateUrl: './table-list-daily.component.html',
   styleUrls: ['./table-list-daily.component.css']
 })
-export class TableListDailyComponent implements OnInit {
+export class TableListDailyComponent {
 
   modalitySlots: ModalitySlot[];
   @Input() dateSelected: moment.Moment;
   @Input() sectionSelected: ModalityHospital;
   @Input() fromTimeRange: string;
   @Input() toTimeRange: string;
-  @Input() ShowLoadDialy: boolean = true;
 
   public scheduleStatus: any = ScheduleStatus
   public scheduleList: any[] = []
   public scheduleListBk: any[] = []
+  public isLoading: boolean;
 
   isLoadingSection: boolean = false
   debounceLoadData: any = null
@@ -34,12 +34,6 @@ export class TableListDailyComponent implements OnInit {
     private modalService: NgbModal,
     private radiologyService : RadiologyService,
   ) { }
-
-  ngOnInit(): void {
-    setTimeout(()=>{                           //<<<---using ()=> syntax
-      this.ShowLoadDialy = false;
-    }, 5000);
-  }
 
   async getModalitySlots() {
     if(this.sectionSelected.modality_hospital_id) {
@@ -50,6 +44,14 @@ export class TableListDailyComponent implements OnInit {
     }
 
 
+  }
+
+  refreshData = async () => {
+    this.isLoading = true
+    this.scheduleList = []
+    await this.getModalitySlots()
+    await this.getSchedules()
+    this.isLoading = false
   }
 
   createAppointment(schedule?: any) {
@@ -63,7 +65,8 @@ export class TableListDailyComponent implements OnInit {
       reserveDate: this.dateSelected,
       modality_label,
       room_name,
-      duration
+      duration,
+      // refreshTableDaily: this.refreshData
     }
     m.componentInstance.selectedAppointment = payload;
     m.result.then((_result: any) => {
@@ -76,13 +79,15 @@ export class TableListDailyComponent implements OnInit {
     const payload =  {
       ...schedule,
       reserveDate: this.dateSelected,
+      // refreshTableDaily: this.refreshData
     }
-    payload.from_time = moment(payload.from_time, 'hh:mm').format('hh:mm')
-    payload.to_time = moment(payload.to_time, 'hh:mm').format('hh:mm')
+    payload.from_time = moment(payload.from_time, 'hh:mm').format('HH:mm')
+    payload.to_time = moment(payload.to_time, 'hh:mm').format('HH:mm')
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
     m.componentInstance.selectedAppointment = payload;
     m.result.then((result: any) => {
       if (result) {
+        this.refresh()
         this.showSuccessAlert(`Success`);
       }
     })
@@ -91,7 +96,7 @@ export class TableListDailyComponent implements OnInit {
   setToTime2Digit = (time : number) => ('0' + time).slice(-2);
 
   async getSchedules() {
-   
+
     const slots = this.modalitySlots
 
     let lastCaptureSlot : any = {};
@@ -103,7 +108,6 @@ export class TableListDailyComponent implements OnInit {
 
     this.scheduleListBk = this.scheduleList.slice()
 
-    this.ShowLoadDialy = false;
   }
 
   private createTimeSlotInDurationHour(slots: ModalitySlot[], lastCaptureSlot: any) {
@@ -134,6 +138,7 @@ export class TableListDailyComponent implements OnInit {
           status: slot.status,
           modality_slot_id: slot.modality_slot_id,
           rowSpan: 1,
+          duration,
           ...slot
         }
 
@@ -183,6 +188,7 @@ export class TableListDailyComponent implements OnInit {
           status: slot.status,
           modality_slot_id: slot.modality_slot_id,
           rowSpan: 1,
+          duration,
           ...slot
         }
 
@@ -214,9 +220,10 @@ export class TableListDailyComponent implements OnInit {
     if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue))
       || this.sectionSelected.modality_hospital_id) {
       this.refresh(true)
+      // await this.refreshData()
     }
 
-    
+
     if((changes.fromTimeRange && changes.fromTimeRange.currentValue)
       || (changes.toTimeRange && changes.toTimeRange.currentValue)) {
         if(this.fromTimeRange === '00:00' && this.toTimeRange === '00:00') {
@@ -227,7 +234,7 @@ export class TableListDailyComponent implements OnInit {
           this.scheduleList = this.scheduleListBk.reduce((acc, sc) => {
             const items = sc.items.filter((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
                 && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) );
-            
+
             if(items.length) {
               sc.items = items
               acc.push(sc)

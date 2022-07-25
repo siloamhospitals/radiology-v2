@@ -29,16 +29,8 @@ export class PageModalityMasterComponent implements OnInit {
   public strKey = localStorage.getItem('key') || '{}';
   public localKey = JSON.parse(this.strKey);
   public hospitalId = this.localKey.hospital.id;
-  title = 'Select/ Unselect All Checkboxes in Angular - FreakyJolly.com';
-  masterSelected:boolean;
-  checklist:any;
-  checkedList:any;
   dropdownListSchduleType: { operational_type: number; item_text: string; }[];
   dropdownListStatus: { status: number; item_text: string; }[];
-  scheduleDropdownSetting: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
-  statusDropdownSetting: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
-  floorDropdownSettings: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
-  modalityDropdownSettings: { singleSelection: boolean; idField: string; textField: string; selectAllText: string; unSelectAllText: string; itemsShowLimit: number; allowSearchFilter: boolean; };
 
   public operationals: RadiologyListResponse = {
     status: '',
@@ -49,6 +41,7 @@ export class PageModalityMasterComponent implements OnInit {
 
   public roomOptions: RoomMapping[] = [];
   public filteredOptions: Observable<RoomMapping[]>;
+  public isLoading: boolean;
 
   constructor( 
     private modalService: NgbModal,
@@ -60,20 +53,6 @@ export class PageModalityMasterComponent implements OnInit {
       this.getModality();
     }
 
-  showModalityModal(val: any = null) {
-    const modalRef = this.modalService.open(ModalModalityComponent, 
-      { 
-        windowClass: 'modal_modality', 
-        keyboard: false,
-        centered: true,
-        size: 'lg'
-      })
-    modalRef.componentInstance.responseData = val
-    modalRef.result.then((result: any) => {
-      console.log('modal is closed', {result})
-    })
-  }
-
   ngOnInit() {
     this.dropdownListSchduleType = [
       { operational_type: 1, item_text: 'FCFS' },
@@ -82,45 +61,28 @@ export class PageModalityMasterComponent implements OnInit {
     this.dropdownListStatus = [
       { status: 1, item_text: 'Active' },
       { status: 2, item_text: 'Inactive' },
-    
     ];
-   
-    this.scheduleDropdownSetting = {
-      singleSelection: false,
-      idField: 'operational_type',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
-    };
-    this.statusDropdownSetting = {
-      singleSelection: false,
-      idField: 'status',
-      textField: 'item_text',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
-    };
-    this.floorDropdownSettings = {
-      singleSelection: false,
-      idField: 'floor_id',
-      textField: 'floor_name',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
-    };
-    this.modalityDropdownSettings = {
-      singleSelection: false,
-      idField: 'modality_id',
-      textField: 'name',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
-      allowSearchFilter: true
-    };
+  }
+
+  refreshData = async () => {
+    this.isLoading = true
+    await this.fillOperationals()
+    this.isLoading = false
+  }
+
+  showModalityModal(val: any = null) {
+    const modalRef = this.modalService.open(ModalModalityComponent, 
+      { 
+        windowClass: 'modal_modality', 
+        keyboard: false,
+        centered: true,
+        size: 'lg'
+      })
+    val.refreshData = this.refreshData
+    modalRef.componentInstance.responseData = val
+    modalRef.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
   }
 
   getModality() {

@@ -52,6 +52,7 @@
                   mask="00-00-0000"
                   [(ngModel)]="search.birthDate"
                   [dropSpecialCharacters]="false"
+                  #birthDate
                 >
               </div>
 
@@ -96,6 +97,7 @@
                   id="patient-localmr-field"
                   placeholder="Cari No. MR lokal pasien"
                   type="number"
+                  min="0"
                   >
                   <div [style.width]="'12%'" class="align-self-center text-right">
                     <button class="btn border-0" type="submit">
@@ -185,8 +187,8 @@
           </ng-container>
           </tbody>
         </table>
-        <div *ngIf="isLoadingPatientTable" class="text-center">
-          <p class="text-muted">Memuat ..</p>
+        <div *ngIf="isLoadingPatientTable" class="text-center w-100">
+          <app-loading [width]="20" class="mt-0" showLoad="true"></app-loading>
         </div>
         <div *ngIf="!isLoadingPatientTable && showPatientTable === '0'" class="text-center">
           <p class="text-muted">Belum ada Data Pasien untuk ditampilkan.</p>
@@ -248,7 +250,9 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="list.isLoading" class="text-center mx-3 mb-2" >Memuat ..</div>
+            <div *ngIf="list.isLoading" class="text-center mx-3 mb-2" >
+              <app-loading [width]="20" class="mt-0" showLoad="true"></app-loading>
+            </div>
             <div *ngIf="!list.isSuccess && !list.isLoading" class="text-danger mx-3 mb-2" >
               {{ list.messageError }}
             </div>
@@ -321,6 +325,8 @@
                   </option>
                 </select>
               </div>
+              <div *ngIf="isEditing() ? !edittedModality.modalityExaminationId : !selectedModality.modalityExaminationId "  
+                    class="form-text text-danger">Harus diisi</div>
             </div>
 
             <div class="mx-3 my-3">
@@ -361,41 +367,50 @@
                   [(value)]="edittedModality.reserveDate"
                   [onChange]="onChangeDate">
                 </app-date-picker>
+                
+                <div>
+                  <div class="d-flex align-items-center" >
+                    <div class="ml-2" alt="datepicker">
+                      <i class="fa fa-clock-o mx-2"></i>
+                    </div>
+                    <app-time-picker
+                      *ngIf="!edittedModality.modalityHospitalId"
+                      [isModalLarge]=true
+                      [noBorder]=true
+                      [(value)]="selectedModality.fromTime"
+                      [duration]="selectedModality.duration"
+                      [onChange]="onChangeTimer" >
+                    </app-time-picker>
+                    <app-time-picker
+                      *ngIf="edittedModality.modalityHospitalId"
+                      [isModalLarge]=true
+                      [noBorder]=true
+                      [(value)]="edittedModality.fromTime"
+                      [duration]="edittedModality.duration"
+                      [onChange]="onChangeTimer" >
+                    </app-time-picker>&nbsp;
 
-                <div class="ml-2" alt="datepicker">
-                  <i class="fa fa-clock-o mx-2"></i>
+                    <span class="mr-2 ml-1" >-</span>
+                    <app-time-picker
+                      *ngIf="!edittedModality.modalityHospitalId"
+                      [isModalLarge]=true
+                      [noBorder]=true
+                      [(value)]="selectedModality.toTime"
+                      [duration]="selectedModality.duration" 
+                      [onChange]="onChangeTimer" >
+                    </app-time-picker>
+                    <app-time-picker
+                      *ngIf="edittedModality.modalityHospitalId"
+                      [isModalLarge]=true
+                      [noBorder]=true
+                      [(value)]="edittedModality.toTime"
+                      [duration]="edittedModality.duration" 
+                      [onChange]="onChangeTimer" >
+                    </app-time-picker>&nbsp;
+                  </div>
+                  <div class="text-danger ml-2" *ngIf="isErrorTimer" >Waktu mulai tidak sesuai denga waktu selesai.</div>
                 </div>
-
-                <app-time-picker
-                  *ngIf="!edittedModality.modalityHospitalId"
-                  [isModalLarge]=true
-                  [noBorder]=true
-                  [(value)]="selectedModality.fromTime"
-                  [duration]="selectedModality.duration" >
-                </app-time-picker>
-                <app-time-picker
-                  *ngIf="edittedModality.modalityHospitalId"
-                  [isModalLarge]=true
-                  [noBorder]=true
-                  [(value)]="edittedModality.fromTime"
-                  [duration]="edittedModality.duration" >
-                </app-time-picker>&nbsp;
-
-                <span class="mr-2 ml-1" >-</span>
-                <app-time-picker
-                  *ngIf="!edittedModality.modalityHospitalId"
-                  [isModalLarge]=true
-                  [noBorder]=true
-                  [(value)]="selectedModality.toTime"
-                  [duration]="selectedModality.duration" >
-                </app-time-picker>
-                <app-time-picker
-                  *ngIf="edittedModality.modalityHospitalId"
-                  [isModalLarge]=true
-                  [noBorder]=true
-                  [(value)]="edittedModality.toTime"
-                  [duration]="edittedModality.duration" >
-                </app-time-picker>&nbsp;
+                
               </div>
             </div>
 
@@ -410,8 +425,8 @@
 
           <div *ngIf="showModalityList" class="d-flex justify-content-end w-100 p-0 mb-3 mr-3">
             <button (click)="cancelModality()" class="btn btn-secondary text-primary" type="reset" style="width: 7%;">Batal</button>
-            <button *ngIf="!edittedModality.modalityHospitalId" (click)="addModalityToList()" class="btn btn-primary ml-3" type="button" style="width: 7%;">Simpan</button>
-            <button *ngIf="edittedModality.modalityHospitalId" (click)="editModalityToList()" class="btn btn-primary ml-3" type="button" style="width: 7%;">Ubah</button>
+            <button *ngIf="!edittedModality.modalityHospitalId" (click)="addModalityToList()" class="btn btn-primary ml-3" type="button" style="width: 7%;" [disabled]="validasiFormModality()" >Simpan</button>
+            <button *ngIf="edittedModality.modalityHospitalId" (click)="editModalityToList()" class="btn btn-primary ml-3" type="button" style="width: 7%;" [disabled]="validasiFormModality()" >Ubah</button>
           </div>
         </div>
         <div class="d-flex justify-content-end w-100 pt-3 pb-5">

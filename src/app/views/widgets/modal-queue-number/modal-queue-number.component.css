@@ -1,0 +1,70 @@
+.w-33 {
+  width: 33%;
+}
+
+.w-34 {
+  width: 34%;
+}
+
+select {
+  background: url("data:image/svg+xml,<svg height='12px' width='12px' viewBox='0 0 16 16' fill='%23222f3e61' xmlns='http://www.w3.org/2000/svg'><path d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/></svg>") no-repeat;
+  background-position: calc(100% - 0.75rem) center !important;
+  -moz-appearance:none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  padding-right: 2rem !important;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba(34, 47, 62, 0.38);
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: rgba(34, 47, 62, 0.38);
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: rgba(34, 47, 62, 0.38);
+}
+
+.icon-datepicker {
+  top: 6px;
+  left: 5px;
+}
+
+.modality-form {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.timer-picker {
+  font-size: 14px;
+}
+
+.border-radius-custom {
+  border-radius: 8px;
+}
+
+.modal-body {
+  height: 80vh;
+  overflow-y: auto;
+}
+
+.tbody-custom {
+  overflow-y: auto;
+}
+
+.fa.fa-calendar-o, .fa.fa-clock-o {
+  color: rgba(34, 47, 62, 0.54);
+  font-size: 18px;
+}
+
+.text-custom {
+  font-size: 14px;
+}

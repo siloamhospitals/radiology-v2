@@ -1,13 +1,12 @@
 /* eslint no-use-before-define: 0 */  //
 import { Component, OnInit, Input } from '@angular/core';
-import { UserService } from '../../../services/user.service';
 import { AlertService } from '../../../services/alert.service';
 import { Alert, AlertType } from '../../../models/alerts/alert';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
-import { appInfo, sourceApps } from '../../../variables/common.variable';
+import { appInfo } from '../../../variables/common.variable';
 import { FixedList, Modality, ModalityHospital, ModalityHospitalRequest } from '../../../models/radiology/radiology';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
@@ -81,8 +80,7 @@ export class ModalModalityComponent implements OnInit {
     public modalService: NgbModal,
     private service: RadiologyService,
     public activeModal: NgbActiveModal,
-    private alertService: AlertService,
-    private userService: UserService,
+    public alertService: AlertService,
     private _fb: FormBuilder,
     private roomMappingService: RoomMappingService
   ) { }
@@ -92,12 +90,16 @@ export class ModalModalityComponent implements OnInit {
       roomId: [{value: '', disabled: false}, [Validators.required]],
       roomName: [{value: '', disabled: false}, [Validators.required]],
       status: [{value: '1', disabled: false}, [Validators.required]],
-      duration: [{value: 15, disabled: false}, [Validators.required, Validators.min(0)]],
-      operationalType: [{value: '3', disabled: false}, [Validators.required]],
-      modalityId: [{value: '', disabled: false}, [Validators.required]],
+      duration: this.responseData == null ? [{value: '', disabled: false}, [Validators.required, Validators.min(0)]]
+      : [{value: '', disabled: true}] ,
+      operationalType: this.responseData == null ? [{value: '3', disabled: false}, [Validators.required]] : 
+      [{value: '3', disabled: true}]
+      ,
+      modalityId: this.responseData == null ? [{value: '', disabled: false}, [Validators.required]]
+      : [{value: '', disabled: true}],
       modalityLabel: [{value: '', disabled: false}, [Validators.required]],
       from_to_date: [{}, []],
-      modality_notes: [{value: '', disabled: false}, []],
+      modality_notes: [{value: '', disabled: false}],
       search: [{value: '', disabled: false}, []],
     });
     this.getCollectionAlert();
@@ -266,36 +268,9 @@ export class ModalModalityComponent implements OnInit {
     }
   }
 
-  async changePassword() {
-    const valid = this.checkingPass();
-    if (valid) {
-      this.isSubmit = true;
-      const username = this.model.username;
-      const oldPassword = btoa(this.model.oldPassword);
-      const newPassword = btoa(this.model.newPassword);
-      const applicationId = this.applicationId;
-      const modifiedBy = this.model.username;
-      const source = sourceApps;
-      const body = {
-        username,
-        oldPassword,
-        newPassword,
-        applicationId,
-        modifiedBy,
-        source
-      };
-      await this.userService.changePassword(body)
-        .toPromise().then(res => {
-          this.alertService.success(res.message, false, 2000);
-          this.closeModal();
-        }).catch(err => {
-          this.isSubmit = false;
-          this.alertService.error(err.error.message, false, 3000);
-        });
-    }
-  }
-
   close() {
+    console.log(this.responseData, 'close')
+    this.responseData.refreshData()
     this.activeModal.close();
   }
 
@@ -425,8 +400,8 @@ export class ModalModalityComponent implements OnInit {
         timer: 1500
       });
       this.responseData = data;
-      location.reload();
       this.loading = false;
+      this.close();
     }, err => {
       Swal.fire({
         type: 'error',
@@ -444,10 +419,9 @@ export class ModalModalityComponent implements OnInit {
         type: 'success',
         text: 'The data has been successfully updated',
         showConfirmButton: false,
-        timer: 1500
+        timer: 3000
       });
-      this.loading = false;
-      location.reload();
+      this.close();
     }, err => {
       Swal.fire({
         type: 'error',
@@ -473,14 +447,14 @@ export class ModalModalityComponent implements OnInit {
   }
 
   public sendDeleteRequest(item: RadiologyItem) {
-    this.service.deleteModalityHospital(item.modality_hospital_id).subscribe((res: any) => {
-        if (res.status === 'OK') {
-          this.showSuccessAlert('Successfully deleted');
-          this.deleteModalityBy(item.modality_hospital_id);
-        } else {
-          this.showErrorAlert('Delete failed');
-        }
-      });
+    this.service.deleteModalityHospital(item.modality_hospital_id).toPromise().then(res => {
+      this.deleteModalityBy(item.modality_hospital_id);
+      this.alertService.success(res.message, false, 3000);
+      this.close();
+    }).catch(err => {
+      this.showErrorAlert(err.error.message);
+      this.alertService.error(err.error.message, false, 3000);
+    });
   }
 
   public deleteModalityBy(itemId: string) {
@@ -498,7 +472,7 @@ export class ModalModalityComponent implements OnInit {
       type: 'success',
       title: 'Delete',
       text: message,
-      timer: 1500
+      timer: 3000
     });
   }
 
@@ -507,7 +481,7 @@ export class ModalModalityComponent implements OnInit {
       type: 'error',
       title: 'Oops...',
       text: message,
-      timer: 1500
+      timer: 3000
     });
   }
   
