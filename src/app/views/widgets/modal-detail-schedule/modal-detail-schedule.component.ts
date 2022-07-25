@@ -97,6 +97,7 @@ export class ModalDetailScheduleComponent implements OnInit {
 
   showHistoryModal() {
     const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_history' })
+    m.componentInstance.modalitySlotId = this.selectedAppointment.modality_slot_id
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })

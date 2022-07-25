@@ -13,6 +13,7 @@ import { AppointmentRadiologyHistory } from '../../../models/appointments/appoin
 export class ModalHistoryComponent implements OnInit {
 
   @Input() username: any;
+  @Input() modalitySlotId: any
   public key: { user: any; };
   public user: any;
   public applicationId = appInfo.APPLICATION_ID;
@@ -35,8 +36,7 @@ export class ModalHistoryComponent implements OnInit {
   }
 
   async getAppRadiologyHistory() {
-    const appointmentId = 'e5a39cb1-49ee-4b0f-8adc-78ad1cd26626'
-    const response = await this.radiologyService.getAppRadiologyHistory(appointmentId).toPromise();
+    const response = await this.radiologyService.getAppRadiologyHistory(this.modalitySlotId).toPromise();
     this.history = response.data
   }
 
