@@ -45,6 +45,8 @@ export class ModalDetailScheduleComponent implements OnInit {
   public fromTime: any;
   public toTime: any;
   public updateAppointmentForm:any = FormGroup;
+  public errorTimer: boolean;
+  public errorMsg: string;
   
 
   constructor(
@@ -74,6 +76,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   close() {
+    this.selectedAppointment.refreshTableDaily();
     this.activeModal.close();
   }
 
@@ -110,7 +113,6 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   cancelAppointment(item: any = this.selectedAppointment) {
-    console.log(item)
     const m = this.modalService.open(ModalCancelAppointmentComponent, { windowClass: 'modal_cancel_appointment' })
     m.result.then((result: any) => {if (result.result === 'OK') {
       this.radiologyService.deleteAppointment(item.modality_slot_id, {
@@ -120,7 +122,7 @@ export class ModalDetailScheduleComponent implements OnInit {
         .subscribe((res) => {
           if (isOk(res)) {
             this.showSuccessAlert(res.message);
-            location.reload();
+            this.close();
           } else {
             this.showErrorAlert('Delete failed');
           }
@@ -130,59 +132,77 @@ export class ModalDetailScheduleComponent implements OnInit {
 }
 
   public updateAppointment() {
-  const payload = {
-    modalityExaminationId: this.updateAppointmentForm.controls.modalityExaminationId.value,
-    modalityHospitalId: this.selectedAppointment.modality_hospital_id,
-    modalityOperationalId: this.selectedAppointment.modality_operational_id,
-    modalitySlotId: this.selectedAppointment.modality_slot_id,
-    channelId: '2',
-    isWaitingList: false,
-    fromTime: this.selectedAppointment.from_time,
-    toTime: this.selectedAppointment.to_time,
-    notes: this.updateAppointmentForm.controls.note.value,
-    isBpjs: this.updateAppointmentForm.controls.is_bpjs.value,
-    isAnesthesia: this.updateAppointmentForm.controls.is_anesthesia.value,
-    userId: this.userId,
-    userName: this.userName,
-    source: this.source,
-    reserveDate: this.selectedAppointment.reserve_date
-  };
-  if(moment(payload.fromTime, 'hh:mm').isSameOrAfter(moment(payload.toTime, 'hh:mm'))) { 
-    this.showErrorAlert('Jam mulai harus lebih kecil dari pada jam selesai')
-  }
-  if(moment(payload.toTime, 'hh:mm').isSameOrBefore(moment(payload.fromTime, 'hh:mm'))){
-    this.showErrorAlert('Jam selesai harus lebih besar dari pada jam mulai')
+    const payload = {
+      modalityExaminationId: this.updateAppointmentForm.controls.modalityExaminationId.value,
+      modalityHospitalId: this.selectedAppointment.modality_hospital_id,
+      modalityOperationalId: this.selectedAppointment.modality_operational_id,
+      modalitySlotId: this.selectedAppointment.modality_slot_id,
+      channelId: '2',
+      isWaitingList: false,
+      fromTime: this.selectedAppointment.from_time,
+      toTime: this.selectedAppointment.to_time,
+      notes: this.updateAppointmentForm.controls.note.value,
+      isBpjs: this.updateAppointmentForm.controls.is_bpjs.value,
+      isAnesthesia: this.updateAppointmentForm.controls.is_anesthesia.value,
+      userId: this.userId,
+      userName: this.userName,
+      source: this.source,
+      reserveDate: this.selectedAppointment.reserve_date
+    };
+    if(moment(payload.fromTime, 'hh:mm').isSameOrAfter(moment(payload.toTime, 'hh:mm'))) { 
+      this.showErrorAlert('Jam mulai harus lebih kecil dari pada jam selesai')
+    }
+    if(moment(payload.toTime, 'hh:mm').isSameOrBefore(moment(payload.fromTime, 'hh:mm'))){
+      this.showErrorAlert('Jam selesai harus lebih besar dari pada jam mulai')
+    }
+
+    if(payload.fromTime === this.fromTime && payload.toTime === this.toTime) {
+      this.radiologyService.putAppointment(payload)
+      .subscribe((response) => {
+        if (isOk(response)) {
+          this.showSuccessAlert(response.message);
+          this.close()
+        }
+      }, () => {
+        this.showErrorAlert('Update gagal');
+      });
+    }else{
+      this.radiologyService.reschedule(payload)
+      .subscribe((response) => {
+        if (isOk(response)) {
+          this.showSuccessAlert(response.message);
+          this.close()
+        }
+        // location.reload();
+      }, () => {
+        this.showErrorAlert('Update gagal');
+      });
+    }
   }
 
-  if(payload.fromTime === this.fromTime && payload.toTime === this.toTime) {
-    this.radiologyService.putAppointment(payload)
-    .subscribe((response) => {
-      if (isOk(response)) {
-        this.showSuccessAlert(response.message);
-        this.activeModal.close('success');
-      }
-      // location.reload();
-    }, () => {
-      this.showErrorAlert('Update gagal');
-    });
-  }else{
-    this.radiologyService.reschedule(payload)
-    .subscribe((response) => {
-      if (isOk(response)) {
-        this.showSuccessAlert(response.message);
-      }
-      // location.reload();
-    }, () => {
-      this.showErrorAlert('Update gagal');
-    });
-  }
-  
+  onChangeTimer = () => {
+    const toTime = moment(this.selectedAppointment.to_time, 'HH:mm')
+    const fromTime = moment(this.selectedAppointment.from_time, 'HH:mm')
+    if(toTime.isSameOrBefore(fromTime)){
+      this.errorTimer = true
+      this.errorMsg = 'Jam selesai harus lebih besar dari pada jam mulai'
+    }else if(fromTime.isSameOrAfter(toTime)){
+      this.errorTimer = true
+      this.errorMsg = 'Jam mulai harus lebih kecil dari pada jam selesai'
+    }else {
+      this.errorTimer = false
+    }
   }
 
   onChangeDefaultSelected() {
     this.fromTime = this.selectedAppointment.from_time;
     this.toTime = this.selectedAppointment.to_time;
   }
+
+  validateForm() {
+    return this.errorTimer 
+  }
+
   public showSuccessAlert(message: string) {
     Swal.fire({
       type: 'success',

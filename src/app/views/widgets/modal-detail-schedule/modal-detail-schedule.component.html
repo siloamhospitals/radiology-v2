@@ -36,15 +36,18 @@
             [isModalLarge]=true
             [noBorder]=true
             [(value)]="selectedAppointment.from_time"
-            useMinute="true" >
+            [duration]="selectedAppointment.duration"
+            [onChange]="onChangeTimer" >
           </app-time-picker>&nbsp;
           <app-time-picker
             [isModalLarge]=true
             [noBorder]=true
             [(value)]="selectedAppointment.to_time"
-            useMinute="true" >
-          </app-time-picker>
+            [duration]="selectedAppointment.duration" 
+            [onChange]="onChangeTimer" >
+        </app-time-picker>
         </div>
+        <div class="text-danger ml-2" *ngIf="errorTimer" >{{errorMsg}}</div>
       </div>
       <div class="mb-3 px-3" *ngIf="selectedAppointment.operational_type == 1">
         <label for="">Tanggal dan Waktu</label>
@@ -153,6 +156,6 @@
         <span class="text-muted" >Local Updated by </span><br/>
         <h5 class="text-primary">Admin FO 2</h5>
       </div>
-      <button class="btn btn-success ml-2" (click)="updateAppointment()">Save Changes</button>
+      <button class="btn btn-success ml-2" (click)="updateAppointment()" [disabled]="validateForm()">Save Changes</button>
   </div>
 </div>

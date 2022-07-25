@@ -75,9 +75,10 @@ export class TableListDailyComponent {
     const payload =  {
       ...schedule,
       reserveDate: this.dateSelected,
+      refreshTableDaily: this.refreshData
     }
-    payload.from_time = moment(payload.from_time, 'hh:mm').format('hh:mm')
-    payload.to_time = moment(payload.to_time, 'hh:mm').format('hh:mm')
+    payload.from_time = moment(payload.from_time, 'hh:mm').format('HH:mm')
+    payload.to_time = moment(payload.to_time, 'hh:mm').format('HH:mm')
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
     m.componentInstance.selectedAppointment = payload;
     m.result.then((result: any) => {
@@ -132,6 +133,7 @@ export class TableListDailyComponent {
           status: slot.status,
           modality_slot_id: slot.modality_slot_id,
           rowSpan: 1,
+          duration,
           ...slot
         }
 
@@ -181,6 +183,7 @@ export class TableListDailyComponent {
           status: slot.status,
           modality_slot_id: slot.modality_slot_id,
           rowSpan: 1,
+          duration,
           ...slot
         }
 

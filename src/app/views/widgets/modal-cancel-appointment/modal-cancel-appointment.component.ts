@@ -21,6 +21,10 @@ export class ModalCancelAppointmentComponent implements OnInit {
   ngOnInit() {
   }
 
+  back(){
+    this.activeModal.close();
+  }
+
   close() {
     const data = {
       result: ModalCancelAppointmentComponent.OK,

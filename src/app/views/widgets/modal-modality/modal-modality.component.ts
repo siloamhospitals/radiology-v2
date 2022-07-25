@@ -1,13 +1,12 @@
 /* eslint no-use-before-define: 0 */  //
 import { Component, OnInit, Input } from '@angular/core';
-import { UserService } from '../../../services/user.service';
 import { AlertService } from '../../../services/alert.service';
 import { Alert, AlertType } from '../../../models/alerts/alert';
 import { NgbActiveModal, NgbModalRef, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
-import { appInfo, sourceApps } from '../../../variables/common.variable';
+import { appInfo } from '../../../variables/common.variable';
 import { FixedList, Modality, ModalityHospital, ModalityHospitalRequest } from '../../../models/radiology/radiology';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
@@ -82,13 +81,11 @@ export class ModalModalityComponent implements OnInit {
     private service: RadiologyService,
     public activeModal: NgbActiveModal,
     public alertService: AlertService,
-    private userService: UserService,
     private _fb: FormBuilder,
     private roomMappingService: RoomMappingService
   ) { }
 
   ngOnInit() {
-    console.log(this.responseData, 'popo')
     this.modalityForm = this._fb.group({
       roomId: [{value: '', disabled: false}, [Validators.required]],
       roomName: [{value: '', disabled: false}, [Validators.required]],
@@ -271,36 +268,9 @@ export class ModalModalityComponent implements OnInit {
     }
   }
 
-  async changePassword() {
-    const valid = this.checkingPass();
-    if (valid) {
-      this.isSubmit = true;
-      const username = this.model.username;
-      const oldPassword = btoa(this.model.oldPassword);
-      const newPassword = btoa(this.model.newPassword);
-      const applicationId = this.applicationId;
-      const modifiedBy = this.model.username;
-      const source = sourceApps;
-      const body = {
-        username,
-        oldPassword,
-        newPassword,
-        applicationId,
-        modifiedBy,
-        source
-      };
-      await this.userService.changePassword(body)
-        .toPromise().then(res => {
-          this.alertService.success(res.message, false, 2000);
-          this.closeModal();
-        }).catch(err => {
-          this.isSubmit = false;
-          this.alertService.error(err.error.message, false, 3000);
-        });
-    }
-  }
-
   close() {
+    console.log(this.responseData, 'close')
+    this.responseData.refreshData()
     this.activeModal.close();
   }
 
@@ -431,6 +401,7 @@ export class ModalModalityComponent implements OnInit {
       });
       this.responseData = data;
       this.loading = false;
+      this.close();
     }, err => {
       Swal.fire({
         type: 'error',
@@ -443,14 +414,14 @@ export class ModalModalityComponent implements OnInit {
   }
 
   updateModalityHospital(){
-    this.service.putModalityHospital(this.modalityHospitalRequest, this.modalityHospitalId).subscribe((res: any) => {
+    this.service.putModalityHospital(this.modalityHospitalRequest, this.modalityHospitalId).subscribe(() => {
       Swal.fire({
         type: 'success',
         text: 'The data has been successfully updated',
         showConfirmButton: false,
         timer: 3000
       });
-      this.alertService.success(res.message, false, 3000);
+      this.close();
     }, err => {
       Swal.fire({
         type: 'error',
@@ -479,6 +450,7 @@ export class ModalModalityComponent implements OnInit {
     this.service.deleteModalityHospital(item.modality_hospital_id).toPromise().then(res => {
       this.deleteModalityBy(item.modality_hospital_id);
       this.alertService.success(res.message, false, 3000);
+      this.close();
     }).catch(err => {
       this.showErrorAlert(err.error.message);
       this.alertService.error(err.error.message, false, 3000);

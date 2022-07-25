@@ -41,6 +41,7 @@ export class PageModalityMasterComponent implements OnInit {
 
   public roomOptions: RoomMapping[] = [];
   public filteredOptions: Observable<RoomMapping[]>;
+  public isLoading: boolean;
 
   constructor( 
     private modalService: NgbModal,
@@ -52,20 +53,6 @@ export class PageModalityMasterComponent implements OnInit {
       this.getModality();
     }
 
-  showModalityModal(val: any = null) {
-    const modalRef = this.modalService.open(ModalModalityComponent, 
-      { 
-        windowClass: 'modal_modality', 
-        keyboard: false,
-        centered: true,
-        size: 'lg'
-      })
-    modalRef.componentInstance.responseData = val
-    modalRef.result.then((result: any) => {
-      console.log('modal is closed', {result})
-    })
-  }
-
   ngOnInit() {
     this.dropdownListSchduleType = [
       { operational_type: 1, item_text: 'FCFS' },
@@ -75,6 +62,27 @@ export class PageModalityMasterComponent implements OnInit {
       { status: 1, item_text: 'Active' },
       { status: 2, item_text: 'Inactive' },
     ];
+  }
+
+  refreshData = async () => {
+    this.isLoading = true
+    await this.fillOperationals()
+    this.isLoading = false
+  }
+
+  showModalityModal(val: any = null) {
+    const modalRef = this.modalService.open(ModalModalityComponent, 
+      { 
+        windowClass: 'modal_modality', 
+        keyboard: false,
+        centered: true,
+        size: 'lg'
+      })
+    val.refreshData = this.refreshData
+    modalRef.componentInstance.responseData = val
+    modalRef.result.then((result: any) => {
+      console.log('modal is closed', {result})
+    })
   }
 
   getModality() {
