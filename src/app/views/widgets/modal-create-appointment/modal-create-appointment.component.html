@@ -437,7 +437,7 @@
 
     <div class="modal-footer">
       <div class="d-flex flex-row justify-content-end">
-        <button (click)="onCreateAppointment()" type="submit" class="btn btn-success ml-2" [disabled]="isSubmitting || !isSelectedPatient || (this.modalityHospitalList && validasiFormModality())" >Jadwalkan Pasien</button>
+        <button (click)="onCreateAppointment()" type="submit" class="btn btn-success ml-2" [disabled]="( isSubmitting || !isSelectedPatient ) || (this.modalityAppointmentList.length === 0 && validasiFormModality())" >Jadwalkan Pasien</button>
       </div>
     </div>
   </div>
