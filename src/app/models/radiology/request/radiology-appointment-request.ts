@@ -15,6 +15,8 @@ export interface RadiologyAppointmentRequest {
   readonly patientHopeId: number;
   readonly isWaitingList: boolean;
   readonly contactId?: string;
+  readonly isBpjs: boolean;
+  readonly isAnesthesia: boolean;  
 
   readonly userId: string;
   readonly userName: string;
