@@ -22,7 +22,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private modalService: NgbModal,
-    private modalityService: ModalityService,    
+    private modalityService: ModalityService,
     private modalSetting : NgbModalConfig
   )  {
     this.modalSetting.backdrop = true;
@@ -83,7 +83,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   }
 
 
- 
+
 
   onChangeDate = async () => {
     await this.getModalityHospitalList()
