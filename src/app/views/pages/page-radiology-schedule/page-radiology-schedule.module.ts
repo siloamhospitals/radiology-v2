@@ -54,11 +54,8 @@ import { ModalNewPatientModule } from '../../widgets/modal-new-patient/modal-new
     TableFilterScheduleModule,
     DropdownExaminationModule,
     ModalCreateAppointmentModule,
-<<<<<<< HEAD
     ModalQueueNumberModule,
-=======
     ModalNewPatientModule,
->>>>>>> dev-feat/new-patient
     LoadingModule
   ],
   exports: [
@@ -70,13 +67,9 @@ import { ModalNewPatientModule } from '../../widgets/modal-new-patient/modal-new
     ModalCreateAdmissionComponent,
     ModalDetailScheduleComponent,
     ModalCreateAppointmentComponent,
-<<<<<<< HEAD
     LoadingComponent,
-    ModalQueueNumberComponent
-=======
+    ModalQueueNumberComponent,
     ModalNewPatientComponent,
-    LoadingComponent
->>>>>>> dev-feat/new-patient
   ],
 })
 export class PageRadiologyScheduleModule {}

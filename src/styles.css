@@ -1290,7 +1290,6 @@ section .form-control:focus {
   box-shadow: 0px 8px 16px rgb(0 0 0 / 35%);
 }
 
-<<<<<<< HEAD
 .modal-custom-size-small {
   overflow-y: hidden;
   overflow-x: hidden;
@@ -1301,12 +1300,6 @@ section .form-control:focus {
 ::ng-deep .modal-body .no-scroll {
   overflow-y: hidden;
   min-height: 372px;
-=======
-.modal-large-size {
-  width: 808px;
-  border: 0;
-  box-shadow: 0px 8px 16px rgb(0 0 0 / 35%);
->>>>>>> dev-feat/new-patient
 }
 
 .modal-extralarge-size {
