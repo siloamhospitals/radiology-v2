@@ -1290,6 +1290,18 @@ section .form-control:focus {
   box-shadow: 0px 8px 16px rgb(0 0 0 / 35%);
 }
 
+.modal-custom-size-small {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  min-height: 372px;
+  width:588px
+}
+
+::ng-deep .modal-body .no-scroll {
+  overflow-y: hidden;
+  min-height: 372px;
+}
+
 .modal-extralarge-size {
   overflow-y: scroll;
   border-radius: 8px;

@@ -81,23 +81,28 @@ export class ModalModalityComponent implements OnInit {
     public modalService: NgbModal,
     private service: RadiologyService,
     public activeModal: NgbActiveModal,
-    private alertService: AlertService,
+    public alertService: AlertService,
     private userService: UserService,
     private _fb: FormBuilder,
     private roomMappingService: RoomMappingService
   ) { }
 
   ngOnInit() {
+    console.log(this.responseData, 'popo')
     this.modalityForm = this._fb.group({
       roomId: [{value: '', disabled: false}, [Validators.required]],
       roomName: [{value: '', disabled: false}, [Validators.required]],
       status: [{value: '1', disabled: false}, [Validators.required]],
-      duration: [{value: 15, disabled: false}, [Validators.required, Validators.min(0)]],
-      operationalType: [{value: '3', disabled: false}, [Validators.required]],
-      modalityId: [{value: '', disabled: false}, [Validators.required]],
+      duration: this.responseData == null ? [{value: '', disabled: false}, [Validators.required, Validators.min(0)]]
+      : [{value: '', disabled: true}] ,
+      operationalType: this.responseData == null ? [{value: '3', disabled: false}, [Validators.required]] : 
+      [{value: '3', disabled: true}]
+      ,
+      modalityId: this.responseData == null ? [{value: '', disabled: false}, [Validators.required]]
+      : [{value: '', disabled: true}],
       modalityLabel: [{value: '', disabled: false}, [Validators.required]],
       from_to_date: [{}, []],
-      modality_notes: [{value: '', disabled: false}, []],
+      modality_notes: [{value: '', disabled: false}],
       search: [{value: '', disabled: false}, []],
     });
     this.getCollectionAlert();
@@ -425,7 +430,6 @@ export class ModalModalityComponent implements OnInit {
         timer: 1500
       });
       this.responseData = data;
-      location.reload();
       this.loading = false;
     }, err => {
       Swal.fire({
@@ -439,15 +443,14 @@ export class ModalModalityComponent implements OnInit {
   }
 
   updateModalityHospital(){
-    this.service.putModalityHospital(this.modalityHospitalRequest, this.modalityHospitalId).subscribe(() => {
+    this.service.putModalityHospital(this.modalityHospitalRequest, this.modalityHospitalId).subscribe((res: any) => {
       Swal.fire({
         type: 'success',
         text: 'The data has been successfully updated',
         showConfirmButton: false,
-        timer: 1500
+        timer: 3000
       });
-      this.loading = false;
-      location.reload();
+      this.alertService.success(res.message, false, 3000);
     }, err => {
       Swal.fire({
         type: 'error',
@@ -473,14 +476,13 @@ export class ModalModalityComponent implements OnInit {
   }
 
   public sendDeleteRequest(item: RadiologyItem) {
-    this.service.deleteModalityHospital(item.modality_hospital_id).subscribe((res: any) => {
-        if (res.status === 'OK') {
-          this.showSuccessAlert('Successfully deleted');
-          this.deleteModalityBy(item.modality_hospital_id);
-        } else {
-          this.showErrorAlert('Delete failed');
-        }
-      });
+    this.service.deleteModalityHospital(item.modality_hospital_id).toPromise().then(res => {
+      this.deleteModalityBy(item.modality_hospital_id);
+      this.alertService.success(res.message, false, 3000);
+    }).catch(err => {
+      this.showErrorAlert(err.error.message);
+      this.alertService.error(err.error.message, false, 3000);
+    });
   }
 
   public deleteModalityBy(itemId: string) {
@@ -498,7 +500,7 @@ export class ModalModalityComponent implements OnInit {
       type: 'success',
       title: 'Delete',
       text: message,
-      timer: 1500
+      timer: 3000
     });
   }
 
@@ -507,7 +509,7 @@ export class ModalModalityComponent implements OnInit {
       type: 'error',
       title: 'Oops...',
       text: message,
-      timer: 1500
+      timer: 3000
     });
   }
   

@@ -2,13 +2,16 @@
   <div class="modal-header border-bottom-0">
     <div class="header">
       <button class="btn border-0" (click)="cancelAppointment()">
-        <span class="fa fa-lg fa-trash-o text-muted"></span>
+        <span class="fa fa-lg fa-trash-o " style="color: #341F97"></span>
       </button>
       <button class="btn border-0" (click)="showHistoryModal()">
-        <span class="fa fa-lg fa-history text-muted"></span>
+        <span class="fa fa-lg fa-history " style="color: #341F97"></span>
       </button>
-      <button class="btn border-0" (click)="createAdmission()">
-        <span class="fa fa-lg fa-check-circle-o text-muted"></span>
+      <button class="btn border-0" *ngIf="!selectedAppointment.admission_id" (click)="createAdmission()">
+        <span class="fa fa-lg fa-check-circle-o" style="color: #341F97"></span>
+      </button>
+      <button class="btn border-0"*ngIf="selectedAppointment.admission_id" (click)="inputQueueNumber()">
+        <img src="/assets/icons/ic_usercheck.svg" class="icon-usercheck" alt="usercheck" />
       </button>
     </div>
     <button #close_button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
