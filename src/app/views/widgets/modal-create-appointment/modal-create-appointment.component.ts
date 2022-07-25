@@ -87,7 +87,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   close() {
-    this.selectedAppointment.refreshTableDaily()
+    // this.selectedAppointment.refreshTableDaily()
     this.activeModal.close();
   }
 
@@ -151,7 +151,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
         }
       )
       if(request.idNumber && request.patientName && request.birthDate) {
-        this.patientHope = patientHospital.filter((pt : NewPatientHope) => {          
+        this.patientHope = patientHospital.filter((pt : NewPatientHope) => {
           return request.patientName && request.patientName.includes(pt.name) && pt.birthDate === request.birthDate
         })
       }else {
@@ -381,6 +381,10 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   onReset() {
     this.edittedModality = {};
     this.onDefaultSelected();
+  }
+
+  selectPatientRow (v: any) {
+    v.click()
   }
 
   isEditing() {

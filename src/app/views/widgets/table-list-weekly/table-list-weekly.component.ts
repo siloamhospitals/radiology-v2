@@ -152,7 +152,11 @@ export class TableListWeeklyComponent implements OnInit {
 
   generateDayLabel () {
     const now = moment(this.dateSelected)
-    const minDay = now.clone().weekday(0)
+    let minDay = now.clone().weekday(0)
+    // Adjusttment if today is Sunday, back to one week
+    if (now.format('E') === '7') {
+      minDay = now.clone().subtract(1, 'weeks').weekday(0)
+    }
     const weeks = []
     for(let d = Number(minDay.format('d')); d<8; d++) {
       const current = minDay.clone().add(d, 'days')
@@ -181,7 +185,8 @@ export class TableListWeeklyComponent implements OnInit {
           modalitySlotId: y.modality_slot_id,
           patientName: y.patient_name,
           patientDob: y.patient_dob,
-          patientLocalMrNo: y.local_mr_no
+          patientLocalMrNo: y.local_mr_no,
+          slot: y
         }
       })
     })
@@ -214,6 +219,8 @@ export class TableListWeeklyComponent implements OnInit {
         day.fromTime = model.fromTime
         day.toTime = model.toTime
         day.date = _n.date
+        day.isPast = moment().isAfter(_n.date, 'days')
+        day.dateTitle = `${moment(day.date).format('dddd, DD-MM-YYYY')} / ${day.fromTime} - ${day.toTime}`
         day.rowSpan = 1
         const seekForItem = data[j].find((_k: any) => {
           return (
@@ -225,6 +232,7 @@ export class TableListWeeklyComponent implements OnInit {
           day = {...day, ...seekForItem}
           day.fromTime = moment(day.fromTime, 'HH:mm').format('HH:mm')
           day.toTime = moment(day.toTime, 'HH:mm').format('HH:mm')
+          day.slot = seekForItem.slot
         }
         const dayTemp = temp.find(x=> day.modalitySlotId && x.modalitySlotId === day.modalitySlotId)
         if (dayTemp) {
@@ -270,25 +278,27 @@ export class TableListWeeklyComponent implements OnInit {
   createAppointment(schedule?: any) {
     const m = this.modalService.open(ModalCreateAppointmentComponent, { keyboard: false });
     const { modality_hospital_id: modalityHospitalId, modality_label, room_name, duration } = this.sectionSelected;
-    const { fromTime, toTime, date } = schedule;
+    const { fromTime, toTime } = schedule;
     const payload = {
       fromTime,
       toTime,
       modalityHospitalId,
-      reserveDate: moment(date),
+      reserveDate: this.dateSelected,
       modality_label,
       room_name,
       duration
     }
     m.componentInstance.selectedAppointment = payload;
-    m.result.then((result: any) => {
-      console.log('modal is closed', {result})
+    m.result.then((_result: any) => {
+      // console.log('modal is closed', {result})
+      this.refresh()
     })
   }
 
   detailSchedule (itemId: any = null) {
     console.log('SELECTED_DETAIL', itemId)
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
+    m.componentInstance.selectedAppointment = itemId
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
     })
@@ -297,18 +307,21 @@ export class TableListWeeklyComponent implements OnInit {
 }
 
 class SlotWeeklyItem {
-  modalitySlotId: any;
-  fromTime: any;
-  toTime: any;
-  date: Date;
+  modalitySlotId: any
+  fromTime: any
+  toTime: any
+  date: Date
+  isPast: boolean
+  dateTitle: string
   patientName: any
   patientDob: any
   patientLocalMrNo: any
   rowSpan: number = 0
+  slot: any = null
 }
 class SlotWeeklyRow {
-  viewIndex: number;
-  fromTime: any;
-  toTime: any;
-  days: SlotWeeklyItem[];
+  viewIndex: number
+  fromTime: any
+  toTime: any
+  days: SlotWeeklyItem[]
 }

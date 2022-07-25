@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { NgbActiveModal, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment'
 import { AlertService } from '../../../services/alert.service';
@@ -47,7 +47,13 @@ export class ModalDetailScheduleComponent implements OnInit {
   public updateAppointmentForm:any = FormGroup;
   public errorTimer: boolean;
   public errorMsg: string;
-  
+
+
+  admissionLateTime: any = null
+  admissionIsNotToday: boolean = false
+
+  @ViewChild('modalConfirmPatient') modalConfirmPatientData: ElementRef
+  @ViewChild('modalConfirmAdmission') modalConfirmAdmission: ElementRef
 
   constructor(
     public alertService: AlertService,
@@ -76,15 +82,47 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   close() {
-    this.selectedAppointment.refreshTableDaily();
+    // this.selectedAppointment.refreshTableDaily();
     this.activeModal.close();
   }
 
   createAdmission() {
-    const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission' })
-    m.result.then((result: any) => {
-      console.log('modal is closed', {result})
-    })
+    const openModalAdmission = () => {
+      // Open Modal Admission
+      this.close()
+      const m = this.modalService.open(ModalCreateAdmissionComponent, { windowClass: 'modal_create_admission' })
+      m.componentInstance.modelId = this.selectedAppointment && this.selectedAppointment.modality_slot_id ? this.selectedAppointment.modality_slot_id : null
+      m.componentInstance.selectedModel = this.selectedAppointment
+      // console.log('selectedModel', this.selectedAppointment, m.componentInstance.selectedModel)
+      m.result.then((result: any) => {
+        console.log('modal is closed', {result})
+      })
+    }
+    const {
+      local_mr_no: localMrNo,
+      to_time: toTime,
+      reserve_date: reserveDate}
+    = this.selectedAppointment
+    // Check Patient Data is Complete
+    if (!localMrNo) {
+      this.modalService.open(this.modalConfirmPatientData, { centered: true })
+      return
+    }
+    // Check On Late
+    const lastTime = moment(`${reserveDate} ${toTime}`, 'YYYY-MM-DD HH:mm')
+    const diffTime = moment().diff(lastTime)
+    if (diffTime > 0) {
+      this.admissionLateTime = moment.utc(diffTime).format('HH [jam] mm [menit] ss [detik]')
+      this.admissionIsNotToday = moment().isAfter(lastTime, 'days')
+      const c = this.modalService.open(this.modalConfirmAdmission, { centered: true })
+      c.result.then((_result: any) => {
+        openModalAdmission()
+      }).catch((_e) => {
+        console.log('MODAL_CLOSE', _e)
+      })
+    } else {
+      openModalAdmission()
+    }
   }
 
   inputQueueNumber() {
@@ -150,7 +188,7 @@ export class ModalDetailScheduleComponent implements OnInit {
       source: this.source,
       reserveDate: this.selectedAppointment.reserve_date
     };
-    if(moment(payload.fromTime, 'hh:mm').isSameOrAfter(moment(payload.toTime, 'hh:mm'))) { 
+    if(moment(payload.fromTime, 'hh:mm').isSameOrAfter(moment(payload.toTime, 'hh:mm'))) {
       this.showErrorAlert('Jam mulai harus lebih kecil dari pada jam selesai')
     }
     if(moment(payload.toTime, 'hh:mm').isSameOrBefore(moment(payload.fromTime, 'hh:mm'))){
@@ -206,7 +244,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   validateForm() {
-    return this.errorTimer 
+    return this.errorTimer
   }
 
   public showSuccessAlert(message: string) {

@@ -4,6 +4,7 @@ import { ModalCreateAdmissionComponent } from './modal-create-admission.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerModule } from '../date-picker/date-picker.module';
 import { TimepickerModule } from '../time-picker/time-picker.module';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { TimepickerModule } from '../time-picker/time-picker.module';
   imports: [
     CommonModule,
     FormsModule,
+    NgbAlertModule,
     ReactiveFormsModule,
     DatepickerModule,
     TimepickerModule
