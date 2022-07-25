@@ -11,6 +11,8 @@ export class ModalConfirmDeleteComponent implements OnInit {
   @Input() itemId: string;
   @Input() msg: string;
   @Input() service: any;
+  @Input() modalitySlot: any = [];
+  @Input() headerMsg: string;
   
   constructor(
     public activeModal: NgbActiveModal,
@@ -19,6 +21,7 @@ export class ModalConfirmDeleteComponent implements OnInit {
   public selectedText: string = '';
 
   ngOnInit() {
+    console.log(this.modalitySlot)
   }
 
   public deleteData() {

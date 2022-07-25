@@ -1,13 +1,24 @@
 <div class="modal-header">
-  <h4 class="modal-title">Delete Data</h4>
+  <h4 class="modal-title" *ngIf="headerMsg != null">{{headerMsg}}</h4>
+  <h4 class="modal-title" *ngIf="headerMsg == null">Hapus Modality</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
-  <p>Are you sure you want to delete this data {{msg}}?</p>
+<div class="modal-body" *ngIf="headerMsg != null">
+  <div class="" *ngIf="modalitySlot.length === 0">
+    <p>Menghapus modality ini berarti menghilangkan modality sepenuhnya dari sistem penjadwalan Radiology. Apakah anda yakin akan menghapus {{msg}}? </p>
+  </div>
+  <div class="" *ngIf="modalitySlot.length !== 0">Ada pasien yang terjadwal untuk tindakan {{modalitySlot[0].modality_name}} 
+    dan semua penjadwalan pasien akan terhapus jika modality ini di <span *ngIf="headerMsg == null">hapus</span>
+    <span *ngIf="headerMsg != null">set inactive</span>
+    . Apakah anda yakin ingin menghapus modality ini?</div>
 </div>
-<div class="modal-footer">
+<div class="modal-footer"  *ngIf="headerMsg != null">
   <button type="button" class="btn btn-secondary" (click)="test()">Batal</button>
-  <button type="button" class="btn btn-danger" (click)="deleteData()">Hapus Modality</button>
+  <button type="button" class="btn btn-danger" (click)="deleteData()">Ok</button>
+</div>
+<div class="modal-footer"  *ngIf="headerMsg == null">
+  <button type="button" class="btn btn-secondary" (click)="test()">Batal</button>
+  <button type="button" class="btn btn-danger" (click)="deleteData()">Hapus</button>
 </div>
