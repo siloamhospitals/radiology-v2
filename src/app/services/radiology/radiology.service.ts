@@ -19,11 +19,11 @@ import {DeleteAppointmentResponse} from '../../models/radiology/responses/delete
 import {ModalityExaminationResponse} from '../../models/radiology/responses/modality-examination-response';
 import {RadiologyAppointmentUpdateRequest} from '../../models/radiology/requests/radiology-appointment-update-request';
 import RadiologySchedulesResponse from '../../models/radiology/responses/radiology-schedule-response';
-import { RadiologyAdmissionRequest } from 'src/app/models/radiology/request/radiology-admission-request';
-import { ModalityAdmissionResponse } from 'src/app/models/radiology/responses/modality-admission-response';
-import { RadiologyActiveAdmissionResponse } from 'src/app/models/radiology/responses/radiology-active-admission-response';
-import { PatientLabelResponse } from 'src/app/models/radiology/responses/patient-label-response';
-import { LateResponse } from 'src/app/models/radiology/responses/late-response';
+import { RadiologyAdmissionRequest } from '../../models/radiology/request/radiology-admission-request';
+import { ModalityAdmissionResponse } from '../../models/radiology/responses/modality-admission-response';
+import { RadiologyActiveAdmissionResponse } from '../../models/radiology/responses/radiology-active-admission-response';
+import { PatientLabelResponse } from '../../models/radiology/responses/patient-label-response';
+import { LateResponse } from '../../models/radiology/responses/late-response';
 
 @Injectable({
   providedIn: 'root'
