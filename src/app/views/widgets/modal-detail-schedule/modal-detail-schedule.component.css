@@ -1,3 +1,12 @@
+.modal-confirm-admission {
+  width: 550px;
+  /* transform: translateX(3.5%); */
+}
+
+.modal-content:has(.modal-confirm-admission) {
+  left: 10%;
+}
+
 .icon-usercheck {
     top: 5px;
     left: 5px;

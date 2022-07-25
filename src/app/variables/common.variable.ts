@@ -38,7 +38,7 @@ export const appInfo = {
     ROLE_ID: 'dfbd34af-8b25-4bda-8cd3-8228943a06a3',
 };
 
-export const sourceApps = 'Mini Apps Swabber';
+export const sourceApps = 'FrontOfficeRadiology';
 
 export const leaveType = [
     {

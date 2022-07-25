@@ -27,6 +27,9 @@ export class TableListDailyComponent {
   public scheduleListBk: any[] = []
   public isLoading: boolean;
 
+  isLoadingSection: boolean = false
+  debounceLoadData: any = null
+
   constructor(
     private modalService: NgbModal,
     private radiologyService : RadiologyService,
@@ -63,11 +66,12 @@ export class TableListDailyComponent {
       modality_label,
       room_name,
       duration,
-      refreshTableDaily: this.refreshData
+      // refreshTableDaily: this.refreshData
     }
     m.componentInstance.selectedAppointment = payload;
-    m.result.then((result: any) => {
-      console.log('modal is closed', {result})
+    m.result.then((_result: any) => {
+      // console.log('modal is closed', {result})
+      this.refresh()
     })
   }
 
@@ -75,7 +79,7 @@ export class TableListDailyComponent {
     const payload =  {
       ...schedule,
       reserveDate: this.dateSelected,
-      refreshTableDaily: this.refreshData
+      // refreshTableDaily: this.refreshData
     }
     payload.from_time = moment(payload.from_time, 'hh:mm').format('HH:mm')
     payload.to_time = moment(payload.to_time, 'hh:mm').format('HH:mm')
@@ -83,6 +87,7 @@ export class TableListDailyComponent {
     m.componentInstance.selectedAppointment = payload;
     m.result.then((result: any) => {
       if (result) {
+        this.refresh()
         this.showSuccessAlert(`Success`);
       }
     })
@@ -91,7 +96,7 @@ export class TableListDailyComponent {
   setToTime2Digit = (time : number) => ('0' + time).slice(-2);
 
   async getSchedules() {
-   
+
     const slots = this.modalitySlots
 
     let lastCaptureSlot : any = {};
@@ -214,10 +219,11 @@ export class TableListDailyComponent {
   async ngOnChanges(changes: SimpleChanges) {
     if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue))
       || this.sectionSelected.modality_hospital_id) {
-      await this.refreshData()
+      this.refresh(true)
+      // await this.refreshData()
     }
 
-    
+
     if((changes.fromTimeRange && changes.fromTimeRange.currentValue)
       || (changes.toTimeRange && changes.toTimeRange.currentValue)) {
         if(this.fromTimeRange === '00:00' && this.toTimeRange === '00:00') {
@@ -228,7 +234,7 @@ export class TableListDailyComponent {
           this.scheduleList = this.scheduleListBk.reduce((acc, sc) => {
             const items = sc.items.filter((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
                 && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) );
-            
+
             if(items.length) {
               sc.items = items
               acc.push(sc)
@@ -246,6 +252,16 @@ export class TableListDailyComponent {
       text: message,
       timer: 1500
     });
+  }
+
+  async refresh (reinit: boolean = false) {
+    if (this.debounceLoadData) { clearTimeout(this.debounceLoadData) }
+    this.debounceLoadData = setTimeout(async () => {
+      if (reinit) { this.isLoadingSection = true }
+      await this.getModalitySlots()
+      await this.getSchedules()
+      if (reinit) { this.isLoadingSection = false }
+    }, 800)
   }
 
 }

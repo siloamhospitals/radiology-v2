@@ -168,10 +168,10 @@
               <tr *ngFor="let patient of patientHope; let i = index;"
                 class="item-hover"
                 [ngClass]="{'bg-primary' : isSelectedPatient === patient, '': isSelectedPatient !== patient}"
-                >
+                (click)="selectPatientRow(formCheckRadio)">
                 <td>
                   <div class="form-check">
-                    <input type="radio" [(ngModel)]="isSelectedPatient" class="form-check-input" id="radio2" name="optradio" [value]="patient">
+                    <input #formCheckRadio type="radio" [(ngModel)]="isSelectedPatient" class="form-check-input" id="radio2" name="optradio" [value]="patient">
                   </div>
                 </td>
                 <td>{{ patient.name}}</td>
