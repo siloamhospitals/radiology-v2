@@ -8,6 +8,9 @@
     </button>
   </div>
   <div class="modal-body">
+   <div *ngIf="isLoading" class="text-center w-100 pb-2">
+      <app-loading [width]="20" class="mt-0" showLoad="true"></app-loading>
+    </div>
     <ul class="timeline">
       <li *ngFor="let his of history; let i = index" >
          <div class="timeline-time">
