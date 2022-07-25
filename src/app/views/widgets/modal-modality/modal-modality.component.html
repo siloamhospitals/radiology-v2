@@ -92,7 +92,7 @@
    <div class="modal-footer">
       <button class="btn btn-default" *ngIf="responseData == null">Reset</button>
       <button class="btn btn-default mr-auto" *ngIf="responseData != null" (click)="deleteModality(responseData)">Delete Modality</button>
-      <button class="btn btn-primary " (click)="submit()">Save</button>
+      <button class="btn btn-primary " (click)="submit(responseData)">Save</button>
   </div>
   </form>
 </div>
