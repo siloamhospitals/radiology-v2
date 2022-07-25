@@ -110,13 +110,19 @@ export class TableFilterScheduleComponent implements OnInit, OnChanges {
     this.isFilterShow.emit(this.filterShow)
   }
 
-  detailSchedule(item: any) {
-    const payload = item;
+  detailSchedule(schedule?: any) {
+    const payload =  {
+      ...schedule,
+      reserveDate: this.dateSelected,
+      // refreshTableDaily: this.refreshData
+    }
+    payload.from_time = moment(payload.from_time, 'hh:mm').format('HH:mm')
+    payload.to_time = moment(payload.to_time, 'hh:mm').format('HH:mm')
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
-    m.componentInstance.data = payload;
+    m.componentInstance.selectedAppointment = payload;
     m.result.then((result: any) => {
       if (result) {
-        // this.showSuccessAlert(`Success`);
+        // this.refresh()
       }
     })
   }
