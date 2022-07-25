@@ -194,6 +194,11 @@ export class ModalDetailScheduleComponent implements OnInit {
     }
   }
 
+
+  onChangeDate = () => {
+    this.selectedAppointment.reserve_date = this.selectedAppointment.reserveDate.format('YYYY-MM-DD');
+  }
+
   onChangeDefaultSelected() {
     this.fromTime = this.selectedAppointment.from_time;
     this.toTime = this.selectedAppointment.to_time;
