@@ -114,7 +114,7 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
   }
 
   close() {
-    this.selectedAppointment.refreshTableDaily()
+    // this.selectedAppointment.refreshTableDaily()
     this.activeModal.close();
   }
 
