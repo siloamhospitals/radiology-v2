@@ -61,9 +61,14 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Jenis Rujukan</label>
                 <div>
-                  <select [(ngModel)]="referralType" class="x-form-control" placeholder="Pilih Jenis Rujukan">
-                    <option *ngFor="let item of referralTypes" [ngValue]="item">{{item.description}}</option>
-                  </select>
+                  <ng-select
+                    [(ngModel)]="referralType"
+                    [items]="referralTypes"
+                    [clearable]="false"
+                    placeholder="Pilih Tipe Pasien"
+                    bindLabel="description"
+                    class="x-form-control">
+                  </ng-select>
                 </div>
               </div>
               <!-- ReferralType: Internal Doctor Referral -->
@@ -125,17 +130,27 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Tipe Pasien</label>
                 <div>
-                  <select [(ngModel)]="patientType" class="x-form-control" placeholder="Pilih Tipe Pasien">
-                    <option *ngFor="let item of patientTypes" [ngValue]="item">{{item.description}}</option>
-                  </select>
+                  <ng-select
+                    [(ngModel)]="patientType"
+                    [items]="patientTypes"
+                    [clearable]="false"
+                    placeholder="Pilih Tipe Pasien"
+                    bindLabel="description"
+                    class="x-form-control">
+                  </ng-select>
                 </div>
               </div>
               <div class="col-8 mb-3">
                 <label class="form-label">Ruangan / Lokasi</label>
                 <div>
-                  <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
-                    <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
-                  </select>
+                  <ng-select
+                    [(ngModel)]="roomSelect"
+                    [items]="roomOptions"
+                    [clearable]="false"
+                    placeholder="Pilih Ruangan / Lokasi"
+                    bindLabel="description"
+                    class="x-form-control">
+                  </ng-select>
                 </div>
               </div>
               <!-- PatientType: Private -->
@@ -211,13 +226,15 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Jenis Email</label>
                 <div>
-                  <select [(ngModel)]="emailType"
-                    class="x-form-control" 
+                  <ng-select
+                    [(ngModel)]="emailType"
+                    [items]="emailTypes"
+                    [clearable]="false"
                     placeholder="Pilih Jenis Email"
+                    bindLabel="description"
+                    class="x-form-control"
                     (change)="changeEmailType()">
-                    <option *ngFor="let item of emailTypes" [ngValue]="item">{{item.description}}</option>
-                    <!-- <option value="" disabled>Pilih Jenis Rujukan</option> -->
-                  </select>
+                  </ng-select>
                 </div>
               </div>
               <div class="col col-4 mb-3">

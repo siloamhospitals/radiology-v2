@@ -35,6 +35,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   patientTypes: General[] = []
   referralTypes: General[] = []
   emailTypes: General[] = []
+  roomOptions: General[] = []
 
   nationalIdTypeName: any = nationalTypeIdNames
 
@@ -43,10 +44,10 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   contactData: any = {}
 
   // Input to Send AdmissionModel
-  referralType: any = 1
-  patientType: any = 1
+  referralType: any = null
+  patientType: any = null
   roomSelect: any = null
-  emailType: any = 1
+  emailType: any = null
   txtEmail: any = null
   txtNote: any = null
   txtIsSigned: boolean = false

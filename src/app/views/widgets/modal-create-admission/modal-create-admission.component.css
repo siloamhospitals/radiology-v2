@@ -23,3 +23,21 @@ select.x-form-control:focus {
   outline: none;
   box-shadow: none;
 }
+
+.ng-select.x-form-control {
+  padding: 0;
+  border: 1px solid rgba(34, 47, 62, 0.38);
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  color: rgba(34, 47, 62, 0.87);
+}
+
+.ng-select.x-form-control ::ng-deep .ng-select-container {
+  height: 31px !important;
+  min-height: 31px !important;
+}
+
+.ng-select.x-form-control ::ng-deep .ng-dropdown-panel {
+  z-index: 18;
+}
