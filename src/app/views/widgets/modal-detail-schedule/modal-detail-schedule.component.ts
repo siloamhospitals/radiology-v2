@@ -84,7 +84,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   close() {
-    this.selectedAppointment.refreshTableDaily();
+    // this.selectedAppointment.refreshTableDaily();
     this.activeModal.close();
   }
 
