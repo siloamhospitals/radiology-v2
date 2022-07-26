@@ -23,3 +23,23 @@ select.x-form-control:focus {
   outline: none;
   box-shadow: none;
 }
+
+.ng-autocomplete ::ng-deep .autocomplete-container ::ng-deep .input-container ::ng-deep input {
+  padding: 0 30px 0px 10px !important;
+  height: 28px !important;
+  border-radius: .25rem;
+  background-color: transparent;
+}
+
+.ng-autocomplete ::ng-deep .autocomplete-container {
+  border: 1px solid #ced4da;
+  color: #495057;
+  height: calc(1.5em + .75rem + 2px);
+  border-radius: .25rem;
+  box-shadow: none;
+}
+
+.ng-autocomplete ::ng-deep .autocomplete-container .input-container input:disabled {
+  background-color: #eee !important;
+  color: #666;
+}

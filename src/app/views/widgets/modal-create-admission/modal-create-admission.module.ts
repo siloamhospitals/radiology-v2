@@ -5,6 +5,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerModule } from '../date-picker/date-picker.module';
 import { TimepickerModule } from '../time-picker/time-picker.module';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
     NgbAlertModule,
     ReactiveFormsModule,
     DatepickerModule,
-    TimepickerModule
+    TimepickerModule,
+    NgSelectModule,
+    AutocompleteLibModule
   ],
   exports: [
     ModalCreateAdmissionComponent,

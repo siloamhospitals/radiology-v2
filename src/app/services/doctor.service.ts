@@ -23,6 +23,9 @@ export class DoctorService {
   private scheduleUrl = environment.OPADMIN_SERVICE + '/schedules';
   private specialityUrl = environment.OPADMIN_SERVICE + '/generals/specialities';
   private internalDoctorUrl = environment.FRONT_OFFICE_SERVICE + '/generals/doctor/hospital';
+  private externalDoctorUrl =  environment.FRONT_OFFICE_SERVICE + '/generals/doctor/organization';
+  private externalOrganization = environment.FRONT_OFFICE_SERVICE + '/generals/organization';
+  private aggregatorAndIshgReferral = environment.FRONT_OFFICE_SERVICE + '/generals/referral';
 
   private searchDoctorSource = new Subject<any>();
   public searchDoctorSource$ = this.searchDoctorSource.asObservable();
@@ -240,5 +243,29 @@ export class DoctorService {
   getInternalDoctor(hospitalId: string): Observable<any> {
     const url = `${this.internalDoctorUrl}/${hospitalId}`;
     return this.http.get<any>(url, httpOptions);
+  }
+
+  getExternalDoctor(orgId: string): Observable<any> {
+    const url = `${this.externalDoctorUrl}/${orgId}`;
+    return this.http.get(url, httpOptions);
+  }
+
+  getExternalOrganization(orgId: string): Observable<any> {
+    const url = `${this.externalOrganization}/${orgId}`;
+    return this.http.get(url, httpOptions);
+  }
+
+  getOnlineAgreggator(orgId: string): Observable<any> {
+    const onlineUri = '/online-aggregator';
+    const url = this.aggregatorAndIshgReferral + onlineUri;
+    const urlDefault = `${url}?organizationId=${orgId}`;
+    return this.http.get(urlDefault, httpOptions);
+  }
+
+  getIshg(orgId: string, doctorName: string): Observable<any> {
+    const ishgUri = '/inter-shg-doctor';
+    const url = this.aggregatorAndIshgReferral + ishgUri;
+    const urlDefault = `${url}?organizationId=${orgId}&doctorName=${doctorName}`;
+    return this.http.get(urlDefault, httpOptions);
   }
 }

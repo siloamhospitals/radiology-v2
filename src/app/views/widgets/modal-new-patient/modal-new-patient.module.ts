@@ -16,7 +16,7 @@ import { LoadingModule } from '../widget-loading/widget-loading.module';
     ReactiveFormsModule,
     DatepickerModule,
     TimepickerModule,
-    LoadingModule
+    LoadingModule,
   ]
 })
 export class ModalNewPatientModule { }

@@ -1,3 +1,5 @@
+import { AlertService } from './../../../services/alert.service';
+import { DoctorService } from './../../../services/doctor.service';
 import { Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
@@ -19,46 +21,50 @@ import { nationalTypeIdNames, sourceApps } from '../../../variables/common.varia
 export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   // User-System Define
   public key: any = JSON.parse(localStorage.getItem('key') || '{}');
-  public hospital = this.key.hospital
-  public user = this.key.user
+  public hospital = this.key.hospital;
+  public user = this.key.user;
   public readonly userPayload = {
     userId: this.user.id,
     source: sourceApps,
     userName: this.user.fullname,
-  }
+  };
 
-  public model: any = {}
-  public selectedModel: any = {}
-  public modelId: any = null
-  
-  nationalTypes: General[] = []
-  patientTypes: General[] = []
-  referralTypes: General[] = []
-  emailTypes: General[] = []
+  public model: any = {};
+  public selectedModel: any = {};
+  public modelId: any = null;
 
-  nationalIdTypeName: any = nationalTypeIdNames
+  nationalTypes: General[] = [];
+  patientTypes: General[] = [];
+  referralTypes: General[] = [];
+  emailTypes: General[] = [];
+
+  nationalIdTypeName: any = nationalTypeIdNames;
 
   // Model Information
-  contactId: string
-  contactData: any = {}
+  contactId: string;
+  contactData: any = {};
 
   // Input to Send AdmissionModel
-  referralType: any = 1
-  patientType: any = 1
-  roomSelect: any = null
-  emailType: any = 1
-  txtEmail: any = null
-  txtNote: any = null
-  isAdmissionEmailDisabled: boolean = true
+  referralType: any = 1;
+  patientType: any = 1;
+  roomSelect: any = null;
+  emailType: any = 1;
+  txtEmail: any = null;
+  txtNote: any = null;
+  isAdmissionEmailDisabled: boolean = true;
 
-  isLoadingFetch: boolean = false
-  isLoading: boolean = false
-  isError: boolean = false
-  isSuccess: boolean = false
+  isLoadingFetch: boolean = false;
+  isLoading: boolean = false;
+  isError: boolean = false;
+  isSuccess: boolean = false;
 
-  errorMessage: any = null
+  errorMessage: any = null;
 
-  modalCreateAdmissionLoading: any = null
+  modalCreateAdmissionLoading: any = null;
+  doctorReferralList: any = [];
+  selectedReferral: any = {
+    external_doctor_referral_id: '',
+  };
 
   @ViewChild('admissionDetail') modalAdmissionDetail: ElementRef
   @ViewChild('loadingIndicatorModal') modalLoadingIndicator: ElementRef
@@ -69,6 +75,8 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     private generalService: GeneralService,
     private radiologyService: RadiologyService,
     private patientService: PatientService,
+    private doctorService: DoctorService,
+    private alertService: AlertService,
   ) { }
 
   ngOnChanges(_changes: SimpleChanges) {
@@ -174,7 +182,10 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   async fetchReferralTypes () {
     this.referralTypes = await this.generalService.getReferralType().toPromise()
-      .then((res: any) => res.data || [])
+      .then((res: any) => {
+        console.log(res.data, '============== res data')
+        return res.data || []
+      })
   }
 
   async fetchPatientTypes () {
@@ -208,7 +219,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     this.changeEmailType()
     this.txtNote = this.model.note
   }
-  
+
   changeEmailType () {
     const v = this.emailType
     switch (v.value) {
@@ -238,4 +249,92 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   }
 
   // @todo: referral-type functions
+    async getReferralDoctor(event: any) {
+      this.doctorReferralList = [];
+      const val = event.target.value['0'];
+      const selectedReferral = this.referralTypes[val];
+      console.log(this.referralTypes[val], '========== this referral types')
+      if (selectedReferral.value === '3') {
+        this.doctorService.getExternalDoctor(this.hospital.orgId)
+          .subscribe((res) => {
+            if (res.status === 'OK' && res.data.length === 0) {
+              this.alertService.success('No List Doctor in This Organization', false, 3000);
+            }
+            this.doctorReferralList = (res.data || []).map((val:any) => {
+              val.label = `${val.code} - ${val.name}`
+              return val;
+            });
+            console.log(this.doctorReferralList, '===========doctor referral list')
+          }, (err) => {
+            this.alertService.error(err.error.message, false, 3000);
+            this.doctorReferralList = [];
+          });
+      } else if (val['0'] === '2') {
+        this.doctorService.getExternalOrganization(this.hospital.orgId)
+          .subscribe((res) => {
+            if (res.status === 'OK' && res.data.length === 0) {
+              this.alertService.success('No List Doctor in This Organization', false, 3000);
+            }
+            this.doctorReferralList = res.data;
+          }, (err) => {
+            this.alertService.error(err.error.message, false, 3000);
+            return [];
+          });
+      } else if (val['0'] === '6') {
+        this.doctorService.getOnlineAgreggator(this.hospital.orgId)
+          .subscribe((res) => {
+            console.log(res, '=====================res')
+            if (res.status === 'OK' && res.data.length === 0) {
+              this.alertService.success('No List Doctor in This Organization', false, 3000);
+            }
+            this.doctorReferralList = res.data;
+          }, (err) => {
+            console.log(err, '====== err')
+            this.alertService.error(err.error.message, false, 3000);
+            return [];
+          });
+    }
+
+    // this.selectedReferred = {
+    //   code: '',
+    //   doctor_hope_id: '',
+    //   externalDoctorId: '',
+    //   externalOrganizationId: '',
+    //   onlineAggregatorId: '',
+    //   name: '',
+    //   speciality_name: '',
+    //   organization_name: '',
+    //   admission_no: '',
+    //   admission_hope_id: '',
+    // };
+  }
+
+  changeReferralType (_event: any = null) {
+    const val = this.referralType.value;
+    console.log(val, '====================val')
+    if (val === '2') {
+      // this.selectedCheckIn.internal_doctor_referral_id = null;
+      // this.selectedCheckIn.referral_admission_id = null;
+    }
+    else if (val === '3') {
+      this.selectedReferral.external_doctor_referral_id = null;
+    }
+    else if (val === '4') {
+      // this.selectedCheckIn.referral_name = null;
+      // this.selectedCheckIn.referral_phone = null;
+    }
+    else if (val === '5') {
+      // this.selectedCheckIn.external_organization_referral_id = null;
+    }
+    else if (val === '6') {
+      // this.selectedCheckIn.referral_name = null;
+      // this.selectedCheckIn.referral_phone = null;
+    }
+    else if (val === '7') {
+      // this.selectedCheckIn.ishg_referral_id = null;
+    }
+    else if (val === '8') {
+      // this.selectedCheckIn.onlineAggregatorId = null;
+    }
+  }
 }
