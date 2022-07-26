@@ -17,6 +17,7 @@ import RadiologyItem from '../../../models/radiology/radiology-item';
 import { ModalConfirmDeleteComponent } from '../modal-confirm-delete/modal-confirm-delete.component';
 import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
+import { isEmpty } from 'lodash';
 
 @Component({
   selector: 'app-modal-modality',
@@ -271,9 +272,14 @@ export class ModalModalityComponent implements OnInit {
   }
 
   close() {
-    console.log(this.responseData, 'close')
-    this.responseData.refreshData()
-    this.activeModal.close();
+    console.log(this.responseData)
+    if(isEmpty(this.responseData))
+    {
+      this.activeModal.close();
+    }else{
+      this.responseData.refreshData
+      this.activeModal.close();
+    }
   }
 
   closeModal() {
