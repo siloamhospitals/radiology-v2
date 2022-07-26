@@ -28,6 +28,8 @@ import { ModalCreateAppointmentComponent } from '../../widgets/modal-create-appo
 import { TableFilterScheduleModule } from '../../widgets/table-filter-schedule/table-filter-schedule.module';
 import { LoadingModule } from '../../widgets/widget-loading/widget-loading.module';
 import { LoadingComponent } from '../../widgets/widget-loading/widget-loading.component';
+import { ModalNewPatientComponent } from '../../widgets/modal-new-patient/modal-new-patient.component';
+import { ModalNewPatientModule } from '../../widgets/modal-new-patient/modal-new-patient.module';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -44,7 +46,7 @@ import { LoadingComponent } from '../../widgets/widget-loading/widget-loading.co
     ModalCancelAppointmentModule,
     ModalCreateAdmissionModule,
     ModalDetailScheduleModule,
-    NgbModule, 
+    NgbModule,
     NgbTabsetModule,
     TableListDailyModule,
     TableListWeeklyModule,
@@ -53,6 +55,7 @@ import { LoadingComponent } from '../../widgets/widget-loading/widget-loading.co
     DropdownExaminationModule,
     ModalCreateAppointmentModule,
     ModalQueueNumberModule,
+    ModalNewPatientModule,
     LoadingModule
   ],
   exports: [
@@ -65,7 +68,8 @@ import { LoadingComponent } from '../../widgets/widget-loading/widget-loading.co
     ModalDetailScheduleComponent,
     ModalCreateAppointmentComponent,
     LoadingComponent,
-    ModalQueueNumberComponent
+    ModalQueueNumberComponent,
+    ModalNewPatientComponent,
   ],
 })
 export class PageRadiologyScheduleModule {}
