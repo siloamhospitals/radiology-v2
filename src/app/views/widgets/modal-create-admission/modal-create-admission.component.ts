@@ -1,3 +1,4 @@
+import { AdmissionService } from './../../../services/admission.service';
 import { AlertService } from './../../../services/alert.service';
 import { DoctorService } from './../../../services/doctor.service';
 import { Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
@@ -12,6 +13,7 @@ import { RadiologyService } from '../../../services/radiology/radiology.service'
 // import { ModalitySlot } from '../../../models/radiology/modality-slot';
 import { nationalTypeIdNames, sourceApps } from '../../../variables/common.variable';
 import { ModalQueueNumberComponent } from '../modal-queue-number/modal-queue-number.component';
+import { isEmpty } from 'lodash';
 
 @Component({
   selector: 'app-modal-create-admission',
@@ -67,8 +69,21 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   modalCreateAdmissionLoading: any = null;
   doctorReferralList: any = [];
   selectedReferral: any = {
-    external_doctor_referral_id: '',
+    external_doctor_referral_id: null,
+    external_organization_referral_id: null,
+    referral_name: null,
+    referral_phone: null,
+    internal_doctor_referral_id: null,
+    referral_admission_id: null,
+    ishg_referral_id: null,
+    online_aggregator_id: null,
   };
+  isFromReferralRequest = false;
+  admissionReferralList: any = [];
+  referralAdmissionIdLoading: boolean = false;
+  changeDebounce: any = null;
+  textResult: any = 'In Progress';
+  referralIshgLoading: boolean = false;
 
   @ViewChild('admissionDetail') modalAdmissionDetail: ElementRef
   @ViewChild('loadingIndicatorModal') modalLoadingIndicator: ElementRef
@@ -81,6 +96,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     private patientService: PatientService,
     private doctorService: DoctorService,
     private alertService: AlertService,
+    private admissionService: AdmissionService
   ) { }
 
   ngOnChanges(_changes: SimpleChanges) {
@@ -294,12 +310,22 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   }
 
   // @todo: referral-type functions
-    async getReferralDoctor(event: any) {
+    async getReferralDoctor(_event: any) {
       this.doctorReferralList = [];
-      const val = event.target.value['0'];
-      const selectedReferral = this.referralTypes[val];
-      console.log(this.referralTypes[val], '========== this referral types')
-      if (selectedReferral.value === '3') {
+      const selectedReferral = this.referralType;
+      console.log(selectedReferral, '============= selectedReferral')
+      if (selectedReferral.value === '2') {
+        this.doctorService.getInternalDoctor(this.hospital.id)
+          .subscribe((res) => {
+            if (res.status === 'OK' && res.data.length === 0) {
+              this.alertService.success('No List Doctor in This Organization', false, 3000);
+            }
+            this.doctorReferralList = (res.data || []);
+          }, (err) => {
+            this.alertService.error(err.error.message, false, 3000);
+            this.doctorReferralList = [];
+          });
+      } else if (selectedReferral.value === '3') {
         this.doctorService.getExternalDoctor(this.hospital.orgId)
           .subscribe((res) => {
             if (res.status === 'OK' && res.data.length === 0) {
@@ -309,77 +335,114 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
               val.label = `${val.code} - ${val.name}`
               return val;
             });
-            console.log(this.doctorReferralList, '===========doctor referral list')
           }, (err) => {
             this.alertService.error(err.error.message, false, 3000);
             this.doctorReferralList = [];
           });
-      } else if (val['0'] === '2') {
+      } else if (selectedReferral.value === '5') {
         this.doctorService.getExternalOrganization(this.hospital.orgId)
           .subscribe((res) => {
             if (res.status === 'OK' && res.data.length === 0) {
               this.alertService.success('No List Doctor in This Organization', false, 3000);
             }
-            this.doctorReferralList = res.data;
+            this.doctorReferralList = (res.data || []).map((val:any) => {
+              val.label = `${val.code} - ${val.name}`
+              return val;
+            });
           }, (err) => {
             this.alertService.error(err.error.message, false, 3000);
             return [];
           });
-      } else if (val['0'] === '6') {
+      } else if (selectedReferral.value === '8') {
         this.doctorService.getOnlineAgreggator(this.hospital.orgId)
           .subscribe((res) => {
-            console.log(res, '=====================res')
+            console.log(res,'=============== res dalam online aggregator')
             if (res.status === 'OK' && res.data.length === 0) {
               this.alertService.success('No List Doctor in This Organization', false, 3000);
             }
-            this.doctorReferralList = res.data;
+            this.doctorReferralList = (res.data || []).map((val:any) => {
+              val.label = `${val.code} - ${val.name}`
+              return val;
+            });
           }, (err) => {
-            console.log(err, '====== err')
             this.alertService.error(err.error.message, false, 3000);
             return [];
           });
-    }
-
-    // this.selectedReferred = {
-    //   code: '',
-    //   doctor_hope_id: '',
-    //   externalDoctorId: '',
-    //   externalOrganizationId: '',
-    //   onlineAggregatorId: '',
-    //   name: '',
-    //   speciality_name: '',
-    //   organization_name: '',
-    //   admission_no: '',
-    //   admission_hope_id: '',
-    // };
+      }
   }
 
   changeReferralType (_event: any = null) {
     const val = this.referralType.value;
     console.log(val, '====================val')
     if (val === '2') {
-      // this.selectedCheckIn.internal_doctor_referral_id = null;
-      // this.selectedCheckIn.referral_admission_id = null;
+      this.selectedReferral.internal_doctor_referral_id = null;
+      this.selectedReferral.referral_admission_id = null;
     }
     else if (val === '3') {
       this.selectedReferral.external_doctor_referral_id = null;
     }
     else if (val === '4') {
-      // this.selectedCheckIn.referral_name = null;
-      // this.selectedCheckIn.referral_phone = null;
+      this.selectedReferral.referral_name = null;
+      this.selectedReferral.referral_phone = null;
     }
     else if (val === '5') {
-      // this.selectedCheckIn.external_organization_referral_id = null;
+      this.selectedReferral.external_organization_referral_id = null;
     }
     else if (val === '6') {
-      // this.selectedCheckIn.referral_name = null;
-      // this.selectedCheckIn.referral_phone = null;
+      this.selectedReferral.referral_name = null;
+      this.selectedReferral.referral_phone = null;
     }
     else if (val === '7') {
-      // this.selectedCheckIn.ishg_referral_id = null;
+      this.selectedReferral.ishg_referral_id = null;
     }
     else if (val === '8') {
-      // this.selectedCheckIn.onlineAggregatorId = null;
+      this.selectedReferral.online_aggregator_id = null;
     }
+  }
+
+  async getReferralAdmission(event: any){
+    this.admissionReferralList = [];
+    const value = event;
+    const contactId = this.contactId;
+    if (value.length < 4) { return event }
+    this.referralAdmissionIdLoading = true;
+    if (this.changeDebounce) { clearTimeout(this.changeDebounce) }
+      this.changeDebounce = setTimeout(async () => {
+        this.admissionReferralList = await this.admissionService.getAdmissions(value, contactId)
+        .toPromise().then((res: any) => {
+          if(isEmpty(res.data)) {this.textResult = 'No Result Found'}
+          return res.data;
+        }).catch((err: any) => {
+          this.alertService.error(err.error.message, false, 3000);
+          return [];
+        }).finally(() => {
+          this.referralAdmissionIdLoading = false;
+        })
+    }, 1000)
+  }
+
+  async getReferralIshg(event: any){
+    this.doctorReferralList = [];
+    const value = event;
+    if (value.length < 3) { return event }
+    if (this.changeDebounce) { clearTimeout(this.changeDebounce) }
+    this.referralIshgLoading = true;
+    this.changeDebounce = setTimeout(async () => {
+      this.doctorReferralList = await this.doctorService.getIshg(this.hospital.id, value)
+      .toPromise().then(res => {
+        if (res.status === 'OK' && res.data.length === 0) {
+          this.alertService.warn('No List Doctor in This Organization', false, 3000);
+        }
+        return (res.data || []).map((x: any) => {
+          x.label = `${x.organization_name} - ${x.speciality_name} - ${x.name}`;
+          return x;
+        });
+      }).catch(err => {
+        this.alertService.error(err.error.message, false, 3000);
+        return [];
+      }).finally(() => {
+        this.referralIshgLoading = false;
+      });
+    }, 1000)
   }
 }
