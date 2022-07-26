@@ -1,3 +1,7 @@
+import { isEmpty } from "lodash";
+
+export const emailAddressPattern = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
 export function dateFormatter(date: any, isLocal: boolean) {
     const d = new Date(date);
 
@@ -84,3 +88,11 @@ export const getHospitalTimezone = (tz: any) => {
     return 'Asia/Jakarta';
   }
 };
+
+export function isValidPhoneNumber(phoneNumber: string): boolean {
+  return !isEmpty(phoneNumber) && !isEmpty(phoneNumber.match(/^\d+$/));
+}
+
+export function isValidEmail(email: string): boolean {
+  return !isEmpty(email) && !isEmpty(email.match(emailAddressPattern));
+}
