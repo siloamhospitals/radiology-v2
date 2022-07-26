@@ -295,12 +295,19 @@ export class TableListWeeklyComponent implements OnInit {
     })
   }
 
-  detailSchedule (itemId: any = null) {
-    console.log('SELECTED_DETAIL', itemId)
+  detailSchedule(schedule?: any) {
+    const payload =  {
+      ...schedule,
+      reserveDate: this.dateSelected,
+    }
+    payload.from_time = moment(payload.from_time, 'hh:mm').format('HH:mm')
+    payload.to_time = moment(payload.to_time, 'hh:mm').format('HH:mm')
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
-    m.componentInstance.selectedAppointment = itemId
+    m.componentInstance.selectedAppointment = payload;
     m.result.then((result: any) => {
-      console.log('modal is closed', {result})
+      if (result) {
+        this.refresh()
+      }
     })
   }
 

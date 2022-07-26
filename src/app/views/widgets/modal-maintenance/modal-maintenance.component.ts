@@ -17,14 +17,13 @@ import RadiologyItem from '../../../models/radiology/radiology-item';
 import { ModalConfirmDeleteComponent } from '../modal-confirm-delete/modal-confirm-delete.component';
 import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
-import { isEmpty } from 'lodash';
 
 @Component({
-  selector: 'app-modal-modality',
-  templateUrl: './modal-modality.component.html',
-  styleUrls: ['./modal-modality.component.css']
+  selector: 'app-modal-maintenance',
+  templateUrl: './modal-maintenance.component.html',
+  styleUrls: ['./modal-maintenance.component.css']
 })
-export class ModalModalityComponent implements OnInit {
+export class ModalMaintenanceComponent implements OnInit {
 
   @Input() username: any;
   @Input() responseData: any
@@ -120,6 +119,14 @@ export class ModalModalityComponent implements OnInit {
 
   roomMapingFormat(row: RoomMapping): string {
     return `Floor ${row.floor_name} - ${row.wing_name} - Room ${row.room_name}`;
+  }
+
+  onChangeDate(){
+   
+  }
+
+  onChangeTimer(){
+   
   }
 
   getRoomDetail(room_mapping_id: string) {
@@ -272,14 +279,9 @@ export class ModalModalityComponent implements OnInit {
   }
 
   close() {
-    console.log(this.responseData)
-    if(isEmpty(this.responseData))
-    {
-      this.activeModal.close();
-    }else{
-      this.responseData.refreshData
-      this.activeModal.close();
-    }
+    console.log(this.responseData, 'close')
+    this.responseData.refreshData()
+    this.activeModal.close();
   }
 
   closeModal() {

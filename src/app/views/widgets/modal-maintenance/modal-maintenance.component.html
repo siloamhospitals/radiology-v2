@@ -1,0 +1,90 @@
+<div class="modal-content" style="width: 450px;">
+   <div class="modal-header">
+      <div class="header">
+         Modality
+      </div>
+      <button #close_button type="button" class="close" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
+         <span aria-hidden="true">&times;</span>
+      </button>
+   </div>
+   <form [formGroup]="modalityForm" novalidate>
+   <div class="modal-body">
+      <ng-container>
+         <div class="formclass">
+            <div class="mb-3 " *ngIf="responseData == null">
+               <h4>New Radiology Modality</h4>
+            </div>
+            <div class="form-group mb-3 " *ngIf="responseData != null">
+               <label for="dropdownMenuLink">Status<span style="color:red">*</span></label>
+               <div class="custom-control custom-switch">
+                  <label for="">Modality Active</label>
+                  <input type="checkbox" class="custom-control-input custom-switch-xl pull-right button-sm" id="customSwitch1"
+                  [checked]="responseData.status == 1" 
+                  (change)="changeStatus($event)"
+                  >
+                  <label class="custom-control-label pull-right" for="customSwitch1"></label>
+               </div>
+            </div>
+            <div class="px-3 mb-3 ">
+               <label for="dropdownMenuLink">Pilih Modality<span style="color:red">*</span></label>
+               <select class="form-control modalities" formControlName="modalityId" #modalityId
+               [required]="true">
+               <option value="">Pilih Modality</option>
+               <option *ngFor="let modality of modalityOptions" value="{{modality.modality_id}}">
+                  {{modality.name}}</option>
+               </select>
+            </div>
+
+            <div class="mb-3 px-3">
+               <label for="">Tanggal dan Waktu</label>
+               <div class="d-flex align-items-center" >
+               <app-date-picker format="dddd, DD MMMM YYYY" hideIcon=true [noBorder]=true
+               [isModalLarge]=true
+               width="230px"
+               
+               [onChange]="onChangeDate" ></app-date-picker>
+               <span class="mx-2" >|</span>
+               <app-time-picker
+                  [isModalLarge]=true
+                  [noBorder]=true
+                  
+                  [onChange]="onChangeTimer" >
+               </app-time-picker>&nbsp;
+               <app-time-picker
+                  [isModalLarge]=true
+                  [noBorder]=true
+                  
+                  [onChange]="onChangeTimer" >
+               </app-time-picker>
+               </div>
+               
+            </div>
+
+            <div class="px-3 mb-3 ">
+               <label for="dropdownMenuLink">Modality<span style="color:red">*</span></label><br>
+               <label for="dropdownMenuLink">-</label>
+            </div>
+
+            <div class="px-3 mb-3 ">
+               <label for="dropdownMenuLink">Ruangan<span style="color:red">*</span></label><br>
+               <label for="dropdownMenuLink">-</label>
+            </div>
+
+            <div class="d-flex flex-wrap flex-row px-3">
+               <div class="mb-3 w-100">
+                 <label for="">Note</label>
+                 <div>
+                   <textarea rows="3" class="form-control" placeholder="Catatan Pasien" name="note" formControlName="note"></textarea>
+                 </div>
+               </div>
+             </div>
+         </div>
+      </ng-container>
+   </div>
+   <div class="modal-footer">
+      <button class="btn btn-default" *ngIf="responseData == null">Reset</button>
+      <button class="btn btn-default mr-auto" *ngIf="responseData != null" (click)="deleteModality(responseData)">Delete Modality</button>
+      <button class="btn btn-primary " (click)="submit(responseData)">Save</button>
+  </div>
+  </form>
+</div>

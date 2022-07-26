@@ -24,22 +24,20 @@ select.x-form-control:focus {
   box-shadow: none;
 }
 
-.ng-autocomplete ::ng-deep .autocomplete-container ::ng-deep .input-container ::ng-deep input {
-  padding: 0 30px 0px 10px !important;
-  height: 28px !important;
-  border-radius: .25rem;
-  background-color: transparent;
+.ng-select.x-form-control {
+  padding: 0;
+  border: 1px solid rgba(34, 47, 62, 0.38);
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  color: rgba(34, 47, 62, 0.87);
 }
 
-.ng-autocomplete ::ng-deep .autocomplete-container {
-  border: 1px solid #ced4da;
-  color: #495057;
-  height: calc(1.5em + .75rem + 2px);
-  border-radius: .25rem;
-  box-shadow: none;
+.ng-select.x-form-control ::ng-deep .ng-select-container {
+  height: 31px !important;
+  min-height: 31px !important;
 }
 
-.ng-autocomplete ::ng-deep .autocomplete-container .input-container input:disabled {
-  background-color: #eee !important;
-  color: #666;
+.ng-select.x-form-control ::ng-deep .ng-dropdown-panel {
+  z-index: 18;
 }
