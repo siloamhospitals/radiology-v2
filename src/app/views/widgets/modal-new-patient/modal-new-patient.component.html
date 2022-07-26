@@ -38,7 +38,7 @@
       </div>
 
       <div class="d-flex flex-wrap flex-row px-4 py-3">
-        <div class="w-100 mb-2 mt-2">
+        <div class="w-100 mb-2 mt-2" [ngClass]="!isFormValid && !model.name ? 'form-error' : ''">
           <label for="modality_label">Nama Pasien <sup class="text-required">*</sup></label>
           <div class="input-group">
             <input
@@ -52,7 +52,7 @@
             />
           </div>
         </div>
-        <div class="w-50 my-2 pr-3">
+        <div class="w-50 my-2 pr-3" [ngClass]="!isFormValid && !model.birthDate ? 'form-error' : ''">
           <label for="modality_label">Tanggal Lahir <sup class="text-required">*</sup></label>
           <div class="input-group">
             <input
@@ -66,7 +66,7 @@
             />
           </div>
         </div>
-        <div class="w-50 my-2">
+        <div class="w-50 my-2" [ngClass]="!isFormValid && ( !model.identityTypeId || !model.identityNumber ) ? 'form-error' : ''">
           <label for="modality_label">Nomor Identitas <sup class="text-required">*</sup></label>
           <div class="input-group">
             <div class="id-type" >
@@ -92,7 +92,7 @@
             />
           </div>
         </div>
-        <div class="w-50 my-2 pr-3">
+        <div class="w-50 my-2 pr-3" [ngClass]="!isFormValid && !model.phoneNumber1 ? 'form-error' : ''">
           <label for="modality_label">Nomor Telepon <sup class="text-required">*</sup></label>
           <div class="input-group">
             <input
@@ -105,7 +105,7 @@
             />
           </div>
         </div>
-        <div class="w-50 my-2">
+        <div class="w-50 my-2" [ngClass]="!isFormValid && !model.emailAddress ? 'form-error' : ''">
           <label for="modality_label">Email <sup class="text-required">*</sup></label>
           <div class="input-group">
             <input

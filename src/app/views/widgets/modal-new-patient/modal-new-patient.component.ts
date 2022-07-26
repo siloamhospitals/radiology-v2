@@ -68,6 +68,7 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
   public isExaminationButtonDisabled: boolean = true;
   public showModalityList: boolean = false;
   public isErrorTimer : boolean;
+  public isFormValid: boolean = true;
 
   ngOnInit() {
     this.onDefaultSelected();
@@ -220,6 +221,16 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
       notes: '',
       modalityExaminationId: ''
     }
+
+    this.model = {
+      birthDate: '',
+      name: '',
+      mrLocalNo: '',
+      identityNumber: '',
+      identityTypeId: '',
+      phoneNumber1: '',
+      emailAddress: '',
+    }
   }
 
   addModalityToList() {
@@ -253,52 +264,57 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
 
   onCreateAppointment() {
     this.isSubmitting = true;
-    this.createNewContact();
-    if (this.modalityAppointmentList.length > 0) {
-      this.modalityAppointmentList.forEach((element: any) => {
-        if(element.isSuccess){
-          return;
-        }
+    const isValid = this.validForm();
+    if(isValid) {
+      this.createNewContact();
+      if (this.modalityAppointmentList.length > 0) {
+        this.modalityAppointmentList.forEach((element: any) => {
+          if(element.isSuccess){
+            return;
+          }
+          const model = {
+            ...element,
+            ...this.model,
+          };
+          const payload = this.generatePayload(model);
+          element.isLoading = true
+          this.modalityService.postAppointment(payload)
+            .subscribe((response) => {
+              if (isOk(response)) {
+                this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
+              }
+              this.isSubmitting = false;
+              element.isSuccess = true
+              element.messageError = null
+              element.isLoading = false
+              this.cancelModality()
+            }, (error: any) => {
+              this.isSubmitting = false;
+              element.isSuccess = false
+              element.messageError = (error.error && error.error.message) || error.message
+              element.isLoading = false
+            });
+        });
+      } else {
         const model = {
-          ...element,
+          ...this.selectedModality,
           ...this.model,
         };
         const payload = this.generatePayload(model);
-        element.isLoading = true
         this.modalityService.postAppointment(payload)
-          .subscribe((response) => {
-            if (isOk(response)) {
-              this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
-            }
-            this.isSubmitting = false;
-            element.isSuccess = true
-            element.messageError = null
-            element.isLoading = false
-            this.cancelModality()
-          }, (error: any) => {
-            this.isSubmitting = false;
-            element.isSuccess = false
-            element.messageError = (error.error && error.error.message) || error.message
-            element.isLoading = false
-          });
-      });
-    } else {
-      const model = {
-        ...this.selectedModality,
-        ...this.model,
-      };
-      const payload = this.generatePayload(model);
-      this.modalityService.postAppointment(payload)
-          .subscribe((response) => {
-            if (isOk(response)) {
-              this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
-            }
-            this.isSubmitting = false;
-          }, (error: any) => {
-            this.isSubmitting = false;
-            this.showErrorAlert(error.error.message, 2000);
-          });
-    }
+            .subscribe((response) => {
+              if (isOk(response)) {
+                this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
+              }
+              this.isSubmitting = false;
+            }, (error: any) => {
+              this.isSubmitting = false;
+              this.showErrorAlert(error.error.message, 2000);
+            });
+      }
+   } else {
+
+   }
     return;
   }
 
@@ -306,8 +322,6 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     const {
       phoneNumber1, address, notes, emailAddress, isBpjs, isAnesthesia
     } = model;
-    console.log(model, '===========model')
-    console.log(phoneNumber1, '===========phoneNumber 1')
     const patientHopeId = model ? model.patientId : null;
     const reserveDate = moment(model.reserveDate).format('YYYY-MM-DD')
     const payload: RadiologyAppointmentRequest = {
@@ -358,19 +372,31 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
   createNewContact() {
     const omittedModal = omit(this.model, ['mrLocalNo']);
     omittedModal.birthDate = moment().format('YYYY-MM-DD')
-    console.log(omittedModal, '============omittedModal')
     const payload = {
       ...omittedModal,
       channelId: channelId.FRONT_OFFICE,
       userId: this.userId,
     };
     this.patientService.addContact(payload).subscribe(
-      data => {
-        console.log(data, '==========data')
+      () => {
+        this.showSuccessAlert('Pasien Baru Berhasil Dibuat', 2000);
       }, error => {
-        console.log(error, '==============error')
+        this.showErrorAlert(error.error.message, 2000);
       }
     );
+  }
+
+  validForm() {
+    const {
+      birthDate, name, mrLocalNo, identityNumber, identityTypeId, phoneNumber1, emailAddress,
+    } = this.model
+    if ( birthDate && name && mrLocalNo && identityNumber && identityTypeId && phoneNumber1 && emailAddress ) {
+      return true
+    };
+    this.showErrorAlert('Silahkan Isi Kolom yang Wajib Diisi Sebelum Menjadwalkan Pasien', 2000);
+    this.isSubmitting = false;
+    this.isFormValid = false;
+    return false
   }
 
 }
