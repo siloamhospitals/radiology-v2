@@ -305,6 +305,8 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       channelId: channelId.FRONT_OFFICE,
       userName: this.userName,
       source: this.source,
+      isBpjs: model.isBpjs,
+      isAnesthesia: model.isAnesthesia
     };
     return payload;
   }

@@ -171,7 +171,7 @@
                 (click)="selectPatientRow(formCheckRadio)">
                 <td>
                   <div class="form-check">
-                    <input #formCheckRadio type="radio" [(ngModel)]="isSelectedPatient" class="form-check-input" id="radio2" name="optradio" [value]="patient">
+                    <input #formCheckRadio type="radio" [(ngModel)]="isSelectedPatient" class="form-check-input" id="radio2" name="optradio" [value]="patient" [disabled]="modalityAppointmentList && modalityAppointmentList.length" >
                   </div>
                 </td>
                 <td>{{ patient.name}}</td>

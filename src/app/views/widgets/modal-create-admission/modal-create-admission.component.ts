@@ -1,14 +1,14 @@
 import { Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
-import { General } from 'src/app/models/generals/general';
-import { RadiologyAdmissionRequest } from 'src/app/models/radiology/request/radiology-admission-request';
-// import { AdmissionService } from 'src/app/services/admission.service';
-import { GeneralService } from 'src/app/services/general.service';
-import { PatientService } from 'src/app/services/patient.service';
-import { RadiologyService } from 'src/app/services/radiology/radiology.service';
-// import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
-import { nationalTypeIdNames, sourceApps } from 'src/app/variables/common.variable';
+import { General } from '../../../models/generals/general';
+import { RadiologyAdmissionRequest } from '../../../models/radiology/request/radiology-admission-request';
+// import { AdmissionService } from '../../../services/admission.service';
+import { GeneralService } from '../../../services/general.service';
+import { PatientService } from '../../../services/patient.service';
+import { RadiologyService } from '../../../services/radiology/radiology.service';
+// import { ModalitySlot } from '../../../models/radiology/modality-slot';
+import { nationalTypeIdNames, sourceApps } from '../../../variables/common.variable';
 
 @Component({
   selector: 'app-modal-create-admission',
@@ -236,4 +236,6 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     }, (_reason) => {
     })
   }
+
+  // @todo: referral-type functions
 }
