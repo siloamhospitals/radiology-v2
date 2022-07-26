@@ -229,7 +229,7 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Catatan</label>
                 <div>
-                  <input [ngModel]="txtNote" class="form-control" placeholder="Masukkan Catatan" />
+                  <input [(ngModel)]="txtNote" class="form-control" placeholder="Masukkan Catatan" />
                 </div>
               </div>
             </div>
@@ -241,7 +241,7 @@
   <div class="modal-footer">
     <div class="w-100 d-flex flex-row justify-content-between px-1 align-items-center">
       <div class="d-flex flex-row align-items-center pl-4 ml-1">
-        <input type="checkbox" name="formSigned" id="formSigned" class="form-check-input">
+        <input [(ngModel)]="txtIsSigned" type="checkbox" name="formSigned" id="formSigned" class="form-check-input">
         <label class="form-check-label pl-2" for="formSigned" style="position: relative; top: 2px;">Formulir Ditandatangani</label>
       </div>
       <button *ngIf="!isLoadingFetch" (click)="createAdmission($event)" [disabled]="isLoading" class="btn btn-success px-3 ml-2">Buat Admission</button>
@@ -286,7 +286,7 @@
                 </div>
                 <div class="col-6 mb-3 py-3 bg-secondary">
                   <label class="form-label text-muted">Nomor Admission</label>
-                  <div class="form-label">{{'-'}}</div>
+                  <div class="form-label" title="{{model.admission_id}}">{{model.admission_no || '-'}}</div>
                 </div>
                 <div class="w-100"></div>
                 <div class="col-12 mb-3">
