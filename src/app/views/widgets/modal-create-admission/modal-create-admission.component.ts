@@ -43,6 +43,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   // Model Information
   contactId: string
   contactData: any = {}
+  roomName: any = null
 
   // Input to Send AdmissionModel
   referralType: any = null
@@ -54,6 +55,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   txtIsSigned: boolean = false
   isAdmissionEmailDisabled: boolean = true
 
+  // Utility Properties
   isLoadingFetch: boolean = false
   isLoading: boolean = false
   isError: boolean = false
@@ -214,7 +216,8 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   async fetchData () {
     return Promise.all([
-      this.fetchContactData()
+      this.fetchContactData(),
+      this.fetchLocationRoom()
     ])
   }
 
@@ -222,6 +225,15 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     if (!this.contactId) { return }
     this.contactData = await this.patientService.getContact(this.contactId).toPromise()
       .then((res: any) => res.data || {})
+  }
+
+  async fetchLocationRoom () {
+    if (!this.model.modality_hospital_id) { return }
+    const modalityHospitalDetail = await this.radiologyService
+      .getModalityHospitalById(this.model.modality_hospital_id).toPromise()
+      .then((res: any) => res.data || {})
+    const {floor_name, wing_name, room_name} = modalityHospitalDetail.tx_room_mapping
+    this.roomName = `Lantai ${room_name} - Wing ${wing_name} - Ruang ${floor_name}`
   }
 
   setDefaultData () {
