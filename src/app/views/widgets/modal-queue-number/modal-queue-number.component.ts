@@ -25,7 +25,7 @@ export class ModalQueueNumberComponent implements OnInit {
   public source: string = sourceApps;
   public visitId: any = null;
   public charLength: string;
-  public mask_visit_number = [/[a-zA-Z]/, /[a-zA-Z0-9]/, /\d/, /\d/, /\d/];
+  // public mask_visit_number = [/[a-zA-Z]/, /[a-zA-Z0-9]/, /\d/, /\d/, /\d/];
   public fieldError: boolean = true;
   public isSubmit: boolean = false;
   
