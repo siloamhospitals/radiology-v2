@@ -305,8 +305,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       channelId: channelId.FRONT_OFFICE,
       userName: this.userName,
       source: this.source,
-      isBpjs: model.isBpjs,
-      isAnesthesia: model.isAnesthesia
     };
     return payload;
   }
@@ -441,6 +439,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
   }
 
   createNewPatient() {
+    this.activeModal.close();
     const modal = this.modalService.open(ModalNewPatientComponent, { keyboard: false, centered: true, size: 'lg' });
     const {
       modalityHospitalId, modality_label: modalityLabel, room_name: roomName, duration,
