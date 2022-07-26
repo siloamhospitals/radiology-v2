@@ -30,6 +30,7 @@ export class ModalQueueNumberComponent implements OnInit {
   public isSubmit: boolean = false;
   
   ngOnInit() {
+    console.log(this.data, 'data dari admission')
     // this.data.patient_visit_number = 'A0001'
     this.data.modified_date = moment(this.data.modified_date).format('DD / MM / DD hh:mm:ss')
   }

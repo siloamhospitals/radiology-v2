@@ -65,7 +65,6 @@ export class PageModalityMasterComponent implements OnInit {
   }
 
   refreshData = async () => {
-    this.isLoading = true
     await this.fillOperationals()
     this.isLoading = false
   }
@@ -78,7 +77,9 @@ export class PageModalityMasterComponent implements OnInit {
         centered: true,
         size: 'lg'
       })
-    val.refreshData = this.refreshData
+    if(!isEmpty(val)){
+      val.refrehData = this.refreshData();
+    }
     modalRef.componentInstance.responseData = val
     modalRef.result.then((result: any) => {
       console.log('modal is closed', {result})
