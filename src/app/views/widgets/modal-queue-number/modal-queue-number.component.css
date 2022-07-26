@@ -68,3 +68,12 @@ select {
 .text-custom {
   font-size: 14px;
 }
+
+.modal-custom-size-extra-small {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  height: 200px;
+  width:588px
+}
+
+.css-margin-auto-uppercase {text-transform: uppercase; }
