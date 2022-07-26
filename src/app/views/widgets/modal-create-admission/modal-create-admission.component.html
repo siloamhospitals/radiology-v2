@@ -72,7 +72,7 @@
                 </div>
               </div>
               <!-- ReferralType: Internal Doctor Referral -->
-              <ng-container *ngIf="referralType.value === '2'">
+              <ng-container *ngIf="referralType && referralType.value === '2'">
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Dokter Internal yang Dirujuk<sup class="text-required">*</sup></label>
                   <div>
@@ -87,7 +87,7 @@
                 </div>
               </ng-container>
               <!-- ReferralType: External Doctor Referral -->
-              <ng-container *ngIf="referralType.value === '5'">
+              <ng-container *ngIf="referralType && referralType.value === '5'">
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Dokter Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
                   <div>
@@ -96,7 +96,7 @@
                 </div>
               </ng-container>
               <!-- ReferralType: External Doctor Referral - Unlisted -->
-              <ng-container *ngIf="referralType.value === '4'">
+              <ng-container *ngIf="referralType && referralType.value === '4'">
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Nama<sup class="text-required">*</sup></label>
                   <div>
@@ -154,11 +154,11 @@
                 </div>
               </div>
               <!-- PatientType: Private -->
-              <ng-container *ngIf="patientType.value === '1'">
+              <ng-container *ngIf="patientType && patientType.value === '1'">
                 <div class="w-100" style="height: 100px;"></div>
               </ng-container>
               <!-- PatientType: Payer -->
-              <ng-container *ngIf="patientType.value === '2'">
+              <ng-container *ngIf="patientType && patientType.value === '2'">
                 <div class="col-4 mb-3">
                   <label class="form-label">Pembayar</label>
                   <div>
