@@ -1,4 +1,4 @@
-import { isOk } from 'src/app/utils/response.util';
+import { isOk } from '../../../utils/response.util';
 import { RadiologyAppointmentRequest } from './../../../models/radiology/request/radiology-appointment-request';
 import { channelId, sourceApps } from './../../../variables/common.variable';
 import { ModalityService } from './../../../services/modality.service';

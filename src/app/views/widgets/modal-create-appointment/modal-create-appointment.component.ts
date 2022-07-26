@@ -11,7 +11,7 @@ import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPatientHopeGroupedRequest } from '../../../models/patients/search-patient-hope-grouped-request';
 import * as moment from 'moment';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
-import { isOk } from 'src/app/utils/response.util';
+import { isOk } from '../../../utils/response.util';
 import { ModalNewPatientComponent } from '../modal-new-patient/modal-new-patient.component';
 
 @Component({
