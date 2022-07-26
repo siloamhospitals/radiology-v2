@@ -154,7 +154,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       )
       if(request.idNumber && request.patientName && request.birthDate) {
         this.patientHope = patientHospital.filter((pt : NewPatientHope) => {
-          return request.patientName && request.patientName.includes(pt.name) && pt.birthDate === request.birthDate
+          return pt.name.includes(request.patientName || '') && pt.birthDate === request.birthDate
         })
       }else {
         this.patientHope = patientHospital;
