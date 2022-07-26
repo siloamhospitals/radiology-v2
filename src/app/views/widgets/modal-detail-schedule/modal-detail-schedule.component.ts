@@ -126,7 +126,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   inputQueueNumber() {
-    const m = this.modalService.open(ModalQueueNumberComponent, { windowClass: 'modal_queue_number' })
+    const m = this.modalService.open(ModalQueueNumberComponent, { windowClass: 'modal_queue_number', centered: true })
     m.componentInstance.data = this.selectedAppointment;
     m.result.then((result: any) => {
       console.log('modal is closed', {result})

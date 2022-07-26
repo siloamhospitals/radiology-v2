@@ -23,12 +23,43 @@ export class ModalQueueNumberComponent implements OnInit {
   public user = this.key.user;
   public userId: string = this.user.id;
   public source: string = sourceApps;
-  public visitId = '';
+  public visitId: any = null;
+  public charLength: string;
+  public mask_visit_number = [/[a-zA-Z]/, /[a-zA-Z0-9]/, /\d/, /\d/, /\d/];
+  public fieldError: boolean = true;
+  public isSubmit: boolean = false;
   
   ngOnInit() {
-    this.data.patient_visit_number = 'A0001'
+    // this.data.patient_visit_number = 'A0001'
     this.data.modified_date = moment(this.data.modified_date).format('DD / MM / DD hh:mm:ss')
-    console.log(this.data.modified_date)
+  }
+
+  async checkCountChar() {
+    let countChar = this.charRemove(this.visitId);
+    this.charLength = countChar;
+    if(this.charLength.length === 5) {
+      this.fieldError = false;
+    }else{
+      this.fieldError = true;
+    }
+    console.log('🚀 ~ this.fieldError', this.fieldError);
+  }
+
+  charRemove(str: any) {
+    if (str) {
+      str = str.replace('(+62)', '0');
+      str = str.replace(/_/g, '');
+      str = str.replace(/ /g, '');
+      str = str.replace(/ /g, '');
+      str = str.substr(0, 2) == '00' ? str.substr(1) : str;
+    }
+    return str;
+  }
+
+  inputVisitCode(){
+    this.visitId.toUpperCase()
+    this.isSubmit = true
+    console.log(this.visitId.toUpperCase())
   }
 
   close() {
