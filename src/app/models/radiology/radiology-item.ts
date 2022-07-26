@@ -15,5 +15,7 @@ export default interface RadiologyItem {
   readonly status: number;
   readonly status_label: string;
   readonly modified_date: Date;
+  readonly modality_closes: any;
+  readonly floor_name: string;
 
 }

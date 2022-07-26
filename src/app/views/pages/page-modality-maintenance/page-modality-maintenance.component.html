@@ -7,12 +7,10 @@
   <div class="fo_content_container mt-4 d-block" >
     <div class="box bg-white">
       <div class="header-radiology-schedule" >
-
-        
         <div class="row border-bottom">
           <div class="col-md-3">
             <h3 class="p-3 ">
-              Pengaturan Modality
+              Jadwal Perawatan Modality
             </h3>
             <app-modality-tab>
     
@@ -23,7 +21,7 @@
           </div>
           <div class="col-md-2 justify-content-end">
             <h3 class="p-3">
-              <button class="btn btn-primary ml-2" (click)="showModalityModal()">+ Add New Modality</button>
+              <button class="btn btn-primary ml-2" (click)="showModalityModal()">+ Tambah Jadwal</button>
             </h3>
           </div>
         </div>
@@ -47,24 +45,7 @@
                 bindValue="modality_id">
             </ng-select>
             </div>
-            <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
-              <ng-select
-                [multiple]="true"
-                [items]="dropdownListSchduleType"
-                [(ngModel)]="selectedItemsSchdule"
-                placeholder="Jenis Penjadwalan"
-                (change)="onItemSelect()"
-                bindLabel="item_text"
-                bindValue="operational_type">
-            <!-- <ng-template ng-header-tmp>
-                <button (click)="selectAll()" class="btn btn-sm btn-secondary">Select all</button>
-                <button (click)="unselectAll()" class="btn btn-sm btn-secondary">Unselect all</button>
-            </ng-template> -->
-            <!-- <ng-template ng-footer-tmp>
-                Selected count: {{selectedPeople.length}}
-            </ng-template> -->
-            </ng-select>
-            </div>
+            
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
               <ng-select
                 [multiple]="true"
@@ -83,24 +64,7 @@
             </ng-template> -->
             </ng-select>
             </div>
-            <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
-              <ng-select
-                [multiple]="true"
-                [items]="dropdownListStatus"
-                [(ngModel)]="this.selectedItemsStatus"
-                placeholder="Pilih Status"
-                bindLabel="item_text"
-                (change)="onItemSelect()"
-                bindValue="status">
-            <!-- <ng-template ng-header-tmp>
-                <button (click)="selectAll()" class="btn btn-sm btn-secondary">Select all</button>
-                <button (click)="unselectAll()" class="btn btn-sm btn-secondary">Unselect all</button>
-            </ng-template> -->
-            <!-- <ng-template ng-footer-tmp>
-                Selected count: {{selectedPeople.length}}
-            </ng-template> -->
-            </ng-select>
-            </div>
+           
             
           </div>
           <div class="table-head-sticky">
@@ -112,11 +76,10 @@
                 <th style="min-width: 10em">
                   Modality Label
                 </th>
-                <th>Schdule Type</th>
-                <th width="100px" style="text-align: left">Floor</th>
+                <th width="100px" style="text-align: left">Lt</th>
                 <th width="100px" style="text-align: left">Room</th>
-                <th width="100px" style="text-align: left">Dur (min)</th>
-                <th class="text-center" width="100px">Status</th>
+                <th width="100px" style="text-align: left">Jadwal Pemeliharaan</th>
+                <th class="text-center" width="100px">Catatan</th>
                 <th class="pr-3" style="text-align: right; min-width: 10em;">Action</th>
                 <th width="50px"></th>
               </thead>
@@ -125,13 +88,11 @@
                 <tr *ngFor="let item of operationals.data; let i = index">
                   <td>{{item.modality_name}}</td>
                   <td>{{item.modality_label}}</td>
-                  <td>{{item.operational_type_label}}</td>
                   <td style="text-align: left">{{item.room.floor_name}}</td>
                   <td style="text-align: left">{{item.room.name}}</td>
-                  <td style="text-align: left">{{item.operational_type == 3 ? item.duration : '-'}}</td>
+                  <td style="text-align: left">{{item.from_date}} - {{item.to_time}}</td>
                   <td>
-                    <span *ngIf="item.status == 1" class="modality-status status-scheduled">Active</span>
-                    <span *ngIf="item.status == 2" class="modality-status status-arrived">Inactive</span>
+                    {{item.notes}}
                   </td>
                   <td class="pr-3" style="text-align: right">
                     <a class="detailed-button" (click)="showModalityModal(item)">Detail</a>

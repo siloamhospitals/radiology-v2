@@ -30,7 +30,7 @@ const routes: Routes = [
   {
     path: 'maintenence-schedule',
     canActivate: [AuthGuard],
-    loadChildren: './views/pages/page-maintenence-schedule/page-maintenence-schedule.module#PageMaintenenceScheduleModule'
+    loadChildren: './views/pages/page-modality-maintenance/page-modality-maintenance.module#PageModalityMaintenanceModule'
   },
   {
     path: 'queue-management',
