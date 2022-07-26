@@ -79,7 +79,7 @@ export class TableListDailyComponent {
     const payload =  {
       ...schedule,
       reserveDate: this.dateSelected,
-      // refreshTableDaily: this.refreshData
+      refreshTableDaily: this.refreshData()
     }
     payload.from_time = moment(payload.from_time, 'hh:mm').format('HH:mm')
     payload.to_time = moment(payload.to_time, 'hh:mm').format('HH:mm')

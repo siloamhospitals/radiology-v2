@@ -1,23 +1,22 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { isEmpty } from 'lodash'
-import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import {  Modality } from '../../../models/radiology/radiology';
-import { ModalModalityComponent } from '../../widgets/modal-modality/modal-modality.component';
+import { ModalMaintenanceComponent } from '../../widgets/modal-maintenance/modal-maintenance.component';
 import { RadiologyService } from '../../../services/radiology/radiology.service';
-import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';
+//import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';
 import { RoomMappingService } from '../../../services/room-mapping.service';
 import { RoomMapping } from '../../../models/room-mapping';
 
 
 @Component({
-  selector: 'app-page-modality-master',
-  templateUrl: './page-modality-master.component.html',
-  styleUrls: ['./page-modality-master.component.css']
+  selector: 'app-page-modality-maintenance',
+  templateUrl: './page-modality-maintenance.component.html',
+  styleUrls: ['./page-modality-maintenance.component.css']
 })
-export class PageModalityMasterComponent implements OnInit {
+export class PageModalityMaintenanceComponent implements OnInit {
 
   @Input() responseData: any;
   public modalityOptions: Modality[];
@@ -31,13 +30,8 @@ export class PageModalityMasterComponent implements OnInit {
   public hospitalId = this.localKey.hospital.id;
   dropdownListSchduleType: { operational_type: number; item_text: string; }[];
   dropdownListStatus: { status: number; item_text: string; }[];
-
-  public operationals: RadiologyListResponse = {
-    status: '',
-    message: '',
-    data: [],
-    last_update: ''
-  };
+  operationals: any = []
+  
 
   public roomOptions: RoomMapping[] = [];
   public filteredOptions: Observable<RoomMapping[]>;
@@ -65,21 +59,20 @@ export class PageModalityMasterComponent implements OnInit {
   }
 
   refreshData = async () => {
+    this.isLoading = true
     await this.fillOperationals()
     this.isLoading = false
   }
 
   showModalityModal(val: any = null) {
-    const modalRef = this.modalService.open(ModalModalityComponent, 
+    const modalRef = this.modalService.open(ModalMaintenanceComponent, 
       { 
         windowClass: 'modal_modality', 
         keyboard: false,
         centered: true,
         size: 'lg'
       })
-    if(!isEmpty(val)){
-      val.refrehData = this.refreshData();
-    }
+    val.refreshData = this.refreshData
     modalRef.componentInstance.responseData = val
     modalRef.result.then((result: any) => {
       console.log('modal is closed', {result})
@@ -91,6 +84,7 @@ export class PageModalityMasterComponent implements OnInit {
       hospitalId: this.hospitalId,
     })
       .subscribe(data => {
+
         this.modalityOptions = data.data;
       }, () => {
         this.modalityOptions = [];
@@ -120,15 +114,29 @@ unselectAll() {
     const key = JSON.parse(this.strKey)
     const hospitalId: any = key.hospital.id
     this.service.getOperational(hospitalId, floor_id, operational_type, status, modality_id, modality_label).subscribe((response) => {
+      let newdata =[]
       if (response.status === 'OK') {
-        this.operationals = response;
-        if (this.operationals.data) {
-          const latest = [...this.operationals.data]
-          .sort((e1, e2) => moment(e2.modified_date).valueOf() - moment(e1.modified_date).valueOf());
-          if (latest && latest[0]) {
-            this.operationals.last_update = moment(latest[0].modified_date).format('YYYY-MM-DD hh:mm:ss');
+        
+        for (let i = 0; i < response.data.length; i++) {
+          console.log(response.data[i].modality_closes)
+          if(response.data[i].modality_closes){
+            for (let ii = 0; ii < response.data[i].modality_closes.length; ii++) {
+              response.data[i].modality_closes[ii].modality_name = response.data[i].modality_name
+              response.data[i].modality_closes[ii].room = response.data[i].room
+              response.data[i].modality_closes[ii].floor_name = response.data[i].floor_name
+              response.data[i].modality_closes[ii].modality_label  = response.data[i].modality_label 
+              response.data[i].modality_closes[ii].modality_label  = response.data[i].modality_label 
+              newdata.push(response.data[i].modality_closes[ii])
+              console.log("why",newdata)
+              
+            }
           }
         }
+
+        this.operationals.data = newdata;
+
+        
+        
       } else {
         this.showErrorAlert(response.message);
       }

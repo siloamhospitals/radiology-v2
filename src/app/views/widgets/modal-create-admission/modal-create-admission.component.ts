@@ -9,6 +9,7 @@ import { PatientService } from '../../../services/patient.service';
 import { RadiologyService } from '../../../services/radiology/radiology.service';
 // import { ModalitySlot } from '../../../models/radiology/modality-slot';
 import { nationalTypeIdNames, sourceApps } from '../../../variables/common.variable';
+import { ModalQueueNumberComponent } from '../modal-queue-number/modal-queue-number.component';
 
 @Component({
   selector: 'app-modal-create-admission',
@@ -108,6 +109,16 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   createAdmission (evt: any = null) {
     evt.preventDefault()
     this.processCreateAdmission()
+  }
+
+  inputQueueNumber() {
+    this.close();
+    const m = this.modalService.open(ModalQueueNumberComponent, { windowClass: 'modal_queue_number', centered: true })
+    m.componentInstance.data = this.model;
+    m.result.then((_result: any) => {
+      this.activeModal.close()
+      this.refresh();
+    })
   }
 
   processCreateAdmission () {

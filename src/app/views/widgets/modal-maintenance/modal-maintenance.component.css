@@ -1,0 +1,148 @@
+.header {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.height-row {
+  height: 2rem;
+  line-height: 2rem;
+}
+
+.height-row-2 {
+  height: 2.5rem;
+  line-height: 2.5rem;
+}
+
+.text-column {
+  font-size: 13px;
+}
+
+.space-div {
+  margin-top: 2rem;
+}
+
+.space-row {
+  margin-top: 2rem;
+}
+
+.right-text {
+  text-align: right;
+}
+
+.btn-grey{
+  background: #f4f4f4  !important;
+  color: black !important;
+  border: 1px solid #ced4da;
+}
+
+.btn-submit {
+  width: 11rem;
+}
+
+.left-space {
+  width: 40%;
+}
+
+.right-space {
+  width: 60%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error-msg {
+  color: red;
+  float: right;
+  right:0;
+}
+
+.modal-result .radio-result {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.modal-result .radio-result input[type="radio"] {
+  margin-right: 5px;
+}
+
+.modal-result .radio-result label {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+::ng-deep .modal_modality .modal-lg  {
+  max-width: 450px;
+}
+
+.r-center-flex{
+  display: flex;
+  align-items: center;
+}
+
+
+.r-isExpand{
+  width: 100%;
+}
+.r-autocomplete {
+  position: relative;
+}
+.r-autocomplete .r-autocomplete-place {
+  display: flex;
+  flex-flow: column;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  background: white;
+  border-radius: 4px;
+  padding: 4px 3px;
+  z-index: 500;
+  font-weight: 700;
+}
+.r-autocomplete .r-autocomplete-place .r-autocomplete-items {
+  max-height: 218px;
+  overflow: auto;
+}
+.r-autocomplete .r-autocomplete-place .r-autocomplete-items .r-autocomplete-item {
+  padding: 8px 16px;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+.r-autocomplete .r-autocomplete-place .r-autocomplete-items .r-autocomplete-item:hover {
+  color: #1A6BDC !important;
+  background: #E8F0FB !important;
+  border-radius: 4px !important;
+}
+
+::ng-deep .custom-switch {
+  padding-left: 0;
+}
+
+.custom-control {
+  position: relative;
+  z-index: 1;
+  display: block;
+  min-height: 1.5rem;
+  padding-left: 0;
+}
+
+::ng-deep .custom-switch.custom-switch-lg .custom-control-label {
+  padding-left: 3rem;
+  padding-bottom: 2rem;
+}
+
+::ng-deep .custom-switch.custom-switch-lg .custom-control-label::before {
+  height: 2rem;
+  width: calc(3rem + 0.75rem);
+  border-radius: 4rem;
+}
+
+::ng-deep .custom-switch.custom-switch-lg .custom-control-label::after {
+  width: calc(2rem - 4px);
+  height: calc(2rem - 4px);
+  border-radius: calc(3rem - (2rem / 2));
+}
+
+::ng-deep .custom-switch.custom-switch-lg .custom-control-input:checked ~ .custom-control-label::after {
+  transform: translateX(calc(2rem - 0.25rem));
+}
