@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerModule } from '../date-picker/date-picker.module';
 import { TimepickerModule } from '../time-picker/time-picker.module';
 import { LoadingModule } from '../widget-loading/widget-loading.module';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [ModalNewPatientComponent],
@@ -17,6 +18,7 @@ import { LoadingModule } from '../widget-loading/widget-loading.module';
     DatepickerModule,
     TimepickerModule,
     LoadingModule,
+    NgxMaskModule.forRoot(),
   ]
 })
 export class ModalNewPatientModule { }
