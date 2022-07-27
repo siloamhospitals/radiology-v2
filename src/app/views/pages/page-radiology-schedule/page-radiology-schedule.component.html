@@ -25,7 +25,7 @@
               class="btn font-weight-bold text-muted d-flex mx-2 {{tableViewCurrentIsToday ? 'btn-primary' : 'btn-light'}}"
               (click)="toToday()">
               <i class="fa fa-calendar-check-o" style="font-size: 16px;"></i>
-              <span class="ml-2">Today</span>
+              <span class="ml-2">Hari ini</span>
             </button>
             <div style="width: 2px; background: #ccc;"></div>
             <select
@@ -66,33 +66,33 @@
         </div>
         <div *ngIf="[0,1].includes(tableViewActive)"
           class="px-3 border-bottom">
-          <div class="row">
-            <div class="col-md-3 position-relative pr-0 border-right">
-              <input class="form-control pt-3 input-filter pr-5" type="text" placeholder="Cari Nama Pasien"
+          <div class="row" style="min-height: 56px;">
+            <form (submit)="setFilterName($event)" class="col-md-3 position-relative pr-0 border-right">
+              <input name="name" class="form-control pt-3 input-filter pr-5" type="text" placeholder="Cari Nama Pasien"
                 title="Find patients"
-                [(ngModel)]="filterName"
-                (keyup)="setFilterName($event)"
-                (blur)="setFilterName($event)" />
-              <span class="fa fa-search position-absolute" style="font-size: 16px; bottom: 15px;"></span>
-            </div>
-            <div class="col-md-3 position-relative pr-0 border-right">
-              <input class="form-control pt-3 input-filter pr-5" type="text" placeholder="Cari Local MR"
+                [(ngModel)]="filterName"/>
+              <button type="submit" class="fa fa-search position-absolute border-0 bg-transparent" style="font-size: 16px; bottom: 15px;"></button>
+            </form>
+            <form (submit)="setFilterLocalMrNo($event)" class="col-md-3 position-relative pr-0 border-right">
+              <input name="local_mr_no" class="form-control pt-3 input-filter pr-5" type="text" placeholder="Cari Local MR"
                 title="Find local MR"
                 [(ngModel)]="filterLocalMrNo"
-                (keyup)="setFilterLocalMrNo($event)"
-                (blur)="setFilterLocalMrNo($event)" />
-              <span class="fa fa-search position-absolute" style="font-size: 16px; bottom: 15px;"></span>
-            </div>
-            <div class="col-md-2 pr-0 d-flex flex-column border-right pb-2">
-              <small>Time Range</small>
+                (change)="setFilterLocalMrNo($event)" />
+              <button type="submit" class="fa fa-search position-absolute border-0 bg-transparent" style="font-size: 16px; bottom: 15px;"></button>
+            </form>
+            <div *ngIf="sectionSelected?.operational_type !== '1'" class="col-md-2 pr-0 d-flex flex-column border-right pb-2">
+              <small class="text-muted" >Rentang Waktu</small>
               <div class="d-flex align-items-center">
                 <app-time-picker
                   [(value)]="fromTimeRange"
-                  [duration]="sectionSelected.duration" ></app-time-picker>
+                  [duration]="sectionSelected.duration" 
+                  class="text-left px-0"
+                  noBorder="true" ></app-time-picker>
                 <b class="mx-2" >-</b>
                 <app-time-picker
                   [(value)]="toTimeRange"
-                  [duration]="sectionSelected.duration" ></app-time-picker>
+                  [duration]="sectionSelected.duration" 
+                  noBorder="true" ></app-time-picker>
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@
       </section> -->
 
       <section class="px-3 my-3 pb-3">
-        <ng-container *ngIf="!showFilterTable; else tableFilter">
+        <ng-container *ngIf="!showFilterTable || sectionSelected?.operational_type === '1'; else tableFilter">
           <div *ngIf="tableViewActive===2" class="no-sticky">
             <app-table-list-monthly
               (itemClick)="toDaily($event)"
@@ -123,11 +123,19 @@
           </div>
           <div *ngIf="tableViewActive===0" class="table-head-sticky">
             <app-table-list-daily
+              *ngIf="sectionSelected?.operational_type !== '1'"
               [sectionSelected]="sectionSelected"
               [dateSelected]="tableViewCurrentDate"
               [fromTimeRange]="fromTimeRange"
               [toTimeRange]="toTimeRange"
               ></app-table-list-daily>
+              <app-table-list-daily-fcfs 
+              *ngIf="sectionSelected?.operational_type === '1'"
+              [sectionSelected]="sectionSelected"
+              [dateSelected]="tableViewCurrentDate" 
+              [filter]="filter" 
+              (isFilterShow)="resetFilter($event, false)" > 
+              </app-table-list-daily-fcfs>
           </div>
         </ng-container>
         <ng-template #tableFilter>
