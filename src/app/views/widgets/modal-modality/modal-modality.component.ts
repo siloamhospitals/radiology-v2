@@ -17,7 +17,6 @@ import RadiologyItem from '../../../models/radiology/radiology-item';
 import { ModalConfirmDeleteComponent } from '../modal-confirm-delete/modal-confirm-delete.component';
 import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
-import { isEmpty } from 'lodash';
 
 @Component({
   selector: 'app-modal-modality',
