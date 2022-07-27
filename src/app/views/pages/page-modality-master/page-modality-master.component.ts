@@ -82,7 +82,10 @@ export class PageModalityMasterComponent implements OnInit {
     }
     modalRef.componentInstance.responseData = val
     modalRef.result.then((result: any) => {
-      console.log('modal is closed', {result})
+      console.log(result);
+      this.fillOperationals()
+      this.getModality()
+      this.getRooms();
     })
   }
 
@@ -99,11 +102,11 @@ export class PageModalityMasterComponent implements OnInit {
 
   selectAll() {
     this.selectedItemsModality = this.modalityOptions.map(x => x.name);
-}
+  }
 
-unselectAll() {
-    this.selectedItemsModality = [];
-}
+  unselectAll() {
+      this.selectedItemsModality = [];
+  }
 
   getRooms() {
     const key = JSON.parse(this.strKey);
