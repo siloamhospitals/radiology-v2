@@ -113,11 +113,11 @@
               <div class="w-100"></div>
               <div class="col col-4 mb-3">
                 <label class="form-label text-muted">Nama Pembayar</label>
-                <div class="form-label">-</div>
+                <div class="form-label">{{model && model.payer_name? model.payer_name : '-'}}</div>
               </div>
               <div class="col col-8 mb-3">
                 <label class="form-label text-muted">Nomor Pembayaran</label>
-                <div class="form-label">-</div>
+                <div class="form-label">{{model && model.payer_name? model.payer_no : '-'}}</div>
               </div>
             </div>
           </div>
@@ -143,14 +143,7 @@
               <div class="col-8 mb-3">
                 <label class="form-label">Ruangan / Lokasi</label>
                 <div>
-                  <ng-select
-                    [(ngModel)]="roomSelect"
-                    [items]="roomOptions"
-                    [clearable]="false"
-                    placeholder="Pilih Ruangan / Lokasi"
-                    bindLabel="description"
-                    class="x-form-control">
-                  </ng-select>
+                  <input [ngModel]="roomName" class="form-control" placeholder="Ruangan / Lokasi" disabled />
                 </div>
               </div>
               <!-- PatientType: Private -->
