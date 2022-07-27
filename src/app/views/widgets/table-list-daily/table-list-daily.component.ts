@@ -37,7 +37,7 @@ export class TableListDailyComponent {
 
   async getModalitySlots() {
     if(this.sectionSelected.modality_hospital_id) {
-      const modalityHospitalId = this.sectionSelected.modality_hospital_id  // 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9'
+      const modalityHospitalId = this.sectionSelected.modality_hospital_id
       const reserveDate = this.dateSelected.format('YYYY-MM-DD')
       const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
       this.modalitySlots = responseSlots.data || [];
@@ -138,6 +138,8 @@ export class TableListDailyComponent {
           status: slot.status,
           modality_slot_id: slot.modality_slot_id,
           rowSpan: 1,
+          patient_visit_number: slot.patient_visit_number,
+          isBpjs: slot.is_bpjs,
           duration,
           ...slot
         }
@@ -188,6 +190,8 @@ export class TableListDailyComponent {
           status: slot.status,
           modality_slot_id: slot.modality_slot_id,
           rowSpan: 1,
+          patient_visit_number: slot.patient_visit_number,
+          isBpjs: slot.is_bpjs,
           duration,
           ...slot
         }
@@ -218,7 +222,7 @@ export class TableListDailyComponent {
 
   async ngOnChanges(changes: SimpleChanges) {
     if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue))
-      || this.sectionSelected.modality_hospital_id) {
+      && this.sectionSelected.modality_hospital_id) {
       this.refresh(true)
       // await this.refreshData()
     }
@@ -230,14 +234,15 @@ export class TableListDailyComponent {
           this.scheduleList = this.scheduleListBk.slice()
         }else {
           const momentFromTime = moment(this.fromTimeRange, 'hh:mm')
-          const momentToTime = moment(this.toTimeRange, 'hh:mm')
+          const momentToTime = moment(this.toTimeRange, 'hh:mm')          
           this.scheduleList = this.scheduleListBk.reduce((acc, sc) => {
-            const items = sc.items.filter((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
+            const copySc = Object.assign({} , sc)
+            const items = copySc.items.filter((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
                 && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) );
 
             if(items.length) {
-              sc.items = items
-              acc.push(sc)
+              copySc.items = items.slice()
+              acc.push(copySc)
             }
             return acc
           }, [])

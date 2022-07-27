@@ -36,28 +36,33 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   patientTypes: General[] = []
   referralTypes: General[] = []
   emailTypes: General[] = []
+  roomOptions: General[] = []
 
   nationalIdTypeName: any = nationalTypeIdNames
 
   // Model Information
   contactId: string
   contactData: any = {}
+  roomName: any = null
 
   // Input to Send AdmissionModel
-  referralType: any = 1
-  patientType: any = 1
+  referralType: any = null
+  patientType: any = null
   roomSelect: any = null
-  emailType: any = 1
+  emailType: any = null
   txtEmail: any = null
   txtNote: any = null
+  txtIsSigned: boolean = false
   isAdmissionEmailDisabled: boolean = true
 
+  // Utility Properties
   isLoadingFetch: boolean = false
   isLoading: boolean = false
   isError: boolean = false
   isSuccess: boolean = false
 
   errorMessage: any = null
+  successResponseModel: any = null
 
   modalCreateAdmissionLoading: any = null
 
@@ -119,7 +124,10 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   }
 
   processCreateAdmission () {
-    // @todo: add editEmailAndNote
+    // Emit Edit Email or Note
+    this.editNotesAndEmail(this.model.contact_id)
+
+    // Create Admission Purpose
     const body: RadiologyAdmissionRequest = {
       modalitySlotId: this.model.modality_slot_id,
       organizationId: Number(this.hospital.orgId),
@@ -137,6 +145,9 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     console.log('createAdmission', body)
 
     const isSuccess = (res: any) => {
+      this.successResponseModel = res.data
+      this.model.admission_id = this.successResponseModel.admission_id
+      this.model.admission_no = this.successResponseModel.admission_no
       this.isLoading = false
       this.isSuccess = true
       this.activeModal.close()
@@ -205,7 +216,8 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   async fetchData () {
     return Promise.all([
-      this.fetchContactData()
+      this.fetchContactData(),
+      this.fetchLocationRoom()
     ])
   }
 
@@ -215,9 +227,19 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
       .then((res: any) => res.data || {})
   }
 
+  async fetchLocationRoom () {
+    if (!this.model.modality_hospital_id) { return }
+    const modalityHospitalDetail = await this.radiologyService
+      .getModalityHospitalById(this.model.modality_hospital_id).toPromise()
+      .then((res: any) => res.data || {})
+    const {floor_name, wing_name, room_name} = modalityHospitalDetail.tx_room_mapping
+    this.roomName = `Lantai ${room_name} - Wing ${wing_name} - Ruang ${floor_name}`
+  }
+
   setDefaultData () {
     this.changeEmailType()
-    this.txtNote = this.model.note
+    this.txtNote = this.contactData ? this.contactData.notes : null
+    this.txtIsSigned = this.contactData ? this.contactData.is_signed : null
   }
   
   changeEmailType () {
@@ -246,6 +268,30 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     this.modalCreateAdmissionLoading = this.modalService.open(content, {centered: true}).result.then((_result) => {
     }, (_reason) => {
     })
+  }
+
+  async editNotesAndEmail(contactId?: any) {
+    if (this.contactData.notes !== this.txtNote
+      || this.model.email !== this.txtEmail
+      || this.contactData.is_signed !== this.txtIsSigned) {
+      const modifyNotesEmail = {
+        patientOrganizationId: this.model.patient_organization_id,
+        organizationId: Number(this.hospital.orgId),
+        emailAddress: this.txtEmail,
+        notes: this.txtNote,
+        isSigned: this.txtIsSigned,
+        source: sourceApps,
+        userName: this.user.fullname,
+        userId: this.user.id
+      }
+      this.patientService.editNotesAndEmailPatient(modifyNotesEmail, contactId).toPromise()
+        .then(res => {
+          return res.data;
+        }).catch((e: any) => {
+          console.log('EDIT_EMAIL_NOTE_SIGNED_ERROR', e)
+          return null;
+        })
+    }
   }
 
   // @todo: referral-type functions

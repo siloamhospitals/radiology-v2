@@ -1,6 +1,6 @@
 <div id="timer-picker" class="position-relative">
-  <input type="text" class="form-control timer-picker"
-    [ngClass]="isModalLarge ? 'text-left text-custom text-muted' : 'text-center'"
+  <input type="text" 
+    [ngClass]="ngClassInput"
     [style.width]="width"
     [placeholder]="placeholder"
     [readonly]="readonly ? 'readonly' : ''"

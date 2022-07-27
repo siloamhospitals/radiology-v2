@@ -30,6 +30,7 @@ import { LoadingModule } from '../../widgets/widget-loading/widget-loading.modul
 import { LoadingComponent } from '../../widgets/widget-loading/widget-loading.component';
 import { ModalNewPatientComponent } from '../../widgets/modal-new-patient/modal-new-patient.component';
 import { ModalNewPatientModule } from '../../widgets/modal-new-patient/modal-new-patient.module';
+import { TableListDailyFcfsModule } from '../../widgets/table-list-daily-fcfs/table-list-daily-fcfs.module';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -56,7 +57,8 @@ import { ModalNewPatientModule } from '../../widgets/modal-new-patient/modal-new
     ModalCreateAppointmentModule,
     ModalQueueNumberModule,
     ModalNewPatientModule,
-    LoadingModule
+    LoadingModule,
+    TableListDailyFcfsModule
   ],
   exports: [
     PageRadiologyScheduleComponent
