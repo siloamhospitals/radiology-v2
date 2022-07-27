@@ -1,3 +1,4 @@
+import { General } from './../../../models/generals/general';
 import { Subdistrict } from './../../../models/generals/subdistrict';
 import { District } from './../../../models/generals/district';
 import { City } from './../../../models/generals/city';
@@ -65,10 +66,15 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     identityTypeId: '',
     phoneNumber1: '',
     emailAddress: '',
+    districtId: '',
+    subDistrictId: '',
+    sexId: '',
+    cityId: '',
   };
   public listCity: City[];
   public listDistrict: District[];
   public listSubdistrict: Subdistrict[];
+  public listSex: General[] = [];
 
 
   // buttons
@@ -265,7 +271,9 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     this.isSubmitting = true;
     const isValid = this.validForm();
     if(isValid) {
-      this.createNewContact();
+      const isPatientExist = this.checkPatientExist();
+      console.log(isPatientExist, '========== is patient exist')
+      if(!isPatientExist) this.createNewContact();
       if (this.modalityAppointmentList.length > 0) {
         let allPassed = true;
         this.modalityAppointmentList.forEach((element: any) => {
@@ -301,13 +309,16 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
         if (allPassed) {
           Swal.fire({
             type: 'success',
-            title: 'Success New Patient Created and Modality',
-            text: 'Sukses',
+            title: 'Sukses',
+            text: 'Sukses Membuat Pasien Baru Beserta Modalitynya',
             timer: 1500
           });
           this.activeModal.close();
         }
       } else {
+        const isPatientExist = this.checkPatientExist();
+        console.log(isPatientExist, '========== is patient exist')
+        if(!isPatientExist) this.createNewContact();
         const model = {
           ...this.selectedModality,
           ...this.model,
@@ -405,6 +416,21 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     );
   }
 
+  checkPatientExist() {
+    const { name, birthDate } = this.model;
+    let result = null;
+    this.patientService.searchPatient(name, birthDate, this.hospital.orgId).subscribe(
+      (res) => {
+        result = res.data;
+        this.showSuccessAlert('Pasien Baru Berhasil Dibuat', 2000);
+      }, error => {
+        console.log(error, '=======error')
+        this.showErrorAlert(error.error.message, 2000);
+      }
+    );
+    return result;
+  }
+
   validForm() {
     const {
       birthDate, name, identityNumber, identityTypeId, phoneNumber1, emailAddress,
@@ -417,8 +443,8 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
       // console.log(identityTypeId)
       // console.log(phoneNumber1)
       // console.log(emailAddress)
-      // const testPhone = this.isValidHandphone(phoneNumber1);
-      // console.log(testPhone, '=========== test phone')
+      const testPhone = this.isValidHandphone(phoneNumber1);
+      console.log(testPhone, '=========== test phone')
       return true;
     } else {
       return false;
@@ -489,5 +515,12 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     if (this.listSubdistrict.length != 0) {
       this.model.subdistrict = this.listSubdistrict[0];
     }
+  }
+
+  getSex() {
+    this.generalService.getGender().subscribe((res: any) => {
+      console.log(res, '==============res')
+      this.listSex = res.data;
+    })
   }
 }
