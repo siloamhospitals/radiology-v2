@@ -22,6 +22,8 @@ export class TimepickerComponent implements OnInit {
   @Input() readonly: boolean = false;
   @Input() duration: number;
   @Input() onChange : Function;
+  @Input() class : string = '';
+  ngClassInput : string[] = ['form-control timer-picker']
 
   @Output() valueChange = new EventEmitter()
 
@@ -40,6 +42,8 @@ export class TimepickerComponent implements OnInit {
         this.hours = Array.from(Array(24).keys()).map(x => this.slice2Digit(x) + ':' +('00'))
       }
     }
+    this.ngClassInput.push(this.isModalLarge ? 'text-left text-custom text-muted' : '')
+    this.ngClassInput.push(this.class || '')
   }
 
   private createSlotTimeMinute() {
