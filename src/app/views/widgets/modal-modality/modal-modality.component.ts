@@ -93,7 +93,7 @@ export class ModalModalityComponent implements OnInit {
       roomId: [{value: '', disabled: false}, [Validators.required]],
       roomName: [{value: '', disabled: false}, [Validators.required]],
       status: [{value: '1', disabled: false}, [Validators.required]],
-      duration: this.responseData == null ? [{value: '', disabled: false}, [Validators.required, Validators.min(0)]]
+      duration: this.responseData == null ? [{value: '0', disabled: false}, [Validators.required, Validators.min(0)]]
       : [{value: '', disabled: true}] ,
       operationalType: this.responseData == null ? [{value: '3', disabled: false}, [Validators.required]] : 
       [{value: '3', disabled: true}]
@@ -272,14 +272,7 @@ export class ModalModalityComponent implements OnInit {
   }
 
   close() {
-    console.log(this.responseData)
-    if(isEmpty(this.responseData))
-    {
-      this.activeModal.close();
-    }else{
-      this.responseData.refreshData
-      this.activeModal.close();
-    }
+    this.activeModal.close();
   }
 
   closeModal() {
