@@ -48,6 +48,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   // Model Information
   contactId: string;
   contactData: any = {};
+  contactHopeData: any = {};
   roomName: any = null;
 
   // Input to Send AdmissionModel
@@ -71,6 +72,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   payerNote: any = null;
 
   // Utility Properties
+  isNoEmail: boolean = false
   isLoadingFetch: boolean = false
   isLoading: boolean = false
   isError: boolean = false
@@ -261,6 +263,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   async fetchData () {
     return Promise.all([
       this.fetchContactData(),
+      this.fetchContactHopeData(),
       this.fetchLocationRoom()
     ])
   }
@@ -268,6 +271,13 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   async fetchContactData () {
     if (!this.contactId) { return }
     this.contactData = await this.patientService.getContact(this.contactId).toPromise()
+      .then((res: any) => res.data || {})
+  }
+
+  async fetchContactHopeData () {
+    const patientId = this.contactData.patient_hope_id
+    if (!patientId) { return }
+    this.contactHopeData = await this.patientService.getPatientHopeDetailTwo(patientId).toPromise()
       .then((res: any) => res.data || {})
   }
 
@@ -288,11 +298,12 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   changeEmailType () {
     const v = this.emailType
+    this.isNoEmail = false
     switch (v.value) {
       case '1': this.txtEmail = this.contactData.email_address; this.isAdmissionEmailDisabled = true; break;
-      case '2': this.txtEmail = this.contactData.email_address; this.isAdmissionEmailDisabled = true; break;
+      case '2': this.txtEmail = this.contactHopeData && this.contactHopeData.secondaryEmailAddress ? this.contactHopeData.secondaryEmailAddress : null; this.isAdmissionEmailDisabled = true; break;
       case '3': this.txtEmail = null; this.isAdmissionEmailDisabled = false; break;
-      case '4': this.txtEmail = 'noemail@email.com'; this.isAdmissionEmailDisabled = true;
+      case '4': this.txtEmail = null; this.isAdmissionEmailDisabled = true; this.isNoEmail = true
       default: break;
     }
   }
@@ -321,7 +332,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
       const modifyNotesEmail = {
         patientOrganizationId: this.model.patient_organization_id,
         organizationId: Number(this.hospital.orgId),
-        emailAddress: this.txtEmail,
+        // emailAddress: this.txtEmail,
         notes: this.txtNote,
         isSigned: this.txtIsSigned,
         source: sourceApps,
