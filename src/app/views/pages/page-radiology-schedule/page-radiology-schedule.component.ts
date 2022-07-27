@@ -183,7 +183,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     }
     this.setRouterViewValue({
       view: this.tableViewActive,
-      value: val ? val.toISOString().split('T')[0] : undefined,
+      value: val ? moment(val).format('YYYY-MM-DD') : undefined,
       section: this.sectionSelected ? this.sectionSelected.modality_hospital_id : undefined
     })
     this.changeTableDate(val || new Date())

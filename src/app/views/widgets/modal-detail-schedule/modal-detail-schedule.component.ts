@@ -54,6 +54,7 @@ export class ModalDetailScheduleComponent implements OnInit {
 
   @ViewChild('modalConfirmPatient') modalConfirmPatientData: ElementRef
   @ViewChild('modalConfirmAdmission') modalConfirmAdmission: ElementRef
+  @ViewChild('modalConfirmCheckIn') modalConfirmCheckIn: ElementRef
 
   constructor(
     public alertService: AlertService,
@@ -71,11 +72,12 @@ export class ModalDetailScheduleComponent implements OnInit {
   date : any = moment()
 
   ngOnInit() {
+    console.log(this.selectedAppointment)
     this.updateAppointmentForm = this._fb.group({
       modalityExaminationId: [{value: this.selectedAppointment.modality_examination_id, disabled: false}, [Validators.required]],
       is_bpjs: [{value: this.selectedAppointment.is_bpjs, disabled: false}, [Validators.required]],
       is_anesthesia: [{value: this.selectedAppointment.is_anesthesia, disabled: false}, [Validators.required]],
-      note: [{value: this.selectedAppointment.note, disabled: false}],
+      notes: [{value: this.selectedAppointment.notes, disabled: false}],
     });
     this.onChangeDefaultSelected();
     this.fillExaminations(this.selectedAppointment.modality_hospital_id);
@@ -126,11 +128,38 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   inputQueueNumber() {
-    const m = this.modalService.open(ModalQueueNumberComponent, { windowClass: 'modal_queue_number', centered: true })
-    m.componentInstance.data = this.selectedAppointment;
-    m.result.then((result: any) => {
-      console.log('modal is closed', {result})
-    })
+    const openModalVisitNumber = () => {
+      const m = this.modalService.open(ModalQueueNumberComponent, { windowClass: 'modal_queue_number', centered: true })
+      m.componentInstance.data = this.selectedAppointment;
+      m.result.then((result: any) => {
+        console.log('modal is closed', {result})
+      })
+    }
+    const {
+      local_mr_no: localMrNo,
+      to_time: toTime,
+      reserve_date: reserveDate}
+    = this.selectedAppointment
+    // Check Patient Data is Complete
+    if (!localMrNo) {
+      this.modalService.open(this.modalConfirmPatientData, { centered: true })
+      return
+    }
+    // Check On Late
+    const lastTime = moment(`${reserveDate} ${toTime}`, 'YYYY-MM-DD HH:mm')
+    const diffTime = moment().diff(lastTime)
+    if (diffTime > 0) {
+      this.admissionLateTime = moment.utc(diffTime).format('HH [jam] mm [menit] ss [detik]')
+      this.admissionIsNotToday = moment().isAfter(lastTime, 'days')
+      const c = this.modalService.open(this.modalConfirmCheckIn, { centered: true })
+      c.result.then((_result: any) => {
+        openModalVisitNumber()
+      }).catch((_e) => {
+        console.log('MODAL_CLOSE', _e)
+      })
+    }else {
+      openModalVisitNumber()
+    }
   }
 
   showHistoryModal() {
@@ -180,7 +209,7 @@ export class ModalDetailScheduleComponent implements OnInit {
       isWaitingList: false,
       fromTime: this.selectedAppointment.from_time,
       toTime: this.selectedAppointment.to_time,
-      notes: this.updateAppointmentForm.controls.note.value,
+      notes: this.updateAppointmentForm.controls.notes.value,
       isBpjs: this.updateAppointmentForm.controls.is_bpjs.value,
       isAnesthesia: this.updateAppointmentForm.controls.is_anesthesia.value,
       userId: this.userId,

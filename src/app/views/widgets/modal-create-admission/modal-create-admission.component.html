@@ -61,13 +61,18 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Jenis Rujukan</label>
                 <div>
-                  <select [(ngModel)]="referralType" class="x-form-control" placeholder="Pilih Jenis Rujukan">
-                    <option *ngFor="let item of referralTypes" [ngValue]="item">{{item.description}}</option>
-                  </select>
+                  <ng-select
+                    [(ngModel)]="referralType"
+                    [items]="referralTypes"
+                    [clearable]="false"
+                    placeholder="Pilih Tipe Pasien"
+                    bindLabel="description"
+                    class="x-form-control">
+                  </ng-select>
                 </div>
               </div>
               <!-- ReferralType: Internal Doctor Referral -->
-              <ng-container *ngIf="referralType.value === '2'">
+              <ng-container *ngIf="referralType && referralType.value === '2'">
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Dokter Internal yang Dirujuk<sup class="text-required">*</sup></label>
                   <div>
@@ -82,7 +87,7 @@
                 </div>
               </ng-container>
               <!-- ReferralType: External Doctor Referral -->
-              <ng-container *ngIf="referralType.value === '5'">
+              <ng-container *ngIf="referralType && referralType.value === '5'">
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Dokter Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
                   <div>
@@ -91,7 +96,7 @@
                 </div>
               </ng-container>
               <!-- ReferralType: External Doctor Referral - Unlisted -->
-              <ng-container *ngIf="referralType.value === '4'">
+              <ng-container *ngIf="referralType && referralType.value === '4'">
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Nama<sup class="text-required">*</sup></label>
                   <div>
@@ -125,25 +130,35 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Tipe Pasien</label>
                 <div>
-                  <select [(ngModel)]="patientType" class="x-form-control" placeholder="Pilih Tipe Pasien">
-                    <option *ngFor="let item of patientTypes" [ngValue]="item">{{item.description}}</option>
-                  </select>
+                  <ng-select
+                    [(ngModel)]="patientType"
+                    [items]="patientTypes"
+                    [clearable]="false"
+                    placeholder="Pilih Tipe Pasien"
+                    bindLabel="description"
+                    class="x-form-control">
+                  </ng-select>
                 </div>
               </div>
               <div class="col-8 mb-3">
                 <label class="form-label">Ruangan / Lokasi</label>
                 <div>
-                  <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
-                    <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
-                  </select>
+                  <ng-select
+                    [(ngModel)]="roomSelect"
+                    [items]="roomOptions"
+                    [clearable]="false"
+                    placeholder="Pilih Ruangan / Lokasi"
+                    bindLabel="description"
+                    class="x-form-control">
+                  </ng-select>
                 </div>
               </div>
               <!-- PatientType: Private -->
-              <ng-container *ngIf="patientType.value === '1'">
+              <ng-container *ngIf="patientType && patientType.value === '1'">
                 <div class="w-100" style="height: 100px;"></div>
               </ng-container>
               <!-- PatientType: Payer -->
-              <ng-container *ngIf="patientType.value === '2'">
+              <ng-container *ngIf="patientType && patientType.value === '2'">
                 <div class="col-4 mb-3">
                   <label class="form-label">Pembayar</label>
                   <div>
@@ -211,13 +226,15 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Jenis Email</label>
                 <div>
-                  <select [(ngModel)]="emailType"
-                    class="x-form-control" 
+                  <ng-select
+                    [(ngModel)]="emailType"
+                    [items]="emailTypes"
+                    [clearable]="false"
                     placeholder="Pilih Jenis Email"
+                    bindLabel="description"
+                    class="x-form-control"
                     (change)="changeEmailType()">
-                    <option *ngFor="let item of emailTypes" [ngValue]="item">{{item.description}}</option>
-                    <!-- <option value="" disabled>Pilih Jenis Rujukan</option> -->
-                  </select>
+                  </ng-select>
                 </div>
               </div>
               <div class="col col-4 mb-3">
@@ -229,7 +246,7 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Catatan</label>
                 <div>
-                  <input [ngModel]="txtNote" class="form-control" placeholder="Masukkan Catatan" />
+                  <input [(ngModel)]="txtNote" class="form-control" placeholder="Masukkan Catatan" />
                 </div>
               </div>
             </div>
@@ -241,7 +258,7 @@
   <div class="modal-footer">
     <div class="w-100 d-flex flex-row justify-content-between px-1 align-items-center">
       <div class="d-flex flex-row align-items-center pl-4 ml-1">
-        <input type="checkbox" name="formSigned" id="formSigned" class="form-check-input">
+        <input [(ngModel)]="txtIsSigned" type="checkbox" name="formSigned" id="formSigned" class="form-check-input">
         <label class="form-check-label pl-2" for="formSigned" style="position: relative; top: 2px;">Formulir Ditandatangani</label>
       </div>
       <button *ngIf="!isLoadingFetch" (click)="createAdmission($event)" [disabled]="isLoading" class="btn btn-success px-3 ml-2">Buat Admission</button>
@@ -286,7 +303,7 @@
                 </div>
                 <div class="col-6 mb-3 py-3 bg-secondary">
                   <label class="form-label text-muted">Nomor Admission</label>
-                  <div class="form-label">{{'-'}}</div>
+                  <div class="form-label" title="{{model.admission_id}}">{{model.admission_no || '-'}}</div>
                 </div>
                 <div class="w-100"></div>
                 <div class="col-12 mb-3">
@@ -322,7 +339,7 @@
     <div class="modal-footer">
       <div class="w-100 d-flex flex-row justify-content-end px-1 align-items-center">
         <button (click)="createAdmission($event)" class="btn btn-primary"><b class="fa fa-print mr-2"></b>Cetak Label</button>
-        <button (click)="createAdmission($event)" class="btn btn-success ml-2">Check in Pasien</button>
+        <button (click)="inputQueueNumber()" class="btn btn-success ml-2">Check in Pasien</button>
       </div>
     </div>
   </div>
