@@ -256,7 +256,6 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
   onCreateAppointment() {
     this.isSubmitting = true;
     const isValid = this.validForm();
-    console.log(isValid, '=========== is valid')
     if(isValid) {
       this.createNewContact();
       if (this.modalityAppointmentList.length > 0) {
@@ -288,6 +287,7 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
               element.isLoading = false
             });
         });
+        this.isFormValid = true;
         this.model = {
           birthDate: '',
           name: '',
@@ -309,7 +309,7 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
               this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
             }
             this.isSubmitting = false;
-            this.isFormValid = false;
+            this.isFormValid = true;
             this.model = {
               birthDate: '',
               name: '',
@@ -405,13 +405,6 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
       birthDate, name, identityNumber, identityTypeId, phoneNumber1, emailAddress,
     } = this.model
 
-    console.log(this.model, '=========== this model')
-    console.log(birthDate)
-      console.log(name)
-      console.log(identityNumber)
-      console.log(identityTypeId)
-      console.log(phoneNumber1)
-      console.log(emailAddress)
     if ( birthDate && name && identityNumber && identityTypeId && phoneNumber1 && emailAddress ) {
       console.log(birthDate)
       console.log(name)
