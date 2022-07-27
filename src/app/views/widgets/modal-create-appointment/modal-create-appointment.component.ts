@@ -154,7 +154,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       )
       if(request.idNumber && request.patientName && request.birthDate) {
         this.patientHope = patientHospital.filter((pt : NewPatientHope) => {
-          return pt.name.includes(request.patientName || '') && pt.birthDate === request.birthDate
+          return this.toLowerCase(pt.name).includes(this.toLowerCase(request.patientName || '')) && pt.birthDate === request.birthDate
         })
       }else {
         this.patientHope = patientHospital;
@@ -458,5 +458,10 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     }
     modal.componentInstance.selectedAppointment = payload;
   }
+
+  private toLowerCase(value : any) {
+    return String(value).toLowerCase()
+  }
+
 }
 

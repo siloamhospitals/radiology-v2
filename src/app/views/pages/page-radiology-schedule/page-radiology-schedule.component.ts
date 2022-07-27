@@ -233,6 +233,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   async setSelectedSection (modalityHospital: ModalityHospital) {
     this.sectionSelected = modalityHospital
+    if(this.sectionSelected.operational_type === '1') {
+      this.tableViewActive = 0
+    }
     this.changeTableView(this.tableViewCurrentDate.toDate())
   }
 
