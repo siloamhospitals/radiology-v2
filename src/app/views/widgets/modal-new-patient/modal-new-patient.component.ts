@@ -341,7 +341,6 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
           });
       }
     } else {
-      this.showErrorAlert('Silahkan Isi Kolom yang Wajib Diisi Sebelum Menjadwalkan Pasien', 2000);
       this.isSubmitting = false;
       this.isFormValid = false;
     }
@@ -443,10 +442,17 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
       // console.log(identityTypeId)
       // console.log(phoneNumber1)
       // console.log(emailAddress)
-      const testPhone = this.isValidHandphone(phoneNumber1);
-      console.log(testPhone, '=========== test phone')
+      const isValidHandphonePatient = this.isValidHandphone(phoneNumber1);
+      if (!isValidHandphonePatient) {
+        this.showErrorAlert('Silahkan Isi Kolom Telepon sesuai Format Telepon yang benar', 2000);
+      }
+      const isValidEmailPatient = this.isValidEmailAdress(emailAddress);
+      if (!isValidEmailPatient) {
+        this.showErrorAlert('Silahkan Isi Kolom Email sesuai Format Email yang benar', 2000);
+      }
       return true;
     } else {
+      this.showErrorAlert('Silahkan Isi Kolom yang Wajib Diisi Sebelum Menjadwalkan Pasien', 2000);
       return false;
     }
   }
