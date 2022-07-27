@@ -523,4 +523,39 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
       this.listSex = res.data;
     })
   }
+
+  // note to self ( ini copas dari FO jadi lihat aja kondisi apakah kira2 diperlukan findSubdistrik dan selectSubdistrik atau egk perlu)
+  findSubdistrict(event: any) {
+    this.listSubdistrict = [];
+
+    const str_district = event.target.value;
+
+    const idx = this.listDistrict.findIndex((a) => {
+      return a.name == str_district;
+    });
+
+    if (idx >= 0) {
+      this.model.district = this.listDistrict[idx];
+    }
+
+    const districtId = this.model.district.district_id;
+
+    if (districtId) {
+      this.getSubdistrict(districtId);
+    }
+  }
+
+  selectSubdistrict(event: any) {
+
+    const str_subdistrict = event.target.value;
+
+    const idx = this.listSubdistrict.findIndex((a) => {
+      return a.name == str_subdistrict;
+    });
+
+    if (idx >= 0) {
+      this.model.subdistrict = this.listSubdistrict[idx];
+    }
+
+  }
 }
