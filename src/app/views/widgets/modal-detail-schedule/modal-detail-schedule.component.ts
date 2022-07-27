@@ -163,7 +163,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   showHistoryModal() {
-    const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_history' })
+    const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_history', centered: true })
     m.componentInstance.modalitySlotId = this.selectedAppointment.modality_slot_id
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
@@ -181,7 +181,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   cancelAppointment(item: any = this.selectedAppointment) {
-    const m = this.modalService.open(ModalCancelAppointmentComponent, { windowClass: 'modal_cancel_appointment' })
+    const m = this.modalService.open(ModalCancelAppointmentComponent, { windowClass: 'modal_cancel_appointment', centered: true })
     m.result.then((result: any) => {if (result.result === 'OK') {
       this.radiologyService.deleteAppointment(item.modality_slot_id, {
         ...this.getUserPayload(),

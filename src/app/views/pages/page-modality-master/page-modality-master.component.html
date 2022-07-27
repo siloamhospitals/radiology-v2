@@ -45,7 +45,7 @@
                 bindLabel="name"
                 (change)="onItemSelect()"
                 bindValue="modality_id">
-            </ng-select>
+              </ng-select>
             </div>
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
               <ng-select
@@ -101,7 +101,7 @@
             </ng-template> -->
             </ng-select>
             </div>
-            
+
           </div>
           <div class="table-head-sticky">
             <table class="table table-borderless table-stripped" id="appointment-list-table">
@@ -120,7 +120,7 @@
                 <th class="pr-3" style="text-align: right; min-width: 10em;">Action</th>
                 <th width="50px"></th>
               </thead>
-          
+
               <tbody>
                 <tr *ngFor="let item of operationals.data; let i = index">
                   <td>{{item.modality_name}}</td>
