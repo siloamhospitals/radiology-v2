@@ -357,7 +357,8 @@
                   [isModalLarge]=true
                   width="230px"
                   [(value)]="selectedModality.reserveDate"
-                  [onChange]="onChangeDate">
+                  [onChange]="onChangeDate"
+                  [class]="selectedAppointment?.operational_type === '1' ? 'border-0' : ''">
                 </app-date-picker>
                 <app-date-picker
                   *ngIf="edittedModality.modalityHospitalId"
@@ -365,10 +366,11 @@
                   [isModalLarge]=true
                   width="230px"
                   [(value)]="edittedModality.reserveDate"
-                  [onChange]="onChangeDate">
+                  [onChange]="onChangeDate"
+                  [class]="selectedAppointment?.operational_type === '1' ? 'border-0' : ''">
                 </app-date-picker>
 
-                <div>
+                <div *ngIf="selectedAppointment?.operational_type !== '1'" >
                   <div class="d-flex align-items-center" >
                     <div class="ml-2" alt="datepicker">
                       <i class="fa fa-clock-o mx-2"></i>

@@ -4,6 +4,9 @@ import { ModalityHospital } from '../../../models/radiology/radiology';
 import { ScheduleStatus } from '../../../variables/common.variable';
 import { RadiologyService } from '../../../services/radiology/radiology.service';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
+import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
 
 interface FilterModal {
   name: string
@@ -28,6 +31,7 @@ export class TableListDailyFcfsComponent implements OnInit {
   public scheduleStatus: any = ScheduleStatus
 
   constructor(
+    private modalService: NgbModal,
     private radiologyService : RadiologyService
   ) { }
 
@@ -37,8 +41,8 @@ export class TableListDailyFcfsComponent implements OnInit {
 
   async getModalitySlots() {
     if(this.sectionSelected && this.sectionSelected.modality_hospital_id) {
-      const modalityHospitalId = 'd5b8dc5f-8cf6-4852-99a4-c207466d8ff9' // this.sectionSelected.modality_hospital_id
-      const reserveDate = '2022-07-24' // this.dateSelected.format('YYYY-MM-DD')
+      const modalityHospitalId = this.sectionSelected.modality_hospital_id
+      const reserveDate = this.dateSelected.format('YYYY-MM-DD')
       const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
       this.modalitySlots = (responseSlots.data || []).map(slot => {
         slot.patient_dob = moment(slot.patient_dob, 'YYYY-MM-DD').format('DD MMM YYYY')
@@ -48,12 +52,16 @@ export class TableListDailyFcfsComponent implements OnInit {
     }
   }
 
+   private async onRefresh() {
+    this.isLoading = true
+    await this.getModalitySlots()
+    this.isLoading = false
+  }
+
   async ngOnChanges(changes: SimpleChanges) {
     
     if(changes.sectionSelected && changes.sectionSelected.currentValue) {
-      this.isLoading = true
-      await this.getModalitySlots()
-      this.isLoading = false
+      await this.onRefresh()
     }
 
     if(changes.filter && changes.filter.currentValue) {
@@ -80,8 +88,44 @@ export class TableListDailyFcfsComponent implements OnInit {
     this.isFilterShow.emit(false)
   }
 
-  toLowerCase(value : any) {
+  private toLowerCase(value : any) {
     return String(value).toLowerCase()
   }
+
+  createAppointment() {
+    const m = this.modalService.open(ModalCreateAppointmentComponent, { keyboard: false });
+    const { modality_hospital_id: modalityHospitalId, modality_label, room_name, duration, operational_type } = this.sectionSelected;
+    const payload = {
+      fromTime: '00:00',
+      toTime: '00:00',
+      modalityHospitalId,
+      reserveDate: this.dateSelected,
+      modality_label,
+      room_name,
+      duration,
+      operational_type
+    }
+    m.componentInstance.selectedAppointment = payload;
+    m.result.then((_result: any) => {
+      this.onRefresh()
+    })
+  }
+
+  detailSchedule(schedule: any) {
+    const payload =  {
+      ...schedule,
+      reserveDate: this.dateSelected,
+    }
+    payload.from_time = moment(payload.from_time, 'hh:mm').format('HH:mm')
+    payload.to_time = moment(payload.to_time, 'hh:mm').format('HH:mm')
+    const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
+    m.componentInstance.selectedAppointment = payload;
+    m.result.then((result: any) => {
+      if (result) {
+        this.onRefresh()
+      }
+    })
+  }
+
 
 }

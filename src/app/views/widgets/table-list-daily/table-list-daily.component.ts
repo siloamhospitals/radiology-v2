@@ -56,7 +56,7 @@ export class TableListDailyComponent {
 
   createAppointment(schedule?: any) {
     const m = this.modalService.open(ModalCreateAppointmentComponent, { keyboard: false });
-    const { modality_hospital_id: modalityHospitalId, modality_label, room_name, duration } = this.sectionSelected;
+    const { modality_hospital_id: modalityHospitalId, modality_label, room_name, duration, operational_type } = this.sectionSelected;
     const { fromTime, toTime } = schedule;
     const payload = {
       fromTime,
@@ -66,6 +66,7 @@ export class TableListDailyComponent {
       modality_label,
       room_name,
       duration,
+      operational_type
       // refreshTableDaily: this.refreshData
     }
     m.componentInstance.selectedAppointment = payload;
@@ -242,6 +243,7 @@ export class TableListDailyComponent {
 
             if(items.length) {
               copySc.items = items.slice()
+              copySc.rowSpan = items.length
               acc.push(copySc)
             }
             return acc
