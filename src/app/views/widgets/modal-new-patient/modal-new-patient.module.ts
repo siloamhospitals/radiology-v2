@@ -7,6 +7,7 @@ import { DatepickerModule } from '../date-picker/date-picker.module';
 import { TimepickerModule } from '../time-picker/time-picker.module';
 import { LoadingModule } from '../widget-loading/widget-loading.module';
 import { NgxMaskModule } from 'ngx-mask';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [ModalNewPatientComponent],
@@ -18,6 +19,7 @@ import { NgxMaskModule } from 'ngx-mask';
     DatepickerModule,
     TimepickerModule,
     LoadingModule,
+    NgSelectModule,
     NgxMaskModule.forRoot(),
   ]
 })
