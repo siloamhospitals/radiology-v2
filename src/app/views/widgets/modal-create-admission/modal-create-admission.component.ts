@@ -263,8 +263,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   async fetchData () {
     return Promise.all([
       this.fetchContactData(),
-      this.fetchContactHopeData(),
-      this.fetchLocationRoom()
+      this.fetchLocationRoom(),
     ])
   }
 
@@ -272,12 +271,14 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     if (!this.contactId) { return }
     this.contactData = await this.patientService.getContact(this.contactId).toPromise()
       .then((res: any) => res.data || {})
+    await this.fetchContactHopeData()
   }
 
   async fetchContactHopeData () {
     const patientId = this.contactData.patient_hope_id
+    const orgId = this.hospital.orgId
     if (!patientId) { return }
-    this.contactHopeData = await this.patientService.getPatientHopeDetailTwo(patientId).toPromise()
+    this.contactHopeData = await this.patientService.getPatientHopeDetailTwo(patientId, orgId).toPromise()
       .then((res: any) => res.data || {})
   }
 
