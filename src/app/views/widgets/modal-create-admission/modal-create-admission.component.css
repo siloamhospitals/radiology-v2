@@ -38,7 +38,7 @@ select.x-form-control:focus {
 }
 
 .ng-select.x-form-control {
-  padding: 0;
+  padding: 0 0 0 5px;
   border: 1px solid rgba(34, 47, 62, 0.38);
   border-radius: 4px;
   display: block;
@@ -56,7 +56,7 @@ select.x-form-control:focus {
 }
 
 .ng-autocomplete ::ng-deep .autocomplete-container ::ng-deep .input-container ::ng-deep input {
-  padding: 2px 30px 0px 10px !important;
+  padding: 2px 30px 0px 16px !important;
   /* height: 35px !important; */
   background-color: transparent;
 }
