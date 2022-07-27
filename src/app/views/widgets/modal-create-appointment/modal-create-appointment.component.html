@@ -222,24 +222,26 @@
                       <i class="fa fa-calendar-o mx-2"></i>
                     </div>
                     <div class="position-relative" style="width: 230px;">
-                      <div class="modality-form text-left text-muted text-custom pl-2 border-right">
+                      <div [ngClass]="['modality-form text-left text-muted text-custom pl-2', (selectedAppointment?.operational_type !== '1' ? 'border-right' : '' )]">
                         {{list.reserveDate}}
                       </div>
                     </div>
-                    <div class="ml-2" alt="datepicker">
-                      <i class="fa fa-clock-o mx-2"></i>
-                    </div>
-                    <div class="position-relative" style="width: 50px;">
-                      <div class="modality-form text-left text-muted text-custom">
-                        {{list.fromTime}}&nbsp;
+                    <ng-container *ngIf="selectedAppointment?.operational_type !== '1'">
+                      <div class="ml-2" alt="datepicker">
+                        <i class="fa fa-clock-o mx-2"></i>
                       </div>
-                    </div>
-                    <span class="mx-2" >-</span>
-                    <div class="position-relative" style="width: 50px;">
-                      <div class="modality-form text-left text-muted text-custom">
-                        {{list.toTime}}&nbsp;
+                      <div class="position-relative" style="width: 50px;">
+                        <div class="modality-form text-left text-muted text-custom">
+                          {{list.fromTime}}&nbsp;
+                        </div>
                       </div>
-                    </div>
+                      <span class="mx-2" >-</span>
+                      <div class="position-relative" style="width: 50px;">
+                        <div class="modality-form text-left text-muted text-custom">
+                          {{list.toTime}}&nbsp;
+                        </div>
+                      </div>
+                    </ng-container>
                   </div>
                 </div>
               </div>
