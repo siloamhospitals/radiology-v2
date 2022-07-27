@@ -1,16 +1,16 @@
 <div id="modal-detail-schedule" class="modal-content modal-custom-size">
   <div class="modal-header border-bottom-0">
     <div class="header">
-      <button class="btn border-0" (click)="cancelAppointment()">
+      <button class="btn border-0" (click)="cancelAppointment()" placement="bottom" ngbTooltip="Batalkan Appointment">
         <span class="fa fa-lg fa-trash-o " style="color: #341F97"></span>
       </button>
-      <button class="btn border-0" (click)="showHistoryModal()">
+      <button class="btn border-0" (click)="showHistoryModal()" placement="bottom" ngbTooltip="Lihat Riwayat Appointment">
         <span class="fa fa-lg fa-history " style="color: #341F97"></span>
       </button>
-      <button class="btn border-0" *ngIf="!selectedAppointment.admission_id" (click)="createAdmission()">
+      <button class="btn border-0" *ngIf="!selectedAppointment.admission_id" (click)="createAdmission()" placement="bottom" ngbTooltip="Buat Admission">
         <span class="fa fa-lg fa-check" style="color: #341F97"></span>
       </button>
-      <button class="btn border-0"*ngIf="selectedAppointment.admission_id" (click)="inputQueueNumber()">
+      <button class="btn border-0"*ngIf="selectedAppointment.admission_id" (click)="inputQueueNumber()" placement="bottom" ngbTooltip="Lakukan Check-In">
         <img src="/assets/icons/ic_usercheck.svg" class="icon-usercheck" alt="usercheck" />
       </button>
     </div>
@@ -147,7 +147,7 @@
         <div class="mb-3 w-100">
           <label for="">Note</label>
           <div>
-            <textarea rows="3" class="form-control" placeholder="Catatan Pasien" name="note" formControlName="notes"></textarea>
+            <textarea ngbAutofocus rows="3" class="form-control" placeholder="Catatan Pasien" name="note" formControlName="notes"></textarea>
           </div>
         </div>
       </div>
