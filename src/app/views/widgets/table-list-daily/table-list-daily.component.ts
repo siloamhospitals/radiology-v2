@@ -242,6 +242,7 @@ export class TableListDailyComponent {
 
             if(items.length) {
               copySc.items = items.slice()
+              copySc.rowSpan = items.length
               acc.push(copySc)
             }
             return acc
