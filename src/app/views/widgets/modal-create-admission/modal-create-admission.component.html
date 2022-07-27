@@ -76,7 +76,7 @@
               <!-- ReferralType: Internal Doctor Referral -->
               <ng-container *ngIf="referralType && referralType.value === '2'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Dokter Internal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <label class="form-label">Dokter Internal yang Dirujuk<sup class="text-required">*</sup></label>
                   <div>
                     <ng-autocomplete
                       name="internal_doctor_referral_id"
@@ -101,7 +101,7 @@
                   </div>
                 </div>
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Nomor Admission yang Dirujuk<sup class="text-required">*</sup></label>
+                  <label class="form-label">Nomor Admission yang Dirujuk<sup class="text-required">*</sup></label>
                   <div>
                     <ng-autocomplete
                       name="referral_admission_id"
@@ -132,8 +132,8 @@
               <!-- ReferralType: External Doctor Referral -->
               <ng-container *ngIf="referralType && referralType.value === '3'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Dokter Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Dokter Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <ng-autocomplete
                       name="external_doctor_referral_dropdown"
                       placeHolder="Masukkan Dokter Eksternal yang Dirujuk"
@@ -161,14 +161,14 @@
               <!-- ReferralType: External Doctor Referral - Unlisted -->
               <ng-container *ngIf="referralType && referralType.value === '4'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Nama<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Nama<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <input [(ngModel)]="selectedReferral.referral_name" class="form-control" placeholder="Masukkan Nama" />
                   </div>
                 </div>
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Nomor Telepon<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Nomor Telepon<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <input [(ngModel)]="selectedReferral.referral_phone" class="form-control" placeholder="Masukkan Nomor Telepon*" />
                   </div>
                 </div>
@@ -177,8 +177,8 @@
               <!-- ReferralType: External Organization Referral -->
               <ng-container *ngIf="referralType && referralType.value === '5'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Organisasi Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Organisasi Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <ng-autocomplete
                       name="external_organization_referral_id"
                       placeHolder="Masukkan Organisasi Eksternal yang Dirujuk"
@@ -205,14 +205,14 @@
               <!-- ReferralType: External Organization Referral - Unlisted -->
               <ng-container *ngIf="referralType && referralType.value === '6'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Nama<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Nama<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <input [(ngModel)]="selectedReferral.referral_name" class="form-control" placeholder="Masukkan Nama" />
                   </div>
                 </div>
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Nomor Telepon<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Nomor Telepon<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <input [(ngModel)]="selectedReferral.referral_phone" class="form-control" placeholder="Masukkan Nomor Telepon*" />
                   </div>
                 </div>
@@ -221,8 +221,8 @@
               <!-- ReferralType: Internal Doctor Referral -->
               <ng-container *ngIf="referralType && referralType.value === '7'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Organisasi Internal yang Dirujuk<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Organisasi Internal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <ng-autocomplete
                       name="inter_shg_referral_dropdown"
                       placeHolder="Select Inter SHG Referral"
@@ -251,8 +251,8 @@
               <!-- ReferralType: Online Aggregator Referral -->
               <ng-container *ngIf="referralType && referralType.value === '8'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Aggregator Online yang Dirujuk<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Aggregator Online yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <ng-autocomplete
                       name="online_aggregator_referral_dropdown"
                       placeHolder="Select Online Aggregator Referral"
