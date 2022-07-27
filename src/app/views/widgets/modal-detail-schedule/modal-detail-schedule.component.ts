@@ -83,9 +83,9 @@ export class ModalDetailScheduleComponent implements OnInit {
     this.fillExaminations(this.selectedAppointment.modality_hospital_id);
   }
 
-  close() {
+  close(isSuccess? : boolean) {
     // this.selectedAppointment.refreshTableDaily();
-    this.activeModal.close();
+    this.activeModal.close(isSuccess);
   }
 
   createAdmission() {
@@ -190,7 +190,7 @@ export class ModalDetailScheduleComponent implements OnInit {
         .subscribe((res) => {
           if (isOk(res)) {
             this.showSuccessAlert(res.message);
-            this.close();
+            this.close(true);
           } else {
             this.showErrorAlert('Delete failed');
           }
@@ -229,7 +229,7 @@ export class ModalDetailScheduleComponent implements OnInit {
       .subscribe((response) => {
         if (isOk(response)) {
           this.showSuccessAlert(response.message);
-          this.close()
+          this.close(true)
         }
       }, () => {
         this.showErrorAlert('Update gagal');
@@ -239,7 +239,7 @@ export class ModalDetailScheduleComponent implements OnInit {
       .subscribe((response) => {
         if (isOk(response)) {
           this.showSuccessAlert(response.message);
-          this.close()
+          this.close(true)
         }
         // location.reload();
       }, () => {

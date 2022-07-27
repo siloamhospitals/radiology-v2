@@ -16,6 +16,7 @@ export class ModalityHospital {
   tx_room_mapping: RoomMapping;
   notes: string;
   modality_notes: string;
+  room_name: string
 }
 export class ModalityClose {
   modality_close_id: string;
