@@ -4,7 +4,7 @@ import { ModalCreateAdmissionComponent } from './modal-create-admission.componen
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatepickerModule } from '../date-picker/date-picker.module';
 import { TimepickerModule } from '../time-picker/time-picker.module';
-import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAlertModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
@@ -16,6 +16,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     CommonModule,
     FormsModule,
     NgbAlertModule,
+    NgbDatepickerModule,
     ReactiveFormsModule,
     DatepickerModule,
     TimepickerModule,

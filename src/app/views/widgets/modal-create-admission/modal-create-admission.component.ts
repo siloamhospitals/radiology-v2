@@ -41,6 +41,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   referralTypes: General[] = [];
   emailTypes: General[] = [];
   roomOptions: General[] = [];
+  payerList: any[] = [];
 
   nationalIdTypeName: any = nationalTypeIdNames;
 
@@ -58,6 +59,16 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   txtNote: any = null;
   txtIsSigned: boolean = false;
   isAdmissionEmailDisabled: boolean = true;
+
+  // Payer Model
+  payerName: any = null;
+  payerNo: any = null;
+  payerEligibilityNo: any = null;
+  payerReferralSource: any = null;
+  payerReferralNo: any = null;
+  payerReferralDate: any = null;
+  payerDiagnose: any = null;
+  payerNote: any = null;
 
   // Utility Properties
   isLoadingFetch: boolean = false
@@ -151,19 +162,21 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     // Emit Edit Email or Note
     this.editNotesAndEmail(this.model.contact_id)
 
+    // Payer Data
+    const isSelectedPayer = this.payerName && this.payerName.payer_id
+
     // Create Admission Purpose
     const body: RadiologyAdmissionRequest = {
       modalitySlotId: this.model.modality_slot_id,
       organizationId: Number(this.hospital.orgId),
       patientTypeId: Number(this.patientType.value),
       admissionTypeId: '1', // Outpatient
-      // ...this.generatePayerPayload(this.payerData),
       userId: this.user.id,
       source: sourceApps,
       userName: this.user.fullname,
-      payerId: null,
-      payerNo: null,
-      payerEligibility: null
+      payerId: isSelectedPayer ? this.payerName.payer_id : null,
+      payerNo: isSelectedPayer ? this.payerNo : null,
+      payerEligibility: isSelectedPayer ? this.payerEligibilityNo : null
     }
     // const body = {}
     console.log('createAdmission', body)
@@ -215,6 +228,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
       this.fetchReferralTypes(),
       this.fetchPatientTypes(),
       this.fetchEmailTypes(),
+      this.fetchPayers(),
     ])
   }
 
@@ -235,6 +249,12 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   async fetchNationalTypes () {
     this.nationalTypes = await this.generalService.getNationalityIdType().toPromise()
+      .then((res: any) => res.data || [])
+  }
+
+  async fetchPayers () {
+    if (!(this.hospital && this.hospital.orgId)) { return }
+    this.payerList = await this.generalService.getPayer(this.hospital.orgId).toPromise()
       .then((res: any) => res.data || [])
   }
 

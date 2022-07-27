@@ -15,6 +15,19 @@ select.x-form-control {
   color: rgba(34, 47, 62, 0.87);
 }
 
+.input-group.x-form-control {
+  border-radius: 4px;
+  border: 1px solid rgba(34, 47, 62, 0.38);
+  color: rgba(34, 47, 62, 0.87);
+}
+.input-group.x-form-control .form-control {
+  border: 0;
+}
+.input-group.x-form-control.disabled {
+  background-color: #eee !important;
+  color: #666;
+}
+
 select.x-form-control::placeholder {
   color: rgba(34, 47, 62, 0.38) !important;
 }
