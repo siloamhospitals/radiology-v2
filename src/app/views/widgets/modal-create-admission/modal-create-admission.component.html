@@ -319,7 +319,7 @@
               <!-- PatientType: Payer -->
               <ng-container *ngIf="patientType && patientType.value === '2'">
                 <div class="col-4 mb-3">
-                  <label class="form-label">Pembayar</label>
+                  <label class="form-label">Pembayar<sup class="text-required">*</sup></label>
                   <div>
                     <ng-autocomplete
                       name="payer_name_dropdown"
@@ -343,7 +343,7 @@
                   </div>
                 </div>
                 <div class="col-4 mb-3">
-                  <label class="form-label">Nomor Pembayar</label>
+                  <label class="form-label">Nomor Pembayar<sup class="text-required">*</sup></label>
                   <div>
                     <input [(ngModel)]="payerNo" class="form-control" placeholder="Masukkan Nomor Pembayar" />
                   </div>
