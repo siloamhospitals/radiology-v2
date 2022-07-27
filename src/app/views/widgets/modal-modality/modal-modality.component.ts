@@ -133,7 +133,6 @@ export class ModalModalityComponent implements OnInit {
     this.service.getModalityHospitalById(this.modalityHospitalId)
       .subscribe(data => {
         this.modalityHospital = data.data;
-        console.log(this.modalityHospital, 'modality')
         if (this.modalityHospital != null) {
           this.setData();
         } else {
@@ -169,7 +168,6 @@ export class ModalModalityComponent implements OnInit {
       hospitalId: this.hospitalId,
     })
       .subscribe(data => {
-        console.log(data)
         this.modalityOptions = data.data;
       }, () => {
         this.modalityOptions = [];
@@ -191,7 +189,6 @@ export class ModalModalityComponent implements OnInit {
         notes
       };
     }
-    console.log(this.modalityHospital.modality_notes, 'ss')
     this.modalityForm.patchValue({
       modalityId: this.modalityHospital.modality_id,
       modalityLabel: this.modalityHospital.modality_label,
@@ -328,6 +325,10 @@ export class ModalModalityComponent implements OnInit {
     }
   }
 
+  reset(){
+    this.modalityForm.reset();
+  }
+
   async submit(item: RadiologyItem) {
     if (this.loading) {
       return;
@@ -336,16 +337,7 @@ export class ModalModalityComponent implements OnInit {
     let reserveDate;
     let responseSlots;
     this.loading = true;
-    if (this.modalityForm.status == 'INVALID') {
-      Swal.fire({
-        type: 'error',
-        title: 'Oops...',
-        text: 'All fields are required!',
-        timer: 1500
-      });
-      this.loading = false;
-      return;
-    }
+    
     const from_to_date = this.modalityForm.controls.from_to_date.value;
     const status = this.modalityForm.controls.status.value;
     let closeModalityHospital: any = {
@@ -388,7 +380,6 @@ export class ModalModalityComponent implements OnInit {
       ...closeModalityHospital,
       modality_notes: this.modalityForm.controls.modality_notes.value,
     };
-    console.log(this.modalityHospitalRequest.status)
     if (this.modalityHospitalId != null && this.modalityHospitalRequest.status == 2){
       modalityHospitalId = item.modality_hospital_id;
       reserveDate = moment().format('YYYY-MM-DD')
@@ -446,10 +437,11 @@ export class ModalModalityComponent implements OnInit {
   }
 
   public async confirmUpdate(item: RadiologyItem) {
-  
+    console.log(item)
     this.modalRef = this.modalService.open(ModalConfirmDeleteComponent, { windowClass: 'modal_cancel_appointment' })
     this.modalRef.componentInstance.itemId = item.modality_hospital_id;
     this.modalRef.componentInstance.msg = `modality: '${item.modality_label}'`;
+    this.modalRef.componentInstance.msgUpdate = `modality: '${this.modalityHospitalRequest.modalityLabel}'`;
     this.modalRef.componentInstance.headerMsg = `Rubah menjadi inactive`;
     this.modalRef.componentInstance.service = this.service;
     this.modalRef.componentInstance.modalitySlot = this.modalitySlots
@@ -472,7 +464,6 @@ export class ModalModalityComponent implements OnInit {
     this.modalRef.componentInstance.modalitySlot = this.modalitySlots
     this.modalRef.result.then((result) => {
       if (result === 'OK') {
-        console.log(result)
         this.sendDeleteRequest(item);
       }
     }, (_) => {});

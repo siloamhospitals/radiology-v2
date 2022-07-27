@@ -69,7 +69,7 @@ export class PageModalityMasterComponent implements OnInit {
     this.isLoading = false
   }
 
-  showModalityModal(val: any = null) {
+  showModalityModal(val: any = null, isUpdate: boolean = false) {
     const modalRef = this.modalService.open(ModalModalityComponent, 
       { 
         windowClass: 'modal_modality', 
@@ -80,9 +80,13 @@ export class PageModalityMasterComponent implements OnInit {
     if(!isEmpty(val)){
       val.refrehData = this.refreshData();
     }
+    modalRef.componentInstance.isUpdate = isUpdate;
     modalRef.componentInstance.responseData = val
     modalRef.result.then((result: any) => {
-      console.log('modal is closed', {result})
+      console.log(result);
+      this.fillOperationals()
+      this.getModality()
+      this.getRooms();
     })
   }
 
@@ -99,11 +103,11 @@ export class PageModalityMasterComponent implements OnInit {
 
   selectAll() {
     this.selectedItemsModality = this.modalityOptions.map(x => x.name);
-}
+  }
 
-unselectAll() {
-    this.selectedItemsModality = [];
-}
+  unselectAll() {
+      this.selectedItemsModality = [];
+  }
 
   getRooms() {
     const key = JSON.parse(this.strKey);
@@ -164,53 +168,6 @@ unselectAll() {
     console.log(this.selectedItemsSchdule)
     if (this.selectedItemsFloor || this.selectedItemsSchdule || this.selectedItemsStatus || this.selectedItemsModality || selectedModalityLabelItem) {
       this.fillOperationals(this.selectedItemsFloor, this.selectedItemsSchdule, this.selectedItemsStatus, this.selectedItemsModality, selectedModalityLabelItem);
-    } else {
-      this.fillOperationals();
-    }
-  }
-
-  onItemDeSelect(items: any, searchAll?: boolean, query?: any){
-    let deSelectedFloor = null;
-    let deSelectedSchedule = null;
-    let deSelectedStatus = null;
-    let deSelectedModality = null;;
-
-    deSelectedFloor = !isEmpty(this.selectedItemsFloor) ? 
-    this.selectedItemsFloor.map((item: any) => item['floor_id']) : null;
-
-    deSelectedSchedule = !isEmpty(this.selectedItemsSchdule) ? 
-    this.selectedItemsSchdule.map((item: any) => item['operational_type']) : null;
-
-    deSelectedStatus = !isEmpty(this.selectedItemsStatus) ? 
-    this.selectedItemsStatus.map((item: any) => item['status']) : null;
-
-    deSelectedModality = !isEmpty(this.selectedItemsModality) ? 
-    this.selectedItemsModality.map((item: any) => item['modality_id']) : null;
-
-    let allDeSelectedFloor = isEmpty(items) && searchAll == true && query == 'floor' ? items : deSelectedFloor
-    let allDeSelectedSchedule = isEmpty(items) && searchAll == true && query == 'operational_type' ? items : deSelectedSchedule
-    let allDeSelectedStatus = isEmpty(items) && searchAll == true && query == 'status' ? items : deSelectedStatus
-    let allDeSelectedModality = isEmpty(items) && searchAll == true && query == 'modality' ? items : deSelectedModality
-    if(isEmpty(allDeSelectedFloor) && searchAll == true && query == 'floor'){
-      deSelectedFloor = items
-    }
-    if(!isEmpty(allDeSelectedSchedule) && searchAll == true && query == 'operational_type'){
-      deSelectedSchedule = allDeSelectedSchedule
-    }
-    if(!isEmpty(allDeSelectedStatus) && searchAll == true && query == 'status'){
-      deSelectedStatus = allDeSelectedStatus
-    }
-    if(!isEmpty(allDeSelectedModality) && searchAll == true && query == 'modality'){
-      deSelectedModality = allDeSelectedModality
-    }
-    console.log(allDeSelectedFloor, allDeSelectedSchedule, allDeSelectedStatus, allDeSelectedModality, 'oi')
-    console.log(deSelectedFloor,
-      deSelectedSchedule,
-      deSelectedStatus,
-      deSelectedModality)
-
-    if (deSelectedFloor|| deSelectedSchedule || deSelectedStatus || deSelectedModality) {
-      this.fillOperationals(deSelectedFloor, deSelectedSchedule, deSelectedStatus, deSelectedModality);
     } else {
       this.fillOperationals();
     }

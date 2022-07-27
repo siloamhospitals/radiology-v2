@@ -5,14 +5,19 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body" *ngIf="headerMsg != null">
-  <div class="" *ngIf="modalitySlot.length === 0">
-    <p>Menghapus modality ini berarti menghilangkan modality sepenuhnya dari sistem penjadwalan Radiology. Apakah anda yakin akan menghapus {{msg}}? </p>
+<div class="modal-body" >
+  <div class="" *ngIf="modalitySlot.length === 0 && headerMsg == null">
+    <p>Menghapus modality ini berarti menghilangkan modality sepenuhnya dari sistem penjadwalan Radiology. Apakah anda yakin?</p>
   </div>
-  <div class="" *ngIf="modalitySlot.length !== 0">Ada pasien yang terjadwal untuk tindakan {{modalitySlot[0].modality_name}} 
-    dan semua penjadwalan pasien akan terhapus jika modality ini di <span *ngIf="headerMsg == null">hapus</span>
-    <span *ngIf="headerMsg != null">set inactive</span>
-    . Apakah anda yakin ingin menghapus modality ini?</div>
+  <div class="" *ngIf="modalitySlot.length === 0 && headerMsg != null">
+    <p>Apakah anda yakin akan menonaktifkan modality ini? Nonaktif berarti modality tidak dimunculkan di halaman FO</p>
+  </div>
+  <div class="" *ngIf="modalitySlot.length !== 0 && headerMsg == null">Ada pasien yang terjadwal untuk tindakan 
+    {{modalitySlot[0].modality_name}} dan semua penjadwalan pasien akan terhapus jika modality ini di hapus. 
+    Apakah anda yakin ingin menghapus modality ini?</div>
+    <div class="" *ngIf="modalitySlot.length !== 0 && headerMsg != null">Masih ada pasien yang terjadwal 
+      untuk {{modalitySlot[0].modality_name}} di tanggal {{reserveDate}} 
+      Pastikan jadwal pasien sudah dipindahkan sebelum modality di set Inactive</div>
 </div>
 <div class="modal-footer"  *ngIf="headerMsg != null">
   <button type="button" class="btn btn-secondary" (click)="test()">Batal</button>
