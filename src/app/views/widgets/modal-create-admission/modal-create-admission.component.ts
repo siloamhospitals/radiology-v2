@@ -218,10 +218,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   async fetchReferralTypes () {
     this.referralTypes = await this.generalService.getReferralType().toPromise()
-      .then((res: any) => {
-        console.log(res.data, '============== res data')
-        return res.data || []
-      })
+      .then((res: any) => res.data || [])
   }
 
   async fetchPatientTypes () {
@@ -309,71 +306,67 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     }
   }
 
-  // @todo: referral-type functions
-    async getReferralDoctor(_event: any) {
-      this.doctorReferralList = [];
-      const selectedReferral = this.referralType;
-      console.log(selectedReferral, '============= selectedReferral')
-      if (selectedReferral.value === '2') {
-        this.doctorService.getInternalDoctor(this.hospital.id)
-          .subscribe((res) => {
-            if (res.status === 'OK' && res.data.length === 0) {
-              this.alertService.success('No List Doctor in This Organization', false, 3000);
-            }
-            this.doctorReferralList = (res.data || []);
-          }, (err) => {
-            this.alertService.error(err.error.message, false, 3000);
-            this.doctorReferralList = [];
+  async getReferralDoctor(_event: any) {
+    this.doctorReferralList = [];
+    const selectedReferral = this.referralType;
+    if (selectedReferral.value === '2') {
+      this.doctorService.getInternalDoctor(this.hospital.id)
+        .subscribe((res) => {
+          if (res.status === 'OK' && res.data.length === 0) {
+            this.alertService.success('No List Doctor in This Organization', false, 3000);
+          }
+          this.doctorReferralList = (res.data || []);
+        }, (err) => {
+          this.alertService.error(err.error.message, false, 3000);
+          this.doctorReferralList = [];
+        });
+    } else if (selectedReferral.value === '3') {
+      this.doctorService.getExternalDoctor(this.hospital.orgId)
+        .subscribe((res) => {
+          if (res.status === 'OK' && res.data.length === 0) {
+            this.alertService.success('No List Doctor in This Organization', false, 3000);
+          }
+          this.doctorReferralList = (res.data || []).map((val:any) => {
+            val.label = `${val.code} - ${val.name}`
+            return val;
           });
-      } else if (selectedReferral.value === '3') {
-        this.doctorService.getExternalDoctor(this.hospital.orgId)
-          .subscribe((res) => {
-            if (res.status === 'OK' && res.data.length === 0) {
-              this.alertService.success('No List Doctor in This Organization', false, 3000);
-            }
-            this.doctorReferralList = (res.data || []).map((val:any) => {
-              val.label = `${val.code} - ${val.name}`
-              return val;
-            });
-          }, (err) => {
-            this.alertService.error(err.error.message, false, 3000);
-            this.doctorReferralList = [];
+        }, (err) => {
+          this.alertService.error(err.error.message, false, 3000);
+          this.doctorReferralList = [];
+        });
+    } else if (selectedReferral.value === '5') {
+      this.doctorService.getExternalOrganization(this.hospital.orgId)
+        .subscribe((res) => {
+          if (res.status === 'OK' && res.data.length === 0) {
+            this.alertService.success('No List Doctor in This Organization', false, 3000);
+          }
+          this.doctorReferralList = (res.data || []).map((val:any) => {
+            val.label = `${val.code} - ${val.name}`
+            return val;
           });
-      } else if (selectedReferral.value === '5') {
-        this.doctorService.getExternalOrganization(this.hospital.orgId)
-          .subscribe((res) => {
-            if (res.status === 'OK' && res.data.length === 0) {
-              this.alertService.success('No List Doctor in This Organization', false, 3000);
-            }
-            this.doctorReferralList = (res.data || []).map((val:any) => {
-              val.label = `${val.code} - ${val.name}`
-              return val;
-            });
-          }, (err) => {
-            this.alertService.error(err.error.message, false, 3000);
-            return [];
+        }, (err) => {
+          this.alertService.error(err.error.message, false, 3000);
+          return [];
+        });
+    } else if (selectedReferral.value === '8') {
+      this.doctorService.getOnlineAgreggator(this.hospital.orgId)
+        .subscribe((res) => {
+          if (res.status === 'OK' && res.data.length === 0) {
+            this.alertService.success('No List Doctor in This Organization', false, 3000);
+          }
+          this.doctorReferralList = (res.data || []).map((val:any) => {
+            val.label = `${val.code} - ${val.name}`
+            return val;
           });
-      } else if (selectedReferral.value === '8') {
-        this.doctorService.getOnlineAgreggator(this.hospital.orgId)
-          .subscribe((res) => {
-            console.log(res,'=============== res dalam online aggregator')
-            if (res.status === 'OK' && res.data.length === 0) {
-              this.alertService.success('No List Doctor in This Organization', false, 3000);
-            }
-            this.doctorReferralList = (res.data || []).map((val:any) => {
-              val.label = `${val.code} - ${val.name}`
-              return val;
-            });
-          }, (err) => {
-            this.alertService.error(err.error.message, false, 3000);
-            return [];
-          });
-      }
+        }, (err) => {
+          this.alertService.error(err.error.message, false, 3000);
+          return [];
+        });
+    }
   }
 
   changeReferralType (_event: any = null) {
     const val = this.referralType.value;
-    console.log(val, '====================val')
     if (val === '2') {
       this.selectedReferral.internal_doctor_referral_id = null;
       this.selectedReferral.referral_admission_id = null;
