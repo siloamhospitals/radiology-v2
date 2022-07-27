@@ -325,6 +325,10 @@ export class ModalModalityComponent implements OnInit {
     }
   }
 
+  reset(){
+    this.modalityForm.reset();
+  }
+
   async submit(item: RadiologyItem) {
     if (this.loading) {
       return;
