@@ -2,12 +2,13 @@
 <table class="table table-bordered mt-3 table-list-radiology">
   <thead class="border-0 bg-secondary">
     <tr>
-      <td colspan="2" class="py-3 border-0">Appointment</td>
-      <td class="py-3 border-0">Patient</td>
-      <td class="py-3 border-0">DoB</td>
-      <td class="py-3 border-0">Local MR No</td>
-      <td class="py-3 border-0">Examination</td>
-      <td class="py-3 border-0">Note</td>
+      <td colspan="2" class="py-3 border-0">Jadwal Tindakan</td>
+      <td class="py-3 border-0">Pasien</td>
+      <td class="py-3 border-0">Tgl. Lahir</td>
+      <td class="py-3 border-0">No. Mr Lokal</td>
+      <td class="py-3 border-0">Jenis Pemeriksaan</td>
+      <td class="py-3 border-0">BPJS</td>
+      <td class="py-3 border-0">No. Kunjungan</td>
       <td class="py-3 border-0">Status</td>
     </tr>
   </thead>
@@ -42,7 +43,8 @@
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.dob }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.localMrNo }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.examination }}</td>
-          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.note }}</td>
+          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.isBpjs ? 'BPJS' : 'Non BPJS' }}</td>
+          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.patinet_visit_number }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >
             <span *ngIf="scheduleStatus[schedule.status]" [ngClass]="'table-status status-' + scheduleStatus[schedule.status].toLowerCase() ">
               {{ scheduleStatus[schedule.status] }}

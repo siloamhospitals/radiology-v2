@@ -1,0 +1,58 @@
+<div class="d-flex">
+  <button *ngIf="filter.name || filter.localMrNo" class="btn btn-secondary text-dark" (click)="resetFilter()"><i class="fa fa-times-circle mr-2"></i>Reset Filter</button>
+  <button type="button" class="btn btn-primary ml-auto" ><i class="fa fa-plus mr-2"></i>Jadwalkan Pasien</button>
+</div>
+<table class="table table-striped mt-3 table-list-radiology">
+  <thead class="border-0 bg-secondary">
+    <tr>
+      <th class="py-3 border-0">Tgl. Registrasi</th>
+      <th class="py-3 border-0">Pasien</th>
+      <th width="100" class="py-3 border-0">Tgl. Lahir</th>
+      <th width="100" class="py-3 border-0">No. MR Lokal</th>
+      <th class="py-3 border-0">Jenis Pemeriksaan</th>
+      <th width="75" class="py-3 border-0">BPJS</th>
+      <th class="py-3 border-0 text-center">No. Kunjungan</th>
+      <th class="py-3 border-0">Status</th>
+      <th class="border-0">&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="isLoading; else showList">
+      <tr>
+        <td colspan="100%" class="text-center p-3">Please wait ...</td>
+      </tr>
+    </ng-container>
+    <ng-template #showList>
+      <ng-container *ngIf="!(modalitySlots && modalitySlots.length)">
+        <tr>
+          <td colspan="100%" class="text-center p-3">Data currently does not exist</td>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="isLoading">
+        <tr><td colspan="100%" class="text-center p-3">Load Data... Please Wait...</td></tr>
+      </ng-container>
+  
+      <tr *ngFor="let item of modalitySlots; let i=index"
+        class="cursor-pointer item-hover">
+        <td>
+          <span>{{ item.created_date | date: 'dd MMM yyyy' }}</span><br/>
+          <small class="text-muted" >{{ item.created_date | date: 'hh:mm:ss' }}</small>
+        </td>
+        <td>{{item.patient_name}}</td>
+        <td>{{item.patient_dob}}</td>
+        <td>{{item.local_mr_no}}</td>
+        <td>{{item.modality_examination_name}}</td>
+        <td>{{ item.is_bpjs ? 'BPJS' : 'Non BPJS' }}</td>
+        <td align="center" >{{item.patient_visit_number || '-'}}</td>
+        <td>
+          <span [ngClass]="'table-status status-' + scheduleStatus[item.status]?.toLowerCase() ">
+            {{ scheduleStatus[item.status] || '-' }}
+          </span>
+        </td>
+        <td>
+          <button type="submit" class="btn btn-link text-underline" ><u>Detail</u></button>
+        </td>
+      </tr>
+    </ng-template>
+  </tbody>
+</table>

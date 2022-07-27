@@ -46,9 +46,9 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public tableViewCurrentIsToday: Boolean = false;
   public tableViewActive: number = 2;
   public tableViewSelect: any[] = [
-    {key: 0, text: 'Day'},
-    {key: 1, text: 'Week'},
-    {key: 2, text: 'Month'},
+    {key: 0, text: 'Hari'},
+    {key: 1, text: 'Minggu'},
+    {key: 2, text: 'Bulan'},
   ];
   public scheduleList: any[];
   protected indexNumber: number = 0;
@@ -242,20 +242,18 @@ export class PageRadiologyScheduleComponent implements OnInit {
     this.showFilterTable = true
   }
 
-  setFilterName (v: any) {
+  setFilterName (ev: Event) {
+    ev.preventDefault()
+
     this.filterLocalMrNo = null
-    const value = v.target.value
-    if (((v.type === 'keyup' && v.which === 13) || v.type === 'blur') && value && value.length > 2) {
-      this.setFilter({name: value, localMrNo: null})
-    }
+    this.setFilter({name: this.filterName, localMrNo: null})
   }
 
-  setFilterLocalMrNo (v: any) {
+  setFilterLocalMrNo (ev: Event) {
+    ev.preventDefault()
+
     this.filterName = null
-    const value = v.target.value
-    if (((v.type === 'keyup' && v.which === 13) || v.type === 'blur') && value && value.length > 2) {
-      this.setFilter({name: null, localMrNo: value})
-    }
+    this.setFilter({name: null, localMrNo: this.filterLocalMrNo })
   }
 
   resetFilter (isReset: boolean = false, _isResetField: boolean = false) {
@@ -263,5 +261,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
     if (isReset) { return }
     this.filterName = null
     this.filterLocalMrNo = null
+    this.filter = { name: '', localMrNo: '' }
   }
 }
