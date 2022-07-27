@@ -59,18 +59,11 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   txtIsSigned: boolean = false;
   isAdmissionEmailDisabled: boolean = true;
 
-<<<<<<< HEAD
-  isLoadingFetch: boolean = false;
-  isLoading: boolean = false;
-  isError: boolean = false;
-  isSuccess: boolean = false;
-=======
   // Utility Properties
   isLoadingFetch: boolean = false
   isLoading: boolean = false
   isError: boolean = false
   isSuccess: boolean = false
->>>>>>> staging
 
   errorMessage: any = null;
   successResponseModel: any = null;
