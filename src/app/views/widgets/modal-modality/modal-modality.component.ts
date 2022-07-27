@@ -336,16 +336,7 @@ export class ModalModalityComponent implements OnInit {
     let reserveDate;
     let responseSlots;
     this.loading = true;
-    if (this.modalityForm.status == 'INVALID') {
-      Swal.fire({
-        type: 'error',
-        title: 'Oops...',
-        text: 'All fields are required!',
-        timer: 1500
-      });
-      this.loading = false;
-      return;
-    }
+    
     const from_to_date = this.modalityForm.controls.from_to_date.value;
     const status = this.modalityForm.controls.status.value;
     let closeModalityHospital: any = {
@@ -446,10 +437,11 @@ export class ModalModalityComponent implements OnInit {
   }
 
   public async confirmUpdate(item: RadiologyItem) {
-  
+    console.log(item)
     this.modalRef = this.modalService.open(ModalConfirmDeleteComponent, { windowClass: 'modal_cancel_appointment' })
     this.modalRef.componentInstance.itemId = item.modality_hospital_id;
     this.modalRef.componentInstance.msg = `modality: '${item.modality_label}'`;
+    this.modalRef.componentInstance.msgUpdate = `modality: '${this.modalityHospitalRequest.modalityLabel}'`;
     this.modalRef.componentInstance.headerMsg = `Rubah menjadi inactive`;
     this.modalRef.componentInstance.service = this.service;
     this.modalRef.componentInstance.modalitySlot = this.modalitySlots

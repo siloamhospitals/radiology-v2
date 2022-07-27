@@ -1,5 +1,6 @@
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, OnInit, Input } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-modal-confirm-delete',
@@ -13,14 +14,19 @@ export class ModalConfirmDeleteComponent implements OnInit {
   @Input() service: any;
   @Input() modalitySlot: any = [];
   @Input() headerMsg: string;
+  @Input() msgUpadte: string;
   
   constructor(
     public activeModal: NgbActiveModal,
   ) { }
 
   public selectedText: string = '';
+  public reserveDate: string = '';
 
   ngOnInit() {
+    if(this.modalitySlot.length != 0){
+      this.reserveDate = moment(this.modalitySlot[0].reserve_date).format('YYYY-MM-DD');
+    }
     console.log(this.modalitySlot)
   }
 
