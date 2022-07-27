@@ -1,5 +1,5 @@
 <div class="position-relative" [style.width]="width" >
-  <img *ngIf="!hideIcon" src="/assets/icons/ic_datepicker.png" class="position-absolute icon-datepicker" alt="datepicker" />
+  <img *ngIf="!hideIcon" src="assets/icons/ic_datepicker.png" class="position-absolute icon-datepicker" alt="datepicker" />
   <input type="text"
     ngxDaterangepickerMd
     [locale]="locale"
@@ -12,7 +12,7 @@
     opens="left"
     class="form-control"
     [class.pl-4]="!hideIcon"
-    [ngClass]="isModalLarge? 'text-left text-muted text-custom pl-2 border-top-0 border-left-0 border-bottom-0 border-right' : 'text-center'"
+    [ngClass]="[(isModalLarge? 'text-left text-muted text-custom pl-2 border-top-0 border-left-0 border-bottom-0 border-right' : 'text-center'), class ]"
     />
     <div *ngIf="isModalLarge">
       <i class="position-absolute fa fa-caret-down icon-datepicker-2 text-muted mr-2"></i>

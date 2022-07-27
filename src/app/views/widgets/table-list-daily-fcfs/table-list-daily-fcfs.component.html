@@ -1,6 +1,6 @@
 <div class="d-flex">
   <button *ngIf="filter.name || filter.localMrNo" class="btn btn-secondary text-dark" (click)="resetFilter()"><i class="fa fa-times-circle mr-2"></i>Reset Filter</button>
-  <button type="button" class="btn btn-primary ml-auto" ><i class="fa fa-plus mr-2"></i>Jadwalkan Pasien</button>
+  <button type="button" class="btn btn-primary ml-auto" (click)="createAppointment()" ><i class="fa fa-plus mr-2"></i>Jadwalkan Pasien</button>
 </div>
 <table class="table table-striped mt-3 table-list-radiology">
   <thead class="border-0 bg-secondary">
@@ -50,7 +50,7 @@
           </span>
         </td>
         <td>
-          <button type="submit" class="btn btn-link text-underline" ><u>Detail</u></button>
+          <button type="click" class="btn btn-link text-underline" (click)="detailSchedule(item)" ><u>Detail</u></button>
         </td>
       </tr>
     </ng-template>

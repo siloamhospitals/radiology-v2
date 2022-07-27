@@ -86,11 +86,11 @@
              </div>
          </div>
         
-         </div>
+      </div>
       </ng-container>
    </div>
    <div class="modal-footer">
-      <button class="btn btn-default" *ngIf="responseData == null">Reset</button>
+      <button class="btn btn-default"  (click)="reset()" *ngIf="responseData == null">Reset</button>
       <button class="btn btn-default mr-auto" *ngIf="responseData != null" (click)="deleteModality(responseData)">Delete Modality</button>
       <button class="btn btn-primary " (click)="submit(responseData)">Save</button>
   </div>

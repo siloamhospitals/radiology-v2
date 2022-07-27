@@ -67,49 +67,215 @@
                     [clearable]="false"
                     placeholder="Pilih Tipe Pasien"
                     bindLabel="description"
-                    class="x-form-control">
+                    class="x-form-control"
+                    (change)="getReferralDoctor($event) && changeReferralType($event)">
                   </ng-select>
                 </div>
               </div>
+
               <!-- ReferralType: Internal Doctor Referral -->
               <ng-container *ngIf="referralType && referralType.value === '2'">
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Dokter Internal yang Dirujuk<sup class="text-required">*</sup></label>
                   <div>
-                    <input class="form-control" placeholder="Masukkan Dokter Internal yang Dirujuk" />
+                    <ng-autocomplete
+                      name="internal_doctor_referral_id"
+                      placeHolder="Masukkan Dokter Internal yang Dirujuk"
+                      searchKeyword="name"
+                      [(ngModel)]="selectedReferral.internal_doctor_referral_id"
+                      [data]="doctorReferralList"
+                      [minQueryLength]="3"
+                      [debounceTime]="300"
+                      [itemTemplate]="itemTemplateInternalDoctor"
+                      [disabled]="isFromReferralRequest"
+                      [notFoundTemplate]="notFoundTemplateInternalDoctor">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplateInternalDoctor let-item>
+                      <a innerHTML="{{item.name}}"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplateInternalDoctor let-notFound>
+                      <div [innerHTML]="notFound"></div>
+                    </ng-template>
                   </div>
                 </div>
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Nomor  Admission yang Dirujuk<sup class="text-required">*</sup></label>
+                  <label class="form-label text-muted">Nomor Admission yang Dirujuk<sup class="text-required">*</sup></label>
                   <div>
-                    <input class="form-control" placeholder="Masukkan Admission yang Dirujuk" />
+                    <ng-autocomplete
+                      name="referral_admission_id"
+                      placeHolder="Masukkan Admission yang Dirujuk"
+                      searchKeyword="admission_no"
+                      (inputChanged)="getReferralAdmission($event)"
+                      [(ngModel)]="selectedReferral.referral_admission_id"
+                      [data]="admissionReferralList"
+                      [isLoading]="referralAdmissionIdLoading"
+                      [minQueryLength]="4"
+                      [debounceTime]="500"
+                      [itemTemplate]="itemTemplateAdmissionReferral"
+                      [disabled]="isFromReferralRequest"
+                      [notFoundTemplate]="notFoundTemplateAdmissionReferral">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplateAdmissionReferral let-item>
+                      <a innerHTML="{{item.admission_no}}"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplateAdmissionReferral let-notFound>
+                      <div [innerHTML]="notFound"></div>
+                    </ng-template>
                   </div>
                 </div>
               </ng-container>
+
               <!-- ReferralType: External Doctor Referral -->
-              <ng-container *ngIf="referralType && referralType.value === '5'">
+              <ng-container *ngIf="referralType && referralType.value === '3'">
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Dokter Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
-                  <div>
-                    <input class="form-control" placeholder="Masukkan Dokter Eksternal yang Dirujuk" />
+                  <div class="mt-2">
+                    <ng-autocomplete
+                      name="external_doctor_referral_dropdown"
+                      placeHolder="Masukkan Dokter Eksternal yang Dirujuk"
+                      searchKeyword="label"
+                      class="pb-2"
+                      [(ngModel)]="selectedReferral.external_doctor_referral_id"
+                      [data]="doctorReferralList"
+                      [minQueryLength]="3"
+                      [debounceTime]="300"
+                      [itemTemplate]="itemTemplateExternalDoctor"
+                      [notFoundTemplate]="notFoundTemplateExternalDoctor">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplateExternalDoctor let-item>
+                      <a [innerHTML]="item.label"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplateExternalDoctor let-notFound>
+                      <div [innerHTML]="notFound"></div>
+                    </ng-template>
                   </div>
                 </div>
               </ng-container>
+
               <!-- ReferralType: External Doctor Referral - Unlisted -->
               <ng-container *ngIf="referralType && referralType.value === '4'">
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Nama<sup class="text-required">*</sup></label>
-                  <div>
-                    <input class="form-control" placeholder="Masukkan Nama" />
+                  <div class="mt-2">
+                    <input [(ngModel)]="selectedReferral.referral_name" class="form-control" placeholder="Masukkan Nama" />
                   </div>
                 </div>
                 <div class="col col-4 mb-3">
                   <label class="form-label text-muted">Nomor Telepon<sup class="text-required">*</sup></label>
-                  <div>
-                    <input class="form-control" placeholder="Masukkan Nomor Telepon*" />
+                  <div class="mt-2">
+                    <input [(ngModel)]="selectedReferral.referral_phone" class="form-control" placeholder="Masukkan Nomor Telepon*" />
                   </div>
                 </div>
               </ng-container>
+
+              <!-- ReferralType: External Organization Referral -->
+              <ng-container *ngIf="referralType && referralType.value === '5'">
+                <div class="col col-4 mb-3">
+                  <label class="form-label text-muted">Organisasi Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div class="mt-2">
+                    <ng-autocomplete
+                      name="external_organization_referral_id"
+                      placeHolder="Masukkan Organisasi Eksternal yang Dirujuk"
+                      searchKeyword="label"
+                      [(ngModel)]="selectedReferral.external_organization_referral_id"
+                      [data]="doctorReferralList"
+                      [minQueryLength]="3"
+                      [debounceTime]="300"
+                      [itemTemplate]="itemTemplateOrganizationReferral"
+                      [notFoundTemplate]="notFoundTemplateOrganizationReferral">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplateOrganizationReferral let-item>
+                      <a [innerHTML]="item.label"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplateOrganizationReferral let-notFound>
+                      <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- ReferralType: External Organization Referral - Unlisted -->
+              <ng-container *ngIf="referralType && referralType.value === '6'">
+                <div class="col col-4 mb-3">
+                  <label class="form-label text-muted">Nama<sup class="text-required">*</sup></label>
+                  <div class="mt-2">
+                    <input [(ngModel)]="selectedReferral.referral_name" class="form-control" placeholder="Masukkan Nama" />
+                  </div>
+                </div>
+                <div class="col col-4 mb-3">
+                  <label class="form-label text-muted">Nomor Telepon<sup class="text-required">*</sup></label>
+                  <div class="mt-2">
+                    <input [(ngModel)]="selectedReferral.referral_phone" class="form-control" placeholder="Masukkan Nomor Telepon*" />
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- ReferralType: Internal Doctor Referral -->
+              <ng-container *ngIf="referralType && referralType.value === '7'">
+                <div class="col col-4 mb-3">
+                  <label class="form-label text-muted">Organisasi Internal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div class="mt-2">
+                    <ng-autocomplete
+                      name="inter_shg_referral_dropdown"
+                      placeHolder="Select Inter SHG Referral"
+                      searchKeyword="label"
+                      (inputChanged)="getReferralIshg($event)"
+                      [(ngModel)]="selectedReferral.ishg_referral_id"
+                      [data]="doctorReferralList"
+                      [isLoading]="referralIshgLoading"
+                      [minQueryLength]="3"
+                      [debounceTime]="500"
+                      [itemTemplate]="itemTemplateReferralISHG"
+                      [notFoundTemplate]="notFoundTemplate">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplateReferralISHG let-item>
+                      <a [innerHTML]="item.label"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplate let-notFound>
+                      <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                  </div>
+                </div>
+              </ng-container>
+
+              <!-- ReferralType: Online Aggregator Referral -->
+              <ng-container *ngIf="referralType && referralType.value === '8'">
+                <div class="col col-4 mb-3">
+                  <label class="form-label text-muted">Aggregator Online yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div class="mt-2">
+                    <ng-autocomplete
+                      name="online_aggregator_referral_dropdown"
+                      placeHolder="Select Online Aggregator Referral"
+                      searchKeyword="label"
+                      [(ngModel)]="selectedReferral.online_aggregator_id"
+                      [data]="doctorReferralList"
+                      [minQueryLength]="0"
+                      [debounceTime]="100"
+                      [itemTemplate]="itemTemplateReferralOnlineAgg"
+                      [notFoundTemplate]="notFoundTemplate">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplateReferralOnlineAgg let-item>
+                      <a [innerHTML]="item.label"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplate let-notFound>
+                      <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                  </div>
+                </div>
+              </ng-container>
+
               <div class="w-100"></div>
               <div class="col col-4 mb-3">
                 <label class="form-label text-muted">Nama Pembayar</label>
@@ -256,13 +422,13 @@
       </div>
       <button *ngIf="!isLoadingFetch" (click)="createAdmission($event)" [disabled]="isLoading" class="btn btn-success px-3 ml-2">Buat Admission</button>
     </div>
-    
+
     <ng-container *ngIf="isLoadingFetch || isError">
       <div class="w-100 mt-3">
         <div *ngIf="isError">
           <ngb-alert type="danger" (close)="isError = false">{{errorMessage}}</ngb-alert>
         </div>
-        <div *ngIf="isLoadingFetch" class="bg-secondary p-2 rounded">Menyiapkan Data Jadwal dan Admission.... Mohon Menunggu...</div>  
+        <div *ngIf="isLoadingFetch" class="bg-secondary p-2 rounded">Menyiapkan Data Jadwal dan Admission.... Mohon Menunggu...</div>
       </div>
     </ng-container>
   </div>
@@ -355,7 +521,7 @@
           <ng-container *ngIf="isError">
             <div class="text-danger mb-4">Error: {{errorMessage}}</div>
             <div *ngIf="isError">
-              <button class="btn btn-text text-secondary" 
+              <button class="btn btn-text text-secondary"
                 (click)="modal.close()"
                 (click)="createAdmission($event)">Ulangi Proses</button>
               <button class="btn btn-primary ml-3" (click)="modal.close()">Cek Ulang Data</button>

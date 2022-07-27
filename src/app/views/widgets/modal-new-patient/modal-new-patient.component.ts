@@ -11,6 +11,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 import * as moment from 'moment';
 import { omit } from 'lodash';
+import { isValidEmail, isValidPhoneNumber } from '../../../utils/helpers.util';
 
 @Component({
   selector: 'app-modal-new-patient',
@@ -221,16 +222,6 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
       notes: '',
       modalityExaminationId: ''
     }
-
-    this.model = {
-      birthDate: '',
-      name: '',
-      mrLocalNo: '',
-      identityNumber: '',
-      identityTypeId: '',
-      phoneNumber1: '',
-      emailAddress: '',
-    }
   }
 
   addModalityToList() {
@@ -287,7 +278,8 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
               element.isSuccess = true
               element.messageError = null
               element.isLoading = false
-              this.cancelModality()
+              this.cancelModality();
+
             }, (error: any) => {
               this.isSubmitting = false;
               element.isSuccess = false
@@ -295,6 +287,16 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
               element.isLoading = false
             });
         });
+        this.isFormValid = true;
+        this.model = {
+          birthDate: '',
+          name: '',
+          mrLocalNo: '',
+          identityNumber: '',
+          identityTypeId: '',
+          phoneNumber1: '',
+          emailAddress: '',
+        }
       } else {
         const model = {
           ...this.selectedModality,
@@ -302,19 +304,31 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
         };
         const payload = this.generatePayload(model);
         this.modalityService.postAppointment(payload)
-            .subscribe((response) => {
-              if (isOk(response)) {
-                this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
-              }
-              this.isSubmitting = false;
-            }, (error: any) => {
-              this.isSubmitting = false;
-              this.showErrorAlert(error.error.message, 2000);
-            });
+          .subscribe((response) => {
+            if (isOk(response)) {
+              this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
+            }
+            this.isSubmitting = false;
+            this.isFormValid = true;
+            this.model = {
+              birthDate: '',
+              name: '',
+              mrLocalNo: '',
+              identityNumber: '',
+              identityTypeId: '',
+              phoneNumber1: '',
+              emailAddress: '',
+            }
+          }, (error: any) => {
+            this.isSubmitting = false;
+            this.showErrorAlert(error.error.message, 2000);
+          });
       }
-   } else {
-
-   }
+    } else {
+      this.showErrorAlert('Silahkan Isi Kolom yang Wajib Diisi Sebelum Menjadwalkan Pasien', 2000);
+      this.isSubmitting = false;
+      this.isFormValid = false;
+    }
     return;
   }
 
@@ -388,15 +402,30 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
 
   validForm() {
     const {
-      birthDate, name, mrLocalNo, identityNumber, identityTypeId, phoneNumber1, emailAddress,
+      birthDate, name, identityNumber, identityTypeId, phoneNumber1, emailAddress,
     } = this.model
-    if ( birthDate && name && mrLocalNo && identityNumber && identityTypeId && phoneNumber1 && emailAddress ) {
-      return true
-    };
-    this.showErrorAlert('Silahkan Isi Kolom yang Wajib Diisi Sebelum Menjadwalkan Pasien', 2000);
-    this.isSubmitting = false;
-    this.isFormValid = false;
-    return false
+
+    if ( birthDate && name && identityNumber && identityTypeId && phoneNumber1 && emailAddress ) {
+      console.log(birthDate)
+      console.log(name)
+      console.log(identityNumber)
+      console.log(identityTypeId)
+      console.log(phoneNumber1)
+      console.log(emailAddress)
+      const testPhone = this.isValidHandphone(phoneNumber1);
+      console.log(testPhone, '=========== test phone')
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isValidHandphone(phoneNumber: string) {
+    return isValidPhoneNumber(phoneNumber);
+  }
+
+  isValidEmailAdress(email: string) {
+    return isValidEmail(email);
   }
 
 }

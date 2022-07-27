@@ -83,9 +83,9 @@ export class ModalDetailScheduleComponent implements OnInit {
     this.fillExaminations(this.selectedAppointment.modality_hospital_id);
   }
 
-  close() {
+  close(isSuccess? : boolean) {
     // this.selectedAppointment.refreshTableDaily();
-    this.activeModal.close();
+    this.activeModal.close(isSuccess);
   }
 
   createAdmission() {
@@ -163,7 +163,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   showHistoryModal() {
-    const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_history' })
+    const m = this.modalService.open(ModalHistoryComponent, { windowClass: 'modal_history', centered: true })
     m.componentInstance.modalitySlotId = this.selectedAppointment.modality_slot_id
     m.result.then((result: any) => {
       console.log('modal is closed', {result})
@@ -181,7 +181,7 @@ export class ModalDetailScheduleComponent implements OnInit {
   }
 
   cancelAppointment(item: any = this.selectedAppointment) {
-    const m = this.modalService.open(ModalCancelAppointmentComponent, { windowClass: 'modal_cancel_appointment' })
+    const m = this.modalService.open(ModalCancelAppointmentComponent, { windowClass: 'modal_cancel_appointment', centered: true })
     m.result.then((result: any) => {if (result.result === 'OK') {
       this.radiologyService.deleteAppointment(item.modality_slot_id, {
         ...this.getUserPayload(),
@@ -190,7 +190,7 @@ export class ModalDetailScheduleComponent implements OnInit {
         .subscribe((res) => {
           if (isOk(res)) {
             this.showSuccessAlert(res.message);
-            this.close();
+            this.close(true);
           } else {
             this.showErrorAlert('Delete failed');
           }
@@ -229,7 +229,7 @@ export class ModalDetailScheduleComponent implements OnInit {
       .subscribe((response) => {
         if (isOk(response)) {
           this.showSuccessAlert(response.message);
-          this.close()
+          this.close(true)
         }
       }, () => {
         this.showErrorAlert('Update gagal');
@@ -239,7 +239,7 @@ export class ModalDetailScheduleComponent implements OnInit {
       .subscribe((response) => {
         if (isOk(response)) {
           this.showSuccessAlert(response.message);
-          this.close()
+          this.close(true)
         }
         // location.reload();
       }, () => {

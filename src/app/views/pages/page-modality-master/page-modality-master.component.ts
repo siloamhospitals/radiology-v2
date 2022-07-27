@@ -77,11 +77,16 @@ export class PageModalityMasterComponent implements OnInit {
         centered: true,
         size: 'lg'
       })
-    
+    if(!isEmpty(val)){
+      val.refrehData = this.refreshData();
+    }
     modalRef.componentInstance.isUpdate = isUpdate;
-    modalRef.componentInstance.responseData = val;
-    modalRef.result.then((_result: any) => {
-      this.refreshData();
+    modalRef.componentInstance.responseData = val
+    modalRef.result.then((result: any) => {
+      console.log(result);
+      this.fillOperationals()
+      this.getModality()
+      this.getRooms();
     })
   }
 
@@ -98,11 +103,11 @@ export class PageModalityMasterComponent implements OnInit {
 
   selectAll() {
     this.selectedItemsModality = this.modalityOptions.map(x => x.name);
-}
+  }
 
-unselectAll() {
-    this.selectedItemsModality = [];
-}
+  unselectAll() {
+      this.selectedItemsModality = [];
+  }
 
   getRooms() {
     const key = JSON.parse(this.strKey);

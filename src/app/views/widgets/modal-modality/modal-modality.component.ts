@@ -133,7 +133,6 @@ export class ModalModalityComponent implements OnInit {
     this.service.getModalityHospitalById(this.modalityHospitalId)
       .subscribe(data => {
         this.modalityHospital = data.data;
-        console.log(this.modalityHospital, 'modality')
         if (this.modalityHospital != null) {
           this.setData();
         } else {
@@ -169,7 +168,6 @@ export class ModalModalityComponent implements OnInit {
       hospitalId: this.hospitalId,
     })
       .subscribe(data => {
-        console.log(data)
         this.modalityOptions = data.data;
       }, () => {
         this.modalityOptions = [];
@@ -191,7 +189,6 @@ export class ModalModalityComponent implements OnInit {
         notes
       };
     }
-    console.log(this.modalityHospital.modality_notes, 'ss')
     this.modalityForm.patchValue({
       modalityId: this.modalityHospital.modality_id,
       modalityLabel: this.modalityHospital.modality_label,
@@ -328,6 +325,10 @@ export class ModalModalityComponent implements OnInit {
     }
   }
 
+  reset(){
+    this.modalityForm.reset();
+  }
+
   async submit(item: RadiologyItem) {
     if (this.loading) {
       return;
@@ -379,7 +380,6 @@ export class ModalModalityComponent implements OnInit {
       ...closeModalityHospital,
       modality_notes: this.modalityForm.controls.modality_notes.value,
     };
-    console.log(this.modalityHospitalRequest.status)
     if (this.modalityHospitalId != null && this.modalityHospitalRequest.status == 2){
       modalityHospitalId = item.modality_hospital_id;
       reserveDate = moment().format('YYYY-MM-DD')
@@ -464,7 +464,6 @@ export class ModalModalityComponent implements OnInit {
     this.modalRef.componentInstance.modalitySlot = this.modalitySlots
     this.modalRef.result.then((result) => {
       if (result === 'OK') {
-        console.log(result)
         this.sendDeleteRequest(item);
       }
     }, (_) => {});
