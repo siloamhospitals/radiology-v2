@@ -89,6 +89,7 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     this.getModalityHospitalList();
     this.getNationalityIdType();
     this.getCity();
+    this.getSex();
   }
 
   getModalityHospitalList() {
@@ -461,6 +462,10 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
 
   getDistrict(cityId = null) {
     if (cityId) {
+      this.listDistrict = []
+      this.listSubdistrict = []
+      this.model.districtId = null
+      this.model.subDistrictId = null
       this.generalService.getDistrict(cityId)
         .subscribe((res) => {
           this.listDistrict = res.data;
@@ -472,6 +477,8 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
 
   getSubdistrict(districtId = null) {
     if (districtId) {
+      this.listSubdistrict = []
+      this.model.subDistrictId = null
       this.generalService.getSubDistrict(districtId)
         .subscribe((res) => {
           this.listSubdistrict = res.data;
