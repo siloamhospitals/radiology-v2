@@ -21,6 +21,8 @@ export class TableListDailyComponent {
   @Input() sectionSelected: ModalityHospital;
   @Input() fromTimeRange: string;
   @Input() toTimeRange: string;
+  @Input() isBpjs: boolean;
+  @Input() isNonBpjs: boolean;
 
   public scheduleStatus: any = ScheduleStatus
   public scheduleList: any[] = []
@@ -235,21 +237,39 @@ export class TableListDailyComponent {
           this.scheduleList = this.scheduleListBk.slice()
         }else {
           const momentFromTime = moment(this.fromTimeRange, 'hh:mm')
-          const momentToTime = moment(this.toTimeRange, 'hh:mm')          
-          this.scheduleList = this.scheduleListBk.reduce((acc, sc) => {
-            const copySc = Object.assign({} , sc)
-            const items = copySc.items.filter((item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
-                && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')) );
-
-            if(items.length) {
-              copySc.items = items.slice()
-              copySc.rowSpan = items.length
-              acc.push(copySc)
-            }
-            return acc
-          }, [])
+          const momentToTime = moment(this.toTimeRange, 'hh:mm');
+          const onTimeRange = (item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
+                && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')); 
+                     
+          this.reducingSchedulList(onTimeRange);
         }
       }
+    
+    if((changes.isBpjs && changes.isBpjs.currentValue) !== undefined
+      || (changes.isNonBpjs && changes.isNonBpjs.currentValue) !== undefined) {
+
+        if((this.isBpjs === false && this.isNonBpjs === false) 
+            || this.isBpjs === true && this.isNonBpjs === true) {
+          this.scheduleList = this.scheduleListBk.slice()
+        }else {
+          const onIsBpjs = (item : any) => this.isBpjs ? item.is_bpjs : !item.is_bpjs; 
+          this.reducingSchedulList(onIsBpjs);
+        }
+      }
+  }
+
+  private reducingSchedulList(onTimeRange: (item: any) => boolean) {
+    this.scheduleList = this.scheduleListBk.reduce((acc, sc) => {
+      const copySc = Object.assign({}, sc);
+      const items = copySc.items.filter(onTimeRange);
+
+      if (items.length) {
+        copySc.items = items.slice();
+        copySc.rowSpan = items.length;
+        acc.push(copySc);
+      }
+      return acc;
+    }, []);
   }
 
   public showSuccessAlert(message: string) {

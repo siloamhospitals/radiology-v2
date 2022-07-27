@@ -23,6 +23,8 @@ export class TableListDailyFcfsComponent implements OnInit {
   @Input() sectionSelected: ModalityHospital
   @Input() filter: FilterModal
   @Output() isFilterShow = new EventEmitter<boolean>()
+  @Input() isBpjs: boolean;
+  @Input() isNonBpjs: boolean;
   
   modalitySlots: ModalitySlot[] = []
   isLoading: boolean
@@ -82,6 +84,18 @@ export class TableListDailyFcfsComponent implements OnInit {
         this.modalitySlots = this.modalitySlotsBk.slice()
       }
     }
+
+    if((changes.isBpjs && changes.isBpjs.currentValue) !== undefined
+      || (changes.isNonBpjs && changes.isNonBpjs.currentValue) !== undefined) {
+
+        if((this.isBpjs === false && this.isNonBpjs === false) 
+            || this.isBpjs === true && this.isNonBpjs === true) {
+          this.modalitySlots = this.modalitySlotsBk.slice()
+        }else {
+          const onIsBpjs = (item : any) => this.isBpjs ? item.is_bpjs : !item.is_bpjs; 
+          this.modalitySlots = this.modalitySlotsBk.filter(onIsBpjs)
+        }
+      }
   }
 
   resetFilter() {

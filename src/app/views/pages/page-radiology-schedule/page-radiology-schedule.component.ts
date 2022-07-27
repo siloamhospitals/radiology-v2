@@ -76,11 +76,13 @@ export class PageRadiologyScheduleComponent implements OnInit {
   fromTimeRange: string = "00:00";
   toTimeRange: string = "00:00";
 
+  isBpjs: boolean;
+  isNonBpjs: boolean;
+
   isLoadingSection: boolean = false
   // changeTableViewDebounce: any = null
 
   ngOnInit() {
-    // this.getModalitySlots()
     this.getModalityHospitalList()
       .then(() => {
         this.route.queryParams.subscribe(p => {
@@ -266,4 +268,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
     this.filterLocalMrNo = null
     this.filter = { name: '', localMrNo: '' }
   }
+
+  toggeNonBpjs = () => this.isNonBpjs = !this.isNonBpjs;
+  toggeBpjs = () => this.isBpjs = !this.isBpjs;
 }

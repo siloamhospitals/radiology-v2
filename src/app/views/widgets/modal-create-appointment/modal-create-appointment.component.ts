@@ -283,7 +283,7 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
       mobileNo1: phoneNumber, address, notes, emailAddress, isBpjs, isAnesthesia
     } = model;
     const patientHopeId = model ? model.patientId : null;
-    const reserveDate = moment(model.reserveDate).format('YYYY-MM-DD')
+    const reserveDate = moment(model.reserveDate, 'dddd, DD MMMM YYYY').format('YYYY-MM-DD')
     const payload: RadiologyAppointmentRequest = {
       modalityHospitalId: model.modalityHospitalId,
       contactId: model.contactId,
@@ -461,6 +461,18 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
 
   private toLowerCase(value : any) {
     return String(value).toLowerCase()
+  }
+
+  resetFilterMrLocal() {
+    setTimeout(() => {
+      
+      this.search.birthDate = ''
+      this.search.patientName = ''
+      this.search.idNumber = ''
+      this.search.nationalIdTypeId = ''
+      
+    }, 500);
+    
   }
 
 }
