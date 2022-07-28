@@ -99,6 +99,7 @@ export class ModalMaintenanceComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+      console.log(this.maintenanceItem)
     this.modalityForm = this._fb.group({
       modalityHospitalId: [{value: this.modalityHospitalId? this.modalityHospitalId : '', disabled: false}, [Validators.required]],
       roomId: [{value: this.modalityHospital.room_id, disabled: false}, [Validators.required]],
