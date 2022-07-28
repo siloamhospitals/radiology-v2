@@ -154,11 +154,6 @@ export class PatientService {
     // return of(PATIENTHOPE);
   }
 
-  // searchPatientGroupDob(hospitalId: string, patientName: string, birthDate: string): Observable<any> {
-  //   const url = `${this.patientHopeGroupUrl}?hospitalId=${hospitalId}&patientName=${patientName}&birthDate=${birthDate}`;
-  //   return this.http.get<any>(url, httpOptions);
-  // }
-
   searchPatientHope2(hospitalId: string, localMrNo: number): Observable<any> {
     const url = `${this.patientHopeUrl}?hospitalId=${hospitalId}&mrLocalNo=${localMrNo}`;
     return this.http.get<any>(url, httpOptions);

@@ -1,3 +1,4 @@
+import { Country } from './../../../models/generals/country';
 import { General } from './../../../models/generals/general';
 import { Subdistrict } from './../../../models/generals/subdistrict';
 import { District } from './../../../models/generals/district';
@@ -14,7 +15,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 import * as moment from 'moment';
-import { omit } from 'lodash';
+import { omit, pick } from 'lodash';
 import { isValidEmail, isValidPhoneNumber } from '../../../utils/helpers.util';
 import Swal from 'sweetalert2';
 
@@ -70,12 +71,14 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     subDistrictId: '',
     sexId: '',
     cityId: '',
+    nationalityId: '',
   };
   public listCity: City[];
   public listDistrict: District[];
   public listSubdistrict: Subdistrict[];
   public listSex: General[] = [];
-
+  public listCountry: Country[];
+  public createdContactId: any = null;
 
   // buttons
   public isSubmitting: boolean = false;
@@ -90,6 +93,7 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     this.getNationalityIdType();
     this.getCity();
     this.getSex();
+    this.getCountry();
   }
 
   getModalityHospitalList() {
@@ -271,10 +275,10 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
   onCreateAppointment() {
     this.isSubmitting = true;
     const isValid = this.validForm();
+    if (!this.createdContactId) this.createNewContact();
+    console.log(isValid, '======== is valid')
     if(isValid) {
-      const isPatientExist = this.checkPatientExist();
-      console.log(isPatientExist, '========== is patient exist')
-      if(!isPatientExist) this.createNewContact();
+      console.log('masuk ke sini berarti valid')
       if (this.modalityAppointmentList.length > 0) {
         let allPassed = true;
         this.modalityAppointmentList.forEach((element: any) => {
@@ -303,10 +307,11 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
               element.messageError = (error.error && error.error.message) || error.message
               element.isLoading = false
             });
-          if (!element.isSuccess) {
+          if (element.isSuccess !== true) {
             allPassed = false;
           }
         });
+        console.log(allPassed,'=======all passed')
         if (allPassed) {
           Swal.fire({
             type: 'success',
@@ -317,9 +322,6 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
           this.activeModal.close();
         }
       } else {
-        const isPatientExist = this.checkPatientExist();
-        console.log(isPatientExist, '========== is patient exist')
-        if(!isPatientExist) this.createNewContact();
         const model = {
           ...this.selectedModality,
           ...this.model,
@@ -342,6 +344,7 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
           });
       }
     } else {
+      console.log('masuk ke sini berarti tidak valid')
       this.isSubmitting = false;
       this.isFormValid = false;
     }
@@ -408,7 +411,31 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
       userId: this.userId,
     };
     this.patientService.addContact(payload).subscribe(
-      () => {
+      (res: any) => {
+        this.createdContactId = res.data.contact_id;
+        this.showSuccessAlert('Pasien Baru Berhasil Dibuat', 2000);
+      }, error => {
+        this.showErrorAlert(error.error.message, 2000);
+      }
+    );
+  }
+
+  createCompletePatient() {
+    const pickedModal = pick(this.model, [
+      'birthDate', 'name', 'nationalityId', 'cityId', 'districtId', 'subDistrictId', 'sexId',
+    ]);
+    pickedModal.birthDate = moment().format('YYYY-MM-DD')
+    const payload = {
+      ...pickedModal,
+      subDistrictId: Number(pickedModal.subDistrictId),
+      hospitalId: this.hospital.id,
+      organizationId: this.hospital.orgId,
+      channelId: channelId.FRONT_OFFICE,
+      userId: this.userId,
+    };
+    this.patientService.createPatientComplete(payload).subscribe(
+      (res) => {
+        console.log(res, '===========res data create complete patient')
         this.showSuccessAlert('Pasien Baru Berhasil Dibuat', 2000);
       }, error => {
         this.showErrorAlert(error.error.message, 2000);
@@ -420,10 +447,11 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     const { name, birthDate } = this.model;
     let result = null;
     this.patientService.searchPatient(name, birthDate, this.hospital.orgId).subscribe(
-      (res) => {
+      (res: any) => {
+        console.log(res.data, '===============res untuk ngecek pasiennnya ada atay egk ')
         result = res.data;
         this.showSuccessAlert('Pasien Baru Berhasil Dibuat', 2000);
-      }, error => {
+      }, (error: any) => {
         console.log(error, '=======error')
         this.showErrorAlert(error.error.message, 2000);
       }
@@ -437,19 +465,15 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     } = this.model
 
     if ( birthDate && name && identityNumber && identityTypeId && phoneNumber1 && emailAddress ) {
-      // console.log(birthDate)
-      // console.log(name)
-      // console.log(identityNumber)
-      // console.log(identityTypeId)
-      // console.log(phoneNumber1)
-      // console.log(emailAddress)
       const isValidHandphonePatient = this.isValidHandphone(phoneNumber1);
       if (!isValidHandphonePatient) {
         this.showErrorAlert('Silahkan Isi Kolom Telepon sesuai Format Telepon yang benar', 2000);
+        return false;
       }
       const isValidEmailPatient = this.isValidEmailAdress(emailAddress);
       if (!isValidEmailPatient) {
         this.showErrorAlert('Silahkan Isi Kolom Email sesuai Format Email yang benar', 2000);
+        return false;
       }
       return true;
     } else {
@@ -470,11 +494,12 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     if (cityId) {
       this.listDistrict = []
       this.listSubdistrict = []
-      this.model.districtId = null
-      this.model.subDistrictId = null
+      this.model.districtId = '';
+      this.model.subDistrictId = '';
       this.generalService.getDistrict(cityId)
         .subscribe((res) => {
           this.listDistrict = res.data;
+          this.model.districtId = this.listDistrict[0].district_id;
         }, () => {
           this.listDistrict = [];
         })
@@ -483,18 +508,16 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
 
   getSubdistrict(districtId = null) {
     if (districtId) {
-      this.listSubdistrict = []
-      this.model.subDistrictId = null
+      this.model.subDistrictId = '';
       this.generalService.getSubDistrict(districtId)
         .subscribe((res) => {
           this.listSubdistrict = res.data;
+          console.log(this.listSubdistrict, '================ list subdistrict')
+          this.model.subDistrictId = this.listSubdistrict[0].sub_district_id;
+          console.log(this.model.subDistrictId, '============ subdistrict')
         }, () => {
           this.listSubdistrict = [];
         })
-
-      if (this.listSubdistrict.length !== 0) {
-        this.model.subdistrict = this.listSubdistrict[0];
-      }
     }
   }
 
@@ -532,43 +555,14 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
 
   getSex() {
     this.generalService.getGender().subscribe((res: any) => {
-      console.log(res, '==============res')
       this.listSex = res.data;
     })
   }
 
-  // note to self ( ini copas dari FO jadi lihat aja kondisi apakah kira2 diperlukan findSubdistrik dan selectSubdistrik atau egk perlu)
-  findSubdistrict(event: any) {
-    this.listSubdistrict = [];
-
-    const str_district = event.target.value;
-
-    const idx = this.listDistrict.findIndex((a) => {
-      return a.name == str_district;
-    });
-
-    if (idx >= 0) {
-      this.model.district = this.listDistrict[idx];
-    }
-
-    const districtId = this.model.district.district_id;
-
-    if (districtId) {
-      this.getSubdistrict(districtId);
-    }
-  }
-
-  selectSubdistrict(event: any) {
-
-    const str_subdistrict = event.target.value;
-
-    const idx = this.listSubdistrict.findIndex((a) => {
-      return a.name == str_subdistrict;
-    });
-
-    if (idx >= 0) {
-      this.model.subdistrict = this.listSubdistrict[idx];
-    }
-
+  getCountry() {
+    this.generalService.getCountry()
+    .subscribe((res:any) => {
+      this.listCountry = res.data;
+    })
   }
 }
