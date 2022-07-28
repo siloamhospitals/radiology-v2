@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { isEmpty } from 'lodash'
-import * as moment from 'moment';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import {  Modality } from '../../../models/radiology/radiology';
