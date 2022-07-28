@@ -80,20 +80,23 @@
                 [(ngModel)]="filterLocalMrNo" />
               <button type="submit" class="fa fa-search position-absolute border-0 bg-transparent" style="font-size: 16px; bottom: 15px;"></button>
             </form>
-            <div *ngIf="sectionSelected?.operational_type !== '1'" class="col-md-2 pr-0 d-flex flex-column border-right pb-2">
+            <div *ngIf="sectionSelected?.operational_type !== '1'" class="col-md-2 pr-0 d-flex flex-column border-right pb-2 justify-content-around position-relative">
               <small class="text-muted" >Rentang Waktu</small>
               <div class="d-flex align-items-center">
                 <app-time-picker
                   [(value)]="fromTimeRange"
                   [duration]="sectionSelected.duration" 
                   class="text-left px-0"
-                  noBorder="true" ></app-time-picker>
+                  noBorder="true" 
+                  [onChange]="onChangeTimer" ></app-time-picker>
                 <b class="mx-2" >-</b>
                 <app-time-picker
                   [(value)]="toTimeRange"
                   [duration]="sectionSelected.duration" 
-                  noBorder="true" ></app-time-picker>
+                  noBorder="true" 
+                  [onChange]="onChangeTimer" ></app-time-picker>
               </div>
+              <div class="text-danger error-timer" *ngIf="isErrorTimer" >Waktu mulai tidak sesuai dengan waktu selesai.</div>
             </div>
             <div  class="col-md-2 pr-0 d-flex flex-column border-right justify-content-around">
               <small class="text-muted" >BPJS Status</small>
