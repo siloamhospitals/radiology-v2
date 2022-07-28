@@ -143,6 +143,7 @@ export class TableListDailyComponent {
           rowSpan: 1,
           patient_visit_number: slot.patient_visit_number,
           isBpjs: slot.is_bpjs,
+          isPast: moment().isAfter(moment(this.dateSelected), 'days'),
           duration,
           ...slot
         }
@@ -195,6 +196,7 @@ export class TableListDailyComponent {
           rowSpan: 1,
           patient_visit_number: slot.patient_visit_number,
           isBpjs: slot.is_bpjs,
+          isPast: moment().isAfter(moment(this.dateSelected), 'days'),
           duration,
           ...slot
         }

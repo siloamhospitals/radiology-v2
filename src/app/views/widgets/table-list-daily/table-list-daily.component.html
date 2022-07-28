@@ -33,13 +33,19 @@
         </td>
         <td style="width: 100px; vertical-align: middle;">{{ schedule.fromTime + ' - ' + schedule.toTime }}</td>
         <ng-container *ngIf="schedule.rowSpan">
-          <td [attr.rowspan]="schedule.rowSpan"
-          (click)="isRowScheduled(schedule) ? detailSchedule(schedule) : createAppointment(schedule)"
-          [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled cursor-pointer item-indicator-primary' : 'cursor-pointer'" >
-          <span [class.text-success]="!schedule.patient"  >
-            {{ schedule.patient || 'Tersedia' }}
-          </span>
-        </td>
+          <td *ngIf="schedule.isPast && !schedule.patient; else showAvailable"
+            class="item-hover">
+            <span *ngIf="schedule.isPast" class="text-danger" style="cursor: default;">Not Available</span>
+          </td>
+          <ng-template #showAvailable>
+            <td [attr.rowspan]="schedule.rowSpan"
+            (click)="isRowScheduled(schedule) ? detailSchedule(schedule) : createAppointment(schedule)"
+            [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled cursor-pointer item-indicator-primary' : 'cursor-pointer'" >
+            <span [class.text-success]="!schedule.patient"  >
+              {{ schedule.patient || 'Tersedia' }}
+            </span>
+            </td>
+          </ng-template>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.dob }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.localMrNo }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.examination }}</td>
