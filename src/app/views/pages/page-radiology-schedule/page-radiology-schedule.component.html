@@ -22,21 +22,28 @@
           <div class="d-flex align-items-center">
             <button
               title="To Today"
-              class="btn font-weight-bold text-muted d-flex mx-2 {{tableViewCurrentIsToday ? 'btn-primary' : 'btn-light'}}"
+              class="btn py-2 font-weight-bold text-muted d-flex mr-2 {{tableViewCurrentIsToday ? 'btn-primary' : 'btn-light'}}"
               (click)="toToday()">
               <i class="fa fa-calendar-check-o" style="font-size: 16px;"></i>
               <span class="ml-2">Hari ini</span>
             </button>
             <div style="width: 2px; background: #ccc;"></div>
-            <select
-              title="Change tyoe of period table"
-              [(ngModel)]="tableViewActive"
-              (change)="changeTableView($event)"
-              class="form-control px-2 mx-2 cursor-pointer"
-              style="width: 94px;"
-              [disabled]="sectionSelected?.operational_type === '1'">
-              <option *ngFor="let t of tableViewSelect" [ngValue]="t.key">{{t.text}}</option>
-            </select>
+            <div>
+              <ng-select
+                title="Change type of period table"
+                [(ngModel)]="tableViewActive"
+                [items]="tableViewSelect"
+                [clearable]="false"
+                [searchable]="false"
+                placeholder="Pilih Tampilan Tabel"
+                bindLabel="text"
+                bindValue="key"
+                class="d-form-control mr-2 cursor-pointer"
+                style="width: 94px;"
+                [disabled]="sectionSelected?.operational_type === '1'"
+                (change)="changeTableView($event)">
+              </ng-select>
+            </div>
             <div title="Pick period table" class="cursor-pointer-force">
               <app-date-picker
                 width="140px"

@@ -107,4 +107,25 @@
     font-size: 10px;
     padding: 0 5px;
   }
+
+.ng-select.d-form-control {
+  padding: 0 0 0 0;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  color: rgba(34, 47, 62, 0.87);
+}
+
+.ng-select.d-form-control ::ng-deep .ng-select-container {
+  height: 28px !important;
+  min-height: 28px !important;
+}
+
+.ng-select.d-form-control ::ng-deep .ng-dropdown-panel {
+  z-index: 18;
+}
+.ng-select.d-form-control.ng-select-disabled {
+  opacity: 0.6;
+}
   
