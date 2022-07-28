@@ -4,6 +4,7 @@ import { ModalDetailScheduleComponent } from './modal-detail-schedule.component'
 import { DatepickerModule } from '../date-picker/date-picker.module';
 import { TimepickerModule } from '../time-picker/time-picker.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ModalDetailScheduleComponent],
@@ -12,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     DatepickerModule,
     TimepickerModule,
     FormsModule,
+    NgbTooltipModule,
     ReactiveFormsModule
   ]
 })

@@ -92,8 +92,9 @@ export class PatientService {
     return this.http.get<any>(uri, httpOptions);
   }
 
-  getPatientHopeDetailTwo(patientId: number) {
-    const uri = `${this.patientHopeDetailUrl}/details/${patientId}`;
+  getPatientHopeDetailTwo(patientId: number, orgId: any = null) {
+    let uri = `${this.patientHopeDetailUrl}/details/${patientId}`;
+    uri += `?organizationId=${orgId}`
     return this.http.get<any>(uri, httpOptions);
   }
 

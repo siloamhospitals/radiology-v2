@@ -76,7 +76,7 @@
               <!-- ReferralType: Internal Doctor Referral -->
               <ng-container *ngIf="referralType && referralType.value === '2'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Dokter Internal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <label class="form-label">Dokter Internal yang Dirujuk<sup class="text-required">*</sup></label>
                   <div>
                     <ng-autocomplete
                       name="internal_doctor_referral_id"
@@ -101,7 +101,7 @@
                   </div>
                 </div>
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Nomor Admission yang Dirujuk<sup class="text-required">*</sup></label>
+                  <label class="form-label">Nomor Admission yang Dirujuk<sup class="text-required">*</sup></label>
                   <div>
                     <ng-autocomplete
                       name="referral_admission_id"
@@ -132,8 +132,8 @@
               <!-- ReferralType: External Doctor Referral -->
               <ng-container *ngIf="referralType && referralType.value === '3'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Dokter Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Dokter Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <ng-autocomplete
                       name="external_doctor_referral_dropdown"
                       placeHolder="Masukkan Dokter Eksternal yang Dirujuk"
@@ -161,14 +161,14 @@
               <!-- ReferralType: External Doctor Referral - Unlisted -->
               <ng-container *ngIf="referralType && referralType.value === '4'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Nama<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Nama<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <input [(ngModel)]="selectedReferral.referral_name" class="form-control" placeholder="Masukkan Nama" />
                   </div>
                 </div>
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Nomor Telepon<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Nomor Telepon<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <input [(ngModel)]="selectedReferral.referral_phone" class="form-control" placeholder="Masukkan Nomor Telepon*" />
                   </div>
                 </div>
@@ -177,8 +177,8 @@
               <!-- ReferralType: External Organization Referral -->
               <ng-container *ngIf="referralType && referralType.value === '5'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Organisasi Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Organisasi Eksternal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <ng-autocomplete
                       name="external_organization_referral_id"
                       placeHolder="Masukkan Organisasi Eksternal yang Dirujuk"
@@ -205,14 +205,14 @@
               <!-- ReferralType: External Organization Referral - Unlisted -->
               <ng-container *ngIf="referralType && referralType.value === '6'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Nama<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Nama<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <input [(ngModel)]="selectedReferral.referral_name" class="form-control" placeholder="Masukkan Nama" />
                   </div>
                 </div>
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Nomor Telepon<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Nomor Telepon<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <input [(ngModel)]="selectedReferral.referral_phone" class="form-control" placeholder="Masukkan Nomor Telepon*" />
                   </div>
                 </div>
@@ -221,8 +221,8 @@
               <!-- ReferralType: Internal Doctor Referral -->
               <ng-container *ngIf="referralType && referralType.value === '7'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Organisasi Internal yang Dirujuk<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Organisasi Internal yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <ng-autocomplete
                       name="inter_shg_referral_dropdown"
                       placeHolder="Select Inter SHG Referral"
@@ -251,8 +251,8 @@
               <!-- ReferralType: Online Aggregator Referral -->
               <ng-container *ngIf="referralType && referralType.value === '8'">
                 <div class="col col-4 mb-3">
-                  <label class="form-label text-muted">Aggregator Online yang Dirujuk<sup class="text-required">*</sup></label>
-                  <div class="mt-2">
+                  <label class="form-label">Aggregator Online yang Dirujuk<sup class="text-required">*</sup></label>
+                  <div class="mt-0">
                     <ng-autocomplete
                       name="online_aggregator_referral_dropdown"
                       placeHolder="Select Online Aggregator Referral"
@@ -319,59 +319,78 @@
               <!-- PatientType: Payer -->
               <ng-container *ngIf="patientType && patientType.value === '2'">
                 <div class="col-4 mb-3">
-                  <label class="form-label">Pembayar</label>
+                  <label class="form-label">Pembayar<sup class="text-required">*</sup></label>
                   <div>
-                    <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
-                      <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
-                    </select>
+                    <ng-autocomplete
+                      name="payer_name_dropdown"
+                      placeHolder="Pilih Pembayar"
+                      searchKeyword="payer_label"
+                      [(ngModel)]="payerName"
+                      [data]="payerList"
+                      [minQueryLength]="0"
+                      [debounceTime]="100"
+                      [itemTemplate]="itemTemplatePayerList"
+                      [notFoundTemplate]="notFoundTemplate">
+                    </ng-autocomplete>
+
+                    <ng-template #itemTemplatePayerList let-item>
+                      <a [innerHTML]="item.payer_label"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplate let-notFound>
+                      <div [innerHTML]="notFound"></div>
+                    </ng-template>
                   </div>
                 </div>
                 <div class="col-4 mb-3">
-                  <label class="form-label">Nomor Pembayar</label>
+                  <label class="form-label">Nomor Pembayar<sup class="text-required">*</sup></label>
                   <div>
-                    <input class="form-control" placeholder="Masukkan Nomor Pembayar" />
+                    <input [(ngModel)]="payerNo" class="form-control" placeholder="Masukkan Nomor Pembayar" />
                   </div>
                 </div>
                 <div class="col-4 mb-3">
                   <label class="form-label">Nomor Kelayakan Pembayar</label>
                   <div>
-                    <input class="form-control" placeholder="Masukkan Nomor Kelayakan Pembayar" />
+                    <input [(ngModel)]="payerEligibilityNo" class="form-control" placeholder="Masukkan Nomor Kelayakan Pembayar" />
                   </div>
                 </div>
                 <div class="col-4 mb-3">
                   <label class="form-label">Sumber Rujukan</label>
                   <div>
-                    <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
-                      <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
-                    </select>
+                    <div class="input-group x-form-control disabled">
+                      <input [(ngModel)]="payerReferralSource" class="form-control" placeholder="Sumber Rujukan" disabled />
+                      <button class="btn btn-text text-secondary" type="button"><i class="fa fa-search"></i></button>
+                    </div>
                   </div>
                 </div>
                 <div class="col-4 mb-3">
                   <label class="form-label">Nomor Rujukan</label>
                   <div>
-                    <input class="form-control" placeholder="Masukkan Nomor Rujukan" />
+                    <input [(ngModel)]="payerReferralNo" class="form-control" placeholder="Masukkan Nomor Rujukan" />
                   </div>
                 </div>
                 <div class="col-4 mb-3">
                   <label class="form-label">Tanggal Rujukan</label>
                   <div>
-                    <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
-                      <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
-                    </select>
+                    <div class="input-group x-form-control">
+                      <input class="form-control" placeholder="Pilih Tanggal Rujukan" ngbDatepicker #d="ngbDatepicker">
+                      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+                    </div>
                   </div>
                 </div>
                 <div class="col-4 mb-3">
                   <label class="form-label">Diagnosa</label>
                   <div>
-                    <select [(ngModel)]="roomSelect" class="x-form-control" placeholder="Pilih Ruangan / Lokasi">
-                      <!-- <option value="" disabled>Pilih Ruangan / Lokasi</option> -->
-                    </select>
+                    <div class="input-group x-form-control disabled">
+                      <input [(ngModel)]="payerDiagnose" class="form-control" placeholder="Pilih Diagnosa" disabled />
+                      <button class="btn btn-text text-secondary" type="button"><i class="fa fa-search"></i></button>
+                    </div>
                   </div>
                 </div>
                 <div class="col-8 mb-3">
                   <label class="form-label">Catatan Pembayar</label>
                   <div>
-                    <input class="form-control" placeholder="Masukkan Catatan Pembayar" />
+                    <input [(ngModel)]="payerNote" class="form-control" placeholder="Masukkan Catatan Pembayar" />
                   </div>
                 </div>
               </ng-container>
@@ -399,7 +418,11 @@
               <div class="col col-4 mb-3">
                 <label class="form-label">Email</label>
                 <div>
-                  <input [ngModel]="txtEmail" [disabled]="isAdmissionEmailDisabled" class="form-control" placeholder="Email Isian" />
+                  <input 
+                    [ngModel]="txtEmail" 
+                    [disabled]="isAdmissionEmailDisabled" 
+                    [placeholder]="isNoEmail ? 'Pilihan Email Dikosongkan' : 'Masukkan Email Valid'"
+                    class="form-control" />
                 </div>
               </div>
               <div class="col col-4 mb-3">

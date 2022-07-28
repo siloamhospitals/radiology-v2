@@ -15,6 +15,19 @@ select.x-form-control {
   color: rgba(34, 47, 62, 0.87);
 }
 
+.input-group.x-form-control {
+  border-radius: 4px;
+  border: 1px solid rgba(34, 47, 62, 0.38);
+  color: rgba(34, 47, 62, 0.87);
+}
+.input-group.x-form-control .form-control {
+  border: 0;
+}
+.input-group.x-form-control.disabled {
+  background-color: #eee !important;
+  color: #666;
+}
+
 select.x-form-control::placeholder {
   color: rgba(34, 47, 62, 0.38) !important;
 }
@@ -25,7 +38,7 @@ select.x-form-control:focus {
 }
 
 .ng-select.x-form-control {
-  padding: 0;
+  padding: 0 0 0 5px;
   border: 1px solid rgba(34, 47, 62, 0.38);
   border-radius: 4px;
   display: block;
@@ -43,21 +56,27 @@ select.x-form-control:focus {
 }
 
 .ng-autocomplete ::ng-deep .autocomplete-container ::ng-deep .input-container ::ng-deep input {
-  padding: 0 30px 0px 10px !important;
-  height: 28px !important;
-  border-radius: .25rem;
+  padding: 2px 30px 0px 16px !important;
+  /* height: 35px !important; */
   background-color: transparent;
+}
+.ng-autocomplete ::ng-deep .autocomplete-container ::ng-deep .input-container ::ng-deep input::placeholder {
+  color: rgba(34, 47, 62, 0.38) !important;
 }
 
 .ng-autocomplete ::ng-deep .autocomplete-container {
-  border: 1px solid #ced4da;
   color: #495057;
-  height: calc(1.5em + .8rem + 2px);
-  border-radius: .25rem;
+  height: calc(1.5em + .8rem + 5px) !important;
   box-shadow: none;
+  border-radius: 4px;
+  border: 1px solid rgba(34, 47, 62, 0.38);
 }
 
 .ng-autocomplete ::ng-deep .autocomplete-container .input-container input:disabled {
   background-color: #eee !important;
   color: #666;
+}
+
+.ng-autocomplete ::ng-deep .autocomplete-container .suggestions-container ul li a {
+  font-size: 12px !important;
 }

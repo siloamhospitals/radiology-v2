@@ -41,12 +41,14 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   referralTypes: General[] = [];
   emailTypes: General[] = [];
   roomOptions: General[] = [];
+  payerList: any[] = [];
 
   nationalIdTypeName: any = nationalTypeIdNames;
 
   // Model Information
   contactId: string;
   contactData: any = {};
+  contactHopeData: any = {};
   roomName: any = null;
 
   // Input to Send AdmissionModel
@@ -59,7 +61,18 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   txtIsSigned: boolean = false;
   isAdmissionEmailDisabled: boolean = true;
 
+  // Payer Model
+  payerName: any = null;
+  payerNo: any = null;
+  payerEligibilityNo: any = null;
+  payerReferralSource: any = null;
+  payerReferralNo: any = null;
+  payerReferralDate: any = null;
+  payerDiagnose: any = null;
+  payerNote: any = null;
+
   // Utility Properties
+  isNoEmail: boolean = false
   isLoadingFetch: boolean = false
   isLoading: boolean = false
   isError: boolean = false
@@ -151,19 +164,21 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
     // Emit Edit Email or Note
     this.editNotesAndEmail(this.model.contact_id)
 
+    // Payer Data
+    const isSelectedPayer = this.payerName && this.payerName.payer_id
+
     // Create Admission Purpose
     const body: RadiologyAdmissionRequest = {
       modalitySlotId: this.model.modality_slot_id,
       organizationId: Number(this.hospital.orgId),
       patientTypeId: Number(this.patientType.value),
       admissionTypeId: '1', // Outpatient
-      // ...this.generatePayerPayload(this.payerData),
       userId: this.user.id,
       source: sourceApps,
       userName: this.user.fullname,
-      payerId: null,
-      payerNo: null,
-      payerEligibility: null
+      payerId: isSelectedPayer ? this.payerName.payer_id : null,
+      payerNo: isSelectedPayer ? this.payerNo : null,
+      payerEligibility: isSelectedPayer ? this.payerEligibilityNo : null
     }
     // const body = {}
     console.log('createAdmission', body)
@@ -215,6 +230,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
       this.fetchReferralTypes(),
       this.fetchPatientTypes(),
       this.fetchEmailTypes(),
+      this.fetchPayers(),
     ])
   }
 
@@ -238,16 +254,31 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
       .then((res: any) => res.data || [])
   }
 
+  async fetchPayers () {
+    if (!(this.hospital && this.hospital.orgId)) { return }
+    this.payerList = await this.generalService.getPayer(this.hospital.orgId).toPromise()
+      .then((res: any) => res.data || [])
+  }
+
   async fetchData () {
     return Promise.all([
       this.fetchContactData(),
-      this.fetchLocationRoom()
+      this.fetchLocationRoom(),
     ])
   }
 
   async fetchContactData () {
     if (!this.contactId) { return }
     this.contactData = await this.patientService.getContact(this.contactId).toPromise()
+      .then((res: any) => res.data || {})
+    await this.fetchContactHopeData()
+  }
+
+  async fetchContactHopeData () {
+    const patientId = this.contactData.patient_hope_id
+    const orgId = this.hospital.orgId
+    if (!patientId) { return }
+    this.contactHopeData = await this.patientService.getPatientHopeDetailTwo(patientId, orgId).toPromise()
       .then((res: any) => res.data || {})
   }
 
@@ -268,11 +299,12 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
 
   changeEmailType () {
     const v = this.emailType
+    this.isNoEmail = false
     switch (v.value) {
       case '1': this.txtEmail = this.contactData.email_address; this.isAdmissionEmailDisabled = true; break;
-      case '2': this.txtEmail = this.contactData.email_address; this.isAdmissionEmailDisabled = true; break;
+      case '2': this.txtEmail = this.contactHopeData && this.contactHopeData.secondaryEmailAddress ? this.contactHopeData.secondaryEmailAddress : null; this.isAdmissionEmailDisabled = true; break;
       case '3': this.txtEmail = null; this.isAdmissionEmailDisabled = false; break;
-      case '4': this.txtEmail = 'noemail@email.com'; this.isAdmissionEmailDisabled = true;
+      case '4': this.txtEmail = null; this.isAdmissionEmailDisabled = true; this.isNoEmail = true
       default: break;
     }
   }
@@ -301,7 +333,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
       const modifyNotesEmail = {
         patientOrganizationId: this.model.patient_organization_id,
         organizationId: Number(this.hospital.orgId),
-        emailAddress: this.txtEmail,
+        // emailAddress: this.txtEmail,
         notes: this.txtNote,
         isSigned: this.txtIsSigned,
         source: sourceApps,
