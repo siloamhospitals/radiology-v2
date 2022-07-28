@@ -1,7 +1,7 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
-import { ScheduleStatus } from '../../../variables/common.variable';
+import { ScheduleStatus, ScheduleStatusIDN } from '../../../variables/common.variable';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
 import * as moment from 'moment'
 import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
@@ -25,6 +25,7 @@ export class TableListDailyComponent {
   @Input() isNonBpjs: boolean;
 
   public scheduleStatus: any = ScheduleStatus
+  public scheduleStatusIDN: any = ScheduleStatusIDN
   public scheduleList: any[] = []
   public scheduleListBk: any[] = []
   public isLoading: boolean;

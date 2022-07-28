@@ -199,6 +199,13 @@ export const ScheduleStatus = {
   '4': 'Completed'
 };
 
+export const ScheduleStatusIDN = {
+  '1': 'Terjadwal',
+  '2': 'Check-In',
+  '3': 'Diproses',
+  '4': 'Selesai'
+};
+
 export const nationalTypeIdNames = {
   1: 'KTP',
   2: 'SIM',
