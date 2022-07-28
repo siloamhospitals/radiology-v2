@@ -19,17 +19,22 @@
   <tbody>
     <ng-container *ngIf="isLoading; else showList">
       <tr>
-        <td colspan="100%" class="text-center p-3">Please wait ...</td>
+        <td colspan="100%" class="text-center p-3">Memuat Data... Mohon Tunggu...</td>
       </tr>
     </ng-container>
     <ng-template #showList>
       <ng-container *ngIf="!(modalitySlots && modalitySlots.length)">
         <tr>
-          <td colspan="100%" class="text-center p-3">Data currently does not exist</td>
+          <td colspan="100%" class="text-center p-3">
+            <div>Data belum ada saat ini</div>
+            <div class="my-2">
+              <button type="button" class="btn btn-text text-primary btn-sm" (click)="createAppointment()" ><i class="fa fa-plus mr-2"></i>Jadwalkan Pasien</button>
+            </div>
+          </td>
         </tr>
       </ng-container>
       <ng-container *ngIf="isLoading">
-        <tr><td colspan="100%" class="text-center p-3">Load Data... Please Wait...</td></tr>
+        <tr><td colspan="100%" class="text-center p-3">Memuat Data... Mohon Tunggu...</td></tr>
       </ng-container>
   
       <tr *ngFor="let item of modalitySlots; let i=index"
@@ -43,14 +48,14 @@
         <td>{{item.local_mr_no}}</td>
         <td>{{item.modality_examination_name}}</td>
         <td>{{ item.is_bpjs ? 'BPJS' : 'Non BPJS' }}</td>
-        <td align="center" >{{item.patient_visit_number || '-'}}</td>
+        <td class="text-center">{{item.patient_visit_number || '-'}}</td>
         <td>
           <span [ngClass]="'table-status status-' + scheduleStatus[item.status]?.toLowerCase() ">
-            {{ scheduleStatus[item.status] || '-' }}
+            {{ scheduleStatusIDN[item.status] || '-' }}
           </span>
         </td>
         <td>
-          <button type="click" class="btn btn-link text-underline" (click)="detailSchedule(item)" ><u>Detail</u></button>
+          <button type="click" class="btn btn-link text-underline" (click)="detailSchedule(item)" ><u>Rincian</u></button>
         </td>
       </tr>
     </ng-template>
