@@ -67,5 +67,10 @@
   top: -1px !important;
 }
 
+.table-font {
+    font-size: 14px;
+    line-height: 18px;
+}
+
 
 /* .btn.btn-info { background-color: #F8F9FA !important; } */
