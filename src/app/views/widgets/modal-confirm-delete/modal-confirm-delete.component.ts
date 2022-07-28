@@ -15,6 +15,7 @@ export class ModalConfirmDeleteComponent implements OnInit {
   @Input() modalitySlot: any = [];
   @Input() headerMsg: string;
   @Input() msgUpadte: string;
+  @Input() maintenance: boolean = false;
   
   constructor(
     public activeModal: NgbActiveModal,
