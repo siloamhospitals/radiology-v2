@@ -3,3 +3,7 @@
   border-bottom: 2px solid rgba(87, 95, 207, 1);
   color: #575FCF;
 }
+
+.bg-blur {
+  filter: blur(2px);
+}

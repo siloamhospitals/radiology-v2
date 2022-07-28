@@ -77,8 +77,7 @@
             <form (submit)="setFilterLocalMrNo($event)" class="col-md-3 position-relative pr-0 border-right">
               <input name="local_mr_no" class="form-control pt-3 input-filter pr-5" type="text" placeholder="Cari Local MR"
                 title="Find local MR"
-                [(ngModel)]="filterLocalMrNo"
-                (change)="setFilterLocalMrNo($event)" />
+                [(ngModel)]="filterLocalMrNo" />
               <button type="submit" class="fa fa-search position-absolute border-0 bg-transparent" style="font-size: 16px; bottom: 15px;"></button>
             </form>
             <div *ngIf="sectionSelected?.operational_type !== '1'" class="col-md-2 pr-0 d-flex flex-column border-right pb-2">
@@ -133,7 +132,10 @@
             <app-table-list-weekly
               (itemClick)="toDaily($event)"
               [sectionSelected]="sectionSelected"
-              [dateSelected]="tableViewCurrentDate"></app-table-list-weekly>
+              [dateSelected]="tableViewCurrentDate"
+              [fromTimeRange]="fromTimeRange"
+              [toTimeRange]="toTimeRange"
+              [isBpjs]="isBpjs" [isNonBpjs]="isNonBpjs" ></app-table-list-weekly>
           </div>
           <div *ngIf="tableViewActive===0" class="table-head-sticky">
             <app-table-list-daily

@@ -1,6 +1,10 @@
 <ng-container>
-    <nav class="nav">
-        <a class="nav-link"  [ngClass] = "{'active': router==='/modality-master'}" href="/modality-master">Daftar Modality</a>
-        <a class="nav-link" [ngClass] = "{'active': router==='/maintenence-schedule'}" href="./maintenence-schedule">Jadwal Perawatan Modality</a>
-      </nav>
+  <nav class="nav">
+      <a class="nav-link"  
+        [routerLink]="['/modality-master']" 
+        [routerLinkActive]="['active']">Daftar Modality</a>
+      <a class="nav-link" 
+        [routerLink]="['/maintenence-schedule']" 
+        [routerLinkActive]="['active']">Jadwal Perawatan Modality</a>
+    </nav>
 </ng-container>

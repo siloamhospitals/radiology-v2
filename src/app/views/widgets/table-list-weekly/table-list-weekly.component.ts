@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
 
 import * as moment from 'moment';
@@ -25,6 +25,11 @@ export class TableListWeeklyComponent implements OnInit {
 
   @Output() itemClick = new EventEmitter<any>()
 
+  @Input() fromTimeRange: string;
+  @Input() toTimeRange: string;
+  @Input() isBpjs: boolean;
+  @Input() isNonBpjs: boolean;
+
   days: any[] = [
     {date: null, label: 'Senin', value: '01'},
     {date: null, label: 'Selasa', value: '02'},
@@ -39,6 +44,7 @@ export class TableListWeeklyComponent implements OnInit {
   slotData: any[] = []
   fetchDataDebounce: any = null
   isLoading: boolean = false
+  listBk: any[] = []
 
   mockData = [
     [
@@ -141,8 +147,26 @@ export class TableListWeeklyComponent implements OnInit {
     // this.refresh()
   }
 
-  ngOnChanges(_changes: any) {
-    this.refresh()
+  ngOnChanges(changes: SimpleChanges) {
+    if((changes.dateSelected && changes.dateSelected.currentValue)
+      || (changes.sectionSelected && changes.sectionSelected.currentValue)) {
+        this.refresh()
+      }
+
+    if((changes.fromTimeRange && changes.fromTimeRange.currentValue)
+      || (changes.toTimeRange && changes.toTimeRange.currentValue)) {
+        if(this.fromTimeRange === '00:00' && this.toTimeRange === '00:00') {
+          this.list = this.listBk.slice()
+        }else {
+          const momentFromTime = moment(this.fromTimeRange, 'hh:mm')
+          const momentToTime = moment(this.toTimeRange, 'hh:mm');
+          const onTimeRange = (item : any) => momentFromTime.isSameOrBefore(moment(item.fromTime, 'hh:mm'))
+                && momentToTime.isSameOrAfter(moment(item.toTime, 'hh:mm')); 
+          
+          this.list = this.listBk.filter(onTimeRange)
+        }
+      }
+    
   }
 
   refresh () {
@@ -186,7 +210,8 @@ export class TableListWeeklyComponent implements OnInit {
           patientName: y.patient_name,
           patientDob: y.patient_dob,
           patientLocalMrNo: y.local_mr_no,
-          slot: y
+          slot: y,
+          isBpjs: y.is_bpjs
         }
       })
     })
@@ -246,6 +271,7 @@ export class TableListWeeklyComponent implements OnInit {
     })
     // console.log('list', list)
     this.list = list
+    this.listBk = list.slice()
   }
 
   toDaily (val: any) {
@@ -311,7 +337,15 @@ export class TableListWeeklyComponent implements OnInit {
     })
   }
 
-}
+  isClassBpjs = (isBpjs : boolean) => {
+    if((isBpjs && this.isBpjs === true) || (!isBpjs  && this.isNonBpjs === true) 
+      || (!this.isBpjs && !this.isNonBpjs)){
+      return ''
+    }else {
+      return 'bg-blur';
+    }
+  }
+} 
 
 class SlotWeeklyItem {
   modalitySlotId: any
@@ -325,6 +359,7 @@ class SlotWeeklyItem {
   patientLocalMrNo: any
   rowSpan: number = 0
   slot: any = null
+  isBpjs: boolean
 }
 class SlotWeeklyRow {
   viewIndex: number
