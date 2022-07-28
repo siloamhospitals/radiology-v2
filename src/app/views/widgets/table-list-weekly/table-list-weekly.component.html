@@ -42,7 +42,7 @@
           <td *ngIf="day.patientName && day.rowSpan > 0"
             [attr.rowspan]="day.rowSpan"
             title="{{day.dateTitle}}"
-            class="cursor-pointer item-hover table-td table-td-scheduled item-indicator-primary"
+            [ngClass]="['cursor-pointer item-hover table-td table-td-scheduled item-indicator-primary', isClassBpjs(day.isBpjs) ]"
             style="vertical-align: top !important; width: 12.5%;"
             (click)="detailSchedule(day.slot)">
             <div style="line-height: 1.4;">
