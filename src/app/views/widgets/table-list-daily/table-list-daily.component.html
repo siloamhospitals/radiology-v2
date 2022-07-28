@@ -35,7 +35,7 @@
         <ng-container *ngIf="schedule.rowSpan">
           <td *ngIf="schedule.isPast && !schedule.patient; else showAvailable"
             class="item-hover">
-            <span *ngIf="schedule.isPast" class="text-danger" style="cursor: default;">Not Available</span>
+            <span *ngIf="schedule.isPast" class="text-danger" style="cursor: default;">Tidak Tersedia</span>
           </td>
           <ng-template #showAvailable>
             <td [attr.rowspan]="schedule.rowSpan"
