@@ -46,6 +46,8 @@ export class TableListMonthlyComponent implements OnInit {
 
   fetchDataDebounce: any = null
 
+  isLoading: boolean = false
+
   constructor(
     private radiologyService: RadiologyService,
   ) { }
@@ -103,6 +105,7 @@ export class TableListMonthlyComponent implements OnInit {
   }
 
   async generateCalendarItems () {
+    this.isLoading = true
     // const currentDate = new Date(2022, 6, 13)
     let currentDate = this.dateSelected
     if (moment.isMoment(currentDate)) { currentDate = moment(currentDate).toDate() }
@@ -161,6 +164,7 @@ export class TableListMonthlyComponent implements OnInit {
     })
     this.items = lodash.chunk(data, 7)
     // console.log('table monthly', this.items)
+    this.isLoading = false
   }
 
 }

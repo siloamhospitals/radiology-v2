@@ -128,4 +128,13 @@
 .ng-select.d-form-control.ng-select-disabled {
   opacity: 0.6;
 }
+
+::ng-deep .loading-inline ::ng-deep .parentDiv {
+  display: inherit !important;
+  justify-content: inherit !important;
+  align-items: inherit !important;
+  margin-left: inherit !important;
+  position: inherit !important;
+  margin-top: inherit !important;
+}
   
