@@ -14,12 +14,12 @@
   </thead>
   <tbody>
     <ng-container *ngIf="isLoadingSection; else showList">
-      <tr><td colspan="100%" class="text-center p-3">Load Data... Please Wait...</td></tr>
+      <tr><td colspan="100%" class="text-center p-3">Memuat Data... Mohon Tunggu...</td></tr>
     </ng-container>
 
     <ng-container *ngIf="!(scheduleList && scheduleList.length) && !isLoadingSection" >
       <tr>
-        <td colspan="100%" class="text-center p-3">No data from this section</td>
+        <td colspan="100%" class="text-center p-3">Tidak ada data pada pilihan Modality ini</td>
       </tr>
     </ng-container>
 

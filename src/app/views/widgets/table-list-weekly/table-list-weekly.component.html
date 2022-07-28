@@ -14,12 +14,12 @@
   </thead>
   <tbody>
     <ng-container *ngIf="isLoading; else showData">
-      <tr><td colspan="100%" class="text-center p-3"><div class="px-4 py-2 bg-secondary rounded">Load Data... Please wait...</div></td></tr>
+      <tr><td colspan="100%" class="text-center p-3"><div class="px-4 py-2 bg-secondary rounded">Memuat Data... Mohon Tunggu...</div></td></tr>
     </ng-container>
     <ng-template #showData>
       <ng-container *ngIf="!(list && list.length)">
         <tr>
-          <td colspan="100%" class="text-center p-3">No data from this section</td>
+          <td colspan="100%" class="text-center p-3">Tidak ada data pada pilihan Modality ini</td>
         </tr>
       </ng-container>
       <tr *ngFor="let item of list; let i=index">
@@ -32,12 +32,12 @@
             title="{{day.dateTitle}}"
             class="cursor-pointer item-hover"
             (click)="createAppointment(day)">
-            <span class="text-success">Available</span>
+            <span class="text-success">Tersedia</span>
           </td>
           <td *ngIf="!day.patientName && day.isPast"
             title="{{day.dateTitle}}"
             class="item-hover">
-            <span class="text-danger" style="cursor: default;">Not Available</span>
+            <span class="text-danger" style="cursor: default;">Tidak Tersedia</span>
           </td>
           <td *ngIf="day.patientName && day.rowSpan > 0"
             [attr.rowspan]="day.rowSpan"
