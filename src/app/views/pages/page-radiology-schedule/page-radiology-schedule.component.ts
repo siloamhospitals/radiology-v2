@@ -75,6 +75,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
 
   fromTimeRange: string = "00:00";
   toTimeRange: string = "00:00";
+  isErrorTimer: boolean
 
   isBpjs: boolean;
   isNonBpjs: boolean;
@@ -267,8 +268,25 @@ export class PageRadiologyScheduleComponent implements OnInit {
     this.filterName = null
     this.filterLocalMrNo = null
     this.filter = { name: '', localMrNo: '' }
+    this.fromTimeRange = '00:00'
+    this.toTimeRange = '00:00'
+    this.isBpjs = false
+    this.isNonBpjs = false
+    this.isErrorTimer = false
   }
 
   toggeNonBpjs = () => this.isNonBpjs = !this.isNonBpjs;
   toggeBpjs = () => this.isBpjs = !this.isBpjs;
+
+  onChangeTimer = () => {
+      const toTime = moment(this.toTimeRange, 'HH:mm')
+      const fromTime = moment(this.fromTimeRange, 'HH:mm')
+      if(toTime.isSameOrBefore(fromTime)){
+        this.isErrorTimer = true
+      }else {
+        this.isErrorTimer = false
+      }
+    
+  }
+
 }

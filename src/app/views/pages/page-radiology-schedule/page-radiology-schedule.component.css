@@ -99,3 +99,12 @@
     border-radius: 0px;
     color: #341F97;
   }
+
+  .error-timer {
+    position: absolute;
+    bottom: -20px;
+    background: #fff;
+    font-size: 10px;
+    padding: 0 5px;
+  }
+  
