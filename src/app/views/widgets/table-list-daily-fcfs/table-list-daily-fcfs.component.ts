@@ -46,8 +46,8 @@ export class TableListDailyFcfsComponent implements OnInit {
       const modalityHospitalId = this.sectionSelected.modality_hospital_id
       const reserveDate = this.dateSelected.format('YYYY-MM-DD')
       const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
-      this.modalitySlots = (responseSlots.data || []).map(slot => {
-        slot.patient_dob = moment(slot.patient_dob, 'YYYY-MM-DD').format('DD MMM YYYY')
+      this.modalitySlots = (responseSlots.data || []).map((slot : any ) => {
+        slot.dob = moment(slot.patient_dob, 'YYYY-MM-DD').format('DD MMM YYYY')
         return slot
       });
       this.modalitySlotsBk = this.modalitySlots.slice()
