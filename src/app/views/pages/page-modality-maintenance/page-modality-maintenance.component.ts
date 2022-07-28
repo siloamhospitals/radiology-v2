@@ -9,6 +9,7 @@ import { RadiologyService } from '../../../services/radiology/radiology.service'
 //import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';
 import { RoomMappingService } from '../../../services/room-mapping.service';
 import { RoomMapping } from '../../../models/room-mapping';
+import * as moment from 'moment'
 
 @Component({
   selector: 'app-page-modality-maintenance',
@@ -72,7 +73,15 @@ export class PageModalityMaintenanceComponent implements OnInit {
         centered: true,
         size: 'lg'
       })
-    modalRef.componentInstance.maintenanceItem = this.operationals;
+      const reduced = this.operationals.data.reduce((val:any, acc:any)=> {
+        if (acc.status == 1) {
+           acc
+           val.push(acc);
+        }
+        return val;
+      }, []);
+      
+    modalRef.componentInstance.maintenanceItem = reduced;
     modalRef.componentInstance.responseData = val
     modalRef.componentInstance.isUpdate = isUpdate;
     modalRef.result.then(() => {
@@ -124,6 +133,9 @@ export class PageModalityMaintenanceComponent implements OnInit {
               response.data[i].modality_closes[ii].floor_name = response.data[i].floor_name
               response.data[i].modality_closes[ii].modality_label  = response.data[i].modality_label 
               response.data[i].modality_closes[ii].modality_label  = response.data[i].modality_label 
+              response.data[i].modality_closes[ii].from_date = moment(response.data[i].modality_closes[ii].from_date).format('DD MMMM YYYY')
+              response.data[i].modality_closes[ii].from_time = moment(response.data[i].modality_closes[ii].from_time, 'HH:mm').format('HH:mm')
+              response.data[i].modality_closes[ii].to_time = moment(response.data[i].modality_closes[ii].to_time, 'HH:mm').format('HH:mm')
               newdata.push(response.data[i].modality_closes[ii])
               console.log("why",newdata)
             }
