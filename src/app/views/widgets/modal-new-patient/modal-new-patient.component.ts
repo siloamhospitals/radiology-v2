@@ -1,3 +1,8 @@
+import { Country } from './../../../models/generals/country';
+import { General } from './../../../models/generals/general';
+import { Subdistrict } from './../../../models/generals/subdistrict';
+import { District } from './../../../models/generals/district';
+import { City } from './../../../models/generals/city';
 import { isOk } from '../../../utils/response.util';
 import { RadiologyAppointmentRequest } from './../../../models/radiology/request/radiology-appointment-request';
 import { channelId, sourceApps } from './../../../variables/common.variable';
@@ -10,8 +15,9 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { WidgetBaseComponent } from '../widget-base/widget-base.component';
 import * as moment from 'moment';
-import { omit } from 'lodash';
+import { omit, pick } from 'lodash';
 import { isValidEmail, isValidPhoneNumber } from '../../../utils/helpers.util';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-modal-new-patient',
@@ -61,8 +67,18 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     identityTypeId: '',
     phoneNumber1: '',
     emailAddress: '',
+    districtId: '',
+    subDistrictId: '',
+    sexId: '',
+    cityId: '',
+    nationalityId: '',
   };
-
+  public listCity: City[];
+  public listDistrict: District[];
+  public listSubdistrict: Subdistrict[];
+  public listSex: General[] = [];
+  public listCountry: Country[];
+  public createdContactId: any = null;
 
   // buttons
   public isSubmitting: boolean = false;
@@ -75,6 +91,9 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     this.onDefaultSelected();
     this.getModalityHospitalList();
     this.getNationalityIdType();
+    this.getCity();
+    this.getSex();
+    this.getCountry();
   }
 
   getModalityHospitalList() {
@@ -256,9 +275,12 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
   onCreateAppointment() {
     this.isSubmitting = true;
     const isValid = this.validForm();
+    if (!this.createdContactId) this.createNewContact();
+    console.log(isValid, '======== is valid')
     if(isValid) {
-      this.createNewContact();
+      console.log('masuk ke sini berarti valid')
       if (this.modalityAppointmentList.length > 0) {
+        let allPassed = true;
         this.modalityAppointmentList.forEach((element: any) => {
           if(element.isSuccess){
             return;
@@ -275,27 +297,29 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
                 this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
               }
               this.isSubmitting = false;
-              element.isSuccess = true
-              element.messageError = null
-              element.isLoading = false
+              element.isSuccess = true;
+              element.messageError = null;
+              element.isLoading = false;
               this.cancelModality();
-
             }, (error: any) => {
               this.isSubmitting = false;
               element.isSuccess = false
               element.messageError = (error.error && error.error.message) || error.message
               element.isLoading = false
             });
+          if (element.isSuccess !== true) {
+            allPassed = false;
+          }
         });
-        this.isFormValid = true;
-        this.model = {
-          birthDate: '',
-          name: '',
-          mrLocalNo: '',
-          identityNumber: '',
-          identityTypeId: '',
-          phoneNumber1: '',
-          emailAddress: '',
+        console.log(allPassed,'=======all passed')
+        if (allPassed) {
+          Swal.fire({
+            type: 'success',
+            title: 'Sukses',
+            text: 'Sukses Membuat Pasien Baru Beserta Modalitynya',
+            timer: 1500
+          });
+          this.activeModal.close();
         }
       } else {
         const model = {
@@ -306,18 +330,13 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
         this.modalityService.postAppointment(payload)
           .subscribe((response) => {
             if (isOk(response)) {
-              this.showSuccessAlert('Appointment Berhasil Dibuat', 2000);
-            }
-            this.isSubmitting = false;
-            this.isFormValid = true;
-            this.model = {
-              birthDate: '',
-              name: '',
-              mrLocalNo: '',
-              identityNumber: '',
-              identityTypeId: '',
-              phoneNumber1: '',
-              emailAddress: '',
+              Swal.fire({
+                type: 'success',
+                title: 'Sukses',
+                text: 'Sukses Membuat Pasien Baru Beserta Modalitynya',
+                timer: 1500
+              });
+              this.activeModal.close();
             }
           }, (error: any) => {
             this.isSubmitting = false;
@@ -325,7 +344,7 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
           });
       }
     } else {
-      this.showErrorAlert('Silahkan Isi Kolom yang Wajib Diisi Sebelum Menjadwalkan Pasien', 2000);
+      console.log('masuk ke sini berarti tidak valid')
       this.isSubmitting = false;
       this.isFormValid = false;
     }
@@ -337,7 +356,7 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
       phoneNumber1, address, notes, emailAddress, isBpjs, isAnesthesia
     } = model;
     const patientHopeId = model ? model.patientId : null;
-    const reserveDate = moment(model.reserveDate).format('YYYY-MM-DD')
+    const reserveDate = moment(model.reserveDate).format('YYYY-MM-DD');
     const payload: RadiologyAppointmentRequest = {
       modalityHospitalId: model.modalityHospitalId,
       modalityExaminationId: model.modalityExaminationId,
@@ -346,7 +365,7 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
       fromTime: model.fromTime,
       toTime: model.toTime,
       name: model.name,
-      birthDate: model.birthDate,
+      birthDate: moment(model.birthDate).format('YYYY-MM-DD'),
       phoneNumber1,
       addressLine1: address,
       notes: notes,
@@ -392,12 +411,52 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
       userId: this.userId,
     };
     this.patientService.addContact(payload).subscribe(
-      () => {
+      (res: any) => {
+        this.createdContactId = res.data.contact_id;
         this.showSuccessAlert('Pasien Baru Berhasil Dibuat', 2000);
       }, error => {
         this.showErrorAlert(error.error.message, 2000);
       }
     );
+  }
+
+  createCompletePatient() {
+    const pickedModal = pick(this.model, [
+      'birthDate', 'name', 'nationalityId', 'cityId', 'districtId', 'subDistrictId', 'sexId',
+    ]);
+    pickedModal.birthDate = moment().format('YYYY-MM-DD')
+    const payload = {
+      ...pickedModal,
+      subDistrictId: Number(pickedModal.subDistrictId),
+      hospitalId: this.hospital.id,
+      organizationId: this.hospital.orgId,
+      channelId: channelId.FRONT_OFFICE,
+      userId: this.userId,
+    };
+    this.patientService.createPatientComplete(payload).subscribe(
+      (res) => {
+        console.log(res, '===========res data create complete patient')
+        this.showSuccessAlert('Pasien Baru Berhasil Dibuat', 2000);
+      }, error => {
+        this.showErrorAlert(error.error.message, 2000);
+      }
+    );
+  }
+
+  checkPatientExist() {
+    const { name, birthDate } = this.model;
+    let result = null;
+    this.patientService.searchPatient(name, birthDate, this.hospital.orgId).subscribe(
+      (res: any) => {
+        console.log(res.data, '===============res untuk ngecek pasiennnya ada atay egk ')
+        result = res.data;
+        this.showSuccessAlert('Pasien Baru Berhasil Dibuat', 2000);
+      }, (error: any) => {
+        console.log(error, '=======error')
+        this.showErrorAlert(error.error.message, 2000);
+      }
+    );
+    return result;
   }
 
   validForm() {
@@ -406,16 +465,19 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     } = this.model
 
     if ( birthDate && name && identityNumber && identityTypeId && phoneNumber1 && emailAddress ) {
-      console.log(birthDate)
-      console.log(name)
-      console.log(identityNumber)
-      console.log(identityTypeId)
-      console.log(phoneNumber1)
-      console.log(emailAddress)
-      const testPhone = this.isValidHandphone(phoneNumber1);
-      console.log(testPhone, '=========== test phone')
+      const isValidHandphonePatient = this.isValidHandphone(phoneNumber1);
+      if (!isValidHandphonePatient) {
+        this.showErrorAlert('Silahkan Isi Kolom Telepon sesuai Format Telepon yang benar', 2000);
+        return false;
+      }
+      const isValidEmailPatient = this.isValidEmailAdress(emailAddress);
+      if (!isValidEmailPatient) {
+        this.showErrorAlert('Silahkan Isi Kolom Email sesuai Format Email yang benar', 2000);
+        return false;
+      }
       return true;
     } else {
+      this.showErrorAlert('Silahkan Isi Kolom yang Wajib Diisi Sebelum Menjadwalkan Pasien', 2000);
       return false;
     }
   }
@@ -428,4 +490,79 @@ export class ModalNewPatientComponent extends WidgetBaseComponent implements OnI
     return isValidEmail(email);
   }
 
+  getDistrict(cityId = null) {
+    if (cityId) {
+      this.listDistrict = []
+      this.listSubdistrict = []
+      this.model.districtId = '';
+      this.model.subDistrictId = '';
+      this.generalService.getDistrict(cityId)
+        .subscribe((res) => {
+          this.listDistrict = res.data;
+          this.model.districtId = this.listDistrict[0].district_id;
+        }, () => {
+          this.listDistrict = [];
+        })
+    }
+  }
+
+  getSubdistrict(districtId = null) {
+    if (districtId) {
+      this.model.subDistrictId = '';
+      this.generalService.getSubDistrict(districtId)
+        .subscribe((res) => {
+          this.listSubdistrict = res.data;
+          console.log(this.listSubdistrict, '================ list subdistrict')
+          this.model.subDistrictId = this.listSubdistrict[0].sub_district_id;
+          console.log(this.model.subDistrictId, '============ subdistrict')
+        }, () => {
+          this.listSubdistrict = [];
+        })
+    }
+  }
+
+  getCity() {
+    this.generalService.getCity()
+      .subscribe((res) => {
+        this.listCity = res.data;
+      }, () => {
+        this.listCity = [];
+      })
+  }
+
+  getDetailAddress() {
+    this.listDistrict = [];
+    this.listSubdistrict = [];
+
+    const cityId = this.model.city.city_id;
+
+    if (cityId) {
+      this.getDistrict(cityId);
+    }
+
+    if (this.listDistrict.length !== 0) {
+      this.model.district = this.listDistrict[0];
+    }
+
+    if (this.model.district.district_id) {
+      this.getSubdistrict(this.model.district.district_id);
+    }
+
+    if (this.listSubdistrict.length != 0) {
+      this.model.subdistrict = this.listSubdistrict[0];
+    }
+  }
+
+  getSex() {
+    this.generalService.getGender().subscribe((res: any) => {
+      this.listSex = res.data;
+    })
+  }
+
+  getCountry() {
+    this.generalService.getCountry()
+    .subscribe((res:any) => {
+      this.listCountry = res.data;
+    })
+  }
 }

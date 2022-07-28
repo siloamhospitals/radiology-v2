@@ -72,11 +72,11 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
   payerNote: any = null;
 
   // Utility Properties
-  isNoEmail: boolean = false
-  isLoadingFetch: boolean = false
-  isLoading: boolean = false
-  isError: boolean = false
-  isSuccess: boolean = false
+  isNoEmail: boolean = false;
+  isLoadingFetch: boolean = false;
+  isLoading: boolean = false;
+  isError: boolean = false;
+  isSuccess: boolean = false;
 
   errorMessage: any = null;
   successResponseModel: any = null;
