@@ -21,7 +21,7 @@
           </div>
           <div class="col-md-2 justify-content-end">
             <h3 class="p-3">
-              <button class="btn btn-primary ml-2" (click)="showModalityModal()">+ Tambah Jadwal</button>
+              <button class="btn btn-primary ml-5" (click)="showModalityModal()">+ Tambah Jadwal</button>
             </h3>
           </div>
         </div>
@@ -68,25 +68,25 @@
             
           </div>
           <div class="table-head-sticky">
-            <table class="table table-borderless table-stripped" id="appointment-list-table">
+            <table class="table table-borderless table-stripped table-font" id="appointment-list-table">
               <thead class="border-0 bg-secondary">
-                <th style="min-width: 10em">
-                  Modality Name
+                <th style="width:350px">
+                  Label
                 </th>
-                <th style="min-width: 10em">
-                  Modality Label
+                <th style="width:250px">
+                  Modality
                 </th>
                 <th width="100px" style="text-align: left">Lt</th>
-                <th width="100px" style="text-align: left">Room</th>
+                <th width="100px" style="text-align: left">Ruangan</th>
                 <th width="200px" style="text-align: left">Jadwal Pemeliharaan</th>
-                <th class="text-center" width="100px">Catatan</th>
-                <th class="pr-3" style="text-align: right; min-width: 10em;">Action</th>
+                <th class="" style="text-align: left" width="250px">Catatan</th>
+                <th class="" style="text-align: right; min-width: 10em;">Action</th>
                 <th width="50px"></th>
               </thead>
           
               <tbody>
                 <tr *ngFor="let item of operationalsClose.data; let i = index">
-                  <td>{{item.modality_name}}</td>
+                  <td style="font-size:14px">{{item.modality_name}}</td>
                   <td>{{item.modality_label}}</td>
                   <td style="text-align: left">{{item.room.floor_name}}</td>
                   <td style="text-align: left">{{item.room.name}}</td>
