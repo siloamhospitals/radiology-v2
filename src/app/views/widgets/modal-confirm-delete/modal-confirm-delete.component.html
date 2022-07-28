@@ -9,15 +9,16 @@
   <div class="" *ngIf="modalitySlot.length === 0 && headerMsg == null">
     <p>Menghapus modality ini berarti menghilangkan modality sepenuhnya dari sistem penjadwalan Radiology. Apakah anda yakin?</p>
   </div>
-  <div class="" *ngIf="modalitySlot.length === 0 && headerMsg != null">
+  <div class="" *ngIf="modalitySlot.length === 0 && headerMsg != null && !maintenance">
     <p>Apakah anda yakin akan menonaktifkan modality ini? Nonaktif berarti modality tidak dimunculkan di halaman FO</p>
   </div>
   <div class="" *ngIf="modalitySlot.length !== 0 && headerMsg == null">Ada pasien yang terjadwal untuk tindakan 
     {{modalitySlot[0].modality_name}} dan semua penjadwalan pasien akan terhapus jika modality ini di hapus. 
     Apakah anda yakin ingin menghapus modality ini?</div>
-    <div class="" *ngIf="modalitySlot.length !== 0 && headerMsg != null">Masih ada pasien yang terjadwal 
+    <div class="" *ngIf="modalitySlot.length !== 0 && headerMsg != null && !maintenance">Masih ada pasien yang terjadwal 
       untuk {{modalitySlot[0].modality_name}} di tanggal {{reserveDate}} 
       Pastikan jadwal pasien sudah dipindahkan sebelum modality di set Inactive</div>
+    <div class="" *ngIf="maintenance">Anda akan membatalkan jadwal Perawatan modality ini?</div>
 </div>
 <div class="modal-footer"  *ngIf="headerMsg != null">
   <button type="button" class="btn btn-secondary" (click)="test()">Batal</button>
@@ -26,4 +27,8 @@
 <div class="modal-footer"  *ngIf="headerMsg == null">
   <button type="button" class="btn btn-secondary" (click)="test()">Batal</button>
   <button type="button" class="btn btn-danger" (click)="deleteData()">Hapus</button>
+</div>
+<div class="modal-footer"  *ngIf="headerMsg == null && maintenance">
+  <button type="button" class="btn btn-secondary" (click)="test()">Kembali</button>
+  <button type="button" class="btn btn-danger" (click)="deleteData()"><i class="fa fa-trash"></i>Batalkan Jadwal</button>
 </div>

@@ -35,6 +35,7 @@ export class RadiologyService {
   private readonly radiologyUrl = environment.OPADMIN_SERVICE + '/radiology';
   private readonly radiologyFOUrl = environment.FRONT_OFFICE_SERVICE + '/radiology';
   private readonly hospitalOperational = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting/hospital';
+  private readonly hospitalOperationalClose = environment.OPADMIN_SERVICE + '/radiology/modality-close/hospital';
   private readonly schedule = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting';
   private readonly operationalSchedule = environment.OPADMIN_SERVICE + '/radiology/modality-operational-setting/schedules';
   private readonly radiologyCCUrl = environment.CALL_CENTER_SERVICE + '/radiology';
@@ -62,6 +63,17 @@ export class RadiologyService {
 
   getOperational(hospitalId: string, floor_id?: any, operational_type?:any, status?: any, modality_id?: any, modality_label?: any): Observable<RadiologyResponse> {
     let url = `${this.hospitalOperational}/?hospitalId=${hospitalId}`;
+    url = floor_id ? `${url}&floor_id=${floor_id}` : url;
+    url = operational_type ? `${url}&operational_type=${operational_type}` : url;
+    url = status ? `${url}&status=${status}` : url;
+    url = modality_id ? `${url}&modality_id=${modality_id}` : url;
+    url = modality_label ? `${url}&modality_label=${modality_label}` : url;
+    console.log(url)
+    return this.client.get<RadiologyResponse>(url, httpOptions);
+  }
+
+  getModalityClose(hospitalId: string, floor_id?: any, operational_type?:any, status?: any, modality_id?: any, modality_label?: any): Observable<RadiologyResponse> {
+    let url = `${this.hospitalOperationalClose}/?hospitalId=${hospitalId}`;
     url = floor_id ? `${url}&floor_id=${floor_id}` : url;
     url = operational_type ? `${url}&operational_type=${operational_type}` : url;
     url = status ? `${url}&status=${status}` : url;
@@ -101,6 +113,16 @@ export class RadiologyService {
 
   deleteModalityHospital(modalityHospitalId: string) {
     const url = `${this.modalityHospital}/${modalityHospitalId}`;
+
+    return this.client.request<BaseResponse>('delete', url, {
+      ...httpOptions,
+      body: this.user
+    });
+  }
+
+  deleteModalityHospitalClose(modalityCloseId: string) {
+    const url = `${this.modalityHospital}-close/${modalityCloseId}`;
+    console.log(url)
 
     return this.client.request<BaseResponse>('delete', url, {
       ...httpOptions,

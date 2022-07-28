@@ -17,5 +17,5 @@ export default interface RadiologyItem {
   readonly modified_date: Date;
   readonly modality_closes: any;
   readonly floor_name: string;
-
+  readonly modality_close_id: string;
 }
