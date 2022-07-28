@@ -226,7 +226,8 @@ export class TableListDailyComponent {
   }
 
   async ngOnChanges(changes: SimpleChanges) {
-    if( !_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue))
+    if((!_.isEmpty((changes.sectionSelected && changes.sectionSelected.currentValue))
+      || !_.isEmpty((changes.dateSelected && changes.dateSelected.currentValue)))
       && this.sectionSelected.modality_hospital_id) {
       this.refresh(true)
       // await this.refreshData()
