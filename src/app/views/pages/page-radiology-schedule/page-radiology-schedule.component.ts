@@ -44,7 +44,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public tableViewCurrentDate: moment.Moment = moment();
   public tableViewCurrentDateLabel: String = '(not selected date)';
   public tableViewCurrentIsToday: Boolean = false;
-  public tableViewActive: number = 2;
+  public tableViewActive: number = 0;
   public tableViewSelect: any[] = [
     {key: 0, text: 'Hari'},
     {key: 1, text: 'Minggu'},

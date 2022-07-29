@@ -113,7 +113,7 @@ export class ModalDetailScheduleComponent implements OnInit {
     // Check On Late
     const lastTime = moment(`${reserveDate} ${toTime}`, 'YYYY-MM-DD HH:mm')
     const diffTime = moment().diff(lastTime)
-    if (diffTime > 0) {
+    if (diffTime > 0 && this.selectedAppointment.operational_type !== '1') {
       this.admissionLateTime = moment.utc(diffTime).format('HH [jam] mm [menit] ss [detik]')
       this.admissionIsNotToday = moment().isAfter(lastTime, 'days')
       const c = this.modalService.open(this.modalConfirmAdmission, { centered: true })

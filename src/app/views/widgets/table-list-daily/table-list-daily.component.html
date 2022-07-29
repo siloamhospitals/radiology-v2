@@ -49,7 +49,7 @@
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.dob }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.localMrNo }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.examination }}</td>
-          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.isBpjs ? 'BPJS' : 'Non BPJS' }}</td>
+          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.isBpjs === undefined ? '' : schedule.isBpjs ? 'BPJS' : 'Non BPJS' }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.patinet_visit_number }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >
             <span *ngIf="scheduleStatus[schedule.status]" [ngClass]="'table-status status-' + scheduleStatus[schedule.status].toLowerCase() ">

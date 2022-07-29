@@ -35,7 +35,7 @@
               class="form-control px-2 mx-2 cursor-pointer"
               style="width: 94px;"
               [disabled]="sectionSelected?.operational_type === '1'">
-              <option *ngFor="let t of tableViewSelect" [ngValue]="t.key">{{t.text}}</option>
+              <option *ngFor="let t of tableViewSelect" [ngValue]="t.key" >{{t.text}}</option>
             </select>
             <div title="Pick period table" class="cursor-pointer-force">
               <app-date-picker

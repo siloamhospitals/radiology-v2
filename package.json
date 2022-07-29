@@ -1,5 +1,5 @@
 {
-  "name": "msm-fe-swabber",
+  "name": "msm-fe-radiology",
   "version": "2.0.0",
   "scripts": {
     "ng": "ng",
@@ -19,7 +19,7 @@
     "dev:ssr": "npm run build:dev --watch && npm run build:client-and-server-bundles && npm run compile:server",
     "test:ssr": "npm run build:test --watch && npm run build:client-and-server-bundles && npm run compile:server",
     "prod:ssr": "npm run build:prod --watch && npm run build:client-and-server-bundles && npm run compile:server",
-    "build:client-and-server-bundles": "ng run msm-fe-swabber:server:production"
+    "build:client-and-server-bundles": "ng run msm-fe-radiologyserver:production"
   },
   "private": true,
   "dependencies": {
@@ -53,7 +53,7 @@
     "msm-kadapat": "^1.0.3",
     "mydatepicker": "^2.6.6",
     "mydaterangepicker": "^4.2.1",
-    "ngx-daterangepicker-material": "~2.0.2",
+    "ngx-daterangepicker-material": "^2.0.2",
     "ngx-mask": "^8.1.6",
     "pdfmake": "^0.1.56",
     "rxjs": "~6.3.3",

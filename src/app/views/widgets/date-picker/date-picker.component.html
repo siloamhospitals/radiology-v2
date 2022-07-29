@@ -3,20 +3,19 @@
   <input type="text"
     ngxDaterangepickerMd
     [locale]="locale"
-    [value]="value.format(format)"
     [readonly]="readonly ? 'readonly' : ''"
     (change)="changeSelected($event)"
-    [singleDatePicker]="true"
+    singleDatePicker="true"
     [autoApply]="true"
     [showDropdowns]="true"
     opens="left"
     class="form-control"
     [class.pl-4]="!hideIcon"
+    [(ngModel)]="selected"
+    name="daterange"
     [ngClass]="[(isModalLarge? 'text-left text-muted text-custom pl-2 border-top-0 border-left-0 border-bottom-0 border-right' : 'text-center'), class ]"
     />
     <div *ngIf="isModalLarge">
       <i class="position-absolute fa fa-caret-down icon-datepicker-2 text-muted mr-2"></i>
     </div>
 </div>
-
-
