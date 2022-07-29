@@ -102,7 +102,7 @@
                   <td>{{item.modality_label}}</td>
                   <td style="text-align: left">{{item.room.floor_name}}</td>
                   <td style="text-align: left">{{item.room.name}}</td>
-                  <td style="text-align: left">{{item.from_date}} | {{item.from_time}} - {{item.to_time}}</td>
+                  <td style="text-align: left"> {{moment(item.from_date).format('dddd, DD MM YYYY')}} | {{item.from_time}} - {{item.to_time}}</td>
                   <td>
                     {{item.notes}}
                   </td>
