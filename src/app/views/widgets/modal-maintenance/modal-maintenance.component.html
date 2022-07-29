@@ -98,7 +98,7 @@
       </ng-container>
    </div>
    <div class="modal-footer">
-      <button class="btn btn-default" *ngIf="responseData == null">Reset</button>
+      <button class="btn btn-default" (click)="reset()"  *ngIf="responseData == null">Reset</button>
       <button class="btn btn-default mr-auto" *ngIf="responseData != null" (click)="deleteModality(responseData)">
          <img src="assets/icons/ic_trash.svg" class="" alt="usercheck" />
          Hapus Jadwal</button>

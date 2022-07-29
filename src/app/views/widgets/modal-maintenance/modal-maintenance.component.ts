@@ -314,6 +314,14 @@ export class ModalMaintenanceComponent implements OnInit {
     console.log(this.errorTimer)
   }
 
+  reset(){
+    this.modalityForm.reset();
+    this.modalityForm.controls['modalityHospitalId'].reset()
+    this.modalityForm.controls['modalityHospitalId'].reset()
+    this.modalityForm.controls['notes'].reset()
+    this.retrievedModality = false;
+  }
+
   public validateForm = () => {
     let status
     if(!this.retrievedModality){
