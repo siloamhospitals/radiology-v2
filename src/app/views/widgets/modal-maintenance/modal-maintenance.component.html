@@ -67,7 +67,7 @@
             <div class=" mb-3 ">
                <label for="dropdownMenuLink">Modality<span style="color:red">*</span></label><br>
                <label for="dropdownMenuLink" *ngIf="!retrievedModality">-</label>
-               <label for="dropdownMenuLink" *ngIf="retrievedModality">{{modalityHospital.modality_name? modalityHospital.modality_name : 'Label kosong'}}</label>
+               <label for="dropdownMenuLink" *ngIf="retrievedModality">{{modalityHospital.modality_name != null? modalityHospital.modality_name : 'Label kosong'}}</label>
             </div>
 
             <div class="mb-3" *ngIf="responseData == null">
