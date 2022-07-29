@@ -233,23 +233,23 @@ export class ModalMaintenanceComponent implements OnInit {
 
   updateModalityHospital(){
     console.log(this.modalityHospitalRequest, 'oioi')
-    // this.service.putModalityHospital(this.modalityHospitalRequest, this.modalityHospitalId).subscribe(() => {
-    //   Swal.fire({
-    //     type: 'success',
-    //     text: 'The data has been successfully updated',
-    //     showConfirmButton: false,
-    //     timer: 3000
-    //   });
-    //   this.close();
-    // }, err => {
-    //   Swal.fire({
-    //     type: 'error',
-    //     title: 'Oops...',
-    //     text: err.error.message,
-    //     timer: 1500
-    //   });
-    //   this.loading = false;
-    // });
+    this.service.putModalityHospital(this.modalityHospitalRequest, this.modalityHospitalId).subscribe(() => {
+      Swal.fire({
+        type: 'success',
+        text: 'The data has been successfully updated',
+        showConfirmButton: false,
+        timer: 3000
+      });
+      this.close();
+    }, err => {
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: err.error.message,
+        timer: 1500
+      });
+      this.loading = false;
+    });
   }
 
   public async deleteModality(item: RadiologyItem) {
