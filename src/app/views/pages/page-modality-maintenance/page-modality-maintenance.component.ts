@@ -120,11 +120,13 @@ export class PageModalityMaintenanceComponent implements OnInit {
   }
 
   public fillOperationals(floor_id?: any, operational_type?: any, status?: any, modality_id?: any, modality_label?:any) {
+    this.isLoading = true;
     const key = JSON.parse(this.strKey)
     const hospitalId: any = key.hospital.id
     this.service.getOperational(hospitalId, floor_id, operational_type, status, modality_id, modality_label).subscribe((response) => {
       let newdata =[]
       if (response.status === 'OK') {
+        this.isLoading = false;
         for (let i = 0; i < response.data.length; i++) {
           if(response.data[i].modality_closes){
             for (let ii = 0; ii < response.data[i].modality_closes.length; ii++) {
@@ -133,16 +135,16 @@ export class PageModalityMaintenanceComponent implements OnInit {
               response.data[i].modality_closes[ii].floor_name = response.data[i].floor_name
               response.data[i].modality_closes[ii].modality_label  = response.data[i].modality_label 
               response.data[i].modality_closes[ii].modality_label  = response.data[i].modality_label 
-              response.data[i].modality_closes[ii].from_date = moment(response.data[i].modality_closes[ii].from_date).format('DD MMMM YYYY')
-              response.data[i].modality_closes[ii].from_time = moment(response.data[i].modality_closes[ii].from_time, 'HH:mm').format('HH:mm')
+              response.data[i].modality_closes[ii].from_date =  moment(new Date(response.data[i].modality_closes[ii].from_date)).format('dddd, DD MM YYYY')
+              response.data[i].modality_closes[ii].from_time =  moment(response.data[i].modality_closes[ii].from_time, 'HH:mm').format('HH:mm')
               response.data[i].modality_closes[ii].to_time = moment(response.data[i].modality_closes[ii].to_time, 'HH:mm').format('HH:mm')
               newdata.push(response.data[i].modality_closes[ii])
-              console.log("why",newdata)
             }
           }
         }
+        const sortedActivities = newdata.slice().sort((a, b) =>  a.from_date - b.from_date)
         this.operationals = response
-        this.operationalsClose.data = newdata;
+        this.operationalsClose.data = sortedActivities;
 
       } else {
         this.showErrorAlert(response.message);
@@ -178,6 +180,8 @@ export class PageModalityMaintenanceComponent implements OnInit {
     console.log(this.selectedItemsFloor)
     console.log(this.selectedItemsSchdule)
     if (this.selectedItemsFloor || this.selectedItemsSchdule || this.selectedItemsStatus || this.selectedItemsModality || selectedModalityLabelItem) {
+      this.operationalsClose.data = []
+      this.isLoading = true
       this.fillOperationals(this.selectedItemsFloor, this.selectedItemsSchdule, this.selectedItemsStatus, this.selectedItemsModality, selectedModalityLabelItem);
     } else {
       this.fillOperationals();
