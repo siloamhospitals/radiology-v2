@@ -66,6 +66,7 @@ export class ModalModalityComponent implements OnInit {
     data: [],
     last_update: ''
   };
+  public formStatus: boolean = true
 
   private _filter(value: string): RoomMapping[] {
     if (value == null || value == '') {
@@ -88,6 +89,8 @@ export class ModalModalityComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.formStatus)
+    this.findInvalidControls()
     this.modalityForm = this._fb.group({
       roomId: [{value: '', disabled: false}, [Validators.required]],
       roomName: [{value: '', disabled: false}, [Validators.required]],
@@ -329,8 +332,33 @@ export class ModalModalityComponent implements OnInit {
     this.modalityForm.reset();
   }
 
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.modalityForm.controls;
+    for (const name in controls) {
+        if (controls[name].invalid) {
+            invalid.push(name);
+        }
+    }
+    if(invalid.length > 0) {
+      this.formStatus = true
+    }else{ this.formStatus = false }
+    return this.formStatus;
+}
+
   async submit(item: RadiologyItem) {
     if (this.loading) {
+      return;
+    }
+    this.findInvalidControls()
+    if (this.modalityForm.status == 'INVALID') {
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: 'All fields are required!',
+        timer: 1500
+      });
+      this.loading = false;
       return;
     }
     let modalityHospitalId;
@@ -403,7 +431,7 @@ export class ModalModalityComponent implements OnInit {
         timer: 1500
       });
       this.responseData = data;
-      this.loading = false;
+      this.loading = true;
       this.close();
     }, err => {
       Swal.fire({
@@ -425,6 +453,7 @@ export class ModalModalityComponent implements OnInit {
         timer: 3000
       });
       this.close();
+      this.loading = true;
     }, err => {
       Swal.fire({
         type: 'error',
@@ -437,7 +466,6 @@ export class ModalModalityComponent implements OnInit {
   }
 
   public async confirmUpdate(item: RadiologyItem) {
-    console.log(item)
     this.modalRef = this.modalService.open(ModalConfirmDeleteComponent, { windowClass: 'modal_cancel_appointment' })
     this.modalRef.componentInstance.itemId = item.modality_hospital_id;
     this.modalRef.componentInstance.msg = `modality: '${item.modality_label}'`;

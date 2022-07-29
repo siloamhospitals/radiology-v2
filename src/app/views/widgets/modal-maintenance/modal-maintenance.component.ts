@@ -61,16 +61,22 @@ export class ModalMaintenanceComponent implements OnInit {
   public loading = false;
   public autocomplete: any = null;
   public modalRef: NgbModalRef;
+  public roomName: any
+  public errorTimer: boolean = false;
+  public errorMsg: string;
+  public statusTextArea: boolean = false;
+  public retrievedModality: boolean = false;
+  public newDate = moment()
+  public newFromTime: any = moment("00:00", "HH:mm").format('HH:mm');
+  public newToTime: any = moment("23:59", "HH:mm").format('HH:mm');;
+  public defaultStartDate: any = moment()
+  public defaultEndDate: any = moment()
   public operationals: RadiologyListResponse = {
     status: '',
     message: '',
     data: [],
     last_update: ''
   };
-  public roomName: any
-  public errorTimer: boolean = false;
-  public errorMsg: string;
-
   private _filter(value: string): RoomMapping[] {
     if (value == null || value == '') {
       return this.roomOptions.filter((row, index) => index < 30 || row);
@@ -80,13 +86,6 @@ export class ModalMaintenanceComponent implements OnInit {
       return option.toLowerCase().includes(value.toLowerCase());
     });
   }
-  public statusTextArea: boolean = false;
-  public retrievedModality: boolean = false;
-  public newDate = moment()
-  public newFromTime: any = moment("00:00", "HH:mm").format('HH:mm');
-  public newToTime: any = moment("23:59", "HH:mm").format('HH:mm');;
-  public defaultStartDate: any = moment()
-  public defaultEndDate: any = moment()
   
   
   constructor(
@@ -99,7 +98,6 @@ export class ModalMaintenanceComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-      console.log(this.maintenanceItem)
     this.modalityForm = this._fb.group({
       modalityHospitalId: [{value: this.modalityHospitalId? this.modalityHospitalId : '', disabled: false}, [Validators.required]],
       roomId: [{value: this.modalityHospital.room_id, disabled: false}, [Validators.required]],
@@ -286,28 +284,54 @@ export class ModalMaintenanceComponent implements OnInit {
     });
   }
 
-  onChangeTimer(){
+  onChangeDate = () => {
+    const date = moment(this.newDate)
+    const today = moment().format('YYYY-MM-DD')
+    if(date.isBefore(today)){
+      this.errorTimer = true
+      this.errorMsg = 'Tidak bisa input tanggal sebelum hari ini'
+    }else {
+      this.errorTimer = false
+    }
+  }
+
+  onChangeTimer = () => {
     console.log('🚀 ~ his.closeModalityHospital.toTime', this.newFromTime);
     console.log('🚀 ~ his.closeModalityHospital.toTime', this.newToTime);
     // console.log('🚀 ~ this.closeModalityHospital.fromTime', this.closeModalityHospital);
-    // let toTime: any;
-    // let fromTime: any;
-    // if(this.responseData == null){
-    //   toTime = moment(this.closeModalityHospital.toTime, 'HH:mm')
-    //   fromTime = moment(this.closeModalityHospital.fromTime, 'HH:mm')
-    // }
-    // console.log('🚀 ~ this.closeModalityHospital.fromTime', fromTime);
-    // console.log('🚀 ~ this.closeModalityHospital.toTime', toTime);
-    // if(toTime.isSameOrBefore(fromTime)){
-    //   this.errorTimer = true
-    //   this.errorMsg = 'Jam selesai harus lebih besar dari pada jam mulai'
-    // }else if(fromTime.isSameOrAfter(toTime)){
-    //   this.errorTimer = true
-    //   this.errorMsg = 'Jam mulai harus lebih kecil dari pada jam selesai'
-    // }else {
-    //   this.errorTimer = false
-    // }
+    let toTime = moment(this.newToTime, 'HH:mm')
+    let fromTime =  moment(this.newFromTime, 'HH:mm')
+    if(toTime.isSameOrBefore(fromTime)){
+      this.errorTimer = true
+      this.errorMsg = 'Jam selesai harus lebih besar dari pada jam mulai'
+    }else if(fromTime.isSameOrAfter(toTime)){
+      this.errorTimer = true
+      this.errorMsg = 'Jam mulai harus lebih kecil dari pada jam selesai'
+    }else {
+      this.errorTimer = false
+    }
+      
     console.log(this.errorTimer)
+  }
+
+  reset(){
+    this.modalityForm.reset();
+    this.modalityForm.controls['modalityHospitalId'].reset()
+    this.modalityForm.controls['modalityHospitalId'].reset()
+    this.modalityForm.controls['notes'].reset()
+    this.retrievedModality = false;
+  }
+
+  public validateForm = () => {
+    let status
+    if(!this.retrievedModality){
+      status = true
+    }else if(this.errorTimer){
+      status = true
+    }else{
+      status = false;
+    }
+    return status
   }
  
 

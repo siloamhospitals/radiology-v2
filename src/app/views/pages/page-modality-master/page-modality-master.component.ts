@@ -121,11 +121,13 @@ export class PageModalityMasterComponent implements OnInit {
   }
 
   public fillOperationals(floor_id?: any, operational_type?: any, status?: any, modality_id?: any, modality_label?:any) {
+    this.isLoading = true;
     const key = JSON.parse(this.strKey)
     const hospitalId: any = key.hospital.id
     this.service.getOperational(hospitalId, floor_id, operational_type, status, modality_id, modality_label).subscribe((response) => {
       if (response.status === 'OK') {
         this.operationals = response;
+        this.isLoading = false;
         if (this.operationals.data) {
           const latest = [...this.operationals.data]
           .sort((e1, e2) => moment(e2.modified_date).valueOf() - moment(e1.modified_date).valueOf());
@@ -167,6 +169,8 @@ export class PageModalityMasterComponent implements OnInit {
     console.log(this.selectedItemsFloor)
     console.log(this.selectedItemsSchdule)
     if (this.selectedItemsFloor || this.selectedItemsSchdule || this.selectedItemsStatus || this.selectedItemsModality || selectedModalityLabelItem) {
+      this.operationals.data = []
+      this.isLoading = true
       this.fillOperationals(this.selectedItemsFloor, this.selectedItemsSchdule, this.selectedItemsStatus, this.selectedItemsModality, selectedModalityLabelItem);
     } else {
       this.fillOperationals();

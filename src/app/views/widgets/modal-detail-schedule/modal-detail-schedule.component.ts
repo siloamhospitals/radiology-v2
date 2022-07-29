@@ -266,7 +266,14 @@ export class ModalDetailScheduleComponent implements OnInit {
 
 
   onChangeDate = () => {
-    this.selectedAppointment.reserve_date = this.selectedAppointment.reserveDate.format('YYYY-MM-DD');
+    this.selectedAppointment.reserve_date = this.selectedAppointment.reserveDate
+    const today = moment().format('YYYY-MM-DD')
+    if( this.selectedAppointment.reserve_date.isBefore(today)){
+      this.errorTimer = true
+      this.errorMsg = 'Tidak bisa input tanggal sebelum hari ini'
+    }else {
+      this.errorTimer = false
+    }
   }
 
   onChangeDefaultSelected() {

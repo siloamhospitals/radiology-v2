@@ -538,15 +538,16 @@
     </div>
     <div class="modal-body p-4">
       <div class="d-flex flex-column align-items-center justify-content-center text-center p-3">
-        <div></div>
         <div>
-          <div *ngIf="!isError && isLoading">Proses sedang berjalan... Mohon menunggu...</div>
+          <div *ngIf="!isError && isLoading">
+            <div class="mb-2 loading-inline"><app-loading width="80px" [showLoad]="true"></app-loading></div>
+            <div class="text-muted">Proses sedang berjalan... Mohon menunggu...</div>
+          </div>
           <ng-container *ngIf="isError">
             <div class="text-danger mb-4">Error: {{errorMessage}}</div>
             <div *ngIf="isError">
               <button class="btn btn-text text-secondary"
-                (click)="modal.close()"
-                (click)="createAdmission($event)">Ulangi Proses</button>
+                (click)="modal.close() || createAdmission($event)">Ulangi Proses</button>
               <button class="btn btn-primary ml-3" (click)="modal.close()">Cek Ulang Data</button>
             </div>
           </ng-container>

@@ -3,7 +3,7 @@ import {BaseResponse} from './base-response';
 
 export default interface RadiologyListResponse extends BaseResponse {
 
-  readonly data: RadiologyItem[];
+  data: RadiologyItem[];
   last_update: string;
 
 }

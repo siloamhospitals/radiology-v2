@@ -40,7 +40,8 @@
                      [noBorder]=true
                      [isModalLarge]=true
                       width="180px"
-                     [(value)]="newDate">
+                     [(value)]="newDate"
+                     [onChange]="onChangeDate">
                   </app-date-picker>
                </div>
                      <span class="mx-2"></span>
@@ -48,22 +49,25 @@
                      [isModalLarge]=true
                      [noBorder]=true
                      [(value)]="newFromTime"
+                     [onChange]="onChangeTimer"
                     >
                   </app-time-picker>&nbsp;
                   <app-time-picker
                      [isModalLarge]=true
                      [noBorder]=true
                      [(value)]="newToTime"
+                     [onChange]="onChangeTimer"
                     >
                   </app-time-picker>
                </div>
+               <div class="text-danger ml-2" *ngIf="errorTimer" >{{errorMsg}}</div>
                
             </div>
 
             <div class=" mb-3 ">
                <label for="dropdownMenuLink">Modality<span style="color:red">*</span></label><br>
                <label for="dropdownMenuLink" *ngIf="!retrievedModality">-</label>
-               <label for="dropdownMenuLink" *ngIf="retrievedModality">{{modalityHospital.modality_name}}</label>
+               <label for="dropdownMenuLink" *ngIf="retrievedModality">{{modalityHospital.modality_name != null? modalityHospital.modality_name : 'Label kosong'}}</label>
             </div>
 
             <div class="mb-3" *ngIf="responseData == null">
@@ -94,11 +98,11 @@
       </ng-container>
    </div>
    <div class="modal-footer">
-      <button class="btn btn-default" *ngIf="responseData == null">Reset</button>
+      <button class="btn btn-default" (click)="reset()"  *ngIf="responseData == null">Reset</button>
       <button class="btn btn-default mr-auto" *ngIf="responseData != null" (click)="deleteModality(responseData)">
-         <img src="/assets/icons/ic_trash.svg" class="" alt="usercheck" />
+         <img src="assets/icons/ic_trash.svg" class="" alt="usercheck" />
          Hapus Jadwal</button>
-      <button class="btn btn-primary " (click)="submit()" [disabled]="!retrievedModality">Simpan Perubahan</button>
+      <button class="btn btn-primary " (click)="submit()" [disabled]="validateForm()">Simpan Perubahan</button>
   </div>
   </form>
 </div>

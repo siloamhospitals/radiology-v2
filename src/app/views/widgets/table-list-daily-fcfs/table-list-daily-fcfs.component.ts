@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import * as moment from 'moment';
 import { ModalityHospital } from '../../../models/radiology/radiology';
-import { ScheduleStatus } from '../../../variables/common.variable';
+import { ScheduleStatus, ScheduleStatusIDN } from '../../../variables/common.variable';
 import { RadiologyService } from '../../../services/radiology/radiology.service';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -31,6 +31,7 @@ export class TableListDailyFcfsComponent implements OnInit {
   modalitySlotsBk: ModalitySlot[] = []
 
   public scheduleStatus: any = ScheduleStatus
+  public scheduleStatusIDN: any = ScheduleStatusIDN
 
   constructor(
     private modalService: NgbModal,

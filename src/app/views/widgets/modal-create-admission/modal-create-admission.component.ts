@@ -180,8 +180,6 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
       payerNo: isSelectedPayer ? this.payerNo : null,
       payerEligibility: isSelectedPayer ? this.payerEligibilityNo : null
     }
-    // const body = {}
-    console.log('createAdmission', body)
 
     const isSuccess = (res: any) => {
       this.successResponseModel = res.data
@@ -200,7 +198,7 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
       this.isError = true
       this.isSuccess = false
       this.errorMessage = e.error && e.error.message ? e.error.message : e.message
-      setTimeout(() => { this.isError = false }, 8000)
+      // setTimeout(() => { this.isError = false }, 8000)
       console.log('ADMISSION_CREATE_ERROR', e)
     }
 
