@@ -14,6 +14,7 @@
           <div class="text-muted">{{loadingText}}</div>
         </div>
         <ng-container *ngIf="isError">
+          <ng-container *ngTemplateOutlet="modalError"></ng-container>
           <!-- <div class="text-danger mb-4">Error: {{errorMessage}}</div>
           <div *ngIf="isError">
             <button class="btn btn-text text-secondary"
@@ -21,7 +22,8 @@
             <button class="btn btn-primary ml-3" (click)="modal.close()">Cek Ulang Data</button>
           </div> -->
         </ng-container>
-        <ng-template #success [ngTemplateOutlet]="modalSuccess">
+        <ng-template #success>
+          <ng-container *ngTemplateOutlet="modalSuccess"></ng-container>
           <!-- <div>Admission Berhasil</div>
           <button #btnCloseAdmissionSuccess class="btn btn-text text-secondary px-4 w-50 mt-2" (click)="modal.close()">Tutup</button> -->
         </ng-template>
