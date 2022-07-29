@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import * as moment from 'moment';
 import { ModalityHospital } from '../../../models/radiology/radiology';
-import { ScheduleStatus } from '../../../variables/common.variable';
+import { ScheduleStatus, ScheduleStatusIDN } from '../../../variables/common.variable';
 import { RadiologyService } from '../../../services/radiology/radiology.service';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -31,6 +31,7 @@ export class TableListDailyFcfsComponent implements OnInit {
   modalitySlotsBk: ModalitySlot[] = []
 
   public scheduleStatus: any = ScheduleStatus
+  public scheduleStatusIDN: any = ScheduleStatusIDN
 
   constructor(
     private modalService: NgbModal,
@@ -46,8 +47,8 @@ export class TableListDailyFcfsComponent implements OnInit {
       const modalityHospitalId = this.sectionSelected.modality_hospital_id
       const reserveDate = this.dateSelected.format('YYYY-MM-DD')
       const responseSlots = await this.radiologyService.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
-      this.modalitySlots = (responseSlots.data || []).map(slot => {
-        slot.patient_dob = moment(slot.patient_dob, 'YYYY-MM-DD').format('DD MMM YYYY')
+      this.modalitySlots = (responseSlots.data || []).map((slot : any ) => {
+        slot.dob = moment(slot.patient_dob, 'YYYY-MM-DD').format('DD MMM YYYY')
         return slot
       });
       this.modalitySlotsBk = this.modalitySlots.slice()

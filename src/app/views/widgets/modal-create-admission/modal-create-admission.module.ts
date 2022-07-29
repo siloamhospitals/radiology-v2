@@ -7,6 +7,7 @@ import { TimepickerModule } from '../time-picker/time-picker.module';
 import { NgbAlertModule, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { LoadingModule } from '../../widgets/widget-loading/widget-loading.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     DatepickerModule,
     TimepickerModule,
     NgSelectModule,
+    LoadingModule,
     AutocompleteLibModule
   ],
   exports: [

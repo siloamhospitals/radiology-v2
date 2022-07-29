@@ -80,3 +80,12 @@ select.x-form-control:focus {
 .ng-autocomplete ::ng-deep .autocomplete-container .suggestions-container ul li a {
   font-size: 12px !important;
 }
+
+.loading-inline ::ng-deep .parentDiv {
+  display: inherit !important;
+  justify-content: inherit !important;
+  align-items: inherit !important;
+  margin-left: inherit !important;
+  position: inherit !important;
+  margin-top: inherit !important;
+}

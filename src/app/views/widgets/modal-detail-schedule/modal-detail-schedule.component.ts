@@ -217,11 +217,13 @@ export class ModalDetailScheduleComponent implements OnInit {
       source: this.source,
       reserveDate: this.selectedAppointment.reserve_date
     };
-    if(moment(payload.fromTime, 'hh:mm').isSameOrAfter(moment(payload.toTime, 'hh:mm'))) {
+    if(moment(payload.fromTime, 'hh:mm').isSameOrAfter(moment(payload.toTime, 'hh:mm')) && this.selectedAppointment.operational_type !== '1') {
       this.showErrorAlert('Jam mulai harus lebih kecil dari pada jam selesai')
+      return
     }
-    if(moment(payload.toTime, 'hh:mm').isSameOrBefore(moment(payload.fromTime, 'hh:mm'))){
+    if(moment(payload.toTime, 'hh:mm').isSameOrBefore(moment(payload.fromTime, 'hh:mm')) && this.selectedAppointment.operational_type !== '1'){
       this.showErrorAlert('Jam selesai harus lebih besar dari pada jam mulai')
+      return
     }
 
     if(payload.fromTime === this.fromTime && payload.toTime === this.toTime) {

@@ -1,7 +1,7 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
-import { ScheduleStatus } from '../../../variables/common.variable';
+import { ScheduleStatus, ScheduleStatusIDN } from '../../../variables/common.variable';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
 import * as moment from 'moment'
 import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
@@ -25,6 +25,7 @@ export class TableListDailyComponent {
   @Input() isNonBpjs: boolean;
 
   public scheduleStatus: any = ScheduleStatus
+  public scheduleStatusIDN: any = ScheduleStatusIDN
   public scheduleList: any[] = []
   public scheduleListBk: any[] = []
   public isLoading: boolean;
@@ -134,7 +135,7 @@ export class TableListDailyComponent {
           fromTime: fromTime,
           toTime: toTime,
           patient: slot.patient_name,
-          dob: slot.patient_dob,
+          dob: slot.patient_dob ? moment(slot.patient_dob, 'YYYY-MM-DD').format('DD MMM YYYY') : '',
           localMrNo: slot.local_mr_no,
           examination: slot.modality_examination_name,
           note: slot.notes,
@@ -187,7 +188,7 @@ export class TableListDailyComponent {
           fromTime: fromTime,
           toTime: toTime,
           patient: slot.patient_name,
-          dob: slot.patient_dob,
+          dob: slot.patient_dob ? moment(slot.patient_dob, 'YYYY-MM-DD').format('DD MMM YYYY') : '',
           localMrNo: slot.local_mr_no,
           examination: slot.modality_examination_name,
           note: slot.notes,
