@@ -107,14 +107,14 @@
             <table class="table table-borderless table-stripped" id="appointment-list-table">
               <thead class="border-0 bg-secondary">
                 <th style="min-width: 10em">
-                  Modality Name
+                  Label
                 </th>
                 <th style="min-width: 10em">
-                  Modality Label
+                  Modality
                 </th>
-                <th>Schdule Type</th>
-                <th width="100px" style="text-align: left">Floor</th>
-                <th width="100px" style="text-align: left">Room</th>
+                <th>Tipe Penjadwalan</th>
+                <th width="100px" style="text-align: left">Lantai</th>
+                <th width="100px" style="text-align: left">Ruangan</th>
                 <th width="100px" style="text-align: left">Dur (min)</th>
                 <th class="text-center" width="100px">Status</th>
                 <th class="pr-3" style="text-align: right; min-width: 10em;">Action</th>
@@ -122,6 +122,18 @@
               </thead>
 
               <tbody>
+                <ng-container *ngIf="isLoading; else showList">
+                  <tr>
+                    <td colspan="100%" class="text-center p-3">Memuat data mohon tunggu...</td>
+                  </tr>
+                </ng-container>
+                <ng-template #showList>
+                  <ng-container *ngIf="!(operationals.data && operationals.data.length)">
+                    <tr>
+                      <td colspan="100%" class="text-center p-3">Data currently does not exist</td>
+                    </tr>
+                  </ng-container>
+                </ng-template>
                 <tr *ngFor="let item of operationals.data; let i = index">
                   <td>{{item.modality_name}}</td>
                   <td>{{item.modality_label}}</td>
@@ -131,7 +143,7 @@
                   <td style="text-align: left">{{item.operational_type == 3 ? item.duration : '-'}}</td>
                   <td>
                     <span *ngIf="item.status == 1" class="modality-status status-scheduled">Active</span>
-                    <span *ngIf="item.status == 2" class="modality-status status-arrived">Inactive</span>
+                    <span *ngIf="item.status == 2" class="modality-status status-arrived">Tidak Aktif</span>
                   </td>
                   <td class="pr-3" style="text-align: right">
                     <a class="detailed-button" (click)="showModalityModal(item, true)">Detail</a>

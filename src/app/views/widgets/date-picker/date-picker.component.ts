@@ -1,7 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import * as moment from 'moment'
 import { Output, EventEmitter } from '@angular/core';
 
+interface ValueDatePicker{
+  startDate: moment.Moment
+  endDate: moment.Moment
+}
 @Component({
   selector: 'app-date-picker',
   templateUrl: './date-picker.component.html',
@@ -12,7 +16,7 @@ export class DatepickerComponent implements OnInit {
   constructor() { }
 
   @Input() width: string = '94px';
-  @Input() value: any = moment();
+  @Input() value: moment.Moment = moment();
   @Input() format = 'MMMM YYYY';
   @Input() hideIcon: boolean;
   @Input() isModalLarge: boolean = false;
@@ -20,19 +24,42 @@ export class DatepickerComponent implements OnInit {
   @Input() onChange : Function;
   @Input() readonly: boolean = false;
   @Input() class: string = '';
+  selected: ValueDatePicker = {
+    startDate: moment(), endDate: moment()
+  }
 
   @Output() valueChange = new EventEmitter();
 
   locale: object;
 
   changeSelected(value: any) {
-    this.valueChange.emit(value.startDate);
-    this.onChange && this.onChange()
+    if(value.startDate) {
+      this.valueChange.emit(value.startDate);
+      this.onChange && this.onChange()
+    }
   }
 
   ngOnInit() {
     this.locale = {
-      format: this.format
+      format: this.format,
+      firstDay: 1      
+    }
+  }
+
+  ngOnChanges(changes : SimpleChanges){
+    if(changes.format && changes.format.currentValue){
+      this.locale = {
+        format: this.format,
+        firstDay: 1      
+      }
+    }
+
+    if(changes.value && changes.value.currentValue) {
+      this.selected = {
+        startDate: this.value.startOf('day'),
+        endDate: this.value.endOf('day')
+      }
+
     }
   }
 

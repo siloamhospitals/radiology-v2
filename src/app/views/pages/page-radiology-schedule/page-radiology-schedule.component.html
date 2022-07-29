@@ -22,12 +22,12 @@
           <div class="d-flex align-items-center">
             <button
               title="To Today"
-              class="btn py-2 font-weight-bold text-muted d-flex mr-2 {{tableViewCurrentIsToday ? 'btn-primary' : 'btn-light'}}"
+              class="btn py-2 font-weight-bold text-muted d-flex {{tableViewCurrentIsToday ? 'btn-primary' : 'btn-light'}}"
               (click)="toToday()">
               <i class="fa fa-calendar-check-o" style="font-size: 16px;"></i>
               <span class="ml-2">Hari ini</span>
             </button>
-            <div style="width: 2px; background: #ccc;"></div>
+            <div class="mx-2" style="width: 2px; background: #ccc; height: 25px; opacity: 0.4;"></div>
             <div>
               <ng-select
                 title="Change type of period table"

@@ -113,7 +113,7 @@ export class ModalDetailScheduleComponent implements OnInit {
     // Check On Late
     const lastTime = moment(`${reserveDate} ${toTime}`, 'YYYY-MM-DD HH:mm')
     const diffTime = moment().diff(lastTime)
-    if (diffTime > 0) {
+    if (diffTime > 0 && this.selectedAppointment.operational_type !== '1') {
       this.admissionLateTime = moment.utc(diffTime).format('HH [jam] mm [menit] ss [detik]')
       this.admissionIsNotToday = moment().isAfter(lastTime, 'days')
       const c = this.modalService.open(this.modalConfirmAdmission, { centered: true, windowClass: 'modal-confirm-admission-adjust' })
@@ -266,7 +266,14 @@ export class ModalDetailScheduleComponent implements OnInit {
 
 
   onChangeDate = () => {
-    this.selectedAppointment.reserve_date = this.selectedAppointment.reserveDate.format('YYYY-MM-DD');
+    this.selectedAppointment.reserve_date = this.selectedAppointment.reserveDate
+    const today = moment().format('YYYY-MM-DD')
+    if( this.selectedAppointment.reserve_date.isBefore(today)){
+      this.errorTimer = true
+      this.errorMsg = 'Tidak bisa input tanggal sebelum hari ini'
+    }else {
+      this.errorTimer = false
+    }
   }
 
   onChangeDefaultSelected() {

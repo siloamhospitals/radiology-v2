@@ -85,12 +85,24 @@
               </thead>
           
               <tbody>
+                <ng-container *ngIf="isLoading; else showList">
+                  <tr>
+                    <td colspan="100%" class="text-center p-3">Memuat data mohon tunggu...</td>
+                  </tr>
+                </ng-container>
+                <ng-template #showList>
+                  <ng-container *ngIf="!(operationals.data && operationals.data.length)">
+                    <tr>
+                      <td colspan="100%" class="text-center p-3">Data currently does not exist</td>
+                    </tr>
+                  </ng-container>
+                </ng-template>
                 <tr *ngFor="let item of operationalsClose.data; let i = index">
                   <td style="font-size:14px">{{item.modality_name}}</td>
                   <td>{{item.modality_label}}</td>
                   <td style="text-align: left">{{item.room.floor_name}}</td>
                   <td style="text-align: left">{{item.room.name}}</td>
-                  <td style="text-align: left">{{item.from_date}} | {{item.from_time}} - {{item.to_time}}</td>
+                  <td style="text-align: left"> {{moment(item.from_date).format('dddd, DD MM YYYY')}} | {{item.from_time}} - {{item.to_time}}</td>
                   <td>
                     {{item.notes}}
                   </td>
