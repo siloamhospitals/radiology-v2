@@ -84,6 +84,7 @@
             <form (submit)="setFilterLocalMrNo($event)" class="col-md-3 position-relative pr-0 border-right">
               <input name="local_mr_no" class="form-control pt-3 input-filter pr-5" type="text" placeholder="Cari Local MR"
                 title="Find local MR"
+                mask="0000000000"
                 [(ngModel)]="filterLocalMrNo" />
               <button type="submit" class="fa fa-search position-absolute border-0 bg-transparent" style="font-size: 16px; bottom: 15px;"></button>
             </form>
