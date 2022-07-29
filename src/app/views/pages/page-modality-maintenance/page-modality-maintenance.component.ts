@@ -32,6 +32,8 @@ export class PageModalityMaintenanceComponent implements OnInit {
   dropdownListStatus: { status: number; item_text: string; }[];
   operationalsClose: any = []
   operationals: any = []
+  moment: any = moment;
+  formatter:any = moment().format('dddd, DD MMMM YYYY')
   
 
   public roomOptions: RoomMapping[] = [];
@@ -135,7 +137,7 @@ export class PageModalityMaintenanceComponent implements OnInit {
               response.data[i].modality_closes[ii].floor_name = response.data[i].floor_name
               response.data[i].modality_closes[ii].modality_label  = response.data[i].modality_label 
               response.data[i].modality_closes[ii].modality_label  = response.data[i].modality_label 
-              response.data[i].modality_closes[ii].from_date =  moment(new Date(response.data[i].modality_closes[ii].from_date)).format('dddd, DD MM YYYY')
+              response.data[i].modality_closes[ii].from_date =  moment(new Date(response.data[i].modality_closes[ii].from_date))
               response.data[i].modality_closes[ii].from_time =  moment(response.data[i].modality_closes[ii].from_time, 'HH:mm').format('HH:mm')
               response.data[i].modality_closes[ii].to_time = moment(response.data[i].modality_closes[ii].to_time, 'HH:mm').format('HH:mm')
               newdata.push(response.data[i].modality_closes[ii])

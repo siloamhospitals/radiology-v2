@@ -61,16 +61,22 @@ export class ModalMaintenanceComponent implements OnInit {
   public loading = false;
   public autocomplete: any = null;
   public modalRef: NgbModalRef;
+  public roomName: any
+  public errorTimer: boolean = false;
+  public errorMsg: string;
+  public statusTextArea: boolean = false;
+  public retrievedModality: boolean = false;
+  public newDate = moment()
+  public newFromTime: any = moment("00:00", "HH:mm").format('HH:mm');
+  public newToTime: any = moment("23:59", "HH:mm").format('HH:mm');;
+  public defaultStartDate: any = moment()
+  public defaultEndDate: any = moment()
   public operationals: RadiologyListResponse = {
     status: '',
     message: '',
     data: [],
     last_update: ''
   };
-  public roomName: any
-  public errorTimer: boolean = false;
-  public errorMsg: string;
-
   private _filter(value: string): RoomMapping[] {
     if (value == null || value == '') {
       return this.roomOptions.filter((row, index) => index < 30 || row);
@@ -80,13 +86,6 @@ export class ModalMaintenanceComponent implements OnInit {
       return option.toLowerCase().includes(value.toLowerCase());
     });
   }
-  public statusTextArea: boolean = false;
-  public retrievedModality: boolean = false;
-  public newDate = moment()
-  public newFromTime: any = moment("00:00", "HH:mm").format('HH:mm');
-  public newToTime: any = moment("23:59", "HH:mm").format('HH:mm');;
-  public defaultStartDate: any = moment()
-  public defaultEndDate: any = moment()
   
   
   constructor(
@@ -234,23 +233,23 @@ export class ModalMaintenanceComponent implements OnInit {
 
   updateModalityHospital(){
     console.log(this.modalityHospitalRequest, 'oioi')
-    this.service.putModalityHospital(this.modalityHospitalRequest, this.modalityHospitalId).subscribe(() => {
-      Swal.fire({
-        type: 'success',
-        text: 'The data has been successfully updated',
-        showConfirmButton: false,
-        timer: 3000
-      });
-      this.close();
-    }, err => {
-      Swal.fire({
-        type: 'error',
-        title: 'Oops...',
-        text: err.error.message,
-        timer: 1500
-      });
-      this.loading = false;
-    });
+    // this.service.putModalityHospital(this.modalityHospitalRequest, this.modalityHospitalId).subscribe(() => {
+    //   Swal.fire({
+    //     type: 'success',
+    //     text: 'The data has been successfully updated',
+    //     showConfirmButton: false,
+    //     timer: 3000
+    //   });
+    //   this.close();
+    // }, err => {
+    //   Swal.fire({
+    //     type: 'error',
+    //     title: 'Oops...',
+    //     text: err.error.message,
+    //     timer: 1500
+    //   });
+    //   this.loading = false;
+    // });
   }
 
   public async deleteModality(item: RadiologyItem) {
