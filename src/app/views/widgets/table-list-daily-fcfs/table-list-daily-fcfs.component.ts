@@ -63,8 +63,11 @@ export class TableListDailyFcfsComponent implements OnInit {
 
   async ngOnChanges(changes: SimpleChanges) {
     
-    if(changes.sectionSelected && changes.sectionSelected.currentValue) {
-      await this.onRefresh()
+    if((changes.sectionSelected && changes.sectionSelected.currentValue) 
+      || changes.dateSelected && changes.dateSelected.currentValue) {
+        setTimeout(async () => {          
+          await this.onRefresh()
+        }, 500);
     }
 
     if(changes.filter && changes.filter.currentValue) {
