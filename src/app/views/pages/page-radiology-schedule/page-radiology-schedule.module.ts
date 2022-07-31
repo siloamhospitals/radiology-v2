@@ -58,7 +58,7 @@ import { TableListDailyFcfsModule } from '../../widgets/table-list-daily-fcfs/ta
     ModalQueueNumberModule,
     ModalNewPatientModule,
     LoadingModule,
-    TableListDailyFcfsModule
+    TableListDailyFcfsModule,
   ],
   exports: [
     PageRadiologyScheduleComponent

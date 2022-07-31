@@ -18,6 +18,11 @@ const routes: Routes = [
     loadChildren: './views/pages/page-radiology-schedule/page-radiology-schedule.module#PageRadiologyScheduleModule'
   },
   {
+    path: 'patient-data',
+    canActivate: [AuthGuard],
+    loadChildren: './views/pages/page-patient-data/page-patient-data.module#PagePatientDataModule'
+  },
+  {
     path: 'worklist',
     canActivate: [AuthGuard],
     loadChildren: './views/pages/page-worklist/page-worklist.module#PageWorklistModule'
@@ -48,7 +53,7 @@ const routes: Routes = [
     redirectTo: '/schedule',
     pathMatch: 'full'
     // loadChildren: './views/pages/page-home/page-home.module#PageHomeModule'
-  },  
+  },
   {
     path: '**',
     redirectTo: '/schedule'

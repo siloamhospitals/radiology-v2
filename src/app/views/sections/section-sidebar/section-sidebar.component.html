@@ -11,28 +11,44 @@
 </div>
 
 <div class="container-button unprintable">
-  <a class="side_button" 
+  <a class="side_button"
       aria-expanded="false"
-      [routerLink]="['/schedule']" 
+      [routerLink]="['/schedule']"
       [routerLinkActive]="['active']">
-    <div class="header-3 collapse show width fo_minimized" 
-          popoverTitle="Radiology Schedule"
+    <div class="header-3 collapse show width fo_minimized"
+          popoverTitle="Jadwal Radiology"
           ngbPopover="-"
           triggers="mouseenter:mouseleave"
           placement="right"
           container="body">
-      <div class="fo_minimized_text">Radiology Schedule</div>
+      <div class="fo_minimized_text">Jadwal Radiology</div>
     </div>
   </a>
 </div>
 
 <div class="container-button unprintable">
-  <a class="side_button" 
-      aria-expanded="false" 
-      href="/worklist" 
-      [routerLink]="['/worklist']" 
+  <a class="side_button  side_button_last"
+      aria-expanded="false"
+      [routerLink]="['/patient-data']"
       [routerLinkActive]="['active']">
-    <div class="header-3 collapse show width fo_minimized" 
+    <div class="header-3 collapse show width fo_minimized"
+          popoverTitle="Data Pasien"
+          ngbPopover="-"
+          triggers="mouseenter:mouseleave"
+          placement="right"
+          container="body">
+      <div class="fo_minimized_text">Data Pasien</div>
+    </div>
+  </a>
+</div>
+
+<div class="container-button unprintable">
+  <a class="side_button"
+      aria-expanded="false"
+      href="/worklist"
+      [routerLink]="['/worklist']"
+      [routerLinkActive]="['active']">
+    <div class="header-3 collapse show width fo_minimized"
           popoverTitle="Worklist"
           ngbPopover="-"
           triggers="mouseenter:mouseleave"
@@ -43,11 +59,11 @@
   </a>
 </div>
 <div class="container-button unprintable">
-  <a class="side_button" 
+  <a class="side_button"
       aria-expanded="false"
-      [routerLink]="['/modality-master']" 
+      [routerLink]="['/modality-master']"
       [routerLinkActive]="['active']">
-    <div class="header-3 collapse show width fo_minimized" 
+    <div class="header-3 collapse show width fo_minimized"
           popoverTitle="Modality Master"
           ngbPopover="-"
           triggers="mouseenter:mouseleave"
@@ -58,11 +74,11 @@
   </a>
 </div>
 <div class="container-button unprintable">
-  <a class="side_button  side_button_last" 
+  <a class="side_button  side_button_last"
       aria-expanded="false"
-      [routerLink]="['/queue-management']" 
+      [routerLink]="['/queue-management']"
       [routerLinkActive]="['active']">
-    <div class="header-3 collapse show width fo_minimized" 
+    <div class="header-3 collapse show width fo_minimized"
           popoverTitle="Queue Management"
           ngbPopover="-"
           triggers="mouseenter:mouseleave"
