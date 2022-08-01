@@ -14,7 +14,14 @@
   </thead>
   <tbody>
     <ng-container *ngIf="isLoading; else showData">
-      <tr><td colspan="100%" class="text-center p-3"><div class="px-4 py-2 bg-secondary rounded">Memuat Data... Mohon Tunggu...</div></td></tr>
+      <tr>
+        <td colspan="100%" class="text-center p-3">
+          <div class="px-4 py-2 rounded">
+            <div class="mb-2 loading-inline"><app-loading width="80px" [showLoad]="true"></app-loading></div>
+            Memuat Data... Mohon Tunggu...
+          </div>
+        </td>
+      </tr>
     </ng-container>
     <ng-template #showData>
       <ng-container *ngIf="!(list && list.length)">

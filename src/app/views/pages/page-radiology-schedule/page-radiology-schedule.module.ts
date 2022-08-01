@@ -31,6 +31,8 @@ import { LoadingComponent } from '../../widgets/widget-loading/widget-loading.co
 import { ModalNewPatientComponent } from '../../widgets/modal-new-patient/modal-new-patient.component';
 import { ModalNewPatientModule } from '../../widgets/modal-new-patient/modal-new-patient.module';
 import { TableListDailyFcfsModule } from '../../widgets/table-list-daily-fcfs/table-list-daily-fcfs.module';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [PageRadiologyScheduleComponent],
@@ -58,6 +60,8 @@ import { TableListDailyFcfsModule } from '../../widgets/table-list-daily-fcfs/ta
     ModalQueueNumberModule,
     ModalNewPatientModule,
     LoadingModule,
+    NgSelectModule,
+    NgxMaskModule.forRoot(),
     TableListDailyFcfsModule
   ],
   exports: [

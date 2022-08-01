@@ -19,7 +19,10 @@
   <tbody>
     <ng-container *ngIf="isLoading; else showList">
       <tr>
-        <td colspan="100%" class="text-center p-3">Memuat Data... Mohon Tunggu...</td>
+        <td colspan="100%" class="text-center p-3">
+          <div class="mb-2 loading-inline"><app-loading width="80px" [showLoad]="true"></app-loading></div>
+          Memuat Data... Mohon Tunggu...
+        </td>
       </tr>
     </ng-container>
     <ng-template #showList>
@@ -32,9 +35,6 @@
             </div>
           </td>
         </tr>
-      </ng-container>
-      <ng-container *ngIf="isLoading">
-        <tr><td colspan="100%" class="text-center p-3">Memuat Data... Mohon Tunggu...</td></tr>
       </ng-container>
   
       <tr *ngFor="let item of modalitySlots; let i=index"
