@@ -5,7 +5,7 @@
       <img class="icon" src="assets/icons/ic_radioactive.png" />
     </div>
     <div class="header-3 collapse show width fo_minimized" >
-      <div class="fo_minimized_text">Radiology</div>
+      <div class="fo_minimized_text">Radiologi</div>
     </div>
   </a>
 </div>
@@ -16,20 +16,19 @@
       [routerLink]="['/schedule']" 
       [routerLinkActive]="['active']">
     <div class="header-3 collapse show width fo_minimized" 
-          popoverTitle="Radiology Schedule"
+          popoverTitle="Jadwal Radiologi"
           ngbPopover="-"
           triggers="mouseenter:mouseleave"
           placement="right"
           container="body">
-      <div class="fo_minimized_text">Radiology Schedule</div>
+      <div class="fo_minimized_text">Jadwal Radiologi</div>
     </div>
   </a>
 </div>
 
 <div class="container-button unprintable">
   <a class="side_button" 
-      aria-expanded="false" 
-      href="/worklist" 
+      aria-expanded="false"      
       [routerLink]="['/worklist']" 
       [routerLinkActive]="['active']">
     <div class="header-3 collapse show width fo_minimized" 
@@ -58,17 +57,32 @@
   </a>
 </div>
 <div class="container-button unprintable">
+  <a class="side_button" 
+      aria-expanded="false"
+      [routerLink]="['/doctor-schedule']" 
+      [routerLinkActive]="['active']">
+    <div class="header-3 collapse show width fo_minimized" 
+          popoverTitle="Jadwal Dokter"
+          ngbPopover="-"
+          triggers="mouseenter:mouseleave"
+          placement="right"
+          container="body">
+      <div class="fo_minimized_text">Jadwal Dokter</div>
+    </div>
+  </a>
+</div>
+<div class="container-button unprintable">
   <a class="side_button  side_button_last" 
       aria-expanded="false"
       [routerLink]="['/queue-management']" 
       [routerLinkActive]="['active']">
     <div class="header-3 collapse show width fo_minimized" 
-          popoverTitle="Queue Management"
+          popoverTitle="Antrian"
           ngbPopover="-"
           triggers="mouseenter:mouseleave"
           placement="right"
           container="body">
-      <div class="fo_minimized_text">Queue Management</div>
+      <div class="fo_minimized_text">Antrian</div>
     </div>
   </a>
 </div>
