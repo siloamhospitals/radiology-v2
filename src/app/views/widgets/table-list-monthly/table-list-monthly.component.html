@@ -5,6 +5,16 @@
     </tr>
   </thead>
   <tbody>
+    <ng-container *ngIf="isLoading; else showList">
+      <tr>
+        <td colspan="100%" class="text-center p-3">
+          <div class="mb-2 loading-inline"><app-loading width="80px" [showLoad]="true"></app-loading></div>
+          Memuat Data... Mohon Tunggu...
+        </td>
+      </tr>
+    </ng-container>
+
+    <ng-template #showList>
     <ng-container *ngIf="!(items && items.length)">
       <tr>
         <td colspan="100%" class="text-center p-3">Tidak ada data pada pilihan Modality ini</td>
@@ -31,5 +41,6 @@
         </div>
       </td>
     </tr>
+    </ng-template>
   </tbody>
 </table>

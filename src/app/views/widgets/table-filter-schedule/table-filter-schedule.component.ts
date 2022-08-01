@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ModalityHospital } from '../../../models/radiology/radiology';
 import { RadiologyService } from '../../../services/radiology/radiology.service';
-import { ScheduleStatus } from '../../../variables/common.variable';
+import { ScheduleStatus, ScheduleStatusIDN } from '../../../variables/common.variable';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
 
 @Component({
@@ -27,6 +27,7 @@ export class TableFilterScheduleComponent implements OnInit, OnChanges {
   fetchDataDebounce: any = null
 
   public scheduleStatus: any = ScheduleStatus
+  public scheduleStatusIDN: any = ScheduleStatusIDN
 
   constructor(
     private radiologyService: RadiologyService,

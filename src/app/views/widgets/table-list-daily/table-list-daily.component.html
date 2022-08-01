@@ -14,7 +14,12 @@
   </thead>
   <tbody>
     <ng-container *ngIf="isLoadingSection; else showList">
-      <tr><td colspan="100%" class="text-center p-3">Memuat Data... Mohon Tunggu...</td></tr>
+      <tr>
+        <td colspan="100%" class="text-center p-3">
+          <div class="mb-2 loading-inline"><app-loading width="80px" [showLoad]="true"></app-loading></div>
+          Memuat Data... Mohon Tunggu...
+        </td>
+      </tr>
     </ng-container>
 
     <ng-container *ngIf="!(scheduleList && scheduleList.length) && !isLoadingSection" >

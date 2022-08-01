@@ -22,21 +22,28 @@
           <div class="d-flex align-items-center">
             <button
               title="To Today"
-              class="btn font-weight-bold text-muted d-flex mx-2 {{tableViewCurrentIsToday ? 'btn-primary' : 'btn-light'}}"
+              class="btn py-2 font-weight-bold text-muted d-flex {{tableViewCurrentIsToday ? 'btn-primary' : 'btn-light'}}"
               (click)="toToday()">
               <i class="fa fa-calendar-check-o" style="font-size: 16px;"></i>
               <span class="ml-2">Hari ini</span>
             </button>
-            <div style="width: 2px; background: #ccc;"></div>
-            <select
-              title="Change tyoe of period table"
-              [(ngModel)]="tableViewActive"
-              (change)="changeTableView($event)"
-              class="form-control px-2 mx-2 cursor-pointer"
-              style="width: 94px;"
-              [disabled]="sectionSelected?.operational_type === '1'">
-              <option *ngFor="let t of tableViewSelect" [ngValue]="t.key" >{{t.text}}</option>
-            </select>
+            <div class="mx-2" style="width: 2px; background: #ccc; height: 25px; opacity: 0.4;"></div>
+            <div>
+              <ng-select
+                title="Change type of period table"
+                [(ngModel)]="tableViewActive"
+                [items]="tableViewSelect"
+                [clearable]="false"
+                [searchable]="false"
+                placeholder="Pilih Tampilan Tabel"
+                bindLabel="text"
+                bindValue="key"
+                class="d-form-control mr-2 cursor-pointer"
+                style="width: 94px;"
+                [disabled]="sectionSelected?.operational_type === '1'"
+                (change)="changeTableView($event)">
+              </ng-select>
+            </div>
             <div title="Pick period table" class="cursor-pointer-force">
               <app-date-picker
                 width="140px"
@@ -77,6 +84,7 @@
             <form (submit)="setFilterLocalMrNo($event)" class="col-md-3 position-relative pr-0 border-right">
               <input name="local_mr_no" class="form-control pt-3 input-filter pr-5" type="text" placeholder="Cari Local MR"
                 title="Find local MR"
+                mask="0000000000"
                 [(ngModel)]="filterLocalMrNo" />
               <button type="submit" class="fa fa-search position-absolute border-0 bg-transparent" style="font-size: 16px; bottom: 15px;"></button>
             </form>
