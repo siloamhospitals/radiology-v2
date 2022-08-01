@@ -330,10 +330,8 @@ export class TableListWeeklyComponent implements OnInit {
     payload.to_time = moment(payload.to_time, 'hh:mm').format('HH:mm')
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
     m.componentInstance.selectedAppointment = payload;
-    m.result.then((result: any) => {
-      if (result) {
-        this.refresh()
-      }
+    m.result.then((_result: any) => {
+      this.refresh()
     })
   }
 
