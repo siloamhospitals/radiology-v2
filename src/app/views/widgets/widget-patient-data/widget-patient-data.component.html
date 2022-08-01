@@ -16,7 +16,7 @@
       <a class="list-group-item list-group-item-action" (click)="scrollToSection($event)" href="javascript:;" fragment="payer">Pembayar dan Atribut</a>
     </div>
   </div>
-  <div class="col-8" data-spy="scroll" data-target="#list-example" data-offset="0">
+  <div class="col-8 patient-data-form" data-spy="scroll" data-target="#list-example" data-offset="0">
     <section id="information" class="mb-3">
       <div class="row border-bottom pb-4">
         <div class="mb-3 col-12">
@@ -26,14 +26,17 @@
           <label for="titlePatient">Gelar</label>
           <div class="input-group">
             <ng-select
-              placeholder="Pilih Gender"
+              [(ngModel)]="model.title"
+              [items]="titles"
+              [clearable]="false"
+              placeholder="Pilih Gelar"
               bindLabel="description"
               bindValue="value"
               class="x-form-control">
             </ng-select>
           </div>
         </div>
-        <div class="mb-3 col-7">
+        <div class="mb-3 col-7 pl-0">
           <label for="patientName">Nama Pasien <sup class="text-required">*</sup></label>
           <div class="input-group">
             <input
@@ -46,32 +49,36 @@
           </div>
         </div>
         <div class="w-100"></div>
-        <div class="mb-3 col-10">
+        <div class="id-type col-3">
           <label for="modality_label">Nomor Identitas <sup class="text-required">*</sup></label>
-            <div class="input-group">
-              <div class="id-type">
-                <ng-select
-                  placeholder="Jenis"
-                  bindLabel="description"
-                  bindValue="value"
-                  class="x-form-control">
-                </ng-select>
-              </div>
-              <input
-                name="id-number"
-                id="id-number-field"
-                type="text"
-                class="ml-1 form-control"
-                placeholder="Nomor Identitas"
-              />
+          <ng-select
+            [(ngModel)]="model.nationalIdType"
+            [items]="nationalTypes"
+            [clearable]="false"
+            placeholder="Jenis"
+            bindLabel="description"
+            bindValue="value"
+            class="x-form-control">
+          </ng-select>
+        </div>
+        <div class="col-7 pl-0">
+          <label for="modality_label">&nbsp;</label>
+          <input
+            name="id-number"
+            id="id-number-field"
+            type="text"
+            class="ml-1 form-control"
+            placeholder="Nomor Identitas"
+          />
+        </div>
+        <div class="col-10 mt-2 mb-3">
+          <div class="my-2 d-flex flex-row px-3 py-2 rounded align-items-center cursor-pointer" style="border: 2px dashed #575FCF;">
+            <i class="fa fa-cloud-upload mr-2 text-primary" style="font-size: 32px;"></i>
+            <div>
+              <div class="text-primary">Pilih gambar Identitas untuk di unggah</div>
+              <div class="text-muted">atau tarik dan lepaskan disini.</div>
             </div>
-            <div class="my-2 d-flex flex-row px-3 py-2 rounded align-items-center cursor-pointer" style="border: 2px dashed #575FCF;">
-              <i class="fa fa-cloud-upload mr-2 text-primary" style="font-size: 32px;"></i>
-              <div>
-                <div class="text-primary">Pilih gambar Identitas untuk di unggah</div>
-                <div class="text-muted">atau tarik dan lepaskan disini.</div>
-              </div>
-            </div>
+          </div>
         </div>
         <div class="mb-3 col-6">
           <label for="patientName">Tempat Lahir <sup class="text-required">*</sup></label>
@@ -112,6 +119,9 @@
           <label for="patientName">Agama <sup class="text-required">*</sup></label>
           <div class="input-group">
             <ng-select
+              [(ngModel)]="model.religion"
+              [items]="religions"
+              [clearable]="false"
               placeholder="Pilih Agama"
               bindLabel="description"
               bindValue="value"
@@ -123,6 +133,9 @@
           <label for="patientName">Status Perkawinan <sup class="text-required">*</sup></label>
           <div class="input-group">
             <ng-select
+              [(ngModel)]="model.mariage"
+              [items]="mariageTypes"
+              [clearable]="false"
               placeholder="Pilih Status Perkawinan"
               bindLabel="description"
               bindValue="value"
@@ -305,9 +318,11 @@
           <label for="patientName">Kota/Kabupaten <sup class="text-required">*</sup></label>
           <div class="input-group">
             <ng-select
+              [(ngModel)]="model.city"
+              [items]="cities"
               placeholder="Pilih Kota/Kabupaten"
-              bindLabel="description"
-              bindValue="value"
+              bindLabel="name"
+              bindValue="city_id"
               class="x-form-control">
             </ng-select>
           </div>
