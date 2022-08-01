@@ -256,7 +256,7 @@ export class TableListDailyComponent {
             || this.isBpjs === true && this.isNonBpjs === true) {
           this.scheduleList = this.scheduleListBk.slice()
         }else {
-          const onIsBpjs = (item : any) => this.isBpjs ? item.is_bpjs : !item.is_bpjs; 
+          const onIsBpjs = (item : any) => this.isBpjs ? item.is_bpjs : item.is_bpjs === false; 
           this.reducingSchedulList(onIsBpjs);
         }
       }

@@ -65,10 +65,13 @@
                     [(ngModel)]="referralType"
                     [items]="referralTypes"
                     [clearable]="false"
-                    placeholder="Pilih Tipe Pasien"
+                    placeholder="Pilih Tipe Rujukan"
                     bindLabel="description"
                     class="x-form-control"
                     (change)="getReferralDoctor($event) && changeReferralType($event)">
+                    <ng-template ng-option-tmp let-item="item">
+                      <i>{{item.description}}</i>
+                    </ng-template>
                   </ng-select>
                 </div>
               </div>
@@ -303,6 +306,9 @@
                     placeholder="Pilih Tipe Pasien"
                     bindLabel="description"
                     class="x-form-control">
+                    <ng-template ng-option-tmp let-item="item">
+                      <i>{{item.description}}</i>
+                    </ng-template>
                   </ng-select>
                 </div>
               </div>
@@ -412,6 +418,9 @@
                     bindLabel="description"
                     class="x-form-control"
                     (change)="changeEmailType()">
+                    <ng-template ng-option-tmp let-item="item">
+                      <i>{{item.description}}</i>
+                    </ng-template>
                   </ng-select>
                 </div>
               </div>
