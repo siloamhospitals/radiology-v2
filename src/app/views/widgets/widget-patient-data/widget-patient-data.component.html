@@ -18,6 +18,17 @@
   </div>
   <div class="col-8 patient-data-form" data-spy="scroll" data-target="#list-example" data-offset="0">
     <section id="information" class="mb-3">
+      <div class="d-flex flex-row align-items-center flex-wrap w-75 mb-3">
+        <div class="badge-secondary">No MR Pusat: <b class="ml-1">{{badge.mrNo || '-'}}</b></div>
+        <div class="badge-secondary">Status MR Pusat: <b class="ml-1">{{badge.mrNoStatus || '-'}}</b></div>
+        <div class="badge-secondary">Tgl. Registrasi Pusat: <b class="ml-1">{{badge.dateRegistered || '-'}}</b></div>
+        <div class="badge-secondary">Tgl. Kematian: <b class="ml-1">{{badge.dateDeath || '-'}}</b></div>
+        <div class="badge-secondary">No MR Lokal: <b class="ml-1">{{badge.localMrNo || '-'}}</b></div>
+        <div class="badge-secondary">Status MR Lokal: <b class="ml-1">{{badge.localMrNoStatus || '-'}}</b></div>
+        <div class="badge-secondary">Tgl Registrasi: <b class="ml-1">{{badge.localDateRegistered || '-'}}</b></div>
+        <div class="badge-secondary">Status Pasien: <b class="ml-1">{{badge.status || '-'}}</b></div>
+        <div class="badge-secondary">Digabung ke No Pusat: <b class="ml-1">{{badge.mrMerge || '-'}}</b></div>
+      </div>
       <div class="row border-bottom pb-4">
         <div class="mb-3 col-12">
           <h4>Detail Pasien</h4>

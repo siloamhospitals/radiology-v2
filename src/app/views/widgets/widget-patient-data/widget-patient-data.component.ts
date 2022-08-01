@@ -26,6 +26,19 @@ export class WidgetPatientDataComponent implements OnInit {
     patientOrganizations5: [],
   }
 
+  // Badge Information
+  badge: any = {
+    mrNo: null,
+    mrNoStatus: null,
+    dateRegistered: null,
+    dateDeath: null,
+    localMrNo: null,
+    localMrNoStatus: null,
+    localDateRegistered: null,
+    status: null,
+    mrMerge: null,
+  }
+
   // Data Modal
   model: any = {
     title: '1',

@@ -1,39 +1,62 @@
 .x-list-group {
-    border-radius: 0;
-}
-.x-list-group .list-group-item {
-    border: 0;
-    font-size: 14px;
-    padding: 8px 6px 8px 10px;
-    border-left: 4px solid transparent;
-    color: rgba(34, 47, 62, 0.54);
+  border-radius: 0;
 }
 
-.x-list-group .list-group-item:hover, .x-list-group .list-group-item:active {
-    border-left: 4px solid #575FCF;
-    color: #575FCF;
+.x-list-group .list-group-item {
+  border: 0;
+  font-size: 14px;
+  padding: 8px 6px 8px 10px;
+  border-left: 4px solid transparent;
+  color: rgba(34, 47, 62, 0.54);
+}
+
+.x-list-group .list-group-item:hover,
+.x-list-group .list-group-item:active {
+  border-left: 4px solid #575FCF;
+  color: #575FCF;
 }
 
 .ng-select.x-form-control {
-    padding: 0;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    display: block;
-    width: 100%;
-    color: rgba(34, 47, 62, 0.87);
-  }
-  
-  .ng-select.x-form-control ::ng-deep .ng-select-container {
-    height: 31px !important;
-    min-height: 31px !important;
-  }
-  
-  .ng-select.x-form-control ::ng-deep .ng-dropdown-panel {
-    z-index: 18;
-  }
+  padding: 0;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  color: rgba(34, 47, 62, 0.87);
+}
 
-  .patient-data-form h4 {
-    font-size: 16px;
-  }
+.ng-select.x-form-control ::ng-deep .ng-select-container {
+  height: 31px !important;
+  min-height: 31px !important;
+}
 
-  
+.ng-select.x-form-control ::ng-deep .ng-dropdown-panel {
+  z-index: 18;
+}
+
+.patient-data-form h4 {
+  font-size: 16px;
+}
+
+.badge-secondary {
+  background-color: #F6F7F9;
+  padding: 7px 12px;
+  border: 1px solid #E9EBF0;
+  border-radius: 4px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  color: rgba(34, 47, 62, 0.54);
+  font-size: 12px;
+}
+
+.badge-secondary b {
+  font-weight: 600;
+  /* text-decoration: underline; */
+}
+
+.alert-warning {
+  background-color: rgba(238, 189, 16, 0.05);
+  border-radius: 1px solid #EEBD10;
+  border-radius: 4px;
+  color: #EEBD10;
+}
