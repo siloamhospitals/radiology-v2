@@ -1,465 +1,531 @@
 <div class="row">
-  <div class="col-md-4">
-    <p>Detail Pasien</p>
-    <p>Kontak Pasien</p>
-    <p>Alamat Pasien</p>
-    <p>Kontak Darurat</p>
-    <p>Pembayar dan Atribut</p>
+  <div class="col-4 p-1" style="border-right: 1px solid #E9EBF0;">
+    <div class="px-3 py-1">
+      <ngb-alert type="warning">
+        <div class="d-flex">
+          <i class="fa fa-exclamation-circle mr-3 text-warning" style="font-size: 20px;"></i>
+          <div>Pastikan anda telah mengisi semua informasi dengan benar dan sesuai. <br>(*) Wajib diiisi.</div>
+        </div>
+      </ngb-alert>
+    </div>
+    <div id="list-navigation" class="list-group x-list-group et">
+      <a class="list-group-item list-group-item-action" href="#list-item-1">Detail Pasien</a>
+      <a class="list-group-item list-group-item-action" href="#list-item-2">Kontak Pasien</a>
+      <a class="list-group-item list-group-item-action" href="#list-item-3">Alamat Pasien</a>
+      <a class="list-group-item list-group-item-action" href="#list-item-4">Kontak Darurat</a>
+      <a class="list-group-item list-group-item-action" href="#list-item-5">Pembayar dan Atribut</a>
+    </div>
   </div>
-  <div class="col-md-8">
-    <div class="row border-bottom pb-4">
-      <div class="col-md-12">
-        <h6>Detail Pasien</h6>
-      </div>
-      <div class="col-md-2">
-        <label for="titlePatient">Gelar</label>
-        <div class="input-group">
-          <select
-            required
-            name="nationalType"
-            id="nationalType"
-            class="form-control">
-            <option class="text-muted" value="undefined" selected>Pilih</option>
-            <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-          </select>
+  <div class="col-8">
+    <section class="mb-3">
+      <div class="row border-bottom pb-4">
+        <div class="mb-3 col-12">
+          <h4>Detail Pasien</h4>
         </div>
-      </div>
-      <div class="col-md-7">
-        <label for="patientName">Nama Pasien <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <input
-            name="patientName"
-            id="patientName"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Nama Lengkap Pasien"
-          />
-        </div>
-      </div>
-      <div class="col-md-3"></div>
-      <div class="col-md-8">
-        <label for="modality_label">Nomor Identitas <sup class="text-required">*</sup></label>
+        <div class="mb-3 col-3">
+          <label for="titlePatient">Gelar</label>
           <div class="input-group">
-            <div class="id-type">
-              <select
-                required
-                placeholder="Jenis"
-                name="nationalType"
-                id="nationalType"
-                class="form-control national-type-id"
-                >
-                <option class="text-muted" value="undefined" selected>Jenis</option>
-                <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-              </select>
+            <select
+              required
+              name="nationalType"
+              id="nationalType"
+              class="form-control">
+              <option class="text-muted" value="undefined" selected>Pilih</option>
+              <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
+            </select>
+          </div>
+        </div>
+        <div class="mb-3 col-7">
+          <label for="patientName">Nama Pasien <sup class="text-required">*</sup></label>
+          <div class="input-group">
+            <input
+              name="patientName"
+              id="patientName"
+              type="text"
+              class="form-control text-muted"
+              placeholder="Nama Lengkap Pasien"
+            />
+          </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="mb-3 col-10">
+          <label for="modality_label">Nomor Identitas <sup class="text-required">*</sup></label>
+            <div class="input-group">
+              <div class="id-type">
+                <select
+                  required
+                  placeholder="Jenis"
+                  name="nationalType"
+                  id="nationalType"
+                  class="form-control national-type-id"
+                  >
+                  <option class="text-muted" value="undefined" selected>Jenis</option>
+                  <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
+                </select>
+              </div>
+              <input
+                name="id-number"
+                id="id-number-field"
+                type="text"
+                class="ml-1 form-control"
+                placeholder="Nomor Identitas"
+              />
             </div>
-            <input
-              name="id-number"
-              id="id-number-field"
-              type="text"
-              class="form-control"
-              placeholder="Nomor Identitas"
-            />
-          </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Tempat Lahir <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Tempat Lahir"
-          />
         </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Tanggal Lahir <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <input
-            name="patientBirthDate"
-            id="patientBirthDate"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Tanggal Lahir"
-          />
-        </div>
-      </div>
-      <div class="col-md-6">
-        <p>Jenis Kelamin <sup class="text-required">*</sup></p>
-        <div class="form-check form-check-inline pr-3">
-          <input class="form-check-input" type="radio" name="bpjsRadio" id="bpjsRadio" [value]=false>
-          <label class="form-check-label" for="bpjsRadio">Pria</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input  lass="form-check-input" type="radio" name="bpjsRadio" id="bpjsRadio2" [value]=true>
-          <label class="form-check-label" for="bpjsRadio">Wanita</label>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Agama <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <select
-            required
-            placeholder="Jenis"
-            name="nationalType"
-            id="nationalType"
-            class="form-control national-type-id"
-            >
-            <option class="text-muted" value="undefined" selected>Pilih</option>
-            <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Status Perkawinan <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <select
-            required
-            placeholder="Jenis"
-            name="nationalType"
-            id="nationalType"
-            class="form-control national-type-id"
-            >
-            <option class="text-muted" value="undefined" selected>Pilih</option>
-            <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Kewarganegaraan <sup class="text-required">*</sup></label>
-        <div class="input-group">
+        <div class="mb-3 col-6">
+          <label for="patientName">Tempat Lahir <sup class="text-required">*</sup></label>
           <div class="input-group">
             <input
-              name="patientNationality"
-              id="patientNationality"
+              name="patientBirthPlace"
+              id="patientBirthPlace"
               type="text"
               class="form-control text-muted"
-              placeholder="Kewarganegaraan"
+              placeholder="Tempat Lahir"
             />
           </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <label for="patientName">Nama Pasangan</label>
-        <div class="input-group">
+        <div class="mb-3 col-6">
+          <label for="patientName">Tanggal Lahir <sup class="text-required">*</sup></label>
           <div class="input-group">
             <input
-              name="patientNationality"
-              id="patientNationality"
+              name="patientBirthDate"
+              id="patientBirthDate"
               type="text"
               class="form-control text-muted"
-              placeholder="Nama Pasangan"
+              placeholder="Tanggal Lahir"
             />
           </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <label for="patientName">Nama Ayah</label>
-        <div class="input-group">
+        <div class="mb-3 col-6">
+          <p>Jenis Kelamin <sup class="text-required">*</sup></p>
+          <div class="form-check form-check-inline pr-3">
+            <input class="form-check-input" type="radio" name="bpjsRadio" id="bpjsRadio" [value]=false>
+            <label class="form-check-label ml-1" for="bpjsRadio">Pria</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input  lass="form-check-input" type="radio" name="bpjsRadio" id="bpjsRadio2" [value]=true>
+            <label class="form-check-label ml-1" for="bpjsRadio">Wanita</label>
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Agama <sup class="text-required">*</sup></label>
           <div class="input-group">
-            <input
-              name="patientNationality"
-              id="patientNationality"
-              type="text"
-              class="form-control text-muted"
-              placeholder="Nama Ayah"
-            />
+            <select
+              required
+              placeholder="Jenis"
+              name="nationalType"
+              id="nationalType"
+              class="form-control national-type-id"
+              >
+              <option class="text-muted" value="undefined" selected>Pilih</option>
+              <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
+            </select>
           </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <label for="patientName">Nama Ibu</label>
-        <div class="input-group">
+        <div class="mb-3 col-6">
+          <label for="patientName">Status Perkawinan <sup class="text-required">*</sup></label>
           <div class="input-group">
-            <input
-              name="patientNationality"
-              id="patientNationality"
-              type="text"
-              class="form-control text-muted"
-              placeholder="Nama Ayah"
-            />
+            <select
+              required
+              placeholder="Jenis"
+              name="nationalType"
+              id="nationalType"
+              class="form-control national-type-id"
+              >
+              <option class="text-muted" value="undefined" selected>Pilih</option>
+              <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
+            </select>
           </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Alergi</label>
-        <div class="input-group">
+        <div class="mb-3 col-6">
+          <label for="patientName">Kewarganegaraan <sup class="text-required">*</sup></label>
           <div class="input-group">
-            <input
-              name="patientNationality"
-              id="patientNationality"
-              type="text"
-              class="form-control text-muted"
-              placeholder="Alergi Pasien"
-            />
+            <div class="input-group">
+              <input
+                name="patientNationality"
+                id="patientNationality"
+                type="text"
+                class="form-control text-muted"
+                placeholder="Kewarganegaraan"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Catatan</label>
-        <div class="input-group">
+        <div class="mb-3 col-4">
+          <label for="patientName">Nama Pasangan</label>
           <div class="input-group">
-            <input
-              name="patientNationality"
-              id="patientNationality"
-              type="text"
-              class="form-control text-muted"
-              placeholder="Catatan Pasien"
-            />
+            <div class="input-group">
+              <input
+                name="patientNationality"
+                id="patientNationality"
+                type="text"
+                class="form-control text-muted"
+                placeholder="Nama Pasangan"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 col-4">
+          <label for="patientName">Nama Ayah</label>
+          <div class="input-group">
+            <div class="input-group">
+              <input
+                name="patientNationality"
+                id="patientNationality"
+                type="text"
+                class="form-control text-muted"
+                placeholder="Nama Ayah"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 col-4">
+          <label for="patientName">Nama Ibu</label>
+          <div class="input-group">
+            <div class="input-group">
+              <input
+                name="patientNationality"
+                id="patientNationality"
+                type="text"
+                class="form-control text-muted"
+                placeholder="Nama Ayah"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Alergi</label>
+          <div class="input-group">
+            <div class="input-group">
+              <input
+                name="patientNationality"
+                id="patientNationality"
+                type="text"
+                class="form-control text-muted"
+                placeholder="Alergi Pasien"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Catatan</label>
+          <div class="input-group">
+            <div class="input-group">
+              <input
+                name="patientNationality"
+                id="patientNationality"
+                type="text"
+                class="form-control text-muted"
+                placeholder="Catatan Pasien"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="row border-bottom pt-3 pb-4">
-      <div class="col-md-12">
-        <h6>Kontak</h6>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Nomor Telepon 1 <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Nomor Telepon"
-          />
+    <section class="mb-3">
+      <div class="row border-bottom pt-3 pb-4">
+        <div class="mb-3 col-12">
+          <h4>Kontak</h4>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Nomor Telepon 1 <sup class="text-required">*</sup></label>
+          <div class="input-group">
+            <input
+              name="patientBirthPlace"
+              id="patientBirthPlace"
+              type="text"
+              class="form-control text-muted"
+              placeholder="Nomor Telepon"
+            />
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Nomor Telepon 2</label>
+          <div class="input-group">
+            <input
+              name="patientBirthPlace"
+              id="patientBirthPlace"
+              type="text"
+              class="form-control text-muted"
+              placeholder="Nomor Telepon"
+            />
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Nomor Telepon Rumah</label>
+          <div class="input-group">
+            <input
+              name="patientBirthPlace"
+              id="patientBirthPlace"
+              type="text"
+              class="form-control text-muted"
+              placeholder="Nomor Telepon"
+            />
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Nomor Telepon Kantor</label>
+          <div class="input-group">
+            <input
+              name="patientBirthPlace"
+              id="patientBirthPlace"
+              type="text"
+              class="form-control text-muted"
+              placeholder="Nomor Telepon"
+            />
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Alamat Email Utama <sup class="text-required">*</sup></label>
+          <div class="input-group">
+            <input
+              name="patientBirthPlace"
+              id="patientBirthPlace"
+              type="text"
+              class="form-control text-muted"
+              placeholder="Nomor Telepon"
+            />
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Alamat Email Cadangan</label>
+          <div class="input-group">
+            <input
+              name="patientBirthPlace"
+              id="patientBirthPlace"
+              type="text"
+              class="form-control text-muted"
+              placeholder="Nomor Telepon"
+            />
+          </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <label for="patientName">Nomor Telepon 2</label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Nomor Telepon"
-          />
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Nomor Telepon Rumah</label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Nomor Telepon"
-          />
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Nomor Telepon Kantor</label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Nomor Telepon"
-          />
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Alamat Email Utama <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Nomor Telepon"
-          />
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Alamat Email Cadangan</label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Nomor Telepon"
-          />
-        </div>
-      </div>
-    </div>
+    </section>
 
-    <div class="row border-bottom pt-3 pb-4">
-      <div class="col-md-12">
-        <h6>Alamat</h6>
+    <section class="mb-3">
+      <div class="row border-bottom pt-3 pb-4">
+        <div class="mb-3 col-12">
+          <h4>Alamat</h4>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Kota/Kabupaten <sup class="text-required">*</sup></label>
+          <div class="input-group">
+            <input
+              name="patientBirthPlace"
+              id="patientBirthPlace"
+              type="text"
+              class="form-control text-muted"
+              placeholder="Nomor Telepon"
+            />
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Kecamatan <sup class="text-required">*</sup></label>
+          <div class="input-group">
+            <select
+              required
+              placeholder="Jenis"
+              name="nationalType"
+              id="nationalType"
+              class="form-control national-type-id"
+              >
+              <option class="text-muted" value="undefined" selected>Pilih Kecamatan</option>
+              <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
+            </select>
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Kelurahan <sup class="text-required">*</sup></label>
+          <div class="input-group">
+            <select
+              required
+              placeholder="Jenis"
+              name="nationalType"
+              id="nationalType"
+              class="form-control national-type-id"
+              >
+              <option class="text-muted" value="undefined" selected>Pilih Kelurahan</option>
+              <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
+            </select>
+          </div>
+        </div>
+        <div class="mb-3 col-6">
+          <label for="patientName">Kode Pos</label>
+          <div class="input-group">
+            <input
+              name="patientBirthPlace"
+              id="patientBirthPlace"
+              type="text"
+              class="form-control text-muted"
+              placeholder="Kode Pos"
+            />
+          </div>
+        </div>
+        <div class="mb-3 col-12">
+          <label for="patientName">Alamat</label>
+          <div class="input-group">
+            <textarea
+              name="patientBirthPlace"
+              id="patientBirthPlace"
+              rows="3"
+              class="form-control text-muted"
+              placeholder="Alamat Lengkap"
+            ></textarea>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6">
-        <label for="patientName">Kota/Kabupaten <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <input
+    </section>
+
+    <section class="mb-3">
+      <div class="row border-bottom pt-3 pb-4">
+        <div class="mb-3 col-12">
+          <h4>Kontak Darurat</h4>
+        </div>
+  
+        <div class="mb-3 col-6">
+          <label for="patientName">Nama Lengkap <sup class="text-required">*</sup></label>
+          <div class="input-group">
+            <input
+              name="patientBirthPlace"
+              id="patientBirthPlace"
+              type="text"
+              class="form-control text-muted"
+              placeholder="Nama Lengkap"
+            />
+          </div>
+        </div>
+        <div class="mb-3 col-6"></div>
+  
+        <div class="mb-3 col-4">
+          <label for="patientName">Nomor Telepon 1 <sup class="text-required">*</sup></label>
+          <div class="input-group">
+            <div class="input-group">
+              <input
+                name="patientNationality"
+                id="patientNationality"
+                type="text"
+                class="form-control text-muted"
+                placeholder="Nomor telepon"
+              />
+            </div>
+          </div>
+        </div>
+  
+        <div class="mb-3 col-4">
+          <label for="patientName">Nomor Telepon 2</label>
+          <div class="input-group">
+            <div class="input-group">
+              <input
+                name="patientNationality"
+                id="patientNationality"
+                type="text"
+                class="form-control text-muted"
+                placeholder="Nomor telepon"
+              />
+            </div>
+          </div>
+        </div>
+  
+        <div class="mb-3 col-4">
+          <label for="patientName">Alamat Email</label>
+          <div class="input-group">
+            <div class="input-group">
+              <input
+                name="patientNationality"
+                id="patientNationality"
+                type="text"
+                class="form-control text-muted"
+                placeholder="Alamat email"
+              />
+            </div>
+          </div>
+        </div>
+  
+        <div class="mb-3 col-6">
+          <label for="patientName">Kota/kabupaten</label>
+          <div class="input-group">
+            <input
+              name="patientBirthPlace"
+              id="patientBirthPlace"
+              type="text"
+              class="form-control text-muted"
+              placeholder="Kota/kabupaten"
+            />
+          </div>
+        </div>
+        <div class="mb-3 col-6"></div>
+  
+        <div class="mb-3 col-12">
+          <label for="patientName">Alamat</label>
+          <textarea
             name="patientBirthPlace"
             id="patientBirthPlace"
             type="text"
-            class="form-control text-muted"
-            placeholder="Nomor Telepon"
-          />
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Kecamatan <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <select
-            required
-            placeholder="Jenis"
-            name="nationalType"
-            id="nationalType"
-            class="form-control national-type-id"
-            >
-            <option class="text-muted" value="undefined" selected>Pilih Kecamatan</option>
-            <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Kelurahan <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <select
-            required
-            placeholder="Jenis"
-            name="nationalType"
-            id="nationalType"
-            class="form-control national-type-id"
-            >
-            <option class="text-muted" value="undefined" selected>Pilih Kelurahan</option>
-            <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <label for="patientName">Kode Pos</label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Kode Pos"
-          />
-        </div>
-      </div>
-      <div class="col-md-12">
-        <label for="patientName">Alamat</label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
+            rows="3"
             class="form-control text-muted"
             placeholder="Alamat Lengkap"
-          />
+          ></textarea>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="row border-bottom pt-3 pb-4">
-      <div class="col-md-12">
-        <h6>Kontak Darurat</h6>
-      </div>
+    <section class="mb-3">
+      <h4>Pembayar</h4>
+      <div class="row">
+        <div class="col-6">
+          <input type="text" class="form-control" placeholder="Pembayar" />
+        </div>
 
-      <div class="col-md-6">
-        <label for="patientName">Nama Lengkap <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Nama Lengkap"
-          />
+        <div class="col-6">
+          <input type="text" class="form-control" placeholder="No. Pembayar" />
         </div>
       </div>
-      <div class="col-md-6"></div>
+    </section>
 
-      <div class="col-md-4">
-        <label for="patientName">Nomor Telepon 1 <sup class="text-required">*</sup></label>
-        <div class="input-group">
-          <div class="input-group">
-            <input
-              name="patientNationality"
-              id="patientNationality"
-              type="text"
-              class="form-control text-muted"
-              placeholder="Nomor telepon"
-            />
+    <section>
+      <section class="mb-3">
+        <h4>Attribute Pusat</h4>
+        <div class="row">
+          <div class="col-4 mb-3">
+            <ng-select placeholder="Attribut 1"></ng-select>
+          </div>
+          <div class="col-4 mb-3">
+            <ng-select placeholder="Attribut 2"></ng-select>
+          </div>
+          <div class="col-4 mb-3">
+            <ng-select placeholder="Attribut 3"></ng-select>
+          </div>
+          <div class="col-4 mb-3">
+            <ng-select placeholder="Attribut 4"></ng-select>
+          </div>
+          <div class="col-4 mb-3">
+            <ng-select placeholder="Attribut 5"></ng-select>
           </div>
         </div>
-      </div>
-
-      <div class="col-md-4">
-        <label for="patientName">Nomor Telepon 2</label>
-        <div class="input-group">
-          <div class="input-group">
-            <input
-              name="patientNationality"
-              id="patientNationality"
-              type="text"
-              class="form-control text-muted"
-              placeholder="Nomor telepon"
-            />
+      </section>
+      <hr>
+      <section class="mb-3">
+        <h4>Attribute Organisasi</h4>
+        <div class="row">
+          <div class="col-4 mb-3">
+            <ng-select placeholder="Attribut 1"></ng-select>
+          </div>
+          <div class="col-4 mb-3">
+            <ng-select placeholder="Attribut 2"></ng-select>
+          </div>
+          <div class="col-4 mb-3">
+            <ng-select placeholder="Attribut 3"></ng-select>
+          </div>
+          <div class="col-4 mb-3">
+            <ng-select placeholder="Attribut 4"></ng-select>
+          </div>
+          <div class="col-4 mb-3">
+            <ng-select placeholder="Attribut 5"></ng-select>
           </div>
         </div>
-      </div>
-
-      <div class="col-md-4">
-        <label for="patientName">Alamat Email</label>
-        <div class="input-group">
-          <div class="input-group">
-            <input
-              name="patientNationality"
-              id="patientNationality"
-              type="text"
-              class="form-control text-muted"
-              placeholder="Alamat email"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <label for="patientName">Kota/kabupaten</label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Kota/kabupaten"
-          />
-        </div>
-      </div>
-      <div class="col-md-6"></div>
-
-      <div class="col-md-12">
-        <label for="patientName">Alamat</label>
-        <div class="input-group">
-          <input
-            name="patientBirthPlace"
-            id="patientBirthPlace"
-            type="text"
-            class="form-control text-muted"
-            placeholder="Alamat Lengkap"
-          />
-        </div>
-        <ng-select
-          [multiple]="true"
-          [closeOnSelect]="false"
-          [searchable]="true"
-          placeholder="Pilih Modality"
-          bindLabel="name"
-          bindValue="modality_id">
-        </ng-select>
-      </div>
-    </div>
+      </section>
+    </section>
   </div>
 </div>

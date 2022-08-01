@@ -1,0 +1,15 @@
+.x-list-group {
+    border-radius: 0;
+}
+.x-list-group .list-group-item {
+    border: 0;
+    font-size: 14px;
+    padding: 8px 6px 8px 10px;
+    border-left: 4px solid transparent;
+    color: rgba(34, 47, 62, 0.54);
+}
+
+.x-list-group .list-group-item:hover, .x-list-group .list-group-item:active {
+    border-left: 4px solid #575FCF;
+    color: #575FCF;
+}
