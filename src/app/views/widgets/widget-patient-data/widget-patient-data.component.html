@@ -25,14 +25,12 @@
         <div class="mb-3 col-3">
           <label for="titlePatient">Gelar</label>
           <div class="input-group">
-            <select
-              required
-              name="nationalType"
-              id="nationalType"
-              class="form-control">
-              <option class="text-muted" value="undefined" selected>Pilih</option>
-              <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-            </select>
+            <ng-select
+              placeholder="Pilih Gender"
+              bindLabel="description"
+              bindValue="value"
+              class="x-form-control">
+            </ng-select>
           </div>
         </div>
         <div class="mb-3 col-7">
@@ -52,16 +50,12 @@
           <label for="modality_label">Nomor Identitas <sup class="text-required">*</sup></label>
             <div class="input-group">
               <div class="id-type">
-                <select
-                  required
+                <ng-select
                   placeholder="Jenis"
-                  name="nationalType"
-                  id="nationalType"
-                  class="form-control national-type-id"
-                  >
-                  <option class="text-muted" value="undefined" selected>Jenis</option>
-                  <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-                </select>
+                  bindLabel="description"
+                  bindValue="value"
+                  class="x-form-control">
+                </ng-select>
               </div>
               <input
                 name="id-number"
@@ -70,6 +64,13 @@
                 class="ml-1 form-control"
                 placeholder="Nomor Identitas"
               />
+            </div>
+            <div class="my-2 d-flex flex-row px-3 py-2 rounded align-items-center cursor-pointer" style="border: 2px dashed #575FCF;">
+              <i class="fa fa-cloud-upload mr-2 text-primary" style="font-size: 32px;"></i>
+              <div>
+                <div class="text-primary">Pilih gambar Identitas untuk di unggah</div>
+                <div class="text-muted">atau tarik dan lepaskan disini.</div>
+              </div>
             </div>
         </div>
         <div class="mb-3 col-6">
@@ -110,44 +111,35 @@
         <div class="mb-3 col-6">
           <label for="patientName">Agama <sup class="text-required">*</sup></label>
           <div class="input-group">
-            <select
-              required
-              placeholder="Jenis"
-              name="nationalType"
-              id="nationalType"
-              class="form-control national-type-id"
-              >
-              <option class="text-muted" value="undefined" selected>Pilih</option>
-              <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-            </select>
+            <ng-select
+              placeholder="Pilih Agama"
+              bindLabel="description"
+              bindValue="value"
+              class="x-form-control">
+            </ng-select>
           </div>
         </div>
         <div class="mb-3 col-6">
           <label for="patientName">Status Perkawinan <sup class="text-required">*</sup></label>
           <div class="input-group">
-            <select
-              required
-              placeholder="Jenis"
-              name="nationalType"
-              id="nationalType"
-              class="form-control national-type-id"
-              >
-              <option class="text-muted" value="undefined" selected>Pilih</option>
-              <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-            </select>
+            <ng-select
+              placeholder="Pilih Status Perkawinan"
+              bindLabel="description"
+              bindValue="value"
+              class="x-form-control">
+            </ng-select>
           </div>
         </div>
         <div class="mb-3 col-6">
           <label for="patientName">Kewarganegaraan <sup class="text-required">*</sup></label>
           <div class="input-group">
             <div class="input-group">
-              <input
-                name="patientNationality"
-                id="patientNationality"
-                type="text"
-                class="form-control text-muted"
-                placeholder="Kewarganegaraan"
-              />
+              <ng-select
+                placeholder="Pilih Kewarganegaraan"
+                bindLabel="description"
+                bindValue="value"
+                class="x-form-control">
+              </ng-select>
             </div>
           </div>
         </div>
@@ -312,43 +304,34 @@
         <div class="mb-3 col-6">
           <label for="patientName">Kota/Kabupaten <sup class="text-required">*</sup></label>
           <div class="input-group">
-            <input
-              name="patientBirthPlace"
-              id="patientBirthPlace"
-              type="text"
-              class="form-control text-muted"
-              placeholder="Nomor Telepon"
-            />
+            <ng-select
+              placeholder="Pilih Kota/Kabupaten"
+              bindLabel="description"
+              bindValue="value"
+              class="x-form-control">
+            </ng-select>
           </div>
         </div>
         <div class="mb-3 col-6">
           <label for="patientName">Kecamatan <sup class="text-required">*</sup></label>
           <div class="input-group">
-            <select
-              required
-              placeholder="Jenis"
-              name="nationalType"
-              id="nationalType"
-              class="form-control national-type-id"
-              >
-              <option class="text-muted" value="undefined" selected>Pilih Kecamatan</option>
-              <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-            </select>
+            <ng-select
+              placeholder="Pilih Kecamatan"
+              bindLabel="description"
+              bindValue="value"
+              class="x-form-control">
+            </ng-select>
           </div>
         </div>
         <div class="mb-3 col-6">
           <label for="patientName">Kelurahan <sup class="text-required">*</sup></label>
           <div class="input-group">
-            <select
-              required
-              placeholder="Jenis"
-              name="nationalType"
-              id="nationalType"
-              class="form-control national-type-id"
-              >
-              <option class="text-muted" value="undefined" selected>Pilih Kelurahan</option>
-              <!-- <option *ngFor="let type of nationalTypeIds" value="{{type.value}}">{{type.description}}</option> -->
-            </select>
+            <ng-select
+              placeholder="Pilih Kelurahan"
+              bindLabel="description"
+              bindValue="value"
+              class="x-form-control">
+            </ng-select>
           </div>
         </div>
         <div class="mb-3 col-6">
@@ -475,10 +458,17 @@
       <h4>Pembayar</h4>
       <div class="row">
         <div class="col-6">
-          <input type="text" class="form-control" placeholder="Pembayar" />
+          <label for="">Nama Pembayar</label>
+          <ng-select
+            placeholder="Pilih Pembayar"
+            bindLabel="description"
+            bindValue="value"
+            class="x-form-control">
+          </ng-select>
         </div>
 
         <div class="col-6">
+          <label for="">No. Pembayar</label>
           <input type="text" class="form-control" placeholder="No. Pembayar" />
         </div>
       </div>
@@ -489,40 +479,75 @@
         <h4>Attribute Pusat</h4>
         <div class="row">
           <div class="col-4 mb-3">
-            <ng-select placeholder="Attribut 1"></ng-select>
+            <label for="">Atribut 1</label>
+            <input type="text" class="form-control" placeholder="Attibut Pusat 1" disabled />
           </div>
           <div class="col-4 mb-3">
-            <ng-select placeholder="Attribut 2"></ng-select>
+            <label for="">Atribut 2</label>
+            <input type="text" class="form-control" placeholder="Attibut Pusat 2" disabled />
           </div>
           <div class="col-4 mb-3">
-            <ng-select placeholder="Attribut 3"></ng-select>
+            <label for="">Atribut 3</label>
+            <input type="text" class="form-control" placeholder="Attibut Pusat 3" disabled />
           </div>
           <div class="col-4 mb-3">
-            <ng-select placeholder="Attribut 4"></ng-select>
+            <label for="">Atribut 4</label>
+            <input type="text" class="form-control" placeholder="Attibut Pusat 4" disabled />
           </div>
           <div class="col-4 mb-3">
-            <ng-select placeholder="Attribut 5"></ng-select>
+            <label for="">Atribut 5</label>
+            <input type="text" class="form-control" placeholder="Attibut Pusat 5" disabled />
           </div>
         </div>
       </section>
       <hr>
       <section class="mb-3">
-        <h4>Attribute Organisasi</h4>
+        <h4>Atribut Organisasi</h4>
         <div class="row">
           <div class="col-4 mb-3">
-            <ng-select placeholder="Attribut 1"></ng-select>
+            <label for="">Atribut 1</label>
+            <ng-select
+              placeholder="Atribut Organisasi 1"
+              bindLabel="description"
+              bindValue="value"
+              class="x-form-control">
+            </ng-select>
           </div>
           <div class="col-4 mb-3">
-            <ng-select placeholder="Attribut 2"></ng-select>
+            <label for="">Atribut 2</label>
+            <ng-select
+              placeholder="Atribut Organisasi 2"
+              bindLabel="description"
+              bindValue="value"
+              class="x-form-control">
+            </ng-select>
           </div>
           <div class="col-4 mb-3">
-            <ng-select placeholder="Attribut 3"></ng-select>
+            <label for="">Atribut 3</label>
+            <ng-select
+              placeholder="Atribut Organisasi 3"
+              bindLabel="description"
+              bindValue="value"
+              class="x-form-control">
+            </ng-select>
           </div>
           <div class="col-4 mb-3">
-            <ng-select placeholder="Attribut 4"></ng-select>
+            <label for="">Atribut 4</label>
+            <ng-select
+              placeholder="Atribut Organisasi 4"
+              bindLabel="description"
+              bindValue="value"
+              class="x-form-control">
+            </ng-select>
           </div>
           <div class="col-4 mb-3">
-            <ng-select placeholder="Attribut 5"></ng-select>
+            <label for="">Atribut 5</label>
+            <ng-select
+              placeholder="Attribute Organisasi 5"
+              bindLabel="description"
+              bindValue="value"
+              class="x-form-control">
+            </ng-select>
           </div>
         </div>
       </section>
