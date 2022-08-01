@@ -74,4 +74,11 @@ export class WidgetPatientDataComponent implements OnInit {
   ngOnInit() {
   }
 
+
+  scrollToSection (ev: any) {
+    const target = ev.target.getAttribute('fragment')
+    const element = document.querySelector(`#${target}`)
+    if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
 }

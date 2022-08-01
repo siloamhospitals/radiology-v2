@@ -9,15 +9,15 @@
       </ngb-alert>
     </div>
     <div id="list-navigation" class="list-group x-list-group et">
-      <a class="list-group-item list-group-item-action" href="#list-item-1">Detail Pasien</a>
-      <a class="list-group-item list-group-item-action" href="#list-item-2">Kontak Pasien</a>
-      <a class="list-group-item list-group-item-action" href="#list-item-3">Alamat Pasien</a>
-      <a class="list-group-item list-group-item-action" href="#list-item-4">Kontak Darurat</a>
-      <a class="list-group-item list-group-item-action" href="#list-item-5">Pembayar dan Atribut</a>
+      <a class="list-group-item list-group-item-action" (click)="scrollToSection($event)" href="javascript:;" fragment="information">Detail Pasien</a>
+      <a class="list-group-item list-group-item-action" (click)="scrollToSection($event)" href="javascript:;" fragment="contact">Kontak Pasien</a>
+      <a class="list-group-item list-group-item-action" (click)="scrollToSection($event)" href="javascript:;" fragment="address">Alamat Pasien</a>
+      <a class="list-group-item list-group-item-action" (click)="scrollToSection($event)" href="javascript:;" fragment="emergency">Kontak Darurat</a>
+      <a class="list-group-item list-group-item-action" (click)="scrollToSection($event)" href="javascript:;" fragment="payer">Pembayar dan Atribut</a>
     </div>
   </div>
-  <div class="col-8">
-    <section class="mb-3">
+  <div class="col-8" data-spy="scroll" data-target="#list-example" data-offset="0">
+    <section id="information" class="mb-3">
       <div class="row border-bottom pb-4">
         <div class="mb-3 col-12">
           <h4>Detail Pasien</h4>
@@ -216,7 +216,7 @@
       </div>
     </section>
 
-    <section class="mb-3">
+    <section id="contact" class="mb-3">
       <div class="row border-bottom pt-3 pb-4">
         <div class="mb-3 col-12">
           <h4>Kontak</h4>
@@ -296,7 +296,7 @@
       </div>
     </section>
 
-    <section class="mb-3">
+    <section id="address" class="mb-3">
       <div class="row border-bottom pt-3 pb-4">
         <div class="mb-3 col-12">
           <h4>Alamat</h4>
@@ -361,7 +361,7 @@
       </div>
     </section>
 
-    <section class="mb-3">
+    <section id="emergency" class="mb-3">
       <div class="row border-bottom pt-3 pb-4">
         <div class="mb-3 col-12">
           <h4>Kontak Darurat</h4>
@@ -454,7 +454,7 @@
       </div>
     </section>
 
-    <section class="mb-3">
+    <section id="payer" class="mb-3 pb-3">
       <h4>Pembayar</h4>
       <div class="row">
         <div class="col-6">
@@ -473,9 +473,9 @@
         </div>
       </div>
     </section>
-
+    <hr>
     <section>
-      <section class="mb-3">
+      <section class="mb-3 pb-3">
         <h4>Attribute Pusat</h4>
         <div class="row">
           <div class="col-4 mb-3">
@@ -501,7 +501,7 @@
         </div>
       </section>
       <hr>
-      <section class="mb-3">
+      <section class="mb-3 pb-3">
         <h4>Atribut Organisasi</h4>
         <div class="row">
           <div class="col-4 mb-3">
