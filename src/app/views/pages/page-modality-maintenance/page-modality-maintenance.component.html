@@ -1,20 +1,18 @@
 <app-section-header></app-section-header>
 <div class="d-flex justify-content-start">
-  
+
   <div class="fo_menu_container">
-      <app-section-sidebar></app-section-sidebar>
+    <app-section-sidebar></app-section-sidebar>
   </div>
   <div class="fo_content_container mt-4 d-block" >
     <div class="box bg-white">
-      <div class="header-radiology-schedule" >
+      <div class="header-radiology-schedule">
         <div class="row border-bottom">
           <div class="col-md-3">
-            <h3 class="p-3 ">
+            <h3 class="p-3">
               Jadwal Perawatan Modality
             </h3>
-            <app-modality-tab>
-    
-            </app-modality-tab>
+            <app-modality-tab></app-modality-tab>
           </div>
           <div class="col-md-7 justify-content-end">
 
@@ -45,7 +43,7 @@
                 bindValue="modality_id">
             </ng-select>
             </div>
-            
+
             <div class="col-md-2 position-relative mt-3 pr-0 border-right" >
               <ng-select
                 [multiple]="true"
@@ -64,8 +62,8 @@
             </ng-template> -->
             </ng-select>
             </div>
-           
-            
+
+
           </div>
           <div class="table-head-sticky">
             <table class="table table-borderless table-stripped table-font" id="appointment-list-table">
@@ -83,7 +81,7 @@
                 <th class="" style="text-align: right; min-width: 10em;">Action</th>
                 <th width="50px"></th>
               </thead>
-          
+
               <tbody>
                 <ng-container *ngIf="isLoading; else showList">
                   <tr>

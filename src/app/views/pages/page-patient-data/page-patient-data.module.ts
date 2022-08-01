@@ -5,6 +5,7 @@ import { PagePatientDataRoutingModule } from './page-patient-data-routing.module
 import { SectionHeaderModule } from '../../sections/section-header/section-header.module';
 import { SectionSidebarModule } from '../../sections/section-sidebar/section-sidebar.module';
 import { SectionFooterModule } from '../../sections/section-footer/section-footer.module';
+import { WidgetPatientDataModule } from '../../widgets/widget-patient-data/widget-patient-data.module';
 
 @NgModule({
   declarations: [PagePatientDataComponent],
@@ -13,7 +14,8 @@ import { SectionFooterModule } from '../../sections/section-footer/section-foote
     SectionHeaderModule,
     SectionSidebarModule,
     SectionFooterModule,
-    PagePatientDataRoutingModule
-  ]
+    PagePatientDataRoutingModule,
+    WidgetPatientDataModule
+  ],
 })
 export class PagePatientDataModule { }
