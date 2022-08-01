@@ -7,7 +7,7 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
 *{
-  font-family: 'Mulish', 'Robot', sans-serif;
+  font-family: 'Mulish', 'Robot', sans-serif !important;
 }
 
 .btn {
