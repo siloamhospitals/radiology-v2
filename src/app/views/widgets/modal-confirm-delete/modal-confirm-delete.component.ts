@@ -28,7 +28,6 @@ export class ModalConfirmDeleteComponent implements OnInit {
     if(this.modalitySlot.length != 0){
       this.reserveDate = moment(this.modalitySlot[0].reserve_date).format('YYYY-MM-DD');
     }
-    console.log(this.modalitySlot)
   }
 
   public deleteData() {
