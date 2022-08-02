@@ -211,6 +211,8 @@ export class TableListWeeklyComponent implements OnInit {
           patientDob: y.patient_dob,
           patientLocalMrNo: y.local_mr_no,
           slot: y,
+          isMaintenance: y.is_maintenance,
+          note: y.notes,
           isBpjs: y.is_bpjs
         }
       })
@@ -358,6 +360,8 @@ class SlotWeeklyItem {
   rowSpan: number = 0
   slot: any = null
   isBpjs: boolean
+  isMaintenance: boolean = false
+  notes: string
 }
 class SlotWeeklyRow {
   viewIndex: number
