@@ -65,7 +65,7 @@ export class PageModalityMasterComponent implements OnInit {
   }
 
   refreshData = async () => {
-    await this.fillOperationals()
+    this.fillOperationals()
     this.isLoading = false
   }
 
@@ -77,16 +77,19 @@ export class PageModalityMasterComponent implements OnInit {
         centered: true,
         size: 'lg'
       })
-    if(!isEmpty(val)){
-      val.refrehData = this.refreshData();
-    }
+ 
     modalRef.componentInstance.isUpdate = isUpdate;
     modalRef.componentInstance.responseData = val
-    modalRef.result.then((result: any) => {
-      console.log(result);
-      this.fillOperationals()
-      this.getModality()
-      this.getRooms();
+    modalRef.result.then((result) => {
+        if(result == 'closed') {
+          this.getModality()
+          this.getRooms();
+        }else{
+          this.onItemDeselect();
+          this.refreshData();
+          this.getModality()
+          this.getRooms();
+      }
     })
   }
 
@@ -164,10 +167,6 @@ export class PageModalityMasterComponent implements OnInit {
   async onItemSelect() {
     let selectedModalityLabelItem = null;
     selectedModalityLabelItem = !isEmpty(this.selectedModalityLabel) ? this.selectedModalityLabel : null;
-    console.log(this.selectedItemsStatus)
-    console.log(this.selectedItemsModality)
-    console.log(this.selectedItemsFloor)
-    console.log(this.selectedItemsSchdule)
     if (this.selectedItemsFloor || this.selectedItemsSchdule || this.selectedItemsStatus || this.selectedItemsModality || selectedModalityLabelItem) {
       this.operationals.data = []
       this.isLoading = true
@@ -175,6 +174,13 @@ export class PageModalityMasterComponent implements OnInit {
     } else {
       this.fillOperationals();
     }
+  }
+
+   onItemDeselect() {
+    this.selectedItemsFloor = ''
+    this.selectedItemsSchdule = ''
+    this.selectedItemsStatus = ''
+    this.selectedItemsModality = ''
   }
 
 }

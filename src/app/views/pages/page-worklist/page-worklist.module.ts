@@ -6,6 +6,7 @@ import { SectionFooterModule } from '../../sections/section-footer/section-foote
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { FormsModule } from '@angular/forms';
 import { PageWorklistComponent } from './page-worklist.component';
+import { PageWorklistRoutingModule } from './page-worklist-routing.module';
 
 @NgModule({
   declarations: [PageWorklistComponent],
@@ -15,7 +16,8 @@ import { PageWorklistComponent } from './page-worklist.component';
     SectionSidebarModule,
     SectionFooterModule,
     NgxDaterangepickerMd.forRoot(),
-    FormsModule
+    FormsModule,
+    PageWorklistRoutingModule
   ],
   exports: [
     PageWorklistComponent
