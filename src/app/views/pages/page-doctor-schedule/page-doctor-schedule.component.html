@@ -1,0 +1,86 @@
+<app-section-header></app-section-header>
+<div class="d-flex justify-content-start">
+  <div class="fo_menu_container">
+    <app-section-sidebar></app-section-sidebar>
+  </div>
+  <div class="fo_content_container mt-4 d-block">
+    <div class="box bg-white">
+      <div class="header-radiology-schedule">
+        <h3 class="p-3 border-bottom mb-0">
+          Jadwal Doktor
+        </h3>
+        <div class="d-flex align-items-center justify-content-between border-bottom">
+          <nav class="nav">
+            <button type="button" (click)="toPageDoctor()"
+              [class]="'btn btn-link nav-link mx-0 px-4 ' + (tabActive === 0 ? 'active font-weight-bold' : '')">Doktor</button>
+            <button type="button" (click)="toPageSpecialist()"
+              [class]="'btn btn-link nav-link mx-0 px-4 ' + (tabActive === 1 ? 'active font-weight-bold' : '')">Spesialis</button>
+          </nav>
+        </div>
+        <div class="p-3">
+          <div class="col-md-12">
+            <form class="position-relative">
+              <input ngui-auto-complete [source]="continents" list-formatter="name" value-property-name="id"
+                display-property-name="name" placeholder="Cari doktor .." type="search"
+                class="form-control search-doctor">
+              <button type="submit" class="fa fa-search position-absolute border-0 bg-transparent text-secondary"
+                style="font-size: 16px; bottom: 7px; right: 0;"></button>
+            </form>
+          </div>
+        </div>
+        <div class="d-flex mt-4 border-bottom">
+          <div *ngFor="let day of days" class="flex-fill">
+            <h5 [class]="'border-bottom text-center py-2 ' + (todayString === day ? 'active font-weight-bold' : '') ">
+              {{ day }}
+            </h5>
+            <div>
+              <ul class="list-unstyled ml-2">
+                <li class="d-flex align-items-center">
+                  <span class="success-light"></span>
+                  <div>
+                    <button type="button" class="btn btn-link p-0">06:00 - 10:00</button>
+                    <span class="badge badge-primary">TELE</span>
+                  </div>
+                </li>
+                <li class="d-flex align-items-center">
+                  <span class="success-light"></span>
+                  <div>
+                    <button type="button" class="btn btn-link p-0">06:00 - 10:00</button>
+                    <span class="badge badge-primary">TELE & MIX</span>
+                  </div>
+                </li>
+                <li class="d-flex align-items-center">
+                  <span class="success-light"></span>
+                  <div>
+                    <button type="button" class="btn btn-link p-0">06:00 - 10:00</button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="p-3">
+          <h3 class="text-center mt-4">Wednesday, 03 August 2022</h3>
+          <h4 class="text-center">Floor 2 - Wing Eye - Room 3 ( 09:00 - 13:00 ) Teleconsultation</h4>
+          <table class="table table-bordered mt-3 table-list-radiology">
+            <thead class="border-0 bg-secondary">
+              <tr>
+                <td colspan="2" class="py-3 border-0">Jadwal Tindakan</td>
+                <td class="py-3 border-0">No.</td>
+                <td class="py-3 border-0">Nama Pasien</td>
+                <td class="py-3 border-0">Tgl. Lahir</td>
+                <td class="py-3 border-0">No. Mr Lokal</td>
+                <td class="py-3 border-0">No. Telpon</td>
+                <td class="py-3 border-0">No. Urut</td>
+                <td class="py-3 border-0">Catatan</td>
+                <td class="py-3 border-0">Pengubah Terkahir</td>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

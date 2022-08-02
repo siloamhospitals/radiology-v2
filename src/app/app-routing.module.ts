@@ -43,6 +43,11 @@ const routes: Routes = [
     loadChildren: './views/pages/page-home/page-home.module#PageHomeModule'
   },
   {
+    path: 'doctor-schedule',
+    canActivate: [AuthGuard],
+    loadChildren: './views/pages/page-doctor-schedule/page-doctor-schedule.module#PageDoctorScheduleModule'
+  },
+  {
     path: '',
     canActivate: [AuthGuard],
     redirectTo: '/schedule',
