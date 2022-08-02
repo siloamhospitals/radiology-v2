@@ -8,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class PageWorklistComponent implements OnInit {
 
   constructor() { }
-
+  modalities = []
+  
   ngOnInit() {
   }
 

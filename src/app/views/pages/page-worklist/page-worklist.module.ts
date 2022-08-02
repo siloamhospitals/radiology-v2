@@ -7,6 +7,8 @@ import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { FormsModule } from '@angular/forms';
 import { PageWorklistComponent } from './page-worklist.component';
 import { PageWorklistRoutingModule } from './page-worklist-routing.module';
+import { TimepickerModule } from '../../widgets/time-picker/time-picker.module';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [PageWorklistComponent],
@@ -17,7 +19,9 @@ import { PageWorklistRoutingModule } from './page-worklist-routing.module';
     SectionFooterModule,
     NgxDaterangepickerMd.forRoot(),
     FormsModule,
-    PageWorklistRoutingModule
+    PageWorklistRoutingModule,
+    TimepickerModule,
+    NgSelectModule
   ],
   exports: [
     PageWorklistComponent
