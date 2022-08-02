@@ -295,4 +295,16 @@ export class TableListDailyComponent {
     }, 800)
   }
 
+  clickTableData = (schedule : any) => {
+    if(schedule.isPast && !schedule.patient) {
+      return
+    }
+    
+    if(this.isRowScheduled(schedule)){
+      this.detailSchedule(schedule)
+    } else {
+      this.createAppointment(schedule)
+    }
+  }
+
 }

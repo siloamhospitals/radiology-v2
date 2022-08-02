@@ -32,8 +32,8 @@
 
     <ng-template #showList>
     <ng-container *ngFor="let item of scheduleList; let i=index" >
-      <tr *ngFor="let schedule of item.items; let j = index;" class="item-hover" >
-        <td *ngIf="j % item.rowSpan == 0" [attr.rowspan]="item.rowSpan" style="vertical-align: middle; width: 25px; background: #fff !important;" class="text-right">
+      <tr *ngFor="let schedule of item.items; let j = index;" [ngClass]="'item-hover ' + (schedule.isPast && !schedule.patient ? '' : 'cursor-pointer')"  (click)="clickTableData(schedule)" >
+        <td *ngIf="j % item.rowSpan == 0" [attr.rowspan]="item.rowSpan" style="vertical-align: middle; width: 25px; background: #fff !important;cursor: default" class="text-right">
           {{ item.hour }}
         </td>
         <td style="width: 100px; vertical-align: middle;">{{ schedule.fromTime + ' - ' + schedule.toTime }}</td>
@@ -44,8 +44,7 @@
           </td>
           <ng-template #showAvailable>
             <td [attr.rowspan]="schedule.rowSpan"
-            (click)="isRowScheduled(schedule) ? detailSchedule(schedule) : createAppointment(schedule)"
-            [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled cursor-pointer item-indicator-primary' : 'cursor-pointer'" >
+            [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled item-indicator-primary' : ''" >
             <span [class.text-success]="!schedule.patient"  >
               {{ schedule.patient || 'Tersedia' }}
             </span>
