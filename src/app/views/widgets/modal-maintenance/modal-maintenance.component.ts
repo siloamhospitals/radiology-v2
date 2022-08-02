@@ -189,8 +189,13 @@ export class ModalMaintenanceComponent implements OnInit {
       document.getElementById(value)!.focus();
     }, 100);
   }
-  close() {
-    this.activeModal.close();
+  close(updated: boolean = false) {
+    let msg = 'closed'
+    if(updated){
+      msg = 'refresh'
+    }
+    this.activeModal.close(msg);
+
   }
   
   async submit() {

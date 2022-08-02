@@ -86,8 +86,16 @@ export class PageModalityMaintenanceComponent implements OnInit {
     modalRef.componentInstance.maintenanceItem = reduced;
     modalRef.componentInstance.responseData = val
     modalRef.componentInstance.isUpdate = isUpdate;
-    modalRef.result.then(() => {
-      this.refreshData()
+    modalRef.result.then((result) => {
+      if(result == 'closed') {
+        this.getModality()
+        this.getRooms();
+      }else{
+        this.onItemDeselect();
+        this.refreshData();
+        this.getModality()
+        this.getRooms();
+    }
     })
   }
 
@@ -188,6 +196,13 @@ export class PageModalityMaintenanceComponent implements OnInit {
     } else {
       this.fillOperationals();
     }
+  }
+
+  onItemDeselect() {
+    this.selectedItemsFloor = ''
+    this.selectedItemsSchdule = ''
+    this.selectedItemsStatus = ''
+    this.selectedItemsModality = ''
   }
 
 }
