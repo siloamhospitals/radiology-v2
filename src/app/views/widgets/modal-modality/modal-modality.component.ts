@@ -415,7 +415,7 @@ export class ModalModalityComponent implements OnInit {
       this.modalitySlots = responseSlots.data || [];
       await this.confirmUpdate(this.modalityHospitalRequest);
     }
-    else if(this.modalityHospitalId != null && this.modalityHospitalRequest.status == 1){
+    else if(this.modalityHospitalId != null){
       this.updateModalityHospital();
     }else{
       this.storeModalityHospital();

@@ -98,8 +98,8 @@
                   </ng-container>
                 </ng-template>
                 <tr *ngFor="let item of operationalsClose.data; let i = index">
-                  <td style="font-size:14px">{{item.modality_name}}</td>
                   <td>{{item.modality_label}}</td>
+                  <td style="font-size:14px">{{item.modality_name}}</td>
                   <td style="text-align: left">{{item.room.floor_name}}</td>
                   <td style="text-align: left">{{item.room.name}}</td>
                   <td style="text-align: left"> {{moment(item.from_date).format('dddd, DD MM YYYY')}} | {{item.from_time}} - {{item.to_time}}</td>
