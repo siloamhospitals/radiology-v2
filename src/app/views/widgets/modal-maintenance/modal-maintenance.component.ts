@@ -317,7 +317,6 @@ export class ModalMaintenanceComponent implements OnInit {
   reset(){
     this.modalityForm.reset();
     this.modalityForm.controls['modalityHospitalId'].reset()
-    this.modalityForm.controls['modalityHospitalId'].reset()
     this.modalityForm.controls['notes'].reset()
     this.retrievedModality = false;
   }

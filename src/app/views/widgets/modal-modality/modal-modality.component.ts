@@ -89,13 +89,12 @@ export class ModalModalityComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.formStatus)
     this.findInvalidControls()
     this.modalityForm = this._fb.group({
       roomId: [{value: '', disabled: false}, [Validators.required]],
       roomName: [{value: '', disabled: false}, [Validators.required]],
       status: [{value: '1', disabled: false}, [Validators.required]],
-      duration: this.responseData == null ? [{value: '0', disabled: false}, [Validators.required, Validators.min(0)]]
+      duration: this.responseData == null ? [{value: '15', disabled: false}, [Validators.required, Validators.min(0)]]
       : [{value: '', disabled: true}] ,
       operationalType: this.responseData == null ? [{value: '3', disabled: false}, [Validators.required]] : 
       [{value: '3', disabled: true}]
@@ -270,15 +269,12 @@ export class ModalModalityComponent implements OnInit {
     }
   }
 
-  close() {
-    this.activeModal.close();
-  }
-
-  closeModal() {
-    setTimeout(() => {
-      this.close();
-      this.isSubmit = false;
-    }, 2000);
+  close(updated: boolean=false) {
+    let msg = 'closed'
+    if(updated){
+      msg = 'refresh'
+    }
+    this.activeModal.close(msg);
   }
 
   toggleFieldTextType() {
@@ -329,7 +325,10 @@ export class ModalModalityComponent implements OnInit {
   }
 
   reset(){
-    this.modalityForm.reset();
+    this.modalityForm.controls.modalityId.reset()
+    this.modalityForm.controls.modalityLabel.reset()
+    this.modalityForm.controls.roomName.reset()
+    this.modalityForm.controls.modality_notes.reset()
   }
 
   public findInvalidControls() {
@@ -432,7 +431,8 @@ export class ModalModalityComponent implements OnInit {
       });
       this.responseData = data;
       this.loading = true;
-      this.close();
+      const updated = true
+      this.close(updated);
     }, err => {
       Swal.fire({
         type: 'error',
@@ -452,7 +452,8 @@ export class ModalModalityComponent implements OnInit {
         showConfirmButton: false,
         timer: 3000
       });
-      this.close();
+      const updated = true
+      this.close(updated);
       this.loading = true;
     }, err => {
       Swal.fire({
