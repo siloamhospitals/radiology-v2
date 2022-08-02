@@ -1,9 +1,116 @@
 <app-section-header></app-section-header>
 <div class="d-flex justify-content-start">
   <div class="fo_menu_container">
-      <app-section-sidebar></app-section-sidebar>
+    <app-section-sidebar></app-section-sidebar>
   </div>
-  <div class="fo_content_container mt-4">
-    <p>PageView</p>
+  <div class="fo_content_container mt-4 d-block">
+    <div class="box bg-white">
+      <div class="header-radiology-schedule">
+        <h3 class="p-3 border-bottom">
+          Antrian Pasien
+        </h3>
+        <div class="d-flex flex-md-row flex-column">
+          <div class="numberof-worklist m-4 border-right">
+            <h4 class="checkin d-inline-block py-2 px-3 mb-0" >Pasien Check in</h4>
+            <h1>
+              00
+            </h1>
+          </div>
+          <div class="numberof-worklist m-4 border-right">
+            <h4 class="proccesed d-inline-block py-2 px-3 mb-0" >Pasien Diproses</h4>
+            <h1>
+              00
+            </h1>
+          </div>
+          <div class="numberof-worklist m-4 border-right">
+            <h4 class="finished d-inline-block py-2 px-3 mb-0" >Pasien Selesai</h4>
+            <h1>
+              00
+            </h1>
+          </div>
+          <div class="numberof-worklist p-4">
+            <h4 class="canceled d-inline-block py-2 px-3 mb-0" >Pasien Dilewatkan</h4>
+            <h1>
+              00
+            </h1>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box bg-white mt-4">
+      <div class="header-worklist d-flex flex-column flex-md-row border-bottom" >
+        <form class="position-relative pr-0 border-right mx-4">
+          <input name="name" class="form-control pt-3 input-filter pr-5" type="text" placeholder="Cari Nama Pasien"
+            title="Find patients"
+           />
+          <button type="submit" class="fa fa-search position-absolute border-0 bg-transparent" style="font-size: 16px; bottom: 15px;"></button>
+        </form>
+        <form class="position-relative pr-0 border-right mx-4">
+          <input name="name" class="form-control pt-3 input-filter pr-5" type="text" placeholder="Cari No MR lokal"
+            title="Find patients"
+           />
+          <button type="submit" class="fa fa-search position-absolute border-0 bg-transparent" style="font-size: 16px; bottom: 15px;"></button>
+        </form>
+        <form class="position-relative pr-0 border-right ml-4">
+          <small class="text-muted" >Rentang Waktu</small>
+          <div class="d-flex align-items-center">
+            <app-time-picker class="text-left px-0" noBorder="true" ></app-time-picker>
+            <b class="mx-2" >-</b>
+            <app-time-picker noBorder="true"  ></app-time-picker>
+          </div>
+          <div class="text-danger error-timer" *ngIf="isErrorTimer" >Waktu mulai harusnya lebih besar dari waktu selesai.</div>
+        </form>
+        <form class="position-relative pr-0 border-right ml-2" style="width: 150px" >
+          <small class="text-muted" >Modality</small>
+          <ng-select [items]="modalities"
+              bindLabel="company"
+              class="d-form-control"
+              placeholder="Select item" >
+          </ng-select>
+        </form>
+        <form class="position-relative pr-0 ml-2 " style="width: 150px" >
+          <small class="text-muted" >Status</small>
+          <ng-select [items]="modalities"
+              bindLabel="company"
+              class="d-form-control"
+              placeholder="Select item" >
+          </ng-select>
+        </form>
+        
+      </div>
+      <div class="px-4 py-2">
+        <table class="table mt-3 table-striped">
+          <thead class="bg-secondary">
+            <tr>
+              <th colspan="2" class="py-3 border-0">Waktu</th>
+              <th class="py-3 border-0">Pasien</th>
+              <th class="py-3 border-0">No. Kunjungan</th>
+              <th class="py-3 border-0">No. Mr Lokal</th>
+              <th class="py-3 border-0">Modality</th>
+              <th class="py-3 border-0">Status</th>
+              <th class="py-3 border-0">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td width="30" class="border-right bg-white" >00</td>
+              <td colspan="7" >&nbsp;</td>
+            </tr>
+            <tr>
+              <td width="30" class="border-right bg-white" >01</td>
+              <td colspan="7" ></td>
+            </tr>
+            <tr>
+              <td width="30" class="border-right bg-white">02</td>
+              <td colspan="7" ></td>
+            </tr>
+            <tr>
+              <td width="30" class="border-right bg-white">03</td>
+              <td colspan="7" ></td>
+            </tr>
+          </tbody>
+          </table>
+      </div>
+    </div>
   </div>
 </div>

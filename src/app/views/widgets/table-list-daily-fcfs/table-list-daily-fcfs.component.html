@@ -5,7 +5,7 @@
 <table class="table table-striped mt-3 table-list-radiology">
   <thead class="border-0 bg-secondary">
     <tr>
-      <th class="py-3 border-0">Tgl. Registrasi</th>
+      <th width="100" class="py-3 border-0">Tgl. Registrasi</th>
       <th class="py-3 border-0">Pasien</th>
       <th width="100" class="py-3 border-0">Tgl. Lahir</th>
       <th width="100" class="py-3 border-0">No. MR Lokal</th>
@@ -38,7 +38,7 @@
       </ng-container>
   
       <tr *ngFor="let item of modalitySlots; let i=index"
-        class="cursor-pointer item-hover">
+        class="cursor-pointer item-hover" (click)="detailSchedule(item)">
         <td style="width: 90px;">
           <span>{{ item.created_date | date: 'dd MMM yyyy' }}</span><br/>
           <small class="text-muted" >{{ item.created_date | date: 'hh:mm:ss' }}</small>

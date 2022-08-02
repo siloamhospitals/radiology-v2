@@ -1,0 +1,89 @@
+.fo_menu_container{
+    width: fit-content;
+    display: flex;
+    flex-flow: column;
+}
+
+.fo_content_container{
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: left;
+  }
+
+.box {
+    box-shadow: 0px 2px 4px #ccc;
+    border-radius: 8px;
+}
+
+.rounded-8 {
+    border-radius: 8px;
+}
+
+.numberof-worklist {
+    min-width: 240px;
+}
+
+.numberof-worklist h4{
+    font-size: 14px;
+
+}
+
+.numberof-worklist h1{
+    font-size: 48px;
+    color: #222F3EDE;
+}
+
+.numberof-worklist  .checkin {
+    background: rgba(149, 175, 192, 0.05);
+    border-radius: 50px;
+    color: #95AFC0;
+}
+
+.numberof-worklist  .proccesed {
+    background: rgba(238, 189, 16, 0.05);
+    border-radius: 50px;
+    color: #EEBD10;
+}
+
+
+.numberof-worklist  .finished {
+    background: rgba(106, 176, 76, 0.05);
+    border-radius: 50px;
+    color: #6AB04C;
+}
+
+
+.numberof-worklist  .canceled {
+    background: rgba(235, 77, 75, 0.05);
+    border-radius: 50px;
+    color: #EB4D4B;
+}
+
+.header-worklist{
+    min-height: 56px;
+}
+
+.header-worklist >form {
+    width: 240px;
+}
+
+.header-worklist .input-filter {
+    font-size: 14px;
+    height: 100%;
+    border: 0;
+    padding-bottom: 5px;
+}
+
+.header-worklist .input-filter:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.header-worklist .input-filter ~ .fa.fa-search {
+    right: 20px;
+    bottom: 10px;
+    color: #ccc;
+    font-size: 14px;
+}
