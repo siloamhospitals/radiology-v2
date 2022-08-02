@@ -45,7 +45,7 @@
                 [clearSearchOnAdd]="true"
                 bindLabel="name"
                 (change)="onItemSelect()"
-                (clear)="onItemDeselect(selectedItemsModality)"
+                (clear)="onItemDeselect()"
                 bindValue="modality_id">
               </ng-select>
             </div>
@@ -54,7 +54,7 @@
                 [multiple]="true"
                 [items]="dropdownListSchduleType"
                 [(ngModel)]="selectedItemsSchdule"
-                (clear)="onItemDeselect(selectedItemsSchdule)"
+                (clear)="onItemDeselect()"
                 placeholder="Jenis Penjadwalan"
                 [clearSearchOnAdd]="true"
                 (change)="onItemSelect()"
@@ -76,7 +76,7 @@
                 [(ngModel)]="selectedItemsFloor"
                 placeholder="Pilih Lantai"
                 (change)="onItemSelect()"
-                (clear)="onItemDeselect($event)"
+                (clear)="onItemDeselect()"
                 [clearSearchOnAdd]="true"
                 bindLabel="floor_name"
                 bindValue="floor_id">
@@ -97,7 +97,7 @@
                 placeholder="Pilih Status"
                 bindLabel="item_text"
                 (change)="onItemSelect()"
-                (clear)="onItemDeselect($event)"
+                (clear)="onItemDeselect()"
                 [clearSearchOnAdd]="true"
                 bindValue="status">
             <!-- <ng-template ng-header-tmp>
