@@ -9,6 +9,7 @@ export class PageWorklistComponent implements OnInit {
 
   constructor() { }
   modalities = []
+  isErrorTimer : boolean;
   
   ngOnInit() {
   }
