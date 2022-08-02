@@ -14,6 +14,8 @@ import { RadiologyService } from '../../../services/radiology/radiology.service'
 import { nationalTypeIdNames, sourceApps } from '../../../variables/common.variable';
 import { ModalQueueNumberComponent } from '../modal-queue-number/modal-queue-number.component';
 import { isEmpty } from 'lodash';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 
 @Component({
   selector: 'app-modal-create-admission',
@@ -479,5 +481,101 @@ export class ModalCreateAdmissionComponent implements OnInit, OnChanges {
         this.referralIshgLoading = false;
       });
     }, 1000)
+  }
+
+  public async printLabel(val: any) {
+
+    const contentPdf = await this.radiologyService.getPatientLabel(val.modality_slot_id).toPromise()
+    .then(res => {
+      return res.data;
+    }).catch(err => {
+      console.log(err);
+      return null;
+    })
+
+    if (contentPdf) {
+      await this.filePdfCreated({...contentPdf, modalityExaminationName: val.modality_examination_name});
+      this.activeModal.close();
+    }
+    else {
+      alert('Cannot print patient label');
+    }
+  }
+
+  public async filePdfCreated(val:any) {
+    const {
+      patientName, sex, phone, admissionNo, admissionDate,
+      alias, mrNoFormatted, barcode, age, admissionTime,
+      modalityExaminationName, payer, patientType, labelBirth,
+    } = val;
+
+    const detailPayer = payer ? payer : patientType;
+    const strName = patientName.toUpperCase();
+    const strAge = age.toLowerCase();
+    let doctorPayer = modalityExaminationName + ' / ' + detailPayer;
+    doctorPayer = doctorPayer.substr(0, 55);
+
+    (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
+    const docDefinition = {
+      pageSize: { width: 292.283, height: 98.031 },
+      pageMargins: [0, 0, 0, 0],
+      content: [
+        { text: strName, style: 'header', bold: true, fontSize: 10, noWrap: true },
+        { text: 'Sex: ' + sex + ' / Ph: ' + phone, style: 'header', bold: true, fontSize: 10, noWrap: true },
+        { text: 'MR No: ' + alias + '.' + mrNoFormatted + ' / DOB: ' + labelBirth + ' (' + strAge + ') ', style: 'header', bold: true, fontSize: 10 },
+        {
+          table: {
+            headerRows: 1,
+            body: [
+              [
+                {
+                  margin: [0, -2, 0, 0],
+                  text: admissionNo,
+                  fontSize: 9,
+                  style: 'header',
+                  bold: true
+                },
+                {
+                  margin: [-14, -2, 0, 0],
+                  text: '/',
+                  fontSize: 9,
+                  style: 'header',
+                },
+                {
+                  margin: [-25, -2, 0, 0],
+                  text: admissionDate,
+                  fontSize: 9,
+                  style: 'header'
+                },
+                {
+                  margin: [-14, -2, 0, 0],
+                  text: admissionTime,
+                  fontSize: 9,
+                  style: 'header'
+                }
+              ]
+            ]
+          },
+          layout: 'headerLineOnly'
+        },
+        { margin: [0, -2, 0, 0], text: doctorPayer, style: 'header', fontSize: 9 },
+        {
+          image: barcode,
+          width: 100,
+          height: 20,
+          alignment: 'right'
+        }
+      ],
+      styles: {
+        header: {
+          fontSize: 9
+        }
+      }
+
+    };
+
+    (pdfMake as any).defaultFileName = 'report registration';
+    (pdfMake as any).createPdf(docDefinition).print();
   }
 }

@@ -13,6 +13,8 @@ import {isOk} from '../../../utils/response.util';
 import Swal from 'sweetalert2';
 import BasicRequest from '../../../models/radiology/requests/basic-request';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 
 
 @Component({
@@ -62,7 +64,7 @@ export class ModalDetailScheduleComponent implements OnInit {
     private modalService: NgbModal,
     private radiologyService : RadiologyService,
     private _fb: FormBuilder,
-    modalSetting: NgbModalConfig,
+    modalSetting: NgbModalConfig
   ) {
     modalSetting.backdrop = 'static';
     modalSetting.keyboard = false;
@@ -72,7 +74,6 @@ export class ModalDetailScheduleComponent implements OnInit {
   date : any = moment()
 
   ngOnInit() {
-    console.log(this.selectedAppointment)
     this.updateAppointmentForm = this._fb.group({
       modalityExaminationId: [{value: this.selectedAppointment.modality_examination_id, disabled: false}, [Validators.required]],
       is_bpjs: [{value: this.selectedAppointment.is_bpjs, disabled: false}, [Validators.required]],
@@ -301,6 +302,102 @@ export class ModalDetailScheduleComponent implements OnInit {
       text: message,
       timer: 3000
     });
+  }
+
+  public async printLabel(val: any) {
+
+    const contentPdf = await this.radiologyService.getPatientLabel(val.modality_slot_id).toPromise()
+    .then(res => {
+      return res.data;
+    }).catch(err => {
+      console.log(err);
+      return null;
+    })
+
+    if (contentPdf) {
+      await this.filePdfCreated({...contentPdf, modalityExaminationName: val.modality_examination_name});
+      this.activeModal.close();
+    }
+    else {
+      alert('Cannot print patient label');
+    }
+  }
+
+  public async filePdfCreated(val:any) {
+    const {
+      patientName, sex, phone, admissionNo, admissionDate,
+      alias, mrNoFormatted, barcode, age, admissionTime,
+      modalityExaminationName, payer, patientType, labelBirth,
+    } = val;
+
+    const detailPayer = payer ? payer : patientType;
+    const strName = patientName.toUpperCase();
+    const strAge = age.toLowerCase();
+    let doctorPayer = modalityExaminationName + ' / ' + detailPayer;
+    doctorPayer = doctorPayer.substr(0, 55);
+
+    (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+
+    const docDefinition = {
+      pageSize: { width: 292.283, height: 98.031 },
+      pageMargins: [0, 0, 0, 0],
+      content: [
+        { text: strName, style: 'header', bold: true, fontSize: 10, noWrap: true },
+        { text: 'Sex: ' + sex + ' / Ph: ' + phone, style: 'header', bold: true, fontSize: 10, noWrap: true },
+        { text: 'MR No: ' + alias + '.' + mrNoFormatted + ' / DOB: ' + labelBirth + ' (' + strAge + ') ', style: 'header', bold: true, fontSize: 10 },
+        {
+          table: {
+            headerRows: 1,
+            body: [
+              [
+                {
+                  margin: [0, -2, 0, 0],
+                  text: admissionNo,
+                  fontSize: 9,
+                  style: 'header',
+                  bold: true
+                },
+                {
+                  margin: [-14, -2, 0, 0],
+                  text: '/',
+                  fontSize: 9,
+                  style: 'header',
+                },
+                {
+                  margin: [-25, -2, 0, 0],
+                  text: admissionDate,
+                  fontSize: 9,
+                  style: 'header'
+                },
+                {
+                  margin: [-14, -2, 0, 0],
+                  text: admissionTime,
+                  fontSize: 9,
+                  style: 'header'
+                }
+              ]
+            ]
+          },
+          layout: 'headerLineOnly'
+        },
+        { margin: [0, -2, 0, 0], text: doctorPayer, style: 'header', fontSize: 9 },
+        {
+          image: barcode,
+          width: 100,
+          height: 20,
+          alignment: 'right'
+        }
+      ],
+      styles: {
+        header: {
+          fontSize: 9
+        }
+      }
+
+    };
+
+    (pdfMake as any).defaultFileName = 'report registration';
+    (pdfMake as any).createPdf(docDefinition).print();
   }
 }
 
