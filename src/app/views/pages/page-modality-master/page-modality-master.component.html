@@ -42,8 +42,10 @@
                 [searchable]="true"
                 [(ngModel)]="selectedItemsModality"
                 placeholder="Pilih Modality"
+                [clearSearchOnAdd]="true"
                 bindLabel="name"
                 (change)="onItemSelect()"
+                (clear)="onItemDeselect(selectedItemsModality)"
                 bindValue="modality_id">
               </ng-select>
             </div>
@@ -52,7 +54,9 @@
                 [multiple]="true"
                 [items]="dropdownListSchduleType"
                 [(ngModel)]="selectedItemsSchdule"
+                (clear)="onItemDeselect(selectedItemsSchdule)"
                 placeholder="Jenis Penjadwalan"
+                [clearSearchOnAdd]="true"
                 (change)="onItemSelect()"
                 bindLabel="item_text"
                 bindValue="operational_type">
@@ -72,6 +76,8 @@
                 [(ngModel)]="selectedItemsFloor"
                 placeholder="Pilih Lantai"
                 (change)="onItemSelect()"
+                (clear)="onItemDeselect($event)"
+                [clearSearchOnAdd]="true"
                 bindLabel="floor_name"
                 bindValue="floor_id">
             <!-- <ng-template ng-header-tmp>
@@ -91,6 +97,8 @@
                 placeholder="Pilih Status"
                 bindLabel="item_text"
                 (change)="onItemSelect()"
+                (clear)="onItemDeselect($event)"
+                [clearSearchOnAdd]="true"
                 bindValue="status">
             <!-- <ng-template ng-header-tmp>
                 <button (click)="selectAll()" class="btn btn-sm btn-secondary">Select all</button>
@@ -135,8 +143,8 @@
                   </ng-container>
                 </ng-template>
                 <tr *ngFor="let item of operationals.data; let i = index">
-                  <td>{{item.modality_name}}</td>
                   <td>{{item.modality_label}}</td>
+                  <td>{{item.modality_name}}</td>
                   <td>{{item.operational_type_label}}</td>
                   <td style="text-align: left">{{item.room.floor_name}}</td>
                   <td style="text-align: left">{{item.room.name}}</td>
