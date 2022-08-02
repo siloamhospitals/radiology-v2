@@ -44,7 +44,7 @@ export class PageRadiologyScheduleComponent implements OnInit {
   public tableViewCurrentDate: moment.Moment = moment();
   public tableViewCurrentDateLabel: String = '(not selected date)';
   public tableViewCurrentIsToday: Boolean = false;
-  public tableViewActive: number = 2;
+  public tableViewActive: number = 0;
   public tableViewSelect: any[] = [
     {key: 0, text: 'Hari'},
     {key: 1, text: 'Minggu'},
@@ -77,8 +77,8 @@ export class PageRadiologyScheduleComponent implements OnInit {
   toTimeRange: string = "00:00";
   isErrorTimer: boolean
 
-  isBpjs: boolean;
-  isNonBpjs: boolean;
+  isBpjs: boolean = false;
+  isNonBpjs: boolean = false;
 
   isLoadingSection: boolean = false
   // changeTableViewDebounce: any = null
@@ -274,9 +274,6 @@ export class PageRadiologyScheduleComponent implements OnInit {
     this.isNonBpjs = false
     this.isErrorTimer = false
   }
-
-  toggeNonBpjs = () => this.isNonBpjs = !this.isNonBpjs;
-  toggeBpjs = () => this.isBpjs = !this.isBpjs;
 
   onChangeTimer = () => {
       const toTime = moment(this.toTimeRange, 'HH:mm')

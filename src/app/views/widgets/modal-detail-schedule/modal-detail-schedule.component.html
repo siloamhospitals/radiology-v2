@@ -157,7 +157,7 @@
   <div class="modal-footer d-flex align-items-center justify-content-between">
       <div>
         <span class="text-muted" >Local Updated by </span><br/>
-        <h5 class="text-primary">Admin FO 2</h5>
+        <h5 class="text-primary">{{user.fullname}}</h5>
       </div>
       <div class="">
       <button class="btn btn-secondary" *ngIf="selectedAppointment.admission_id"><i class="fa fa-print"></i> Cetak Label</button>
@@ -168,7 +168,7 @@
 
 <!-- Check Patient Data is Complete -->
 <ng-template #modalConfirmPatient let-modal>
-  <div class="modal-content modal-custom-size modal-confirm-admission">
+  <div class="modal-custom-size modal-confirm-admission">
     <div class="modal-header-custom border-0 px-0 px-3">
       <div class="d-flex flex-wrap justify-content-between">
         <div class="align-self-center">
@@ -188,7 +188,7 @@
 
 <!-- Check On Late -->
 <ng-template #modalConfirmAdmission let-modal>
-  <div class="modal-content modal-custom-size modal-confirm-admission">
+  <div class="modal-custom-size modal-confirm-admission">
     <div class="modal-header-custom border-0 px-0 px-3">
       <div class="d-flex flex-wrap justify-content-between">
         <div class="align-self-center">

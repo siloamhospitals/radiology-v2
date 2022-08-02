@@ -1437,3 +1437,14 @@ section .form-control:focus {
   border-bottom-right-radius: 0px !important;
   border-bottom-left-radius: 0px !important;
 }
+
+/* Modal Admission */
+.modal-confirm-admission {
+  width: 550px;
+  /* transform: translateX(3.5%); */
+}
+
+.modal-confirm-admission-adjust .modal-content {
+  left: 4% !important;
+  width: inherit !important;
+}

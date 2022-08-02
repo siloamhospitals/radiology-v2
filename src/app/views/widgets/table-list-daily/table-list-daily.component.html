@@ -14,7 +14,12 @@
   </thead>
   <tbody>
     <ng-container *ngIf="isLoadingSection; else showList">
-      <tr><td colspan="100%" class="text-center p-3">Memuat Data... Mohon Tunggu...</td></tr>
+      <tr>
+        <td colspan="100%" class="text-center p-3">
+          <div class="mb-2 loading-inline"><app-loading width="80px" [showLoad]="true"></app-loading></div>
+          Memuat Data... Mohon Tunggu...
+        </td>
+      </tr>
     </ng-container>
 
     <ng-container *ngIf="!(scheduleList && scheduleList.length) && !isLoadingSection" >
@@ -49,7 +54,7 @@
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.dob }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.localMrNo }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.examination }}</td>
-          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.isBpjs ? 'BPJS' : 'Non BPJS' }}</td>
+          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.isBpjs === undefined ? '' : schedule.isBpjs ? 'BPJS' : 'Non BPJS' }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.patinet_visit_number }}</td>
           <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >
             <span *ngIf="scheduleStatus[schedule.status]" [ngClass]="'table-status status-' + scheduleStatus[schedule.status].toLowerCase() ">

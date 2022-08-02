@@ -107,16 +107,16 @@ export class ModalDetailScheduleComponent implements OnInit {
     = this.selectedAppointment
     // Check Patient Data is Complete
     if (!localMrNo) {
-      this.modalService.open(this.modalConfirmPatientData, { centered: true })
+      this.modalService.open(this.modalConfirmPatientData, { centered: true, windowClass: 'modal-confirm-admission-adjust' })
       return
     }
     // Check On Late
     const lastTime = moment(`${reserveDate} ${toTime}`, 'YYYY-MM-DD HH:mm')
     const diffTime = moment().diff(lastTime)
-    if (diffTime > 0) {
+    if (diffTime > 0 && this.selectedAppointment.operational_type !== '1') {
       this.admissionLateTime = moment.utc(diffTime).format('HH [jam] mm [menit] ss [detik]')
       this.admissionIsNotToday = moment().isAfter(lastTime, 'days')
-      const c = this.modalService.open(this.modalConfirmAdmission, { centered: true })
+      const c = this.modalService.open(this.modalConfirmAdmission, { centered: true, windowClass: 'modal-confirm-admission-adjust' })
       c.result.then((_result: any) => {
         openModalAdmission()
       }).catch((_e) => {
