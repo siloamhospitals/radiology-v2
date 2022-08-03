@@ -380,7 +380,7 @@ export class ModalModalityComponent implements OnInit {
           fromDate: moment(beginJsDate).format('YYYY-MM-DD'),
           toDate: moment(endJsDate).format('YYYY-MM-DD'),
           fromTime: '00:00',
-          toTime: '23:59'
+          toTime: '24:00'
         };
       } else {
         Swal.fire({

@@ -87,15 +87,16 @@ export class PageModalityMaintenanceComponent implements OnInit {
     modalRef.componentInstance.responseData = val
     modalRef.componentInstance.isUpdate = isUpdate;
     modalRef.result.then((result) => {
-      if(result == 'closed') {
-        this.getModality()
-        this.getRooms();
-      }else{
-        this.onItemDeselect();
-        this.refreshData();
-        this.getModality()
-        this.getRooms();
-    }
+      console.log(result)
+        if(result == 'closed') {
+          this.getModality()
+          this.getRooms();
+        }else{
+          this.onItemDeselect();
+          this.refreshData();
+          this.getModality()
+          this.getRooms();
+      }
     })
   }
 

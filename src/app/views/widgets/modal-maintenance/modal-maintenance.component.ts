@@ -69,7 +69,7 @@ export class ModalMaintenanceComponent implements OnInit {
   public retrievedModality: boolean = false;
   public newDate = moment()
   public newFromTime: any = moment("00:00", "HH:mm").format('HH:mm');
-  public newToTime: any = moment("23:59", "HH:mm").format('HH:mm');;
+  public newToTime: any = moment("24:00", "HH:mm").format('HH:mm');
   public defaultStartDate: any = moment()
   public defaultEndDate: any = moment()
   public operationals: RadiologyListResponse = {
@@ -235,13 +235,21 @@ export class ModalMaintenanceComponent implements OnInit {
       notes: this.modalityForm.controls.notes.value,
     };
       const slot = await this.service.getModalitySlots(this.modalityHospitalId, this.modalityHospitalRequest.fromDate).toPromise()
-      console.log(isEmpty(slot.data))
-    if(isEmpty(slot.data)){
+      if(isEmpty(slot.data)){
         this.updateModalityHospital();
-    }else if(!isEmpty(slot.data)){
-      this.modalitySlots = slot.data;
-      await this.confirmUpdate(this.modalitySlots);
-    }
+      }else if(!isEmpty(slot.data) && slot.data[0].is_maintenance){
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Sudah ada jadwal perawatan untuk modality ini',
+          timer: 1500
+        });
+        this.close(true);
+      }else if(!isEmpty(slot.data) && !slot.data[0].is_maintenance){
+        this.modalitySlots = slot.data;
+        await this.confirmUpdate(this.modalitySlots);
+        this.close(true);
+      }
   }
 
   public async confirmUpdate(item: any) {
@@ -262,7 +270,6 @@ export class ModalMaintenanceComponent implements OnInit {
   }
 
   updateModalityHospital(){
-    console.log(this.modalityHospitalRequest, 'oioi')
     this.service.putModalityHospital(this.modalityHospitalRequest, this.modalityHospitalId).subscribe(() => {
       Swal.fire({
         type: 'success',
@@ -270,7 +277,7 @@ export class ModalMaintenanceComponent implements OnInit {
         showConfirmButton: false,
         timer: 3000
       });
-      this.close();
+      this.close(true);
     }, err => {
       Swal.fire({
         type: 'error',
@@ -307,7 +314,7 @@ export class ModalMaintenanceComponent implements OnInit {
       if (res.status == 'OK') {
         this.showSuccessAlert('Pembatalan Jadwal Berhasil');
       }
-      this.close();
+      this.close(true);
     }).catch(err => {
       this.showErrorAlert(err.error.message);
       this.alertService.error(err.error.message, false, 3000);

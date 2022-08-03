@@ -47,29 +47,16 @@
     Anda akan membatalkan jadwal Perawatan modality ini?
   </div>
 </div>
-<div class="modal-footer" *ngIf="maintenance && msgUpadte != null">
+
+<div class="modal-footer"  *ngIf="headerMsg != null">
+  <button type="button" class="btn btn-secondary" (click)="test()">Batal</button>
+  <button type="button" class="btn btn-danger" (click)="deleteData()">Ok</button>
 </div>
-<div class="modal-footer" *ngIf="headerMsg != null && !maintenance && msgUpadte == null">
-  <button type="button" class="btn btn-secondary" (click)="test()">
-    Batal
-  </button>
-  <button type="button" class="btn btn-danger" (click)="deleteData()">
-    Ok
-  </button>
+<div class="modal-footer"  *ngIf="headerMsg == null">
+  <button type="button" class="btn btn-secondary" (click)="test()">Batal</button>
+  <button type="button" class="btn btn-danger" (click)="deleteData()">Hapus</button>
 </div>
-<div class="modal-footer" *ngIf="headerMsg == null">
-  <button type="button" class="btn btn-secondary" (click)="test()">
-    Batal
-  </button>
-  <button type="button" class="btn btn-danger" (click)="deleteData()">
-    Hapus
-  </button>
-</div>
-<div class="modal-footer" *ngIf="headerMsg == null && maintenance">
-  <button type="button" class="btn btn-secondary" (click)="test()">
-    Kembali
-  </button>
-  <button type="button" class="btn btn-danger" (click)="deleteData()">
-    <i class="fa fa-trash"></i>Batalkan Jadwal
-  </button>
+<div class="modal-footer"  *ngIf="headerMsg == null && maintenance">
+  <button type="button" class="btn btn-secondary" (click)="test()">Kembali</button>
+  <button type="button" class="btn btn-danger" (click)="deleteData()"><i class="fa fa-trash"></i>Batalkan Jadwal</button>
 </div>

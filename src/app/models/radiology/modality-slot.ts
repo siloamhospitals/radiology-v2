@@ -1,6 +1,7 @@
 import { ModalityBlock } from './modality-hospital';
 import {Slot} from './slot';
 export interface ModalitySlot extends Slot {
+  [x: string]: any;
 
   modality_slot_id: string;
   modality_hospital_id: string;
