@@ -162,7 +162,7 @@
         <h5 class="text-primary">{{user.fullname}}</h5>
       </div>
       <div class="">
-      <button class="btn btn-secondary" *ngIf="selectedAppointment.admission_id"><i class="fa fa-print"></i> Cetak Label</button>
+      <button class="btn btn-primary" (click)="printLabel(selectedAppointment)" *ngIf="selectedAppointment.admission_id"><i class="fa fa-print"></i> Cetak Label</button>
       <button class="btn btn-success" (click)="updateAppointment()" [disabled]="validateForm()">Simpan Perubahan</button>
     </div>
   </div>
