@@ -425,10 +425,10 @@ export class ModalMaintenanceComponent implements OnInit {
     });
   }
 
-  public fillDefaultOperationals() {
+  public fillDefaultOperationals(floor_id?: any, operational_type?: any, status: any = 2, modality_id?: any, modality_label?:any) {
     const key = JSON.parse(this.strKey)
     const hospitalId: any = key.hospital.id
-    this.service.getOperational(hospitalId).subscribe((response) => {
+    this.service.getOperational(hospitalId, floor_id, operational_type, status, modality_id, modality_label).subscribe((response) => {
       if (response.status === 'OK') {
         this.operationalMaintenance = response.data;
       } else {

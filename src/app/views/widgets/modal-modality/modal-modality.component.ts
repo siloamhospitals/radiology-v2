@@ -17,6 +17,7 @@ import RadiologyItem from '../../../models/radiology/radiology-item';
 import { ModalConfirmDeleteComponent } from '../modal-confirm-delete/modal-confirm-delete.component';
 import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
+import { isEmpty } from 'lodash'
 
 @Component({
   selector: 'app-modal-modality',
@@ -412,7 +413,16 @@ export class ModalModalityComponent implements OnInit {
       reserveDate = moment().format('YYYY-MM-DD')
       responseSlots = await this.service.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
       this.modalitySlots = responseSlots.data || [];
-      await this.confirmUpdate(this.modalityHospitalRequest);
+      if(!isEmpty(this.modalitySlots)){
+        if(!this.modalitySlots[0].is_maintenance){
+        await this.confirmUpdate(this.modalityHospitalRequest);
+        }else if(this.modalitySlots[0].is_maintenance){
+          this.modalitySlots = []
+          await this.confirmUpdate(this.modalityHospitalRequest);
+        }
+      }else{
+        await this.confirmUpdate(this.modalityHospitalRequest);
+      }
     }
     else if(this.modalityHospitalId != null){
       this.updateModalityHospital();
@@ -472,7 +482,6 @@ export class ModalModalityComponent implements OnInit {
     this.modalRef.componentInstance.msg = `modality: '${item.modality_label}'`;
     this.modalRef.componentInstance.msgUpdate = `modality: '${this.modalityHospitalRequest.modalityLabel}'`;
     this.modalRef.componentInstance.headerMsg = `Rubah menjadi inactive`;
-    this.modalRef.componentInstance.confirmMaintenance = true;
     this.modalRef.componentInstance.service = this.service;
     this.modalRef.componentInstance.modalitySlot = this.modalitySlots
     this.modalRef.result.then((result) => {
@@ -487,6 +496,13 @@ export class ModalModalityComponent implements OnInit {
     const reserveDate = moment().format('YYYY-MM-DD')
     const responseSlots = await this.service.getModalitySlots(modalityHospitalId, reserveDate).toPromise()
     this.modalitySlots = responseSlots.data || [];
+    if(!isEmpty(this.modalitySlots)){
+      if(this.modalitySlots[0].is_maintenance){
+        this.modalitySlots = []
+      }else{
+        this.modalitySlots = responseSlots.data
+      }
+    }
     this.modalRef = this.modalService.open(ModalConfirmDeleteComponent, { windowClass: 'modal_cancel_appointment' })
     this.modalRef.componentInstance.itemId = item.modality_hospital_id;
     this.modalRef.componentInstance.msg = `modality: '${item.modality_label}'`;
