@@ -9,12 +9,17 @@ import * as _ from 'lodash'
 import Swal from 'sweetalert2';
 import { RadiologyService } from '../../../services/radiology/radiology.service';
 import { ModalityHospital } from '../../../models/radiology/modality-hospital';
+import { WebsocketService } from 'src/app/services/websocket.service';
 @Component({
   selector: 'app-table-list-daily',
   templateUrl: './table-list-daily.component.html',
   styleUrls: ['./table-list-daily.component.css']
 })
 export class TableListDailyComponent {
+  // Credential Information
+  key: any = JSON.parse(localStorage.getItem('key') || '{}');
+  hospital = this.key.hospital;
+  user = this.key.user;
 
   modalitySlots: ModalitySlot[];
   @Input() dateSelected: moment.Moment;
@@ -36,6 +41,7 @@ export class TableListDailyComponent {
   constructor(
     private modalService: NgbModal,
     private radiologyService : RadiologyService,
+    private webSocketService : WebsocketService,
   ) { }
 
   async getModalitySlots() {
@@ -321,6 +327,12 @@ export class TableListDailyComponent {
       cl += 'item-indicator-primary'
     }
     return cl
+  }
+
+  socketEvents () {
+    this.webSocketService.radiologySocket(`APPOINTMENT__CREATE/${this.hospital.id}`).subscribe((res: any) => {
+      console.log('res', res);
+    });
   }
 
 }

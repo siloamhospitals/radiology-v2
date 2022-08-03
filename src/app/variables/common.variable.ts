@@ -26,6 +26,7 @@ export const eligibleStatus = {
 };
 
 export const keySocket = {
+  RADIOLOGY: '/radiologies',
   APPOINTMENT: '/appointments',
   QUEUE: '/queues',
   SCHEDULE: '/schedules',
