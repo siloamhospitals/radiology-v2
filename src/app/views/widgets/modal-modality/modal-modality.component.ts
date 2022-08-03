@@ -472,6 +472,7 @@ export class ModalModalityComponent implements OnInit {
     this.modalRef.componentInstance.msg = `modality: '${item.modality_label}'`;
     this.modalRef.componentInstance.msgUpdate = `modality: '${this.modalityHospitalRequest.modalityLabel}'`;
     this.modalRef.componentInstance.headerMsg = `Rubah menjadi inactive`;
+    this.modalRef.componentInstance.confirmMaintenance = true;
     this.modalRef.componentInstance.service = this.service;
     this.modalRef.componentInstance.modalitySlot = this.modalitySlots
     this.modalRef.result.then((result) => {

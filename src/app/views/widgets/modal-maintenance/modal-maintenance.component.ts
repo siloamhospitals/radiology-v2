@@ -69,7 +69,7 @@ export class ModalMaintenanceComponent implements OnInit {
   public retrievedModality: boolean = false;
   public newDate = moment()
   public newFromTime: any = moment("00:00", "HH:mm").format('HH:mm');
-  public newToTime: any = moment("24:00", "HH:mm").format('HH:mm');
+  public newToTime: any = '24:00';
   public defaultStartDate: any = moment()
   public defaultEndDate: any = moment()
   public operationals: RadiologyListResponse = {
@@ -78,6 +78,7 @@ export class ModalMaintenanceComponent implements OnInit {
     data: [],
     last_update: ''
   };
+  public operationalMaintenance: any
   private _filter(value: string): RoomMapping[] {
     if (value == null || value == '') {
       return this.roomOptions.filter((row, index) => index < 30 || row);
@@ -113,12 +114,13 @@ export class ModalMaintenanceComponent implements OnInit {
     });
     this.getRooms();
     this.getModality();
+    this.fillDefaultOperationals();
     if (this.responseData != null) {
       this.modalityHospitalId = this.responseData.modality_hospital_id
       this.getModalityHospitalById(this.modalityHospitalId);
       this.retrievedModality = true
       this.newFromTime = moment(this.responseData.from_time, 'HH:mm').format('HH:mm');
-      this.newToTime = moment(this.responseData.to_time, 'HH:mm').format('HH:mm');
+      this.newToTime = this.responseData.to_time
       this.newDate =  moment(this.responseData.from_date);
     }
   }
@@ -235,25 +237,35 @@ export class ModalMaintenanceComponent implements OnInit {
       notes: this.modalityForm.controls.notes.value,
     };
       const slot = await this.service.getModalitySlots(this.modalityHospitalId, this.modalityHospitalRequest.fromDate).toPromise()
-      if(isEmpty(slot.data)){
-        this.updateModalityHospital();
-      }else if(!isEmpty(slot.data) && slot.data[0].is_maintenance){
-        Swal.fire({
-          type: 'error',
-          title: 'Oops...',
-          text: 'Sudah ada jadwal perawatan untuk modality ini',
-          timer: 1500
-        });
-        this.close(true);
-      }else if(!isEmpty(slot.data) && !slot.data[0].is_maintenance){
-        this.modalitySlots = slot.data;
-        await this.confirmUpdate(this.modalitySlots);
-        this.close(true);
+
+      if(!isEmpty(this.responseData)){
+        console.log('masuk sini')
+        if(isEmpty(slot.data)){
+          this.updateModalityHospital();
+        }else if(!isEmpty(slot.data) && !slot.data[0].is_maintenance){
+          this.modalitySlots = slot.data;
+          await this.confirmUpdate(this.modalitySlots, true);
+          this.close(true);
+        }else{
+          this.updateModalityHospital();
+        }
+      }else{
+        console.log('eh kesini')
+        if(isEmpty(slot.data)){
+          console.log('eh terus kesini')
+          this.storeModalityHospital();
+        }else if(!isEmpty(slot.data) && !slot.data[0].is_maintenance){
+          console.log('eh bukan deng terus kesini')
+          this.modalitySlots = slot.data;
+          await this.confirmUpdate(this.modalitySlots, false);
+          this.close(true);
+        }else{
+          this.storeModalityHospital();
+        }
       }
   }
 
-  public async confirmUpdate(item: any) {
-    console.log(item, 'asdasdad')
+  public async confirmUpdate(item: any, update: boolean) {
     this.modalRef = this.modalService.open(ModalConfirmDeleteComponent, { windowClass: 'modal_cancel_appointment' })
     this.modalRef.componentInstance.itemId = item.modality_hospital_id;
     this.modalRef.componentInstance.msg = `modality: '${item.modality_label}'`;
@@ -264,13 +276,37 @@ export class ModalMaintenanceComponent implements OnInit {
     this.modalRef.componentInstance.modalitySlot = this.modalitySlots
     this.modalRef.result.then((result) => {
       if (result === 'OK') {
-        this.updateModalityHospital();
+          if(update){
+          this.updateModalityHospital();
+        }else{
+          this.storeModalityHospital();
+        }
       }
     }, (_) => {});
   }
 
-  updateModalityHospital(){
+  storeModalityHospital(){
     this.service.putModalityHospital(this.modalityHospitalRequest, this.modalityHospitalId).subscribe(() => {
+      Swal.fire({
+        type: 'success',
+        text: 'The data has been successfully updated',
+        showConfirmButton: false,
+        timer: 3000
+      });
+      this.close(true);
+    }, err => {
+      Swal.fire({
+        type: 'error',
+        title: 'Oops...',
+        text: err.error.message,
+        timer: 1500
+      });
+      this.loading = false;
+    });
+  }
+
+  updateModalityHospital(){
+    this.service.putModalityClose(this.modalityHospitalRequest, this.modalityHospitalId, this.responseData.modality_close_id).subscribe(() => {
       Swal.fire({
         type: 'success',
         text: 'The data has been successfully updated',
@@ -387,6 +423,20 @@ export class ModalMaintenanceComponent implements OnInit {
       text: message,
       timer: 3000
     });
+  }
+
+  public fillDefaultOperationals() {
+    const key = JSON.parse(this.strKey)
+    const hospitalId: any = key.hospital.id
+    this.service.getOperational(hospitalId).subscribe((response) => {
+      if (response.status === 'OK') {
+        this.operationalMaintenance = response.data;
+      } else {
+        this.showErrorAlert(response.message);
+      }
+    }, (error => {
+      this.showErrorAlert(error.message);
+    }));
   }
   
 }

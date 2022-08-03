@@ -48,7 +48,12 @@
   </div>
 </div>
 
-<div class="modal-footer"  *ngIf="headerMsg != null">
+<div class="modal-footer"  *ngIf="headerMsg != null && confirmMaintenance">
+  <button type="button" class="btn btn-secondary" (click)="test()">ad</button>
+  <button type="button" class="btn btn-danger" (click)="deleteData()"><i class="fa fa-trash"></i>Batadsd</button>
+</div>
+
+<div class="modal-footer" *ngIf="headerMsg != null && !confirmMaintenance">
   <button type="button" class="btn btn-secondary" (click)="test()">Batal</button>
   <button type="button" class="btn btn-danger" (click)="deleteData()">Ok</button>
 </div>
@@ -60,3 +65,4 @@
   <button type="button" class="btn btn-secondary" (click)="test()">Kembali</button>
   <button type="button" class="btn btn-danger" (click)="deleteData()"><i class="fa fa-trash"></i>Batalkan Jadwal</button>
 </div>
+

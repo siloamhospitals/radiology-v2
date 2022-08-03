@@ -29,7 +29,7 @@ export class TimepickerComponent implements OnInit {
 
   ngOnInit() {
     if(this.useMinute) {
-      this.hours = Array.from(Array(24).keys()).map( x => this.slice2Digit(x))
+      this.hours = Array.from(Array(25).keys()).map( x => this.slice2Digit(x))
       this.minutes = Array.from(Array(60).keys()).map( x => this.slice2Digit(x))
     }else {
       if(this.duration) {
@@ -39,7 +39,7 @@ export class TimepickerComponent implements OnInit {
           this.createSlotTimeMinute();
         }
       }else {
-        this.hours = Array.from(Array(24).keys()).map(x => this.slice2Digit(x) + ':' +('00'))
+        this.hours = Array.from(Array(25).keys()).map(x => this.slice2Digit(x) + ':' +('00'))
       }
     }
     this.ngClassInput.push(this.isModalLarge ? 'text-left text-custom text-muted' : '')

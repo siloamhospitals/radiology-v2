@@ -23,7 +23,7 @@
                   <label for="dropdownMenuLink">Label Modality<span style="color:red">*</span></label>
                   <select class="form-control modalities" [required]="true" name="modalityHospitalId" formControlName="modalityHospitalId" (change)="getModalityHospitalById($event)">
                   <option value="">Pilih Modality</option>
-                  <option *ngFor="let modality of maintenanceItem" value="{{modality.modality_hospital_id}}">
+                  <option *ngFor="let modality of operationalMaintenance" value="{{modality.modality_hospital_id}}">
                      {{modality.modality_label}}</option>
                   </select>
                </div>

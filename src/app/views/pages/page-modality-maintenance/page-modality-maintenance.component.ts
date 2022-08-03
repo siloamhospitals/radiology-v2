@@ -148,7 +148,7 @@ export class PageModalityMaintenanceComponent implements OnInit {
               response.data[i].modality_closes[ii].modality_label  = response.data[i].modality_label 
               response.data[i].modality_closes[ii].from_date =  moment(new Date(response.data[i].modality_closes[ii].from_date))
               response.data[i].modality_closes[ii].from_time =  moment(response.data[i].modality_closes[ii].from_time, 'HH:mm').format('HH:mm')
-              response.data[i].modality_closes[ii].to_time = moment(response.data[i].modality_closes[ii].to_time, 'HH:mm').format('HH:mm')
+              response.data[i].modality_closes[ii].to_time = response.data[i].modality_closes[ii].to_time.slice(0, 5)
               newdata.push(response.data[i].modality_closes[ii])
             }
           }

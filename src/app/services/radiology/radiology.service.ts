@@ -150,6 +150,11 @@ export class RadiologyService {
     return this.client.put(url, body, httpOptions);
   }
 
+  putModalityClose(body: ModalityHospitalRequest, modalityHospitalId: any, modalityCloseId: any) {
+    const url = `${this.radiologyUrl}/modality-close/?modalityHospitalId=${modalityHospitalId}&modalityCloseId=${modalityCloseId}`;
+    return this.client.put(url, body, httpOptions);
+  }
+
   getModalityHospitalWeekly(fromDate: string, toDate: string, hospitalId: string, modalityHospitalId: string): Observable<ModalityHospitalListResponse> {
     const url = `${this.radiologyUrl}/modality-hospital?fromDate=${fromDate}&toDate=${toDate}&hospitalId=${hospitalId}&modalityHospitalId=${modalityHospitalId}`;
     return this.client.get<ModalityHospitalListResponse>(url, httpOptions);
