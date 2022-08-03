@@ -96,11 +96,19 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td width="30" class="border-right bg-white" >00</td>
-              <td colspan="7" >&nbsp;</td>
-            </tr>
-            <tr>
+            <ng-container *ngFor="let slot of modalitySlots" >
+              <tr *ngFor="let sl of slot.slots;let i = index" >
+                  <td *ngIf="i === 0" width="30" [attr.rowSpan]="slot.slots.length" class="border-right bg-white" >{{ slot.hour || '-'}}</td>              
+                  <td>{{ sl.from_time }}</td>
+                  <td>{{ sl.patient_name }}</td>
+                  <td>{{ sl.patient_visit_number }}</td>
+                  <td>{{ sl.local_mr_no }}</td>
+                  <td>{{ sl.modality_name }} - Room {{ sl.room_name }}</td>
+                  <td>{{ scheduleStatus[sl.status] }}</td>
+                  <td>&nbsp;</td>
+              </tr>
+            </ng-container>
+            <!-- <tr>
               <td width="30" class="border-right bg-white" >01</td>
               <td colspan="7" ></td>
             </tr>
@@ -111,7 +119,7 @@
             <tr>
               <td width="30" class="border-right bg-white">03</td>
               <td colspan="7" ></td>
-            </tr>
+            </tr> -->
           </tbody>
           </table>
       </div>

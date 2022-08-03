@@ -3,6 +3,7 @@ import { ModalityService } from '../../../services/modality.service';
 import * as moment from 'moment'
 import { RadiologyService } from '../../../services/radiology/radiology.service';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
+import { ScheduleStatusIDN } from '../../../variables/common.variable';
 
 interface SelectModel {
   name : string
@@ -43,6 +44,8 @@ export class PageWorklistComponent implements OnInit {
   numberOfProcessed : string = '00'
   numberOfFinished : string = '00'
   numberOfSkipped : string = '00'
+
+  scheduleStatus = ScheduleStatusIDN
   
   ngOnInit() {
     this.getModalities()
@@ -59,14 +62,7 @@ export class PageWorklistComponent implements OnInit {
     const today = moment().toISOString()
     const res = await this.radiologyService.getDataModalitySlotsList(today, today, this.hospital.id, 1, 9999).toPromise()
    
-    const modalitySlots = res.data.rows.sort((a : ModalitySlot ,b : ModalitySlot) => {
-      if(a.from_time === b.from_time) {
-        return 0
-      }
-      const isGreater = moment(a.from_time , 'HH:mm').isAfter(moment(b.from_time, 'HH:mm'))
-      return isGreater ? 1 : -1;
-    }).reduce((acc : any, prevVal : ModalitySlot ) => {
-
+    let modalitySlots = res.data.rows.reduce((acc : any, prevVal : ModalitySlot ) => {
       const hour = prevVal.from_time.slice(0,2)
       const slot = acc[hour]
       if(slot) {
@@ -76,10 +72,25 @@ export class PageWorklistComponent implements OnInit {
       }
 
       return acc
-    }, {} )
+    }, {} );
 
-    console.log(modalitySlots,  Object.entries(modalitySlots))
+    modalitySlots = Object.entries(modalitySlots).sort((a,b) => this.sortingSlot(a[0], b[0]))
+    .map(([ hour, slots ] : any[] ) => ({
+      hour,
+      slots: slots.sort((a: ModalitySlot, b : ModalitySlot) => this.sortingSlot(a.from_time, b.from_time))
+    }))
+
+   this.modalitySlots = modalitySlots
+   console.log(modalitySlots)
     
+  }
+
+  private sortingSlot = (a : any , b : any) => {
+    if(a === b) {
+      return 0
+    }
+    const isLess = moment(a , 'HH:mm').isAfter(moment(b, 'HH:mm'))
+    return isLess ? 1 : -1;
   }
 
 }
