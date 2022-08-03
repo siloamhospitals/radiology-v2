@@ -28,6 +28,10 @@ export class RadiologyService {
     const url = `${this.radiologyUrl}/modality-hospital/${modalityHospitalId}`;
     return this.http.get<ModalityHospitalListResponse>(url, httpOptions);
   }
+  getPatientLabel(modalitySlotId: string): Observable<any> {
+    const url = `${this.radiologyUrl}/admission/label/${modalitySlotId}`;
+    return this.http.get<any>(url, httpOptions);
+  }
   postModalityHospital(body: ModalityHospitalRequest) {
     const url = `${this.radiologyUrl}/modality-hospital`;
     return this.http.post(url, body, httpOptions);
