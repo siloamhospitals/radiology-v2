@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalityService } from '../../../services/modality.service';
 import * as moment from 'moment'
 import { RadiologyService } from '../../../services/radiology/radiology.service';
-import { ModalitySlot } from 'src/app/models/radiology/modality-slot';
+import { ModalitySlot } from '../../../models/radiology/modality-slot';
 
 interface SelectModel {
   name : string
