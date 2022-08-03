@@ -5,7 +5,7 @@
         <h5 class="m-0">Cancel Appointment</h5>
       </div>
       <div>
-        <button #close_button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="close()">
+        <button #close_button type="button" class="close text-muted" data-dismiss="modal" aria-label="Close" aria-label="Close" (click)="back()">
           <span class="back-button" aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -28,7 +28,7 @@
       <button
         [disabled]="!selectedText"
         [ngClass]="selectedText ? 'btn btn-danger' : 'btn btn-secondary'"
-        (click)="close()"
+        (click)="confirmDelete()"
       >Cancel Appointment</button>
     </div>
   </div>

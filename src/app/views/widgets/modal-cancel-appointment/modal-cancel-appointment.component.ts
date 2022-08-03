@@ -25,7 +25,7 @@ export class ModalCancelAppointmentComponent implements OnInit {
     this.activeModal.close();
   }
 
-  close() {
+  confirmDelete() {
     const data = {
       result: ModalCancelAppointmentComponent.OK,
       note: this.selectedText,
