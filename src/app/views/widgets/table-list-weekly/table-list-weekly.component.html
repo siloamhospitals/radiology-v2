@@ -46,7 +46,7 @@
             class="item-hover">
             <span class="text-danger" style="cursor: default;">Tidak Tersedia</span>
           </td>
-          <td *ngIf="day.patientName && day.rowSpan > 0"
+          <td *ngIf="!day.isMaintenance && day.patientName && day.rowSpan > 0"
             [attr.rowspan]="day.rowSpan"
             title="{{day.dateTitle}}"
             [ngClass]="['cursor-pointer item-hover table-td table-td-scheduled item-indicator-primary', isClassBpjs(day.isBpjs) ]"
@@ -60,6 +60,16 @@
                   <div class="text-muted">{{day.patientLocalMrNo}}</div>
                 </div>
               </ng-container>
+            </div>
+          </td>
+          <!-- Maintenance Slot Item -->
+          <td *ngIf="day.isMaintenance && day.rowSpan > 0"
+            [attr.rowspan]="day.rowSpan"
+            title="Jadwal Maintenance {{day.dateTitle}}"
+            [ngClass]="['cursor-pointer item-hover table-td table-td-note item-indicator-warning', isClassBpjs(day.isBpjs) ]"
+            style="vertical-align: top !important; width: 12.5%;">
+            <div style="line-height: 1.4;">
+              <div style="font-size: 12px;"><b>{{day.note}}</b></div>
             </div>
           </td>
         </ng-container>

@@ -211,6 +211,8 @@ export class TableListWeeklyComponent implements OnInit {
           patientDob: y.patient_dob,
           patientLocalMrNo: y.local_mr_no,
           slot: y,
+          isMaintenance: y.is_maintenance,
+          note: y.notes,
           isBpjs: y.is_bpjs
         }
       })
@@ -330,10 +332,8 @@ export class TableListWeeklyComponent implements OnInit {
     payload.to_time = moment(payload.to_time, 'hh:mm').format('HH:mm')
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
     m.componentInstance.selectedAppointment = payload;
-    m.result.then((result: any) => {
-      if (result) {
-        this.refresh()
-      }
+    m.result.then((_result: any) => {
+      this.refresh()
     })
   }
 
@@ -360,6 +360,8 @@ class SlotWeeklyItem {
   rowSpan: number = 0
   slot: any = null
   isBpjs: boolean
+  isMaintenance: boolean = false
+  notes: string
 }
 class SlotWeeklyRow {
   viewIndex: number

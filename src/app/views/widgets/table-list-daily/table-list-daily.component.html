@@ -32,16 +32,28 @@
 
     <ng-template #showList>
     <ng-container *ngFor="let item of scheduleList; let i=index" >
-      <tr *ngFor="let schedule of item.items; let j = index;" [ngClass]="'item-hover ' + (schedule.isPast && !schedule.patient ? '' : 'cursor-pointer')"  (click)="clickTableData(schedule)" >
+      <tr *ngFor="let schedule of item.items; let j = index;" 
+        [ngClass]="'item-hover ' + (schedule.isPast && !schedule.patient ? '' : 'cursor-pointer')"  
+        (click)="clickTableData(schedule)" >
         <td *ngIf="j % item.rowSpan == 0" [attr.rowspan]="item.rowSpan" style="vertical-align: middle; width: 25px; background: #fff !important;cursor: default" class="text-right">
           {{ item.hour }}
         </td>
         <td style="width: 100px; vertical-align: middle;">{{ schedule.fromTime + ' - ' + schedule.toTime }}</td>
         <ng-container *ngIf="schedule.rowSpan">
-          <td *ngIf="schedule.isPast && !schedule.patient; else showAvailable"
-            class="item-hover">
-            <span *ngIf="schedule.isPast" class="text-danger" style="cursor: default;">Tidak Tersedia</span>
-          </td>
+          <ng-container *ngIf="schedule.isMaintenance; else notAvailable">
+            <td [attr.rowspan]="schedule.rowSpan"
+            class="cursor-pointer item-hover table-td table-td-note item-indicator-warning">
+            <span [class.text-success]="!schedule.patient"  >
+              {{schedule.note}}
+            </span>
+            </td>
+          </ng-container>
+          <ng-template #notAvailable>
+            <td *ngIf="schedule.isPast && !schedule.patient; else showAvailable"
+              class="item-hover">
+              <span *ngIf="schedule.isPast" class="text-danger" style="cursor: default;">Tidak Tersedia</span>
+            </td>
+          </ng-template>
           <ng-template #showAvailable>
             <td [attr.rowspan]="schedule.rowSpan"
             [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled item-indicator-primary' : ''" >
@@ -50,12 +62,12 @@
             </span>
             </td>
           </ng-template>
-          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.dob }}</td>
-          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.localMrNo }}</td>
-          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.examination }}</td>
-          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.isBpjs === undefined ? '' : schedule.isBpjs ? 'BPJS' : 'Non BPJS' }}</td>
-          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >{{ schedule.patinet_visit_number }}</td>
-          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="isRowScheduled(schedule) ? 'table-td table-td-scheduled' : '' " >
+          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="rowClass(schedule)" >{{ schedule.dob }}</td>
+          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="rowClass(schedule)" >{{ schedule.localMrNo }}</td>
+          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="rowClass(schedule)" >{{ schedule.examination }}</td>
+          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="rowClass(schedule)" >{{ schedule.isMaintenance ? '' : schedule.isBpjs === undefined ? '' : schedule.isBpjs ? 'BPJS' : 'Non BPJS' }}</td>
+          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="rowClass(schedule)" >{{ schedule.patinet_visit_number }}</td>
+          <td [attr.rowspan]="schedule.rowSpan" [ngClass]="rowClass(schedule)" >
             <span *ngIf="scheduleStatus[schedule.status]" [ngClass]="'table-status status-' + scheduleStatus[schedule.status].toLowerCase() ">
               {{ scheduleStatusIDN[schedule.status] }}
             </span>
