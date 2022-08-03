@@ -214,3 +214,14 @@ export const nationalTypeIdNames = {
   4: 'KITAS',
   5: 'KITAP',
 };
+
+export const SocketEvents = {
+  /*
+  - create appointment
+  - create admission
+  - do checkin / input visit number
+  - update appointment
+  - cancel appointment
+  - add maintenance schedule
+  */
+}

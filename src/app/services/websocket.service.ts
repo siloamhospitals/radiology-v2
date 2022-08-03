@@ -40,4 +40,14 @@ export class WebsocketService {
       });
     });
   }
+
+  radiologySockets(eventNames: string[]): Observable<any> {
+    return new Observable((subcriber) => {
+      for (let event of eventNames) {
+        this.radSocket.on(event, (data: any) => {
+          subcriber.next(data);
+        });
+      }
+    });
+  }
 }

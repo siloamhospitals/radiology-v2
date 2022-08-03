@@ -6,6 +6,7 @@ import { RadiologyService } from '../../../services/radiology/radiology.service'
 import { ModalCreateAppointmentComponent } from '../modal-create-appointment/modal-create-appointment.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
+import { WebsocketService } from '../../../services/websocket.service';
 // import * as lodash from 'lodash'
 
 @Component({
@@ -14,6 +15,10 @@ import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-det
   styleUrls: ['./table-list-weekly.component.css']
 })
 export class TableListWeeklyComponent implements OnInit {
+  // Credential Information
+  key: any = JSON.parse(localStorage.getItem('key') || '{}')
+  hospital = this.key.hospital
+  user = this.key.user
 
   @Input() data: any[]
   @Input() dateSelected: Date
@@ -140,11 +145,13 @@ export class TableListWeeklyComponent implements OnInit {
 
   constructor(
     private radiologyService : RadiologyService,
+    private webSocketService : WebsocketService,
     private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
     // this.refresh()
+    this.socketEvents()
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -319,7 +326,7 @@ export class TableListWeeklyComponent implements OnInit {
     m.componentInstance.selectedAppointment = payload;
     m.result.then((_result: any) => {
       // console.log('modal is closed', {result})
-      this.refresh()
+      // this.refresh()
     })
   }
 
@@ -333,7 +340,7 @@ export class TableListWeeklyComponent implements OnInit {
     const m = this.modalService.open(ModalDetailScheduleComponent, { windowClass: 'modal_detail_schedule', backdrop: 'static', keyboard: false })
     m.componentInstance.selectedAppointment = payload;
     m.result.then((_result: any) => {
-      this.refresh()
+      // this.refresh()
     })
   }
 
@@ -344,6 +351,21 @@ export class TableListWeeklyComponent implements OnInit {
     }else {
       return 'bg-blur';
     }
+  }
+
+  socketEvents () {
+    const hospitalId = this.hospital.id
+    this.webSocketService.radiologySockets([
+      `APPOINTMENT__CREATE/${hospitalId}`,
+      `APPOINTMENT__CANCEL/${hospitalId}`,
+      `APPOINTMENT__RESCHEDULE/${hospitalId}`,
+      `APPOINTMENT__CHECK_IN/${hospitalId}`,
+    ]).subscribe((_res: any) => {
+      // console.log('SOCKET_APPOINTMENT__CREATE', res);
+      // console.log(`APPOINTMENT__CREATE/${this.hospital.id}`)
+      console.log('SOCKET_TRIGGER')
+      this.refresh()
+    });
   }
 } 
 

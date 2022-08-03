@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalDetailScheduleComponent } from '../modal-detail-schedule/modal-detail-schedule.component';
 import { ScheduleStatus, ScheduleStatusIDN } from '../../../variables/common.variable';
@@ -9,13 +9,13 @@ import * as _ from 'lodash'
 import Swal from 'sweetalert2';
 import { RadiologyService } from '../../../services/radiology/radiology.service';
 import { ModalityHospital } from '../../../models/radiology/modality-hospital';
-import { WebsocketService } from 'src/app/services/websocket.service';
+import { WebsocketService } from '../../../services/websocket.service';
 @Component({
   selector: 'app-table-list-daily',
   templateUrl: './table-list-daily.component.html',
   styleUrls: ['./table-list-daily.component.css']
 })
-export class TableListDailyComponent {
+export class TableListDailyComponent implements OnInit {
   // Credential Information
   key: any = JSON.parse(localStorage.getItem('key') || '{}');
   hospital = this.key.hospital;
@@ -43,6 +43,10 @@ export class TableListDailyComponent {
     private radiologyService : RadiologyService,
     private webSocketService : WebsocketService,
   ) { }
+
+  ngOnInit(): void {
+    this.socketEvents()
+  }
 
   async getModalitySlots() {
     if(this.sectionSelected.modality_hospital_id) {
@@ -81,7 +85,7 @@ export class TableListDailyComponent {
     m.componentInstance.selectedAppointment = payload;
     m.result.then((_result: any) => {
       // console.log('modal is closed', {result})
-      this.refresh()
+      // this.refresh()
     })
   }
 
@@ -97,7 +101,7 @@ export class TableListDailyComponent {
     m.componentInstance.selectedAppointment = payload;
     m.result.then((result: any) => {
       if (result) {
-        this.refresh()
+        // this.refresh()
         this.showSuccessAlert(`Success`);
       }
     })
@@ -330,8 +334,17 @@ export class TableListDailyComponent {
   }
 
   socketEvents () {
-    this.webSocketService.radiologySocket(`APPOINTMENT__CREATE/${this.hospital.id}`).subscribe((res: any) => {
-      console.log('res', res);
+    const hospitalId = this.hospital.id
+    this.webSocketService.radiologySockets([
+      `APPOINTMENT__CREATE/${hospitalId}`,
+      `APPOINTMENT__CANCEL/${hospitalId}`,
+      `APPOINTMENT__RESCHEDULE/${hospitalId}`,
+      `APPOINTMENT__CHECK_IN/${hospitalId}`,
+    ]).subscribe((_res: any) => {
+      // console.log('SOCKET_APPOINTMENT__CREATE', res);
+      // console.log(`APPOINTMENT__CREATE/${this.hospital.id}`)
+      console.log('SOCKET_TRIGGER')
+      this.refresh()
     });
   }
 
