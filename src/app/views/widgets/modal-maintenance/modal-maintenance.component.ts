@@ -270,7 +270,7 @@ export class ModalMaintenanceComponent implements OnInit {
     this.modalRef.componentInstance.itemId = item.modality_hospital_id;
     this.modalRef.componentInstance.msg = `modality: '${item.modality_label}'`;
     this.modalRef.componentInstance.msgUpadte = `ada appointment untuk modality ini di jam ${item[0].from_time} - ${item[0].to_time}, silahkan cari jadwal lain untuk maintenance'`;
-    this.modalRef.componentInstance.maintenance = true;
+    this.modalRef.componentInstance.confirmMaintenance = true;
     this.modalRef.componentInstance.headerMsg = `Jadwalkan untuk perawatan`;
     this.modalRef.componentInstance.service = this.service;
     this.modalRef.componentInstance.modalitySlot = this.modalitySlots

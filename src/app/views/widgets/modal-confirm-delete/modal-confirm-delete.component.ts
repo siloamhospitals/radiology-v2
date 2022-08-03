@@ -26,6 +26,8 @@ export class ModalConfirmDeleteComponent implements OnInit {
   public reserveDate: string = '';
 
   ngOnInit() {
+    console.log(this.confirmMaintenance)
+    console.log(this.maintenance)
     if(this.modalitySlot.length != 0){
       this.reserveDate = moment(this.modalitySlot[0].reserve_date).format('YYYY-MM-DD');
     }
