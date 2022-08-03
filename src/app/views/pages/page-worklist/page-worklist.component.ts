@@ -45,7 +45,7 @@ export class PageWorklistComponent implements OnInit {
   numberOfFinished : string = '00'
   numberOfSkipped : string = '00'
 
-  scheduleStatus = ScheduleStatusIDN
+  scheduleStatus: any = ScheduleStatusIDN
   
   ngOnInit() {
     this.getModalities()
