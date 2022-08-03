@@ -145,6 +145,7 @@ export class TableListDailyComponent {
           patient_visit_number: slot.patient_visit_number,
           isBpjs: slot.is_bpjs,
           isPast: moment().isAfter(moment(this.dateSelected), 'days'),
+          isMaintenance: slot.is_maintenance,
           duration,
           ...slot
         }
@@ -198,6 +199,7 @@ export class TableListDailyComponent {
           patient_visit_number: slot.patient_visit_number,
           isBpjs: slot.is_bpjs,
           isPast: moment().isAfter(moment(this.dateSelected), 'days'),
+          isMaintenance: slot.is_maintenance,
           duration,
           ...slot
         }
@@ -305,6 +307,20 @@ export class TableListDailyComponent {
     } else {
       this.createAppointment(schedule)
     }
+  }
+
+  rowClass (item: any, isFirstColumn: boolean = false) {
+    console.log(item)
+    let cl = ''
+    if (item.is_maintenance) {
+      cl = 'table-td table-td-note '
+    } else if (!item.is_maintenance && item.rowSpan && item.patient) {
+      cl = 'table-td table-td-scheduled '
+    }
+    if (isFirstColumn) {
+      cl += 'item-indicator-primary'
+    }
+    return cl
   }
 
 }
