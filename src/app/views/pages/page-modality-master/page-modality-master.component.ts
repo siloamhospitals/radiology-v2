@@ -59,8 +59,8 @@ export class PageModalityMasterComponent implements OnInit {
       { operational_type: 3, item_text: 'Fixed' },
     ];
     this.dropdownListStatus = [
-      { status: 1, item_text: 'Active' },
-      { status: 2, item_text: 'Inactive' },
+      { status: 1, item_text: 'Aktif' },
+      { status: 2, item_text: 'Tidak Aktif' },
     ];
   }
 

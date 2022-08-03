@@ -17,6 +17,7 @@ import RadiologyItem from '../../../models/radiology/radiology-item';
 import { ModalConfirmDeleteComponent } from '../modal-confirm-delete/modal-confirm-delete.component';
 import RadiologyListResponse from '../../../models/radiology/responses/radiology-response';
 import { ModalitySlot } from '../../../models/radiology/modality-slot';
+import { isEmpty } from "lodash";
 
 @Component({
   selector: 'app-modal-maintenance',
@@ -68,7 +69,7 @@ export class ModalMaintenanceComponent implements OnInit {
   public retrievedModality: boolean = false;
   public newDate = moment()
   public newFromTime: any = moment("00:00", "HH:mm").format('HH:mm');
-  public newToTime: any = moment("23:59", "HH:mm").format('HH:mm');;
+  public newToTime: any = moment("24:00", "HH:mm").format('HH:mm');
   public defaultStartDate: any = moment()
   public defaultEndDate: any = moment()
   public operationals: RadiologyListResponse = {
@@ -233,11 +234,42 @@ export class ModalMaintenanceComponent implements OnInit {
       toTime: this.newToTime,
       notes: this.modalityForm.controls.notes.value,
     };
-    this.updateModalityHospital();
+      const slot = await this.service.getModalitySlots(this.modalityHospitalId, this.modalityHospitalRequest.fromDate).toPromise()
+      if(isEmpty(slot.data)){
+        this.updateModalityHospital();
+      }else if(!isEmpty(slot.data) && slot.data[0].is_maintenance){
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Sudah ada jadwal perawatan untuk modality ini',
+          timer: 1500
+        });
+        this.close(true);
+      }else if(!isEmpty(slot.data) && !slot.data[0].is_maintenance){
+        this.modalitySlots = slot.data;
+        await this.confirmUpdate(this.modalitySlots);
+        this.close(true);
+      }
+  }
+
+  public async confirmUpdate(item: any) {
+    console.log(item, 'asdasdad')
+    this.modalRef = this.modalService.open(ModalConfirmDeleteComponent, { windowClass: 'modal_cancel_appointment' })
+    this.modalRef.componentInstance.itemId = item.modality_hospital_id;
+    this.modalRef.componentInstance.msg = `modality: '${item.modality_label}'`;
+    this.modalRef.componentInstance.msgUpadte = `ada appointment untuk modality ini di jam ${item[0].from_time} - ${item[0].to_time}, silahkan cari jadwal lain untuk maintenance'`;
+    this.modalRef.componentInstance.maintenance = true;
+    this.modalRef.componentInstance.headerMsg = `Jadwalkan untuk perawatan`;
+    this.modalRef.componentInstance.service = this.service;
+    this.modalRef.componentInstance.modalitySlot = this.modalitySlots
+    this.modalRef.result.then((result) => {
+      if (result === 'OK') {
+        this.updateModalityHospital();
+      }
+    }, (_) => {});
   }
 
   updateModalityHospital(){
-    console.log(this.modalityHospitalRequest, 'oioi')
     this.service.putModalityHospital(this.modalityHospitalRequest, this.modalityHospitalId).subscribe(() => {
       Swal.fire({
         type: 'success',
@@ -245,7 +277,7 @@ export class ModalMaintenanceComponent implements OnInit {
         showConfirmButton: false,
         timer: 3000
       });
-      this.close();
+      this.close(true);
     }, err => {
       Swal.fire({
         type: 'error',
@@ -282,7 +314,7 @@ export class ModalMaintenanceComponent implements OnInit {
       if (res.status == 'OK') {
         this.showSuccessAlert('Pembatalan Jadwal Berhasil');
       }
-      this.close();
+      this.close(true);
     }).catch(err => {
       this.showErrorAlert(err.error.message);
       this.alertService.error(err.error.message, false, 3000);

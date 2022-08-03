@@ -56,8 +56,8 @@ export class PageModalityMaintenanceComponent implements OnInit {
       { operational_type: 3, item_text: 'Fixed' },
     ];
     this.dropdownListStatus = [
-      { status: 1, item_text: 'Active' },
-      { status: 2, item_text: 'Inactive' },
+      { status: 1, item_text: 'Aktif' },
+      { status: 2, item_text: 'Tidak Aktif' },
     ];
   }
 
@@ -87,15 +87,16 @@ export class PageModalityMaintenanceComponent implements OnInit {
     modalRef.componentInstance.responseData = val
     modalRef.componentInstance.isUpdate = isUpdate;
     modalRef.result.then((result) => {
-      if(result == 'closed') {
-        this.getModality()
-        this.getRooms();
-      }else{
-        this.onItemDeselect();
-        this.refreshData();
-        this.getModality()
-        this.getRooms();
-    }
+      console.log(result)
+        if(result == 'closed') {
+          this.getModality()
+          this.getRooms();
+        }else{
+          this.onItemDeselect();
+          this.refreshData();
+          this.getModality()
+          this.getRooms();
+      }
     })
   }
 
