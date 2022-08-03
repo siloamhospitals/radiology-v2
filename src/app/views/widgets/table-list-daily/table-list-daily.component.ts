@@ -301,7 +301,8 @@ export class TableListDailyComponent {
     if(schedule.isPast && !schedule.patient) {
       return
     }
-    
+    if (schedule.isMaintenance) { return }
+
     if(this.isRowScheduled(schedule)){
       this.detailSchedule(schedule)
     } else {
@@ -310,7 +311,6 @@ export class TableListDailyComponent {
   }
 
   rowClass (item: any, isFirstColumn: boolean = false) {
-    console.log(item)
     let cl = ''
     if (item.is_maintenance) {
       cl = 'table-td table-td-note '
