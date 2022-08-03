@@ -13,25 +13,25 @@
           <div class="numberof-worklist m-4 border-right">
             <h4 class="checkin d-inline-block py-2 px-3 mb-0" >Pasien Check in</h4>
             <h1>
-              00
+              {{ numberOfCheckin }}
             </h1>
           </div>
           <div class="numberof-worklist m-4 border-right">
             <h4 class="proccesed d-inline-block py-2 px-3 mb-0" >Pasien Diproses</h4>
             <h1>
-              00
+              {{ numberOfProcessed }}
             </h1>
           </div>
           <div class="numberof-worklist m-4 border-right">
             <h4 class="finished d-inline-block py-2 px-3 mb-0" >Pasien Selesai</h4>
             <h1>
-              00
+              {{ numberOfFinished }}
             </h1>
           </div>
           <div class="numberof-worklist p-4">
             <h4 class="canceled d-inline-block py-2 px-3 mb-0" >Pasien Dilewatkan</h4>
             <h1>
-              00
+              {{ numberOfSkipped }}
             </h1>
           </div>
         </div>
@@ -60,20 +60,24 @@
           </div>
           <div class="text-danger error-timer" *ngIf="isErrorTimer" >Waktu mulai harusnya lebih besar dari waktu selesai.</div>
         </form>
-        <form class="position-relative pr-0 border-right ml-2" style="width: 150px" >
+        <form class="position-relative pr-0 border-right ml-2" style="width: 160px" >
           <small class="text-muted" >Modality</small>
           <ng-select [items]="modalities"
-              bindLabel="company"
-              class="d-form-control"
-              placeholder="Select item" >
+              class="d-form-control select-modality"
+              placeholder="Pilih Modality" >
+            <ng-template ng-option-tmp let-item="item" >
+              <span [attr.title]="item.modality_label" >{{ item.modality_label }} <br />
+                <small >Room {{ item.room_name }}</small>
+              </span>
+            </ng-template>
           </ng-select>
         </form>
-        <form class="position-relative pr-0 ml-2 " style="width: 150px" >
+        <form class="position-relative pr-0 ml-2 " style="width: 140px" >
           <small class="text-muted" >Status</small>
-          <ng-select [items]="modalities"
-              bindLabel="company"
+          <ng-select [items]="statuses"
+              bindLabel="name"
               class="d-form-control"
-              placeholder="Select item" >
+              placeholder="Pilih status" >
           </ng-select>
         </form>
         
