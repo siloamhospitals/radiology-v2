@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {httpOptions} from '../../utils/http.util';
-import {ModalitySlotListResponse} from '../../models/radiology/responses/modality-slots-response';
+import {ModalitySlotListPaginationResponse, ModalitySlotListResponse} from '../../models/radiology/responses/modality-slots-response';
 import RadiologyResponse from '../../models/radiology/responses/radiology-response';
 import OperationalStoreRequest from '../../models/radiology/requests/operational-store-request';
 import OperationalStoreResponse from '../../models/radiology/responses/operational-store-response';
@@ -150,6 +150,11 @@ export class RadiologyService {
     return this.client.put(url, body, httpOptions);
   }
 
+  getModalityHospitalWeekly(fromDate: string, toDate: string, hospitalId: string, modalityHospitalId: string): Observable<ModalityHospitalListResponse> {
+    const url = `${this.radiologyUrl}/modality-hospital?fromDate=${fromDate}&toDate=${toDate}&hospitalId=${hospitalId}&modalityHospitalId=${modalityHospitalId}`;
+    return this.client.get<ModalityHospitalListResponse>(url, httpOptions);
+  }
+
   getAppRadiologyHistory(modalitySlotId : string): Observable<AppointmentRadiologyHistoryResponse> {
     const url = `${this.appointment}/histories/${modalitySlotId}`;
     return this.client.get<AppointmentRadiologyHistoryResponse>(url, httpOptions);
@@ -191,6 +196,12 @@ export class RadiologyService {
   isLate(modalitySlotId: string): Observable<LateResponse> {
     const url = `${this.radiologyFOUrl}/modality-slot/late/${modalitySlotId}`;
     return this.client.get<LateResponse>(url, httpOptions);
+  }
+
+  getDataModalitySlotsList(from : string, to : string, hospitalId : string, page : number, show : number, statuses? : string, patientName? : string, mrNo? : string ): Observable<ModalitySlotListPaginationResponse> {
+    const url = `${this.radiologyCCUrl}/modality-slot/list?from=${from}&to=${to}&hospitalId=${hospitalId}&page=${page}&show=${show}
+                  ${ statuses ? `&statuses=${statuses}` : '' }${patientName ? `&patientName=${patientName}` : ''}${ mrNo ? `&mrNo=${mrNo}` : ''}`;
+    return this.client.get<ModalitySlotListPaginationResponse>(url, httpOptions);
   }
 
 }

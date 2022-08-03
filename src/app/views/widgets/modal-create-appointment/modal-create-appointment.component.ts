@@ -271,13 +271,6 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
     return;
   }
 
-  validateCreateAppointment() {
-    let isValid = true;
-    if (!this.selectedModality.modalityHospitalId) isValid = false;
-    if (!this.selectedModality.modalityExaminationId) isValid = false;
-    return isValid;
-  }
-
   public generatePayload(model: any) {
     const {
       mobileNo1: phoneNumber, address, notes, emailAddress, isBpjs, isAnesthesia
@@ -432,9 +425,9 @@ export class ModalCreateAppointmentComponent extends WidgetBaseComponent impleme
 
   validasiFormModality() {
     if(this.isEditing()){
-      return this.isErrorTimer || !this.edittedModality.modalityExaminationId
+      return this.isErrorTimer || !this.edittedModality.modalityExaminationId || !this.edittedModality.modalityHospitalId
     }else {
-      return this.isErrorTimer || !this.selectedModality.modalityExaminationId
+      return this.isErrorTimer || !this.selectedModality.modalityExaminationId || !this.selectedModality.modalityHospitalId
     }
   }
 

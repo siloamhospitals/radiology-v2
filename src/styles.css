@@ -1448,3 +1448,8 @@ section .form-control:focus {
   left: 4% !important;
   width: inherit !important;
 }
+
+
+.ng-select.select-modality .ng-dropdown-panel {
+    width: 200px !important;
+}
