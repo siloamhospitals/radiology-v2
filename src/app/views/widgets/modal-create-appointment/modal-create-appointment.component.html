@@ -277,6 +277,7 @@
                   required
                   name="selectedModalityHospitalId"
                   >
+                  <option class="text-muted" value="" selected hidden>Pilih modality</option>
                   <option *ngFor="let type of modalityHospitalList"
                   [value]="type.modality_hospital_id"
                     >{{type.modality_label}} - ROOM {{type.room_name}}
@@ -292,6 +293,8 @@
                   <option *ngFor="let type of modalityHospitalList" [value]="type.modality_hospital_id">{{type.modality_label}} - ROOM {{type.room_name}}</option>
                 </select>
               </div>
+              <div *ngIf="isEditing() ? !edittedModality.modalityHospitalId : !selectedModality.modalityHospitalId"
+                    class="form-text text-danger">Harus diisi</div>
             </div>
 
             <div class="mx-3 my-3">
